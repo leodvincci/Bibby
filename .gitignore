@@ -32,7 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-
-
-
 ./Bibby.log
+/Bibby.log
+Bibby.log
