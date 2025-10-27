@@ -82,6 +82,8 @@ All documentation is tracked in **Confluence**, including:
 * **Change Logs**
 * **Component Flow Designs**
 
+👉 [View the Bibby Command Suite Documentation](https://android42.atlassian.net/wiki/external/ZGJjZWU0NTIyZmVhNGQyOWI2NzAyYjEyMTBhM2YxZjE)
+
 Each command follows this format:
 
 ```
@@ -149,24 +151,6 @@ The larger goal is to master how systems like this evolve from scratch — comma
 ---
 
 
-## 📘 Documentation
-[![Confluence Docs](https://img.shields.io/badge/docs-Confluence-blue?logo=atlassian)](https://yourcompany.atlassian.net/wiki/spaces/BIBBY)
-
-
-
-Full technical and design documentation is maintained in Confluence:
-
-Includes:
-- Command specifications
-- Component Flow architecture
-- User stories and change log
-- Feature roadmap
-
-👉 [View the Bibby Command Suite Documentation](https://android42.atlassian.net/wiki/external/ZGJjZWU0NTIyZmVhNGQyOWI2NzAyYjEyMTBhM2YxZjE)
-
-
-
----
 
 ## 👤 Author
 
@@ -176,4 +160,3 @@ Builder • Systems Thinker • Lifelong Learner
 
 ---
 
-Would you like me to format the Development Log into an ongoing **Changelog.md** file (separate from README) so it stays lightweight here and detailed in Confluence? It’s a clean way to keep the README short as your project grows.
