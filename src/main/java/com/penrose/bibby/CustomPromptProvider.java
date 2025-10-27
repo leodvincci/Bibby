@@ -10,7 +10,11 @@ public class CustomPromptProvider implements PromptProvider {
 
     @Override
     public AttributedString getPrompt(){
-        return new AttributedString("Bibby:_ ",AttributedStyle.DEFAULT.foreground(AttributedStyle.GREEN));
+        return new AttributedString("Guest" + " </>\uD835\uDC01\uD835\uDC08\uD835\uDC01\uD835\uDC01\uD835\uDC18:_ ",AttributedStyle.DEFAULT
+                .foreground(AttributedStyle.GREEN)
+                .bold()
+
+        );
     }
 
 }
