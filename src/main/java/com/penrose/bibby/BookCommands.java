@@ -108,6 +108,10 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
+    public void showLoading() throws InterruptedException {
+        LoadingBar.showProgressBar("Loading books from shelf...", 40, 150);
+    }
+
     @Command(command = "search", description = "Search for books by title, author, genre, or location using an interactive prompt.")
     public void searchBook() throws InterruptedException {
 
@@ -153,6 +157,7 @@ public class BookCommands extends AbstractShellComponent {
         Thread.sleep(1000);
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author + " — a fine choice. Let me check the shelves...");
         Thread.sleep(4000);
+        showLoading();
         System.out.println("\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
         Thread.sleep(5000);
 
@@ -182,30 +187,31 @@ public class BookCommands extends AbstractShellComponent {
         auther = res.getContext().get("bookTitle",String.class);
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + auther);
         System.out.print("\u001B[36m</>\u001B[0m:");
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(500);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(1000);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(2000);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(500);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(1000);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(500);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(100);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(100);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(1000);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(50);
-        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(20);
-        System.out.println("\uD83D\uDFE9");
-        Thread.sleep(10);
+        showLoading();
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(500);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(1000);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(2000);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(500);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(1000);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(500);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(100);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(100);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(1000);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(50);
+//        System.out.print("\uD83D\uDFE9");
+//        Thread.sleep(20);
+//        System.out.println("\uD83D\uDFE9");
+//        Thread.sleep(10);
 
         System.out.println("\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
         Thread.sleep(2000);
