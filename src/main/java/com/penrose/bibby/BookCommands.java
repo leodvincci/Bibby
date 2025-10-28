@@ -81,21 +81,29 @@ public class BookCommands extends AbstractShellComponent {
         if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
             Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m:Based on the others nearby, I’d place it on Shelf \u001B[33mD-48\033[0m.");
-        }
 
-        Thread.sleep(2000);
-        System.out.println("\u001B[36m</>\033[0m:Shall I make it official and slide this one onto the shelf?\n");
-
-        flow = componentFlowBuilder.clone()
-                .withSingleItemSelector("recommendShelf")
-                .selectItems(yesNoOptions())
-                .and().build();
-        result = flow.run();
-
-        if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
             Thread.sleep(2000);
-            System.out.println("\u001B[36m</>\033[0m: And there it is — " + "Shelf \u001B[33mD-48\033[0m" + ", freshly updated with another gem.\n");
+            System.out.println("\u001B[36m</>\033[0m:Shall I make it official and slide this one onto the shelf?\n");
+
+            flow = componentFlowBuilder.clone()
+                    .withSingleItemSelector("recommendShelf")
+                    .selectItems(yesNoOptions())
+                    .and().build();
+            result = flow.run();
+
+            if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
+                Thread.sleep(2000);
+                System.out.println("\u001B[36m</>\033[0m: And there it is — " + "Shelf \u001B[33mD-48\033[0m" + ", freshly updated with another gem.\n");
+            }else{
+                Thread.sleep(2000);
+                System.out.println("\u001B[36m</>\033[0m: No rush. Every book finds its home eventually.\n");
+            }
+        }else{
+            Thread.sleep(2000);
+            System.out.println("\u001B[36m</>\033[0m: Fair enough. We can pick another shelf anytime.\n");
         }
+
+
 
     }
 
