@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.Book;
+package com.penrose.bibby.library.book;
 
 public enum BookStatus {
     AVAILABLE,

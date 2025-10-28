@@ -1,14 +1,15 @@
-package com.penrose.bibby.library.Book;
+package com.penrose.bibby.library.book;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 import com.penrose.bibby.library.Author.Author;
-import com.penrose.bibby.library.Genre.Genre;
-import com.penrose.bibby.library.Shelf.*;
+import com.penrose.bibby.library.genre.Genre;
+import com.penrose.bibby.library.shelf.*;
 
 public class Book {
-    private Integer id;
+    private Long id;
+    private int edition;
     private String title;
     private Author author;
     private String isbn;
@@ -16,26 +17,36 @@ public class Book {
     private String publicationYear;
     private Genre genre;
     private Shelf shelf;
-    private Enum<BookStatus> status;
+    private String description;
+    private BookStatus status;
     private Integer checkoutCount;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Book(){
 
     }
 
-    public Book(Integer id, String title, Author author) {
+    public Book(Long id, String title, Author author) {
         this.id = id;
         this.title = title;
         this.author = author;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -95,11 +106,11 @@ public class Book {
         this.shelf = shelf;
     }
 
-    public Enum<BookStatus> getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Enum<BookStatus> status) {
+    public void setStatus(BookStatus status) {
         this.status = status;
     }
 
@@ -127,6 +138,13 @@ public class Book {
         this.updatedAt = updatedAt;
     }
 
+    public int getEdition() {
+        return edition;
+    }
+
+    public void setEdition(int edition) {
+        this.edition = edition;
+    }
 
     @Override
     public String toString() {
@@ -139,6 +157,7 @@ public class Book {
                 ", publicationYear='" + publicationYear + '\'' +
                 ", genre=" + genre +
                 ", shelf=" + shelf +
+                ", description='" + description + '\'' +
                 ", status=" + status +
                 ", checkoutCount=" + checkoutCount +
                 ", createdAt=" + createdAt +
@@ -150,12 +169,12 @@ public class Book {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(isbn, book.isbn) && Objects.equals(publisher, book.publisher) && Objects.equals(publicationYear, book.publicationYear) && Objects.equals(genre, book.genre) && Objects.equals(shelf, book.shelf) && Objects.equals(status, book.status) && Objects.equals(checkoutCount, book.checkoutCount) && Objects.equals(createdAt, book.createdAt) && Objects.equals(updatedAt, book.updatedAt);
+        return Objects.equals(id, book.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, isbn, publisher, publicationYear, genre, shelf, status, checkoutCount, createdAt, updatedAt);
+        return Objects.hashCode(id);
     }
 }
 
