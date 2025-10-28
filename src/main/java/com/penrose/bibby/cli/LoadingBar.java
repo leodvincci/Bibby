@@ -1,4 +1,4 @@
-package com.penrose.bibby;
+package com.penrose.bibby.cli;
 
 public class LoadingBar {
 

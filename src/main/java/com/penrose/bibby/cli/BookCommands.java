@@ -1,4 +1,4 @@
-package com.penrose.bibby;
+package com.penrose.bibby.cli;
 
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
