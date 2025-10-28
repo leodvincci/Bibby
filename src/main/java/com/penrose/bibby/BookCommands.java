@@ -49,8 +49,8 @@ public class BookCommands extends AbstractShellComponent {
                 .withStringInput("genre")
                 .name("Genre (optional):_")
                 .and()
-                .withStringInput("year")
-                .name("Year (optional):_")
+                .withStringInput("isbn")
+                .name("ISBN (optional):_")
                 .and()
                 .build();
 
@@ -59,7 +59,7 @@ public class BookCommands extends AbstractShellComponent {
         String title  = result.getContext().get("title", String.class);
         String author = result.getContext().get("author", String.class);
         String genre  = result.getContext().get("genre", String.class);
-        String year   = result.getContext().get("year", String.class);
+        String year   = result.getContext().get("isbn", String.class);
         Thread.sleep(1000);
 
         System.out.printf(
@@ -158,8 +158,8 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author + " — a fine choice. Let me check the shelves...");
         Thread.sleep(4000);
         showLoading();
-        System.out.println("\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
-        Thread.sleep(5000);
+        System.out.println("\n\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
+        Thread.sleep(2000);
 
         System.out.println("""
                 ──────────────────────────────────────────────
@@ -169,9 +169,37 @@ public class BookCommands extends AbstractShellComponent {
                 """);
         System.out.println("\u001B[90m───────────────────────────────────────────────\u001B[0m");
 
-        Thread.sleep(1800);
+        Thread.sleep(500);
 
         askBookCheckOut();
+    }
+
+    public void checkOutBookByID() throws InterruptedException {
+        ComponentFlow componentFlow;
+        componentFlow = componentFlowBuilder.clone()
+                .withStringInput("bookID")
+                .name("Book ID#:_ ")
+                .and().build();
+
+        componentFlow.run();
+
+
+        Thread.sleep(2300);
+        System.out.println("\u001B[36m</>\u001B[0m:Persuading the shelf to let go...\n");
+        Thread.sleep(2300);
+
+        Thread.sleep(1000);
+        System.out.println("\u001B[36m</>\u001B[0m:Dusting off the cover...\n");
+        Thread.sleep(2300);
+        System.out.println("\u001B[36m</>\u001B[0m:Logging transaction...\n");
+        Thread.sleep(1000);
+        System.out.println("\u001B[36m</>\u001B[0m:Checking it out...please hold while I fake progress bars.\n");
+        Thread.sleep(1000);
+        showLoading();
+        Thread.sleep(2000);
+        System.out.println("\n\u001B[36m</>\u001B[0m:Don’t forget to check it back in… or at least feel guilty about it.\n");
+
+
     }
 
     public void searchByTitle() throws InterruptedException {
@@ -187,9 +215,11 @@ public class BookCommands extends AbstractShellComponent {
         auther = res.getContext().get("bookTitle",String.class);
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + auther);
         System.out.print("\u001B[36m</>\u001B[0m:");
+        Thread.sleep(1000);
+
         showLoading();
 //        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(500);
+        Thread.sleep(500);
 //        System.out.print("\uD83D\uDFE9");
 //        Thread.sleep(1000);
 //        System.out.print("\uD83D\uDFE9");
@@ -213,7 +243,7 @@ public class BookCommands extends AbstractShellComponent {
 //        System.out.println("\uD83D\uDFE9");
 //        Thread.sleep(10);
 
-        System.out.println("\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
+        System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
         Thread.sleep(2000);
 
         flow = componentFlowBuilder.clone()
@@ -230,15 +260,24 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public void askBookCheckOut(){
+    public void askBookCheckOut() throws InterruptedException {
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                         .withSingleItemSelector("checkOutDecision")
-                                .name("See anything you’d like to check out today?")
+                                .name("Want to check one out, or just window-shopping the shelves again?")
                 .selectItems(yesNoOptions())
                 .and().build();
 
-        flow.run();
+        ComponentFlow.ComponentFlowResult res = flow.run();
+        String theRes = res.getContext().get("checkOutDecision",String.class);
+        if(theRes.equalsIgnoreCase("yes")){
+            checkOutBookByID();
+        }else {
+            Thread.sleep(1000);
+            System.out.println("\n\u001B[36m</>\u001B[0m:Cool, I’ll just… put all these back by myself...and whisper *maybe next time* to the shelves... Again.\n");
+
+        }
+
 
     }
 
