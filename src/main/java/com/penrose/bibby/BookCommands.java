@@ -41,17 +41,17 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow flow;
         flow =componentFlowBuilder.clone()
                 .withStringInput("title")
-                    .name("Book Title:_")
-                    .and()
+                .name("Book Title:_")
+                .and()
                 .withStringInput("author")
-                    .name("Author Name:_")
-                    .and()
+                .name("Author Name:_")
+                .and()
                 .withStringInput("genre")
-                    .name("Genre (optional):_")
-                    .and()
+                .name("Genre (optional):_")
+                .and()
                 .withStringInput("year")
-                    .name("Year (optional):_")
-                    .and()
+                .name("Year (optional):_")
+                .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
@@ -107,14 +107,15 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow componentFlow;
         String author;
         componentFlow = componentFlowBuilder.clone()
-                        .withStringInput("author")
-                                .name("Enter author name:_ ")
-                                        .and().build();
+                .withStringInput("author")
+                .name("Enter author name:_ ")
+                .and().build();
 
         ComponentFlow.ComponentFlowResult res = componentFlow.run();
         author =res.getContext().get("author",String.class);
 
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author + " — a fine choice. Let me check the shelves...");
+        System.out.println("\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
         System.out.println("""
                 ──────────────────────────────────────────────
                 [12] \u001B[33mMy Life Decoded: The Story of Leo\u001B[0m   [Shelf A1] (AVAILABLE) \s
