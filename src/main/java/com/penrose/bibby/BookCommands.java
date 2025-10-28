@@ -80,7 +80,14 @@ public class BookCommands extends AbstractShellComponent {
 
         if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
             Thread.sleep(2000);
-            System.out.println("\u001B[36m</>\033[0m:Based on the others nearby, I’d place it on Shelf \u001B[33mD-48\033[0m.");
+            System.out.println(
+                    """
+                    \u001B[36m</>\033[0m: Recommended Shelf → \u001B[33mD-48\033[0m: Programming & Engineering.
+                         Fits best near “\u001B[31mThe Pragmatic Programmer\033[0m” and “\u001B[31mRefactoring\033[0m".
+                         These titles share themes of maintainable code and engineering craftsmanship.
+                         Placing them together makes your shelf flow logically by topic.
+                    """
+            );
 
             Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m:Shall I make it official and slide this one onto the shelf?\n");
@@ -327,5 +334,6 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "suggest-shelf", description = "Use AI to recommend optimal shelf placement for a book.")
     public void suggestBookShelf(){
         System.out.println("Book should be placed on Shelf: G-16");
+//        System.out.println("Book should be placed on Shelf: G-16");
     }
 }
