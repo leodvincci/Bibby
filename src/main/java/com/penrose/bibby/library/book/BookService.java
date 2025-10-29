@@ -1,6 +1,8 @@
 package com.penrose.bibby.library.book;
 
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +17,21 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public void addBook(String title, String firstName, String lastName) {
+    public void addBook(BookRequestDTO bookRequestDTO) {
         // Logic to add a new book to the library
-        AuthorEntity authorEntity = new AuthorEntity(firstName,lastName);
-        authorRepository.save(authorEntity);
+        String firstName = bookRequestDTO.firstName();
+        String lastName = bookRequestDTO.lastName();
+        String title = bookRequestDTO.title();
+        AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName,lastName);
+        if(authorEntity == null){
+            authorEntity = AuthorMapper.toEntity(new Author(firstName,lastName));
+            authorRepository.save(authorEntity);
+        }
         Book book = new Book();
         book.setTitle(title);
         book.setAuthor(authorEntity);
-
-//        BookEntity bookEntity = new BookEntity();
-//        bookEntity.setTitle(title);
-//        bookEntity.setAuthorId(5L);
-//        bookRepository.save(bookEntity);
-//        System.out.println();
-//        System.out.println("Adding book: " + title + " by " + author.getFullName());
-        BookEntity myBookE = BookMapper.toEntity(book);
-        bookRepository.save(myBookE);
+        BookEntity bookEntity = BookMapper.toEntity(book);
+        bookRepository.save(bookEntity);
     }
 
 }
