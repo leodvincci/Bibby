@@ -9,7 +9,7 @@
 1761532800937:helop
 1761535353713:help -C
 1761535761045:help
-1761574418696:Book add --title "the cat in the hat" --author Dr.Suese
+1761574418696:Book add --title "the cat in the hat" --authorEntity Dr.Suese
 1761580088090:help
 1761580366572:add
 1761580369842:help
@@ -25,7 +25,7 @@
 1761584562793:book add
 1761584572002:stacktrace
 1761584596959:book add
-1761590422725:book list -author
+1761590422725:book list -authorEntity
 1761590425432:book list
 1761590435565:book list -title
 1761590473754:book list

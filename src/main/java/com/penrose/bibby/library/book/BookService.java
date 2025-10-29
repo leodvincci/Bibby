@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.author.Author;
+import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ public class BookService {
 
     public void addBook(String title, String firstName, String lastName) {
         // Logic to add a new book to the library
-        Author author = new Author(firstName,lastName);
-        authorRepository.save(author);
+        AuthorEntity authorEntity = new AuthorEntity(firstName,lastName);
+        authorRepository.save(authorEntity);
         Book book = new Book();
         book.setTitle(title);
-        book.setAuthor(author);
+        book.setAuthor(authorEntity);
 
 //        BookEntity bookEntity = new BookEntity();
 //        bookEntity.setTitle(title);

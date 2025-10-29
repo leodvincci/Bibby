@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Author {
+public class AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -15,14 +15,14 @@ public class Author {
     private Character middleInitial;
     private String fullName;
 
-    public Author(String firstName, String lastName) {
+    public AuthorEntity(String firstName, String lastName) {
         this.firstName = firstName;
 //        this.middleInitial = middleInitial;
         this.lastName = lastName;
         this.fullName = String.format("%s %s", firstName, lastName);
     }
 
-    public Author() {
+    public AuthorEntity() {
     }
 
     public String getFirstName() {
