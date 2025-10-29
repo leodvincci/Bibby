@@ -12,7 +12,6 @@ public class AuthorEntity {
     private Long id;
     private String firstName;
     private String lastName;
-    private Character middleInitial;
     private String fullName;
 
     public AuthorEntity(String firstName, String lastName) {
@@ -41,13 +40,7 @@ public class AuthorEntity {
         this.lastName = lastName;
     }
 
-    public Character getMiddleInitial() {
-        return middleInitial;
-    }
 
-    public void setMiddleInitial(Character middleInitial) {
-        this.middleInitial = middleInitial;
-    }
 
     public String getFullName() {
         return fullName;
