@@ -1,5 +1,7 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.book.BookController;
+import com.penrose.bibby.library.book.BookService;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -14,6 +16,8 @@ import java.util.Map;
 @Component
 @Command(command = "book", group = "Book Commands")
 public class BookCommands extends AbstractShellComponent {
+
+    final BookService bookService;
 
     List<String> bibbySearchResponses = new ArrayList<>(List.of(
             "Got it — searching the stacks for books by",
@@ -31,8 +35,9 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService) {
         this.componentFlowBuilder = componentFlowBuilder;
+        this.bookService = bookService;
     }
 
 
@@ -61,6 +66,11 @@ public class BookCommands extends AbstractShellComponent {
         String genre  = result.getContext().get("genre", String.class);
         String year   = result.getContext().get("isbn", String.class);
         Thread.sleep(1000);
+        String[] authorFullName = author.split(" ");
+
+        bookService.addBook(title,authorFullName[0],authorFullName[1]);
+
+
 
         System.out.printf(
                 """

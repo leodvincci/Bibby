@@ -1,9 +1,8 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.Author;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends JpaRepository <BookEntity, Long> {
-
+public interface AuthorRepository extends JpaRepository <Author , Long> {
 }

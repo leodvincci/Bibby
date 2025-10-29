@@ -1,19 +1,27 @@
 package com.penrose.bibby.library.Author;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
     private Character middleInitial;
     private String fullName;
 
-    public Author(String firstName, Character middleInitial, String lastName) {
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
-        this.middleInitial = middleInitial;
+//        this.middleInitial = middleInitial;
         this.lastName = lastName;
-        this.fullName = String.format("%s %c %s", firstName, middleInitial, lastName);
+        this.fullName = String.format("%s %s", firstName, lastName);
     }
 
     public Author() {
