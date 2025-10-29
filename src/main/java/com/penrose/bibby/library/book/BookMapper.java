@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.Author.Author;
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.Shelf;
 

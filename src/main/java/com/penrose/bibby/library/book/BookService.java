@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.Author.Author;
-import com.penrose.bibby.library.Author.AuthorRepository;
+import com.penrose.bibby.library.author.Author;
+import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,9 +27,8 @@ public class BookService {
 //        bookEntity.setTitle(title);
 //        bookEntity.setAuthorId(5L);
 //        bookRepository.save(bookEntity);
-
-        System.out.println("Adding book: " + title + " by " + author.getFullName());
-        System.out.println("Saved?");
+//        System.out.println();
+//        System.out.println("Adding book: " + title + " by " + author.getFullName());
         BookEntity myBookE = BookMapper.toEntity(book);
         bookRepository.save(myBookE);
     }

@@ -72,15 +72,14 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-        System.out.printf(
-                """
-                
-                \u001B[36m</>\033[0m: I added the book\u001B[93m %s\033[0m by\u001B[93m %s\033[0m to your library
-                """,
-                title, author
-        );
-        Thread.sleep(2000);
-        System.out.println("\u001B[36m</>\033[0m: Should I recommend where it belongs?\n");
+        System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
+        Thread.sleep(1750);
+        System.out.printf("\u001B[36m</>\033[0m:'%s' by %s, right?",title,author);
+        Thread.sleep(2350);
+        System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
+        Thread.sleep(3800);
+        System.out.println("\n\u001B[36m</>\033[0m: Should I recommend where it belongs?\n");
+        Thread.sleep(1000);
 
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("recommendShelf")

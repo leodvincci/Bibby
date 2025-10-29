@@ -1,8 +1,7 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.Author.Author;
-import com.penrose.bibby.library.Author.AuthorRepository;
-import org.springframework.stereotype.Controller;
+import com.penrose.bibby.library.author.AuthorRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +18,9 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public void addBook(@RequestBody BookRequestDTO requestDTO) {
+    public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
         bookService.addBook(requestDTO.title(),requestDTO.firstName(),requestDTO.lastName());
+        return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
     }
 
 

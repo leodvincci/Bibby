@@ -1,4 +1,4 @@
-package com.penrose.bibby;
+package com.penrose.bibby.util;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.Author;
+package com.penrose.bibby.library.author;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
