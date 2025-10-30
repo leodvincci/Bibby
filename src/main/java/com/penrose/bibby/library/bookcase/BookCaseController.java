@@ -10,8 +10,8 @@ public class BookCaseController {
     BookcaseService bookCaseService;
 
     @PostMapping("/create/shelf")
-    public void createNewBookCase(RequestBody bookcaseLabel){
-        bookCaseService.createNewBookCase(bookcaseLabel);
+    public void createNewBookCase(@RequestBody BookcaseDTO bookcaseDTO){
+        bookCaseService.createNewBookCase(bookcaseDTO);
         System.out.println("Controller: Creating new Shelf!");
     }
 

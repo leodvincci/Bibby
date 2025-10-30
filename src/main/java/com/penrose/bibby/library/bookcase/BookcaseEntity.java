@@ -13,8 +13,8 @@ public class BookcaseEntity {
     private String bookcaseLabel;
 
 
-    public BookcaseEntity() {
-
+    public BookcaseEntity(String bookcaseLabel) {
+        this.bookcaseLabel = bookcaseLabel;
     }
 
     public BookcaseEntity(Long bookcaseId, String bookcaseLabel) {
