@@ -3,10 +3,20 @@ package com.penrose.bibby.library.bookcase;
 public class Bookcase {
     private Long bookcaseId;
     private String bookcaseLabel;
+    private int shelfCapacity;
 
-    public Bookcase(Long bookcaseId, String bookcaseLabel) {
+    public int getShelfCapacity() {
+        return shelfCapacity;
+    }
+
+    public void setShelfCapacity(int shelfCapacity) {
+        this.shelfCapacity = shelfCapacity;
+    }
+
+    public Bookcase(Long bookcaseId, String bookcaseLabel, int shelfCapacity) {
         this.bookcaseId = bookcaseId;
         this.bookcaseLabel = bookcaseLabel;
+        this.shelfCapacity = shelfCapacity;
     }
 
     public Long getBookcaseId() {
