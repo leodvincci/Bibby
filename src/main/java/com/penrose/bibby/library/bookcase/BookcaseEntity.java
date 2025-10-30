@@ -9,15 +9,18 @@ public class BookcaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long bookcaseId;
     private String bookcaseLabel;
+    private int shelfCapacity;
 
 
-    public BookcaseEntity(String bookcaseLabel) {
+    public BookcaseEntity(String bookcaseLabel, int shelfCapacity) {
         this.bookcaseLabel = bookcaseLabel;
+        this.shelfCapacity = shelfCapacity;
     }
 
-    public BookcaseEntity(Long bookcaseId, String bookcaseLabel) {
+    public BookcaseEntity(Long bookcaseId, String bookcaseLabel,int shelfCapacity) {
         this.bookcaseId = bookcaseId;
         this.bookcaseLabel = bookcaseLabel;
+        this.shelfCapacity = shelfCapacity;
     }
 
     public BookcaseEntity() {
