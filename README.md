@@ -146,7 +146,19 @@ The larger goal is to master how systems like this evolve from scratch — comma
 | **2025-10-27** | Created full Confluence command specifications under “📘 Book Commands.”   |
 | **2025-10-27** | Implemented custom `PromptProvider` with cyan “Bibby:_” prompt.            |
 | **2025-10-27** | Added changelog section and git commit tracking.                           |
-| **Next**       | Begin coding actual `ComponentFlow` logic for interactive inputs.          |
+
+## 2025-10-30
+
+- Refactored `BookcaseService` to use SLF4J for structured logging.
+- Added reusable `ResponseStatusException` for bookcase label conflicts.
+- Improved error handling: logs errors before throwing conflict exceptions.
+- Added informative logs on successful bookcase creation.
+- Cleaned up commented code for better readability.
+- Enhanced RESTful error handling for bookcase creation API responses.
+- Merged updates from main branch into feature branches to stay up-to-date.
+
+*For more details, see the full commit history at: [Bibby Commits](https://github.com/leodvincci/Bibby/commits?sort=author-date&direction=desc)*
+
 
 ---
 
