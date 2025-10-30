@@ -3,7 +3,7 @@ package com.penrose.bibby.library.book;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.penrose.bibby.library.author.Author;
+import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.*;
 
@@ -11,10 +11,10 @@ public class Book {
     private Long id;
     private int edition;
     private String title;
-    private Author author;
+    private AuthorEntity authorEntity;
     private String isbn;
     private String publisher;
-    private String publicationYear;
+    private int publicationYear;
     private Genre genre;
     private Shelf shelf;
     private String description;
@@ -36,10 +36,10 @@ public class Book {
 
     }
 
-    public Book(Long id, String title, Author author) {
+    public Book(Long id, String title, AuthorEntity authorEntity) {
         this.id = id;
         this.title = title;
-        this.author = author;
+        this.authorEntity = authorEntity;
     }
 
     public Long getId() {
@@ -58,12 +58,12 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public AuthorEntity getAuthor() {
+        return authorEntity;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthor(AuthorEntity authorEntity) {
+        this.authorEntity = authorEntity;
     }
 
     public String getIsbn() {
@@ -82,11 +82,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String getPublicationYear() {
+    public int getPublicationYear() {
         return publicationYear;
     }
 
-    public void setPublicationYear(String publicationYear) {
+    public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
     }
 
@@ -151,7 +151,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author=" + author +
+                ", author=" + authorEntity +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", publicationYear='" + publicationYear + '\'' +

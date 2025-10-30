@@ -1,20 +1,20 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.author.Author;
+import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.Shelf;
 
 public class BookMapper {
 
-    public static Book toDomain(BookEntity e, Author author, Shelf shelf, Genre genre){
+    public static Book toDomain(BookEntity e, AuthorEntity authorEntity, Shelf shelf, Genre genre){
         if (e == null){
             return null;
         }
         Book book = new Book();
-        book.setId(e.getId());
+        book.setId(e.getBookID());
         book.setEdition(e.getEdition());
         book.setTitle(e.getTitle());
-        book.setAuthor(author);
+        book.setAuthor(authorEntity);
         book.setIsbn(e.getIsbn());
         book.setPublisher(e.getPublisher());
         book.setPublicationYear(e.getPublicationYear());
@@ -34,7 +34,7 @@ public class BookMapper {
             return null;
         }
         BookEntity bookEntity = new BookEntity();
-        bookEntity.setId(book.getId());
+        bookEntity.setBookID(book.getId());
         bookEntity.setTitle(book.getTitle());
         bookEntity.setIsbn(book.getIsbn());
         bookEntity.setPublisher(book.getPublisher());

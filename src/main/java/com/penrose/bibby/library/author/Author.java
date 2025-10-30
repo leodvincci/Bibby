@@ -1,28 +1,21 @@
 package com.penrose.bibby.library.author;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
 public class Author {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
-    private Character middleInitial;
-    private String fullName;
 
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
-//        this.middleInitial = middleInitial;
         this.lastName = lastName;
-        this.fullName = String.format("%s %s", firstName, lastName);
     }
 
-    public Author() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -39,29 +32,5 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Character getMiddleInitial() {
-        return middleInitial;
-    }
-
-    public void setMiddleInitial(Character middleInitial) {
-        this.middleInitial = middleInitial;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
