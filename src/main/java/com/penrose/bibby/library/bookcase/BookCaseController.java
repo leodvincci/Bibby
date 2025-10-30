@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.bookcase;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +16,10 @@ public class BookCaseController {
     }
 
     @PostMapping("/create/bookcase")
-    public void createNewBookCase(@RequestBody BookcaseDTO bookcaseDTO){
-        System.out.println("Controller: Creating new bookcase!");
+    public ResponseEntity<String> createBookCase(@RequestBody BookcaseDTO bookcaseDTO){
+        String message = bookCaseService.createNewBookCase(bookcaseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
 
-        bookCaseService.createNewBookCase(bookcaseDTO);
     }
 
 
