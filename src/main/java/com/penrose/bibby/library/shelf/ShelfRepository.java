@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ShelfRepository extends JpaRepository<ShelfEntity, Long> {
-    ShelfEntity findByShelfLabel(String shelfLabel);
+
 }

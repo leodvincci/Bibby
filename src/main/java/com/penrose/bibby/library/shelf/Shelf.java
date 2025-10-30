@@ -8,19 +8,20 @@ import java.util.List;
 public class Shelf {
     private Long id;
     private BookCase bookCase;
-    private String label;
-    private Book books;
+    private String shelfLabel;
+    private int shelfPosition;
+
 
     public Shelf() {
 
     }
 
     public String getLabel() {
-        return label;
+        return shelfLabel;
     }
 
     public void setLabel(String label) {
-        this.label = label;
+        this.shelfLabel = label;
     }
 
     public Long getId() {

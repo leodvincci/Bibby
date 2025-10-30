@@ -13,12 +13,4 @@ public class ShelfService {
         this.shelfRepository = shelfRepository;
     }
 
-    public void addToShelf(Book book, String shelfLabel){
-        ShelfEntity shelfEntity = new ShelfEntity();
-        shelfEntity.setShelfLabel(shelfLabel);
-        shelfEntity.setBook(book.getTitle());
-        shelfRepository.save(shelfEntity);
-    }
-
-
 }
