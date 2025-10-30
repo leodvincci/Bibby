@@ -15,8 +15,9 @@ public class BookCaseController {
 
     @PostMapping("/create/bookcase")
     public void createNewBookCase(@RequestBody BookcaseDTO bookcaseDTO){
-        bookCaseService.createNewBookCase(bookcaseDTO);
         System.out.println("Controller: Creating new bookcase!");
+
+        bookCaseService.createNewBookCase(bookcaseDTO);
     }
 
 

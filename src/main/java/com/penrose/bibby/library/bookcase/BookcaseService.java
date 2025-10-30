@@ -14,15 +14,15 @@ public class BookcaseService {
 
     public void  createNewBookCase(BookcaseDTO bookcaseDTO){
         //make sure does not already exist
-        BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseId(bookcaseDTO.bookcaseId());
+        BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLabel(bookcaseDTO.bookcaseLabel());
         if(bookcaseEntity == null){
             bookcaseEntity = new BookcaseEntity(bookcaseDTO.bookcaseLabel());
             bookcaseRepository.save(bookcaseEntity);
             System.out.println("Service: Telling the DB to Create New Case" + bookcaseDTO);
             System.out.println("Saved");
+        }else{
+            System.out.println("Service: Bookcase already exist");
         }
-        //create new bookcase
-        System.out.println("Service: Bookcase already exist");
 
 
 
