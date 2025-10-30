@@ -27,6 +27,13 @@ public class BookcaseEntity {
 
     }
 
+    public int getShelfCapacity() {
+        return shelfCapacity;
+    }
+
+    public void setShelfCapacity(int shelfCapacity) {
+        this.shelfCapacity = shelfCapacity;
+    }
 
     public Long getBookcaseId() {
         return bookcaseId;
