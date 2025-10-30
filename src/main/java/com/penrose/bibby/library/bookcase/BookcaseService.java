@@ -22,6 +22,7 @@ public class BookcaseService {
         if(bookcaseEntity !=null){
             log.error("Failed to save Record - Record already exist",existingRecordError);
             throw existingRecordError;
+
         }
         else{
             bookcaseEntity = new BookcaseEntity(bookcaseDTO.bookcaseLabel(),bookcaseDTO.shelfCapacity());
