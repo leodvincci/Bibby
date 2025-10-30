@@ -9,6 +9,10 @@ public class BookCaseController {
 
     BookcaseService bookCaseService;
 
+    public BookCaseController(BookcaseService bookCaseService) {
+        this.bookCaseService = bookCaseService;
+    }
+
     @PostMapping("/create/bookcase")
     public void createNewBookCase(@RequestBody BookcaseDTO bookcaseDTO){
         bookCaseService.createNewBookCase(bookcaseDTO);
