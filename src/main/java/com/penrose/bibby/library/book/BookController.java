@@ -19,7 +19,7 @@ public class BookController {
 
     @PostMapping("/books")
     public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-        bookService.addBook(requestDTO);
+        bookService.createNewBook(requestDTO);
         return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
     }
 

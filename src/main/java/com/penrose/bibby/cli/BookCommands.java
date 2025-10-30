@@ -1,6 +1,5 @@
 package com.penrose.bibby.cli;
 
-import com.penrose.bibby.library.book.BookController;
 import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
 import org.springframework.shell.command.annotation.Command;
@@ -71,9 +70,7 @@ public class BookCommands extends AbstractShellComponent {
 
         BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authorFullName[0], authorFullName[1]);
 //        bookService.addBook(title,authorFullName[0],authorFullName[1]);
-        bookService.addBook(bookRequestDTO);
-
-
+        bookService.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
         Thread.sleep(1750);

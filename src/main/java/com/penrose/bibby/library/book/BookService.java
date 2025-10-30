@@ -17,14 +17,14 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public void addBook(BookRequestDTO bookRequestDTO) {
-        // Logic to add a new book to the library
+    public void createNewBook(BookRequestDTO bookRequestDTO) {
         String firstName = bookRequestDTO.firstName();
         String lastName = bookRequestDTO.lastName();
         String title = bookRequestDTO.title();
         AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName,lastName);
         if(authorEntity == null){
-            authorEntity = AuthorMapper.toEntity(new Author(firstName,lastName));
+            authorEntity = new AuthorEntity(firstName,lastName);
+//            authorEntity = AuthorMapper.toEntity(new Author(firstName,lastName));
             authorRepository.save(authorEntity);
         }
         Book book = new Book();
