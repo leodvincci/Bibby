@@ -11,7 +11,7 @@ public class BookMapper {
             return null;
         }
         Book book = new Book();
-        book.setId(e.getId());
+        book.setId(e.getBookID());
         book.setEdition(e.getEdition());
         book.setTitle(e.getTitle());
         book.setAuthor(authorEntity);
@@ -34,7 +34,7 @@ public class BookMapper {
             return null;
         }
         BookEntity bookEntity = new BookEntity();
-        bookEntity.setId(book.getId());
+        bookEntity.setBookID(book.getId());
         bookEntity.setTitle(book.getTitle());
         bookEntity.setIsbn(book.getIsbn());
         bookEntity.setPublisher(book.getPublisher());

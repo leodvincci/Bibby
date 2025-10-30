@@ -1,16 +1,16 @@
 package com.penrose.bibby.library.shelf;
 
-import com.penrose.bibby.library.book.Book;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "Shelves")
 public class ShelfEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long shelfId;
+
+
     private String shelfLabel;
     private String bookCaseLabel;
    private String book;
@@ -44,11 +44,11 @@ public class ShelfEntity {
         this.shelfLabel = label;
     }
 
-    public Long getId() {
-        return id;
+    public Long getShelfId() {
+        return shelfId;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setShelfId(Long id) {
+        this.shelfId = id;
     }
 
 

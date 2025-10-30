@@ -14,7 +14,7 @@ public class Book {
     private AuthorEntity authorEntity;
     private String isbn;
     private String publisher;
-    private String publicationYear;
+    private int publicationYear;
     private Genre genre;
     private Shelf shelf;
     private String description;
@@ -82,11 +82,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String getPublicationYear() {
+    public int getPublicationYear() {
         return publicationYear;
     }
 
-    public void setPublicationYear(String publicationYear) {
+    public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
     }
 
