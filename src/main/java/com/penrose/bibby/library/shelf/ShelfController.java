@@ -13,9 +13,9 @@ public class ShelfController {
         this.shelfService = shelfService;
     }
 
-    public void addBookToShelf(Book book, Bookcase bookCase){
-        shelfService.addToShelf(book,"A-42");
-        System.out.println("Controller adding to shelf...");
-    }
+//    public void addBookToShelf(Book book, Bookcase bookCase){
+//        shelfService.addToShelf(book,"A-42");
+//        System.out.println("Controller adding to shelf...");
+//    }
 
 }
