@@ -17,13 +17,6 @@ public class StartupRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         System.out.println(">>> Bibby is awake. Seeding data now...");
-        BookCase bookCase = new BookCase();
-        AuthorEntity author = new AuthorEntity("Leo","Penrose");
-        shelfService.addToShelf(new Book(42L,"The Can Man",author),"bookCase");
-
-        BookCase bookCase2 = new BookCase();
-        AuthorEntity author2 = new AuthorEntity("Bpb","ose");
-        shelfService.addToShelf(new Book(421L,"Tplo af ",author2),"bookCase");
 
         // call whatever you want here
         // e.g. create a book, save it, print results, etc.
