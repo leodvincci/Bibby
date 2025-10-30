@@ -8,6 +8,10 @@ public class BookcaseService {
 
     BookcaseRepository bookcaseRepository;
 
+    public BookcaseService(BookcaseRepository bookcaseRepository) {
+        this.bookcaseRepository = bookcaseRepository;
+    }
+
     public void  createNewBookCase(BookcaseDTO bookcaseDTO){
         //make sure does not already exist
         BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseId(bookcaseDTO.bookcaseId());
