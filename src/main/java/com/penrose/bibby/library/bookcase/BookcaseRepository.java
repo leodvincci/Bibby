@@ -4,5 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookCaseRepository extends JpaRepository<BookCaseEntity , Long> {
+public interface BookcaseRepository extends JpaRepository<BookcaseEntity, Long> {
+    BookcaseEntity findBookcaseEntityByBookcaseId(Long bookcaseId);
 }

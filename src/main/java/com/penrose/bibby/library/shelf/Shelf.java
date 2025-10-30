@@ -1,13 +1,11 @@
 package com.penrose.bibby.library.shelf;
 
 import com.penrose.bibby.library.book.Book;
-import com.penrose.bibby.library.bookcase.BookCase;
-
-import java.util.List;
+import com.penrose.bibby.library.bookcase.Bookcase;
 
 public class Shelf {
     private Long id;
-    private BookCase bookCase;
+    private Bookcase bookCase;
     private String shelfLabel;
     private int shelfPosition;
 
