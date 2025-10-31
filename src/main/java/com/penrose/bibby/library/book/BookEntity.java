@@ -28,6 +28,13 @@ public class BookEntity {
     private java.time.LocalDate createdAt;
     private java.time.LocalDate updatedAt;
 
+    public BookEntity() {
+    }
+
+    public BookEntity(String title, Set<AuthorEntity> authors) {
+        this.title = title;
+        this.authors = authors;
+    }
 
     @ManyToMany
     @JoinTable(
@@ -45,8 +52,8 @@ public class BookEntity {
         return authors;
     }
 
-    public void setAuthors(Set<AuthorEntity> authors) {
-        this.authors = authors;
+    public void setAuthors(AuthorEntity authors) {
+        this.authors.add(authors);
     }
 
     public void setBookId(Long id) {

@@ -1,12 +1,9 @@
 package com.penrose.bibby.library.book;
 
-import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
-import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookService {
@@ -19,30 +16,26 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
+    @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
         String firstName = bookRequestDTO.firstName();
         String lastName = bookRequestDTO.lastName();
         String title = bookRequestDTO.title();
-        AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName,lastName);
-        if(authorEntity == null){
-            authorEntity = new AuthorEntity(firstName,lastName);
+        BookEntity bookEntity = bookRepository.findByTitle(title);
+        AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName, lastName);
+
+        if (authorEntity == null) {
+            authorEntity = new AuthorEntity(firstName, lastName);
 //            authorEntity = AuthorMapper.toEntity(new Author(firstName,lastName));
             authorRepository.save(authorEntity);
         }
-        Book book = new Book();
-        book.setTitle(title);
 
-//        book.setAuthor(authorEntity);
-        BookEntity bookEntity = BookMapper.toEntity(book);
-        AuthorEntity a1 = new AuthorEntity("Leo", "Penrose");
-        AuthorEntity a2 = new AuthorEntity("Ivo", "Murphy");
-        authorRepository.save(a1);
-        authorRepository.save(a2);
-        HashSet<AuthorEntity> aSet = new HashSet<>();
-        aSet.add(a1);
-        aSet.add(a2);
-        bookEntity.setAuthors(aSet);
-        bookRepository.save(bookEntity);
+        if (bookEntity == null) {
+            bookEntity = new BookEntity();
+            bookEntity.setTitle(title);
+        }
+            bookEntity.setAuthors(authorEntity);
+            bookRepository.save(bookEntity);
     }
 
 }
