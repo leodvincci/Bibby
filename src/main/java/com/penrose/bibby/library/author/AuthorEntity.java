@@ -1,13 +1,17 @@
 package com.penrose.bibby.library.author;
 
+import com.penrose.bibby.library.book.BookEntity;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "Authors")
+@Table(name = "authors")
 public class AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long authorId;
     private String firstName;
     private String lastName;
     private String fullName;
@@ -21,6 +25,17 @@ public class AuthorEntity {
 
     public AuthorEntity() {
     }
+
+    public Set<BookEntity> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<BookEntity> books) {
+        this.books = books;
+    }
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<BookEntity> books = new HashSet<>();
 
     public String getFirstName() {
         return firstName;
@@ -48,11 +63,11 @@ public class AuthorEntity {
         this.fullName = fullName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAuthorId(Long id) {
+        this.authorId = id;
     }
 }

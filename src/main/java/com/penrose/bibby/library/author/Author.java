@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.author;
 
 public class Author {
-    private Long id;
+    private Long authorId;
     private String firstName;
     private String lastName;
 
@@ -10,12 +10,12 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public String getFirstName() {
