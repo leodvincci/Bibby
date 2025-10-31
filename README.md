@@ -159,6 +159,39 @@ The larger goal is to master how systems like this evolve from scratch — comma
 
 *For more details, see the full commit history at: [Bibby Commits](https://github.com/leodvincci/Bibby/commits?sort=author-date&direction=desc)*
 
+### 🧩 Change Log — *v0.x.x*
+
+**Status:** `/status Released`
+ **Date:** 2025-10-31
+ **Component:** CLI / Service / Repository
+
+#### 🆕 Feature: Multi-Author Add Flow
+
+**Git Branch:** `feat/cli-multi-author-add`
+ **Commit:** `feat(cli): support multiple authors during book add flow`
+
+**Summary:**
+ Bibby can now handle books with multiple authors directly through the CLI.
+ Users are prompted for the number of authors when adding a new book, and the system iteratively collects each author’s name before saving.
+
+**Implementation Details:**
+
+- Introduced interactive prompt sequence using `ComponentFlow` for multi-author input.
+- Added helper method `authorNameComponentFlow()` in `BookCommands` for collecting author names.
+- Refactored `BookService.createNewBook()` to support multiple authors per book in a single transaction.
+- Added `@Transactional` annotation to ensure persistence consistency across the author set.
+- Updated `BookEntity` to safely append new `AuthorEntity` instances using `setAuthors(AuthorEntity author)`.
+- Expanded `BookRepository` with `findByTitle()` for efficient lookups before creation.
+
+**Outcome:**
+ Books can now be linked to multiple authors without manual database edits.
+ This marks the first functional use of the many-to-many relationship between `BookEntity` and `AuthorEntity`.
+
+**Notes / Observations:**
+
+- Next iteration: introduce de-duplication to reuse existing authors instead of always creating new ones.
+- Future enhancement: add fuzzy or AI-assisted author name suggestions.
+
 
 ---
 
