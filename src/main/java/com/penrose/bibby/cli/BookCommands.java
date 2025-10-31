@@ -359,7 +359,7 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("Book Checked Back onto Shelf");
     }
 
-    @Command(command = "assign-shelf", description = "Assign or update a book’s physical shelf location.")
+    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void assignBookShelf(){
         System.out.println("Book Placed On Shelf:A-42");
     }
