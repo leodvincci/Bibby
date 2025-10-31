@@ -1,8 +1,11 @@
 package com.penrose.bibby.library.book;
 
+import com.penrose.bibby.library.author.AuthorEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -10,7 +13,7 @@ public class BookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long bookID;
+    private Long bookId;
     private String title;
     private String isbn;
     private String publisher;
@@ -26,11 +29,28 @@ public class BookEntity {
     private java.time.LocalDate updatedAt;
 
 
-    public Long getBookID() {
-        return bookID;
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors", // the middle box
+            joinColumns = @JoinColumn(name = "book_id"), // link to books
+            inverseJoinColumns = @JoinColumn(name = "author_id") // link to authors
+    )
+    private Set<AuthorEntity> authors = new HashSet<>();
+
+    public Long getBookId() {
+        return bookId;
     }
-    public void setBookID(Long id) {
-        this.bookID = id;
+
+    public Set<AuthorEntity> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<AuthorEntity> authors) {
+        this.authors = authors;
+    }
+
+    public void setBookId(Long id) {
+        this.bookId = id;
     }
     public String getTitle() {
         return title;

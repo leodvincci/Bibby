@@ -6,6 +6,8 @@ import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
 @Service
 public class BookService {
 
@@ -29,8 +31,17 @@ public class BookService {
         }
         Book book = new Book();
         book.setTitle(title);
-        book.setAuthor(authorEntity);
+
+//        book.setAuthor(authorEntity);
         BookEntity bookEntity = BookMapper.toEntity(book);
+        AuthorEntity a1 = new AuthorEntity("Leo", "Penrose");
+        AuthorEntity a2 = new AuthorEntity("Ivo", "Murphy");
+        authorRepository.save(a1);
+        authorRepository.save(a2);
+        HashSet<AuthorEntity> aSet = new HashSet<>();
+        aSet.add(a1);
+        aSet.add(a2);
+        bookEntity.setAuthors(aSet);
         bookRepository.save(bookEntity);
     }
 
