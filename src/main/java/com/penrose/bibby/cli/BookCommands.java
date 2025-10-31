@@ -57,8 +57,6 @@ public class BookCommands extends AbstractShellComponent {
 
         String title  = result.getContext().get("title", String.class);
         String author = result.getContext().get("author", String.class);
-        String genre  = result.getContext().get("genre", String.class);
-        String year   = result.getContext().get("isbn", String.class);
         Thread.sleep(1000);
         String[] authorFullName = author.split(" ");
 
@@ -156,18 +154,32 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("\n\u001B[95mSearch by Author");
 
         ComponentFlow componentFlow;
-        String author;
+        String authorFirstName;
+        String authorLastName;
         componentFlow = componentFlowBuilder.clone()
-                .withStringInput("author")
-                .name("Enter author name:_ ")
+                .withStringInput("authorFirstName")
+                .name("Enter author First Name:_ ")
+                .and()
+                .withStringInput("authorLastName")
+                .name("Enter author Last Name:_")
                 .and().build();
 
         ComponentFlow.ComponentFlowResult res = componentFlow.run();
-        author =res.getContext().get("author",String.class);
+        authorFirstName =res.getContext().get("authorFirstName",String.class);
+        authorLastName =res.getContext().get("authorLastName",String.class);
+
+
+
         Thread.sleep(1000);
-        System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author + " — a fine choice. Let me check the shelves...");
+        System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + authorFirstName + " " + authorLastName + " — a fine choice. Let me check the shelves...");
         Thread.sleep(4000);
         showLoading();
+
+        //call controller to search by first and last name.
+
+
+
+
         System.out.println("\n\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
         Thread.sleep(2000);
 
