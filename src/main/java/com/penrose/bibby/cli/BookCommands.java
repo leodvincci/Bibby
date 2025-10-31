@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
 import org.springframework.shell.command.annotation.Command;
@@ -40,33 +41,65 @@ public class BookCommands extends AbstractShellComponent {
         this.bookService = bookService;
     }
 
+    public void authorNameComponentFlow(String title){
+        ComponentFlow flow2;
+        flow2 = componentFlowBuilder.clone()
+                .withStringInput("authorFirstName")
+                .name("Author's First Name:_")
+                .and()
+                .withStringInput("authorLastName")
+                .name("Author's Last Name:_")
+                .and().build();
+
+        ComponentFlow.ComponentFlowResult res = flow2.run();
+        String firstName  = res.getContext().get("authorFirstName", String.class);
+        String lastName = res.getContext().get("authorLastName", String.class);
+        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
+        bookService.createNewBook(bookRequestDTO);
+//        new AuthorEntity(firstName, lastName);
+    }
 
     @Command(command = "add", description = "Add a new book to your library database")
     public void addBook() throws InterruptedException {
         ComponentFlow flow;
-        flow =componentFlowBuilder.clone()
+        ComponentFlow flow2;
+        int authorCount;
+        String title;
+        String author;
+
+
+
+        flow = componentFlowBuilder.clone()
                 .withStringInput("title")
                 .name("Book Title:_")
                 .and()
-                .withStringInput("author")
-                .name("Author Name:_")
+                .withStringInput("author_count")
+                .name("Number of Authors:_")
                 .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
+        authorCount = Integer.parseInt(result.getContext().get("author_count",String.class));
 
-        String title  = result.getContext().get("title", String.class);
-        String author = result.getContext().get("author", String.class);
+
+
+         title  = result.getContext().get("title", String.class);
+
+        for(int i = 0; i < authorCount; i++){
+            authorNameComponentFlow(title);
+        }
+
         Thread.sleep(1000);
-        String[] authorFullName = author.split(" ");
+//        String[] authorFullName = author.split(" ");
 
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authorFullName[0], authorFullName[1]);
+//        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authorFullName[0], authorFullName[1]);
+
 //        bookService.addBook(title,authorFullName[0],authorFullName[1]);
-        bookService.createNewBook(bookRequestDTO);
+//        bookService.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
         Thread.sleep(1750);
-        System.out.printf("\u001B[36m</>\033[0m:'%s' by %s, right?",title,author);
+        System.out.printf("\u001B[36m</>\033[0m:'%s', right?",title);
         Thread.sleep(2350);
         System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
         Thread.sleep(3800);
@@ -176,7 +209,6 @@ public class BookCommands extends AbstractShellComponent {
         showLoading();
 
         //call controller to search by first and last name.
-
 
 
 
