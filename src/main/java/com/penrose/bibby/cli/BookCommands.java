@@ -1,6 +1,7 @@
 package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.book.BookController;
 import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
 import org.springframework.shell.command.annotation.Command;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class BookCommands extends AbstractShellComponent {
 
     final BookService bookService;
-
+    final BookController bookController;
     List<String> bibbySearchResponses = new ArrayList<>(List.of(
             "Got it — searching the stacks for books by",
             "Sure thing — I’ll take a quick look through the shelves for",
@@ -36,9 +37,10 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
+        this.bookController = bookController;
     }
 
     public void authorNameComponentFlow(String title){
@@ -258,7 +260,7 @@ public class BookCommands extends AbstractShellComponent {
 
     public void searchByTitle() throws InterruptedException {
         System.out.println("\n");
-        String auther;
+        String title;
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("bookTitle")
@@ -266,38 +268,22 @@ public class BookCommands extends AbstractShellComponent {
                 .and().build();
 
         ComponentFlow.ComponentFlowResult res = flow.run();
-        auther = res.getContext().get("bookTitle",String.class);
-        System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + auther);
+        title = res.getContext().get("bookTitle",String.class);
+        System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");
         Thread.sleep(1000);
 
+        Boolean isFound = bookService.findBookByTitle(title);
         showLoading();
-//        System.out.print("\uD83D\uDFE9");
-        Thread.sleep(500);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(1000);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(2000);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(500);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(1000);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(500);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(100);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(100);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(1000);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(50);
-//        System.out.print("\uD83D\uDFE9");
-//        Thread.sleep(20);
-//        System.out.println("\uD83D\uDFE9");
-//        Thread.sleep(10);
 
-        System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
+        Thread.sleep(500);
+
+        if (!isFound) {
+            System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
+        }else{
+            System.out.println("\nBook Was Found in Bookcase: 000 on Shelf: 111\n");
+        }
+
         Thread.sleep(2000);
 
         flow = componentFlowBuilder.clone()
