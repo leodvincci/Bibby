@@ -51,12 +51,6 @@ public class BookCommands extends AbstractShellComponent {
                 .withStringInput("author")
                 .name("Author Name:_")
                 .and()
-                .withStringInput("genre")
-                .name("Genre (optional):_")
-                .and()
-                .withStringInput("isbn")
-                .name("ISBN (optional):_")
-                .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();

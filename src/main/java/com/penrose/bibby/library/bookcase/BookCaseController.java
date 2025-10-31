@@ -19,7 +19,6 @@ public class BookCaseController {
     public ResponseEntity<String> createBookCase(@RequestBody BookcaseDTO bookcaseDTO){
         String message = bookCaseService.createNewBookCase(bookcaseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
-
     }
 
 
