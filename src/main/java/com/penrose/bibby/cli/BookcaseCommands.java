@@ -1,5 +1,7 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.bookcase.Bookcase;
+import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -33,6 +35,13 @@ public class BookcaseCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult result = flow.run();
         bookcaseService.createNewBookCase(result.getContext().get("bookcaseLabel"),Integer.parseInt(result.getContext().get("shelfCapacity")));
 
+    }
+
+    @Command(command = "list" , description = "Display all bookcases currently in the library, along with their labels, total shelves")
+    public void listAllBookcases(){
+        for(BookcaseEntity b : bookcaseService.getAllBookcases()){
+            System.out.println(b.getBookcaseLabel() + ":" + b.getShelfCapacity());
+        }
     }
 
 

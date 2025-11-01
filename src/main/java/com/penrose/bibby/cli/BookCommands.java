@@ -2,8 +2,14 @@ package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.book.BookController;
+import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
+import com.penrose.bibby.library.bookcase.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.BookcaseService;
+import com.penrose.bibby.library.shelf.Shelf;
+import com.penrose.bibby.library.shelf.ShelfEntity;
+import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -21,6 +27,9 @@ public class BookCommands extends AbstractShellComponent {
 
     final BookService bookService;
     final BookController bookController;
+    final BookcaseService bookcaseService;
+    final ShelfService shelfService;
+
     List<String> bibbySearchResponses = new ArrayList<>(List.of(
             "Got it — searching the stacks for books by",
             "Sure thing — I’ll take a quick look through the shelves for",
@@ -37,10 +46,12 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookController = bookController;
+        this.bookcaseService = bookcaseService;
+        this.shelfService = shelfService;
     }
 
     public void authorNameComponentFlow(String title){
@@ -179,6 +190,49 @@ public class BookCommands extends AbstractShellComponent {
 
     }
 
+    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
+    public void addToShelf(){
+        //get the book
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("bookTitle")
+                .name("What book are you shelving?:_")
+                .and()
+                .withSingleItemSelector("bookcase")
+                .name("Choose a Bookcase:_")
+                .selectItems(bookCaseOptions())
+                .and().build();
+        ComponentFlow.ComponentFlowResult res = flow.run();
+        String title = res.getContext().get("bookTitle",String.class);
+        Long bookCaseId = Long.parseLong(res.getContext().get("bookcase",String.class));
+
+
+        flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("bookshelf")
+                .name("Chose a shelf position")
+                .selectItems(bookShelfOptions(bookCaseId))
+                .and().build();
+
+
+        res = flow.run();
+
+
+
+
+        BookEntity bookEnt = bookService.findBookByTitle(title);
+        if(bookEnt == null){
+            System.out.println("Book Not Found In Library");
+        }else {
+            Long shelfId = Long.parseLong(res.getContext().get("bookshelf",String.class));
+            System.out.println(shelfId);
+            System.out.println(title);
+            bookEnt.setShelfId(shelfId);
+            bookService.updateBook(bookEnt);
+            System.out.println("Added Book To the Shelf!");
+        }
+
+    }
+
     public void searchByAuthorVoice(){
         List<String> searchResponses = new ArrayList<>();
 
@@ -273,12 +327,12 @@ public class BookCommands extends AbstractShellComponent {
         System.out.print("\u001B[36m</>\u001B[0m:");
         Thread.sleep(1000);
 
-        Boolean isFound = bookService.findBookByTitle(title);
+        BookEntity isFound = bookService.findBookByTitle(title);
         showLoading();
 
         Thread.sleep(500);
 
-        if (!isFound) {
+        if (isFound == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
         }else{
             System.out.println("\nBook Was Found in Bookcase: 000 on Shelf: 111\n");
@@ -335,6 +389,29 @@ public class BookCommands extends AbstractShellComponent {
         return options;
     }
 
+    private Map<String, String> bookCaseOptions() {
+        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
+        Map<String, String> options = new LinkedHashMap<>();
+        List<BookcaseEntity> bookcaseEntities  = bookcaseService.getAllBookcases();
+        for(BookcaseEntity b : bookcaseEntities){
+            options.put(b.getBookcaseLabel(), b.getBookcaseId().toString());
+        }
+
+        return options;
+    }
+
+
+    private Map<String, String> bookShelfOptions(Long bookcaseId) {
+        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
+        Map<String, String> options = new LinkedHashMap<>();
+        List<ShelfEntity> shelves = shelfService.getAllShelves(bookcaseId);
+        for(ShelfEntity s : shelves){
+            options.put(s.getShelfLabel(), String.valueOf(s.getShelfPosition()));
+        }
+
+        return options;
+    }
+
     private Map<String, String> yesNoOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
@@ -357,11 +434,6 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "check-in",description = "Return a borrowed book to the library and update its shelf placement.")
     public void checkInBook(){
         System.out.println("Book Checked Back onto Shelf");
-    }
-
-    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
-    public void assignBookShelf(){
-        System.out.println("Book Placed On Shelf:A-42");
     }
 
     @Command(command = "suggest-shelf", description = "Use AI to recommend optimal shelf placement for a book.")
