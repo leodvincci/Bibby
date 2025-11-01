@@ -10,16 +10,16 @@ public class ShelfEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long shelfId;
     private String shelfLabel;
-    private String bookcaseId;
+    private Long bookcaseId;
     private int shelfPosition;
 
     public ShelfEntity() {
 
     }
-    public String getBookcaseId() {
+    public Long getBookcaseId() {
         return bookcaseId;
     }
-    public void setBookcaseId(String bookCaseLabel) {
+    public void setBookcaseId(Long bookCaseLabel) {
         this.bookcaseId = bookCaseLabel;
     }
     public String getShelfLabel() {
