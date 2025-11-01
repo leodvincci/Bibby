@@ -194,6 +194,69 @@ The larger goal is to master how systems like this evolve from scratch — comma
 
 
 ---
+## Date: 2025-10-31
+**Version:** `v0.4.x`
+**Status:** `/status Done`
+**Date:** 2025-10-31
+**Component:** `CLI / Service / Repository`
+**Related Command:** `book shelf`
+
+------
+
+### 🧠 Summary
+
+The system now allows users to place a book on a shelf within a selected bookcase through an interactive CLI flow.
+Users are guided step-by-step: they select a book title, choose from available bookcases, then choose a shelf in that bookcase.
+Once confirmed, the system updates the `BookEntity` with its `ShelfEntity` association and confirms placement.
+
+------
+
+### 🧩 Technical Details
+
+- **Added** new CLI command `book shelf` in `BookCommands`
+- **Integrated** `BookcaseService` and `ShelfService` for listing available bookcases and shelves
+- **Updated** `BookService.findBookByTitle()` to return `BookEntity`
+- **Added** `BookService.updateBook()` for persistence of shelf assignment
+- **Added** `ShelfRepository.findByBookcaseId()` and `ShelfService.getAllShelves(Long)` for per-bookcase shelf lookup
+- **Added** `BookcaseCommands.listAllBookcases()` for convenience testing and debugging
+
+------
+
+### 🧭 Impact
+
+This update completes the logical relationship flow between **Book → Shelf → Bookcase**.
+It enables realistic library interactions and prepares the foundation for future enhancements such as capacity tracking, shelf recommendations, and shelf visualization within the CLI.
+
+------
+
+### 🧪 Verification Steps
+
+1. Run the app via Spring Shell (`./mvnw spring-boot:run`).
+
+2. Use the command:
+
+   `book shelf `
+
+3. Follow the prompts to:
+
+   - Enter a book title
+   - Select a bookcase from the list
+   - Select a shelf within that bookcase
+
+4. Confirm that Bibby responds with a success message like:
+
+   “📚 Book *Clean Code* has been placed on Shelf 2 in Bookcase *Main Library*.”
+
+5. Verify in database that the `book.shelf_id` is updated.
+
+------
+
+### 🧱 Next Steps / Future Enhancements
+
+- Add capacity checks per shelf to prevent overfilling
+- Implement CLI command `shelf list --bookcase <label>` to view shelf contents
+- Add animated or colorized confirmation output for placement feedback
+---
 
 
 
