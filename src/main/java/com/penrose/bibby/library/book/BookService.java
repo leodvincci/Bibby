@@ -38,17 +38,22 @@ public class BookService {
             bookRepository.save(bookEntity);
     }
 
-    public Boolean findBookByTitle(String title){
+    public BookEntity findBookByTitle(String title){
         System.out.println("Service Searching for " + title);
         BookEntity bookEntity = bookRepository.findBookEntityByTitle(title);
         if(bookEntity == null){
 //            System.out.println("Book Not Found");
-            return false;
+            return null;
         }else{
             System.out.println("Book Found");
 
         }
-        return true;
+        return bookEntity;
+    }
+
+
+    public void updateBook(BookEntity bookEntity){
+        bookRepository.save(bookEntity);
     }
 
 }

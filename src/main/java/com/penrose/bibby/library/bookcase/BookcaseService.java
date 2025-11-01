@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class BookcaseService {
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
@@ -44,6 +46,13 @@ public class BookcaseService {
         shelfEntity.setShelfPosition(position);
         shelfRepository.save(shelfEntity);
     }
+
+    public List<BookcaseEntity> getAllBookcases(){
+        return bookcaseRepository.findAll();
+    }
+
+
+
 
 
 
