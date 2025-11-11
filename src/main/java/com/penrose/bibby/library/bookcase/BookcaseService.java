@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookcaseService {
@@ -49,6 +50,10 @@ public class BookcaseService {
 
     public List<BookcaseEntity> getAllBookcases(){
         return bookcaseRepository.findAll();
+    }
+
+    public Optional<BookcaseEntity> findBookCaseById(Long id){
+        return bookcaseRepository.findById(id);
     }
 
 

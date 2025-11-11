@@ -15,10 +15,7 @@ import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Component
@@ -29,6 +26,13 @@ public class BookCommands extends AbstractShellComponent {
     final BookController bookController;
     final BookcaseService bookcaseService;
     final ShelfService shelfService;
+
+
+
+     /*
+        Book Create Commands
+      */
+
 
     List<String> bibbySearchResponses = new ArrayList<>(List.of(
             "Got it — searching the stacks for books by",
@@ -165,6 +169,18 @@ public class BookCommands extends AbstractShellComponent {
     public void showLoading() throws InterruptedException {
         LoadingBar.showProgressBar("Loading books from shelf...", 40, 150);
     }
+
+
+
+
+    /*
+
+        Book Search Commands
+
+    */
+
+
+
 
     @Command(command = "search", description = "Search for books by title, author, genre, or location using an interactive prompt.")
     public void searchBook() throws InterruptedException {
@@ -327,15 +343,20 @@ public class BookCommands extends AbstractShellComponent {
         System.out.print("\u001B[36m</>\u001B[0m:");
         Thread.sleep(1000);
 
-        BookEntity isFound = bookService.findBookByTitle(title);
+        BookEntity bookEntity = bookService.findBookByTitle(title);
+
         showLoading();
 
         Thread.sleep(500);
 
-        if (isFound == null) {
+        if (bookEntity == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
+        }else if(bookEntity.getShelfId() == null){
+            System.out.println("\nBook Was Found Without a Location\n");
         }else{
-            System.out.println("\nBook Was Found in Bookcase: 000 on Shelf: 111\n");
+            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+            System.out.println("\nBook Was Found \nBookcase: " + bookcaseEntity.get().getBookcaseLabel() + "\nShelf: " + shelfEntity.get().getShelfLabel() + "\n");
         }
 
         Thread.sleep(2000);

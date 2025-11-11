@@ -6,6 +6,7 @@ import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShelfService {
@@ -20,4 +21,16 @@ public class ShelfService {
         return shelfRepository.findByBookcaseId(bookCaseId);
     }
 
+    public Optional<ShelfEntity> findShelfById(Long shelfId) {
+        return shelfRepository.findById(shelfId);
+    }
+
+//
+//    public BookcaseEntity getBookCase() {
+//        return shelfRepository.
+//    }
+
+//    public ShelfEntity findShelfById(Long id) {
+//        return shelfRepository.
+//    }
 }
