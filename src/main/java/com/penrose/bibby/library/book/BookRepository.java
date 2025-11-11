@@ -9,4 +9,6 @@ public interface BookRepository extends JpaRepository <BookEntity, Long> {
     BookEntity findBookEntityByTitle(String title);
 
     BookEntity findByTitle(String title);
+
+    BookEntity findByTitleIgnoreCase(String title);
 }

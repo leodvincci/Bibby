@@ -40,7 +40,7 @@ public class BookService {
 
     public BookEntity findBookByTitle(String title){
         System.out.println("Service Searching for " + title);
-        BookEntity bookEntity = bookRepository.findBookEntityByTitle(title);
+        BookEntity bookEntity = bookRepository.findByTitleIgnoreCase(title);
         if(bookEntity == null){
 //            System.out.println("Book Not Found");
             return null;
