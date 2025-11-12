@@ -5,6 +5,9 @@ import com.penrose.bibby.library.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class BookService {
 
@@ -40,15 +43,26 @@ public class BookService {
 
     public BookEntity findBookByTitle(String title){
         System.out.println("Service Searching for " + title);
-        BookEntity bookEntity = bookRepository.findByTitleIgnoreCase(title);
-        if(bookEntity == null){
+        Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findByTitleIgnoreCase(title));
+        List<BookEntity> bookEntities = bookRepository.findByTitleContaining(title);
+        for(BookEntity b : bookEntities){
+            System.out.println(b.getTitle());
+        }
+        System.out.println(bookEntity.toString());
+
+        if(bookEntity.isEmpty()){
 //            System.out.println("Book Not Found");
             return null;
         }else{
 //            System.out.println("Book Found");
 
         }
-        return bookEntity;
+        return bookEntity.get();
+    }
+
+    public void checkOutBook(BookEntity bookEntity){
+        bookEntity.setBookStatus("CHECKED_OUT");
+        bookRepository.save(bookEntity);
     }
 
 
@@ -56,4 +70,7 @@ public class BookService {
         bookRepository.save(bookEntity);
     }
 
+    public List<AuthorEntity> findAuthorsByBookId(Long bookId) {
+        return authorRepository.findByBooks_BookId(bookId);
+    }
 }

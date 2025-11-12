@@ -1,6 +1,8 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.BookController;
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookRequestDTO;
@@ -11,6 +13,7 @@ import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.shell.command.annotation.Command;
+import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,7 @@ public class BookCommands extends AbstractShellComponent {
     final BookController bookController;
     final BookcaseService bookcaseService;
     final ShelfService shelfService;
+    final AuthorService authorService;
 
 
 
@@ -50,12 +54,13 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookController = bookController;
         this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
+        this.authorService = authorService;
     }
 
     public void authorNameComponentFlow(String title){
@@ -341,6 +346,7 @@ public class BookCommands extends AbstractShellComponent {
         title = res.getContext().get("bookTitle",String.class);
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");
+
         Thread.sleep(1000);
 
         BookEntity bookEntity = bookService.findBookByTitle(title);
@@ -447,9 +453,55 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("Listing all books /w filter");
     }
 
-    @Command(command = "check-out", description = "Borrow a book by selecting it interactively and marking it as checked out.")
+    @Command(command = "check-out", description = "Check-Out a book from the library")
     public void checkOutBook(){
-        System.out.println("Checking Out Your Book");
+        //prompt users what book to check out
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("bookTitle" )
+                .name("Book Title:")
+                .and().build();
+        ComponentFlow.ComponentFlowResult res = flow.run();
+
+        String bookTitle = res.getContext().get("bookTitle");
+
+        //Need to search for the book to see if it's in the system
+
+        BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
+
+        if(bookEntity == null){
+            System.out.println("Book Not Found.");
+        }else{
+            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+            List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
+            //confirm checkout
+            System.out.println(String.format("""
+                    \n\u001B[32mConfirm Checkout\n\u001B[0m
+                            \033[31mTitle\u001B[0m %s
+                            \033[31mAuthor/s\u001B[0m %s\n
+                            \033[31mBookcase\u001B[0m %s
+                            \033[31mShelf\u001B[0m %s
+                    """,bookEntity.getTitle(), authors, bookcaseEntity.get().getBookcaseLabel() ,shelfEntity.get().getShelfLabel()));
+            flow = componentFlowBuilder.clone()
+                    .withStringInput("isConfirmed" )
+                    .name("y or n:_ ")
+                    .and().build();
+            res = flow.run();
+
+            if (res.getContext().get("isConfirmed").equals("y")){
+                //change status
+                bookService.checkOutBook(bookEntity);
+                System.out.println("\n\u001B[36m</>\u001B[0m:Congratulations, you’ve officially hoarded more knowledge than you can finish.\n\tChecking Out Your Book: \033[36m"  + bookTitle + "\n");
+            }else{
+                System.out.println("\n\u001B[36m</>\u001B[0m:Cool, I’ll just… put this back by myself...and whisper *maybe next time* to the shelves... Again.\n");
+
+            }
+        }
+
+
+        //due date feature out of scope for now
+
     }
 
     @Command(command = "check-in",description = "Return a borrowed book to the library and update its shelf placement.")

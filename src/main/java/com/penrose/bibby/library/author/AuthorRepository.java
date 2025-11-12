@@ -11,4 +11,6 @@ public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
     AuthorEntity getByFullName(String fullName);
 
     AuthorEntity findByFirstNameAndLastName(String firstName, String lastName);
+
+    List<AuthorEntity> findByBooks_BookId(Long bookId);
 }

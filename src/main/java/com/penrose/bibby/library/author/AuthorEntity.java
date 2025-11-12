@@ -16,6 +16,11 @@ public class AuthorEntity {
     private String lastName;
     private String fullName;
 
+    @Override
+    public String toString() {
+        return fullName;
+    }
+
     public AuthorEntity(String firstName, String lastName) {
         this.firstName = firstName;
 //        this.middleInitial = middleInitial;
