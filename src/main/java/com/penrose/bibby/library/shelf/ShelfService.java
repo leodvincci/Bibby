@@ -25,6 +25,10 @@ public class ShelfService {
         return shelfRepository.findById(shelfId);
     }
 
+    public List<ShelfEntity> findByBookcaseId(Long bookcaseId) {
+        return shelfRepository.findByBookcaseId(bookcaseId);
+    }
+
 //
 //    public BookcaseEntity getBookCase() {
 //        return shelfRepository.

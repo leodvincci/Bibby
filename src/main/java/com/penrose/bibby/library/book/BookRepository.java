@@ -17,4 +17,5 @@ public interface BookRepository extends JpaRepository <BookEntity, Long> {
 
     List<BookEntity> findByTitleContaining(String title);
 
+    List<BookEntity> findByShelfId(Long id);
 }

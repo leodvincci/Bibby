@@ -468,23 +468,47 @@ public class BookCommands extends AbstractShellComponent {
         //Need to search for the book to see if it's in the system
 
         BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
-
+        String bookcaseLabel = "N.A";
+        String bookshelfLabel ="N.A";
         if(bookEntity == null){
             System.out.println("Book Not Found.");
-        }else if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
-            System.out.println("\n\u001B[36m</>\u001B[0m: This one’s already off the shelf. No double-dipping on checkouts.\n");
+        }else if(bookEntity.getShelfId() != null){
+                Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+                Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+                bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
+                bookshelfLabel = shelfEntity.get().getShelfLabel();
+        }if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
+//            System.out.println("\n\u001B[36m</>\u001B[0m: This one’s already off the shelf. No double-dipping on checkouts.\n");
+            System.out.println(
+                    """
+                    
+                    \u001B[38;5;63m  .---.
+                    \u001B[38;5;63m (* @ *)  \u001B[36m\u001B[38;5;220m "This one’s already off the shelf. No double-dipping on checkouts."
+                    \u001B[38;5;63m  \\|=|/
+                    
+                    """);
+            
+
+
         }else{
-            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+//            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+//            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
             List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
+//            if(shelfEntity.isEmpty() || bookcaseEntity.isEmpty()){
+//                System.out.println("Book Has No Shelf Location");
+//                return;
+//            }
             //confirm checkout
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
-                            \033[31mAuthor/s\u001B[0m %s\n
+                            \033[31mAuthor/s\u001B[0m %s
+                            
+                            \033[31mStatus %s
+                            
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,bookEntity.getTitle(), authors, bookcaseEntity.get().getBookcaseLabel() ,shelfEntity.get().getShelfLabel()));
+                    """,bookEntity.getTitle(), authors, bookEntity.getBookStatus(), bookcaseLabel ,bookshelfLabel));
             flow = componentFlowBuilder.clone()
                     .withStringInput("isConfirmed" )
                     .name("y or n:_ ")
@@ -494,10 +518,23 @@ public class BookCommands extends AbstractShellComponent {
             if (res.getContext().get("isConfirmed").equals("y")){
                 //change status
                 bookService.checkOutBook(bookEntity);
-                System.out.println("\n\u001B[36m</>\u001B[0m:Congratulations, you’ve officially hoarded more knowledge than you can finish.\n\tChecking Out Your Book: \033[36m"  + bookTitle + "\n");
+                System.out.println(
+                        String.format("""
+                        
+                        \u001B[38;5;63m  .---.
+                        \u001B[38;5;63m (* @ *)  \u001B[36m\u001B[38;5;220m "All set — \u001B[38;5;42m %s \u001B[38;5;15m is checked out and ready to go with you. \033[36m"
+                        \u001B[38;5;63m  \\|=|/
+                        
+                        """,bookTitle));
             }else{
-                System.out.println("\n\u001B[36m</>\u001B[0m:Cool, I’ll just… put this back by myself...and whisper *maybe next time* to the shelves... Again.\n");
-
+                System.out.println(
+                        """
+                        
+                        \u001B[38;5;63m  .---.
+                        \u001B[38;5;63m (* @ *)  \u001B[36m\u001B[38;5;220m "Cool, I’ll just… put this back by myself...and whisper *maybe next time* to the shelves... Again."
+                        \u001B[38;5;63m  \\|=|/
+                        
+                        """);
             }
         }
 
@@ -508,7 +545,62 @@ public class BookCommands extends AbstractShellComponent {
 
     @Command(command = "check-in",description = "Return a borrowed book to the library and update its shelf placement.")
     public void checkInBook(){
-        System.out.println("Book Checked Back onto Shelf");
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("bookTitle" )
+                .name("Book Title:")
+                .and().build();
+        ComponentFlow.ComponentFlowResult res = flow.run();
+
+        String bookTitle = res.getContext().get("bookTitle");
+
+        BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
+
+
+        String bookcaseLabel = "No Assigned Bookcase";
+        String bookshelfLabel = "No Assigned Bookshelf";
+        if(bookEntity == null){
+            System.out.println("Book Not Found");
+        }else if(bookEntity.getShelfId() != null){
+            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+            bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
+            bookshelfLabel = shelfEntity.get().getShelfLabel();
+        }
+
+        List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
+        //confirm checkout
+
+        System.out.println(String.format("""
+                    \n\u001B[32mConfirm Checkin\n\u001B[0m
+                            \033[31mTitle\u001B[0m %s
+                            \033[31mAuthor/s\u001B[0m %s
+                            
+                            \033[31mStatus %s
+                            
+                            \033[31mBookcase\u001B[0m %s
+                            \033[31mShelf\u001B[0m %s
+                    """,bookEntity.getTitle(), authors, bookEntity.getBookStatus(), bookcaseLabel ,bookshelfLabel));
+
+
+        flow = componentFlowBuilder.clone()
+                .withStringInput("isConfirmed" )
+                .name("y or n:_ ")
+                .and().build();
+        res = flow.run();
+
+        if(res.getContext().get("isConfirmed").equals("y")){
+            bookService.checkInBook(bookTitle);
+            System.out.println(
+                    """
+                    
+                    \u001B[38;5;63m  .---.
+                    \u001B[38;5;63m (* @ *)  \u001B[36m\u001B[38;5;220m "Check-in complete. Book state updated to \u001B[38;5;42mAVAILABLE."
+                    \u001B[38;5;63m  \\|=|/
+                    
+                    """);
+
+        }
     }
 
     @Command(command = "suggest-shelf", description = "Use AI to recommend optimal shelf placement for a book.")

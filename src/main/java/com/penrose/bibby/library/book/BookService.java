@@ -42,13 +42,13 @@ public class BookService {
     }
 
     public BookEntity findBookByTitle(String title){
-        System.out.println("Service Searching for " + title);
+//        System.out.println("Service Searching for " + title);
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findByTitleIgnoreCase(title));
         List<BookEntity> bookEntities = bookRepository.findByTitleContaining(title);
         for(BookEntity b : bookEntities){
             System.out.println(b.getTitle());
         }
-        System.out.println(bookEntity.toString());
+//        System.out.println(bookEntity.toString());
 
         if(bookEntity.isEmpty()){
 //            System.out.println("Book Not Found");
@@ -77,6 +77,15 @@ public class BookService {
         return authorRepository.findByBooks_BookId(bookId);
     }
 
+    public void checkInBook(String bookTitle) {
+        BookEntity bookEntity = findBookByTitle(bookTitle);
+        bookEntity.setBookStatus(BookStatus.AVAILABLE.toString());
+        updateBook(bookEntity);
+    }
+
+    public List<BookEntity> findBooksByShelf(Long id) {
+        return bookRepository.findByShelfId(id);
+    }
 }
 
 
