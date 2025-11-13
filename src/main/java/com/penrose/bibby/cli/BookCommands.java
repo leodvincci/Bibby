@@ -471,6 +471,8 @@ public class BookCommands extends AbstractShellComponent {
 
         if(bookEntity == null){
             System.out.println("Book Not Found.");
+        }else if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
+            System.out.println("\n\u001B[36m</>\u001B[0m: This one’s already off the shelf. No double-dipping on checkouts.\n");
         }else{
             Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
             Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());

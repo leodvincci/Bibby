@@ -61,8 +61,11 @@ public class BookService {
     }
 
     public void checkOutBook(BookEntity bookEntity){
-        bookEntity.setBookStatus("CHECKED_OUT");
-        bookRepository.save(bookEntity);
+        if(!bookEntity.getBookStatus().equals(BookStatus.CHECKED_OUT.toString())){
+            bookEntity.setBookStatus("CHECKED_OUT");
+            bookRepository.save(bookEntity);
+        }
+
     }
 
 
@@ -73,4 +76,10 @@ public class BookService {
     public List<AuthorEntity> findAuthorsByBookId(Long bookId) {
         return authorRepository.findByBooks_BookId(bookId);
     }
+
 }
+
+
+
+
+

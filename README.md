@@ -13,258 +13,135 @@ https://github.com/user-attachments/assets/b3d09ca7-bf11-45cf-9578-fab523e91975
 
 ---
 
+# **Bibby — Personal Library CLI**
 
-**Bibby** is a personal project — a Spring Shell–based command-line tool for managing my own physical book library.
-It began as an experiment to explore **Spring Shell**, **ComponentFlow**, and how to design an interactive CLI system in Java.
+Bibby is a Spring Shell–powered command-line tool for managing my real-life library of physical books. It started as a playground for building interactive CLI flows in Java, and it turned into an actual system for keeping track of the books on my shelves downstairs.
 
-I have a real library downstairs with about 15 shelves. Finding a book can take forever.
-So Bibby is both a technical sandbox and a way to bring order to that chaos.
+Bibby helps bring structure to the chaos—and gives the CLI a little personality along the way.
 
----
+------
 
-## ⚙️ Current Focus
+## ⚙️ **What Bibby Does (Today)**
 
-I’m currently building out the **Book Command Suite** — a collection of commands that handle core library management:
+Bibby’s main features live in the **Book Command Suite**, including:
 
-* Add books interactively
-* Search by title or keyword
-* Assign shelf locations
-* Check books in and out
-* List and rate books
+- Add books interactively
+- Search by title or keyword
+- Assign shelf locations
+- Check books in and out
+- List and rate books
 
-Each command currently has placeholder `ComponentFlow` logic while I design and test the interaction flow.
+Most commands use Spring Shell’s `ComponentFlow` for prompt-driven interactions.
 
----
+------
 
-## 🧠 Project Goals
+## 🧠 **Why This Project Exists**
 
-Bibby is a way to:
+Bibby is a deliberate practice project meant to help me:
 
-1. **Practice building CLI systems from first principles** — parsing, validation, and flow control.
-2. **Understand Spring Shell deeply** — especially how `@Command` and `ComponentFlow` work together.
-3. **Build complete technical documentation** in Confluence (User Stories, Command Specs, and Change Logs).
-4. Eventually connect to a **Spring Boot + PostgreSQL** backend for persistent book storage.
+- Learn how to design expressive, stateful CLI systems
+- Go deep into Spring Shell, prompt design, and flow control
+- Build real documentation (User Stories, Command Specs, Change Logs)
+- Evolve toward a Spring Boot + PostgreSQL backend for persistence
 
----
+It’s a slow-built system: command → flow → service → persistence.
 
-## 🧩 Example Commands
+------
 
-```bash
-Bibby:_ book add
-Bibby:_ book search --title "Meditations"
-Bibby:_ book check-out --title "Sapiens"
-Bibby:_ book assign-shelf --title "Deep Work" --shelf "B2"
-Bibby:_ book list
+## 🧩 **Example Commands**
+
+```
+book add
+book search --title "Meditations"
+book check-out --title "Sapiens"
+book assign-shelf --title "Deep Work" --shelf "B2"
+book list
 ```
 
----
+------
 
-## 🏗️ Project Structure
+## 🏗️ **Project Structure**
 
 ```
 src/
  ├── main/java/com/penrose/bibby/
- │    ├── BookCommands.java         # Command group for 'book'
- │    ├── CustomPromptProvider.java # Custom prompt: Bibby:_
- │    └── model/                    # Book model and related DTOs
- ├── resources/
- │    └── application.yml
+ │    ├── BookCommands.java         # Book-focused CLI commands
+ │    ├── CustomPromptProvider.java # "Bibby:_" CLI prompt
+ │    └── library/                  # Books, authors, shelves, services, repos
+ └── resources/
+      └── application.yml
 ```
 
----
+------
 
-## 📘 Documentation
+## 📘 **Documentation**
 
-All documentation is tracked in **Confluence**, including:
+All documentation lives in Confluence and includes:
 
-* **User Stories**
-* **Command Specifications**
-* **Change Logs**
-* **Component Flow Designs**
+- User stories
+- Command specifications
+- Change logs
+- ComponentFlow designs
 
-👉 [View the Bibby Command Suite Documentation](https://android42.atlassian.net/wiki/external/ZGJjZWU0NTIyZmVhNGQyOWI2NzAyYjEyMTBhM2YxZjE)
+Each command follows a standardized format (purpose, usage, flow, exceptions, domain rules).
 
-Each command follows this format:
+------
+
+## 🧾 **Current Status**
+
+- ✅ Command suite defined
+- 🚧 ComponentFlow logic evolving
+- 🗂️ Full documentation structured in Confluence
+- ⏳ DB integration underway
+- 💡 Future: AI-assisted shelving, recommendations, librarian sass rotation
+
+------
+
+## 🪄 **Custom CLI Prompt**
+
+Bibby uses a simple cyan prompt:
 
 ```
-Command: check-out
-Category: Book Management / Borrowing
-Status: Not Implemented
-Version Introduced: v0.1
-
-Purpose:
-Marks a book as checked out, borrowed, or temporarily removed from the shelf.
-
-Usage Example:
-book check-out --title "Sapiens"
-```
-
----
-
-## 🧾 Current Status
-
-* ✅ Book command suite defined
-* 🚧 ComponentFlow logic in progress
-* 🗂️ Documentation structure complete in Confluence
-* ⏳ Database integration planned
-* 🧠 AI-based shelving and reading recommendations (future)
-
----
-
-## 🪄 Custom Shell Prompt
-
-Bibby uses a custom prompt provider:
-
-```java
 return new AttributedString("Bibby:_ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.CYAN));
 ```
 
-It’s minimal, functional, and gives the CLI a quiet identity of its own.
-
----
-
-## 🧑‍💻 Personal Notes
-
-This project isn’t about shipping fast — it’s about **learning deliberately**.
-Bibby is a study in flow design, code structure, and documentation discipline.
-
-The larger goal is to master how systems like this evolve from scratch — command, to flow, to persistence, to intelligence.
-
----
-
-## 🧭 Version
-
-**v0.1** — Initial structure, placeholder commands, and documentation framework.
-
----
-
-## 🧱 Development Log
-
-| Date           | Update                                                                     |
-| -------------- | -------------------------------------------------------------------------- |
-| **2025-10-27** | Added `book search`, `list`, `assign-shelf`, and `check-out` placeholders. |
-| **2025-10-27** | Created full Confluence command specifications under “📘 Book Commands.”   |
-| **2025-10-27** | Implemented custom `PromptProvider` with cyan “Bibby:_” prompt.            |
-| **2025-10-27** | Added changelog section and git commit tracking.                           |
-
-## 2025-10-30
-
-- Refactored `BookcaseService` to use SLF4J for structured logging.
-- Added reusable `ResponseStatusException` for bookcase label conflicts.
-- Improved error handling: logs errors before throwing conflict exceptions.
-- Added informative logs on successful bookcase creation.
-- Cleaned up commented code for better readability.
-- Enhanced RESTful error handling for bookcase creation API responses.
-- Merged updates from main branch into feature branches to stay up-to-date.
-
-*For more details, see the full commit history at: [Bibby Commits](https://github.com/leodvincci/Bibby/commits?sort=author-date&direction=desc)*
-
-### 🧩 Change Log — *v0.x.x*
-
-**Status:** `/status Released`
- **Date:** 2025-10-31
- **Component:** CLI / Service / Repository
-
-#### 🆕 Feature: Multi-Author Add Flow
-
-**Git Branch:** `feat/cli-multi-author-add`
- **Commit:** `feat(cli): support multiple authors during book add flow`
-
-**Summary:**
- Bibby can now handle books with multiple authors directly through the CLI.
- Users are prompted for the number of authors when adding a new book, and the system iteratively collects each author’s name before saving.
-
-**Implementation Details:**
-
-- Introduced interactive prompt sequence using `ComponentFlow` for multi-author input.
-- Added helper method `authorNameComponentFlow()` in `BookCommands` for collecting author names.
-- Refactored `BookService.createNewBook()` to support multiple authors per book in a single transaction.
-- Added `@Transactional` annotation to ensure persistence consistency across the author set.
-- Updated `BookEntity` to safely append new `AuthorEntity` instances using `setAuthors(AuthorEntity author)`.
-- Expanded `BookRepository` with `findByTitle()` for efficient lookups before creation.
-
-**Outcome:**
- Books can now be linked to multiple authors without manual database edits.
- This marks the first functional use of the many-to-many relationship between `BookEntity` and `AuthorEntity`.
-
-**Notes / Observations:**
-
-- Next iteration: introduce de-duplication to reuse existing authors instead of always creating new ones.
-- Future enhancement: add fuzzy or AI-assisted author name suggestions.
-
-
----
-## Date: 2025-10-31
-**Version:** `v0.4.x`
-**Status:** `/status Done`
-**Date:** 2025-10-31
-**Component:** `CLI / Service / Repository`
-**Related Command:** `book shelf`
+Minimal. Recognizable. Slightly nerdy.
 
 ------
 
-### 🧠 Summary
+## 🧭 **Version**
 
-The system now allows users to place a book on a shelf within a selected bookcase through an interactive CLI flow.
-Users are guided step-by-step: they select a book title, choose from available bookcases, then choose a shelf in that bookcase.
-Once confirmed, the system updates the `BookEntity` with its `ShelfEntity` association and confirms placement.
+**v0.1** — Initial structure, command suite, documentation framework.
 
 ------
 
-### 🧩 Technical Details
+## 🧱 **Dev Log Highlights**
 
-- **Added** new CLI command `book shelf` in `BookCommands`
-- **Integrated** `BookcaseService` and `ShelfService` for listing available bookcases and shelves
-- **Updated** `BookService.findBookByTitle()` to return `BookEntity`
-- **Added** `BookService.updateBook()` for persistence of shelf assignment
-- **Added** `ShelfRepository.findByBookcaseId()` and `ShelfService.getAllShelves(Long)` for per-bookcase shelf lookup
-- **Added** `BookcaseCommands.listAllBookcases()` for convenience testing and debugging
+**2025-11-12 — Book Checkout (Persistent State)**
 
-------
+- Implemented real status tracking (`AVAILABLE → CHECKED_OUT`)
+- Added personality-filled librarian messages
+- Cleaned logs + stabilized flow
+- Persistent state confirmed in Postgres
 
-### 🧭 Impact
+**2025-10-31 — Multi-Author Add Flow**
 
-This update completes the logical relationship flow between **Book → Shelf → Bookcase**.
-It enables realistic library interactions and prepares the foundation for future enhancements such as capacity tracking, shelf recommendations, and shelf visualization within the CLI.
+- Full interactive multi-author input
+- Many-to-many Book ↔ Author implemented
+- Transactional consistency added
 
-------
+**2025-10-31 — Shelf Assignment Flow**
 
-### 🧪 Verification Steps
+- Interactive selection of bookcase + shelf
+- Updates `BookEntity.shelf`
+- Completes Book → Shelf → Bookcase relationship
 
-1. Run the app via Spring Shell (`./mvnw spring-boot:run`).
-
-2. Use the command:
-
-   `book shelf `
-
-3. Follow the prompts to:
-
-   - Enter a book title
-   - Select a bookcase from the list
-   - Select a shelf within that bookcase
-
-4. Confirm that Bibby responds with a success message like:
-
-   “📚 Book *Clean Code* has been placed on Shelf 2 in Bookcase *Main Library*.”
-
-5. Verify in database that the `book.shelf_id` is updated.
+(Full commit history available on GitHub.)
 
 ------
 
-### 🧱 Next Steps / Future Enhancements
-
-- Add capacity checks per shelf to prevent overfilling
-- Implement CLI command `shelf list --bookcase <label>` to view shelf contents
-- Add animated or colorized confirmation output for placement feedback
----
-
-
-
-## 👤 Author
+## 👤 **Author**
 
 **Leo D. Penrose**
 Builder • Systems Thinker • Lifelong Learner
-[LinkedIn](https://linkedin.com/in/leodpenrose) • [GitHub](https://github.com/<your-username>)
-
----
-
+[LinkedIn](#) • [GitHub](#)
