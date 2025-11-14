@@ -33,9 +33,14 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-     /*
-        Book Create Commands
-      */
+    // ───────────────────────────────────────────────────────────────────
+    //
+    //                        Book Create Commands
+    //
+    //
+    // ───────────────────────────────────────────────────────────────────
+
+
 
 
     List<String> bibbySearchResponses = new ArrayList<>(List.of(

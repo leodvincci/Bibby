@@ -7,6 +7,7 @@ import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.library.shelf.ShelfSummary;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -37,10 +38,7 @@ public class BookcaseCommands extends AbstractShellComponent {
     }
 
     public String bookcaseRowFormater(BookcaseEntity bookcaseEntity, int bookCount){
-        return String.format(
-                """
-                   %-12s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mBooks
-                """, bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
+        return String.format(" %-12s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mBooks ", bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
     }
 
     @Command(command = "add", description = "Create a new bookcase in the library.")
@@ -75,6 +73,8 @@ public class BookcaseCommands extends AbstractShellComponent {
         return  options;
     }
 
+
+
     @Command(command = "browse" , description = "Display all bookcases currently in the library, along with their labels, total shelves")
     public void listAllBookcases(){
         BookCommands bookCommands;
@@ -87,6 +87,18 @@ public class BookcaseCommands extends AbstractShellComponent {
 
         ComponentFlow.ComponentFlowResult result = flow.run();
 
+//        System.out.println("LOOOK: ");
+//        System.out.println(result.getContext().get("bookcaseSelected").toString());
+//        System.out.println(shelfService.getShelfSummariesForBookcase(Long.parseLong(result.getContext().get("bookcaseSelected"))));
+//        System.out.println(":::::::::::::::::::::::::");
+
+        selectShelf(Long.parseLong(result.getContext().get("bookcaseSelected")));
+
+
+
+
+
+        }
 
 //        for(BookcaseEntity b : bookcaseService.getAllBookcases()){
 //            int shelfBookCount = 0;
@@ -97,7 +109,32 @@ public class BookcaseCommands extends AbstractShellComponent {
 //            }
 //            System.out.println(bookcaseRowFormater(b,shelfBookCount));
 //            System.out.println(b.getBookcaseLabel() + ":" + b.getShelfCapacity());
-    }
+
+
+    public void selectShelf(Long bookCaseId){
+//        System.out.println("YUP!");
+        List<ShelfSummary> shelfSummaries = shelfService.getShelfSummariesForBookcase(bookCaseId);
+
+        Map<String, String> bookShelfOptions = new LinkedHashMap<>();
+        for(ShelfSummary s: shelfSummaries ){
+            bookShelfOptions.put(String.format(
+                    """
+                        %s                   \u001B[0m\u001B[1m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m
+                    """
+                    ,s.label(),s.bookCount()),s.shelfId().toString());
+        }
+
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("shelfSelected")
+                .name("Select a Bookshelf")
+                .selectItems(bookShelfOptions)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+
+
+}
 
 
 
