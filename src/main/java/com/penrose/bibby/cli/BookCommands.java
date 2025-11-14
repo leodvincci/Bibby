@@ -211,6 +211,7 @@ public class BookCommands extends AbstractShellComponent {
 
     }
 
+
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         //get the book
@@ -226,6 +227,7 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult res = flow.run();
         String title = res.getContext().get("bookTitle",String.class);
         Long bookCaseId = Long.parseLong(res.getContext().get("bookcase",String.class));
+        System.out.println("BOOK CASE ID: " + bookCaseId);
 
 
         flow = componentFlowBuilder.clone()
@@ -433,7 +435,8 @@ public class BookCommands extends AbstractShellComponent {
         Map<String, String> options = new LinkedHashMap<>();
         List<ShelfEntity> shelves = shelfService.getAllShelves(bookcaseId);
         for(ShelfEntity s : shelves){
-            options.put(s.getShelfLabel(), String.valueOf(s.getShelfPosition()));
+            System.out.println(s.getBookcaseId());
+            options.put(s.getShelfLabel(), String.valueOf(s.getShelfId()));
         }
 
         return options;

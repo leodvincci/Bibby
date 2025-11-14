@@ -39,7 +39,7 @@ public class BookcaseCommands extends AbstractShellComponent {
     public String bookcaseRowFormater(BookcaseEntity bookcaseEntity, int bookCount){
         return String.format(
                 """
-                   %-9s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mBooks
+                   %-12s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mBooks
                 """, bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
     }
 
