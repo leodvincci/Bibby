@@ -116,6 +116,10 @@ You added the final screenshot showing the entire working flow:
 - Book selection
 - Bibby greeting above it all
 
+
+
+![image-20251115154528090](/home/leodpenrose/.var/app/io.typora.Typora/config/Typora/typora-user-images/image-20251115154528090.png)
+
 It’s now fully integrated and feels like a real system.
 
 ------
