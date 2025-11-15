@@ -9,6 +9,10 @@
 https://github.com/user-attachments/assets/b3d09ca7-bf11-45cf-9578-fab523e91975
 
 -->
+![Java](https://img.shields.io/badge/Java-17-blue?style=for-the-badge&logo=openjdk)
+![Spring Shell](https://img.shields.io/badge/Spring%20Shell-Interactive%20CLI-brightgreen?style=for-the-badge&logo=spring)
+![Status](https://img.shields.io/badge/Version-v0.2-orange?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-CLI%20Tools-yellow?style=for-the-badge)
 
 
 ---
