@@ -72,15 +72,79 @@ The development rhythm stays consistent:
 
 ------
 
-## 🧩 **Example Commands**
+## 🧩 **Usage & Examples**
 
+### **Interactive Flows**
+
+Bibby's strength is in its conversational, multi-step flows powered by Spring Shell's ComponentFlow.
+
+#### **Adding a Book**
+```bash
+Bibby:_ book add
 ```
-book add
-book search --title "Meditations"
-book check-out --title "Sapiens"
-book assign-shelf --title "Deep Work" --shelf "B2"
-book list
-browse bookcases   (new)
+This starts an interactive flow that walks you through:
+1. Enter the book title
+2. Specify number of authors
+3. For each author, enter first and last name
+4. Book is saved to the database
+
+**Sample Session:**
+```
+Bibby:_ book add
+Title:_ The Pragmatic Programmer
+How many authors?:_ 2
+Author's First Name:_ David
+Author's Last Name:_ Thomas
+Author's First Name:_ Andrew
+Author's Last Name:_ Hunt
+
+✓ "The Pragmatic Programmer" by David Thomas, Andrew Hunt added to your library.
+```
+
+#### **Browsing Your Library**
+```bash
+Bibby:_ browse bookcases
+```
+This initiates the cascading browse flow:
+1. **Select a Bookcase** → displays all bookcases with book counts
+2. **Select a Shelf** → shows shelves within that bookcase
+3. **View Books** → lists all books on the selected shelf
+
+**Use case:** Perfect for when you remember where a book is physically located but forgot the title.
+
+#### **Checking Out a Book**
+```bash
+Bibby:_ book check-out --title "Sapiens"
+```
+Marks the book as checked out and increments the checkout counter. Bibby responds with personality:
+```
+"Sapiens" is ready for checkout. Try not to leave coffee rings on it this time.
+```
+
+#### **Assigning Shelf Locations**
+```bash
+Bibby:_ book assign-shelf --title "Deep Work"
+```
+Interactive flow to assign a physical location:
+1. Select which bookcase
+2. Select which shelf within that bookcase
+3. Book location is updated
+
+#### **Searching Your Library**
+```bash
+Bibby:_ book search --title "Meditations"
+```
+Searches by title keyword and returns matching results with authors and status.
+
+#### **All Available Commands**
+```bash
+book add                    # Interactive book creation flow
+book list                   # Display all books in your library
+book search --title <text>  # Search by title keyword
+book check-out --title      # Check out a book
+book check-in --title       # Return a book
+book assign-shelf --title   # Assign physical shelf location
+browse bookcases            # Navigate Bookcase → Shelf → Books
 ```
 
 ------
@@ -90,17 +154,112 @@ browse bookcases   (new)
 ```
 src/
  ├── main/java/com/penrose/bibby/
- │    ├── BookCommands.java          # Book commands
- │    ├── BookcaseCommands.java      # Bookcase → Shelf → Book browse flow
- │    ├── CustomPromptProvider.java  # "Bibby:_" CLI prompt
- │    └── library/
- │         ├── book/                 # Entities, DTOs, BookSummary
- │         ├── author/
- │         ├── shelf/                # ShelfSummary, shelf services, repos
- │         └── bookcase/
+ │    ├── cli/
+ │    │    ├── BookCommands.java          # Book command handlers
+ │    │    ├── BookcaseCommands.java      # Browse flow commands
+ │    │    ├── CustomPromptProvider.java  # "Bibby:_" CLI prompt
+ │    │    └── LoadingBar.java            # CLI visual components
+ │    ├── library/
+ │    │    ├── book/                      # Book domain (Entity, Service, Repo, DTOs)
+ │    │    ├── author/                    # Author domain
+ │    │    ├── shelf/                     # Shelf domain + ShelfSummary projection
+ │    │    ├── bookcase/                  # Bookcase domain
+ │    │    └── catalog/                   # Catalog aggregation (future)
+ │    └── BibbyApplication.java           # Spring Boot entry point
  └── resources/
-      └── application.yml
+      ├── application.properties           # DB config, JPA settings
+      └── banner.txt                       # Custom ASCII art banner
 ```
+
+------
+
+## 🔧 **Technical Details**
+
+### **Tech Stack**
+
+| Layer              | Technology                          | Purpose                                    |
+|--------------------|-------------------------------------|--------------------------------------------|
+| **CLI Framework**  | Spring Shell 3.4.1                  | Interactive command-line interface         |
+| **Backend**        | Spring Boot 3.5.7                   | Application framework & dependency injection |
+| **Persistence**    | Spring Data JPA                     | ORM and repository abstractions            |
+| **Database**       | PostgreSQL                          | Relational data storage                    |
+| **Language**       | Java 17                             | Core language                              |
+| **Build Tool**     | Maven                               | Dependency management & build automation   |
+
+### **Architecture Overview**
+
+Bibby follows a **layered architecture** with clear separation of concerns:
+
+```
+┌─────────────────────────────────────────┐
+│   CLI Layer (Commands + Flows)          │  ← User interaction via Spring Shell
+├─────────────────────────────────────────┤
+│   Service Layer                          │  ← Business logic & orchestration
+├─────────────────────────────────────────┤
+│   Repository Layer (Spring Data JPA)    │  ← Data access abstractions
+├─────────────────────────────────────────┤
+│   PostgreSQL Database                    │  ← Persistent storage
+└─────────────────────────────────────────┘
+```
+
+**Key Design Patterns:**
+- **Repository Pattern** — Spring Data JPA repositories for data access
+- **DTO Pattern** — `BookRequestDTO`, `BookSummary`, `ShelfSummary` for data transfer
+- **Service Layer Pattern** — Business logic isolated from CLI commands
+- **Projection Pattern** — Lightweight read models for browse flows (e.g., `ShelfSummary`)
+
+### **Database Schema**
+
+The domain model captures a physical library with hierarchical organization:
+
+```
+Bookcase (1) ──────< Shelf (many)
+                        ↓
+                    Book (many)
+                        ↓
+                   (many-to-many)
+                        ↓
+                    Author (many)
+```
+
+**Core Tables:**
+
+- **`books`** — title, isbn, publisher, publicationYear, genre, edition, description, status, checkoutCount, shelfId
+- **`authors`** — firstName, lastName
+- **`book_authors`** — join table for many-to-many relationship
+- **`shelves`** — shelfLabel, shelfPosition, bookcaseId
+- **`bookcases`** — label, location metadata
+
+**Key Relationships:**
+- A **Book** can have multiple **Authors** (many-to-many via `book_authors`)
+- A **Book** belongs to one **Shelf** (many-to-one)
+- A **Shelf** belongs to one **Bookcase** (many-to-one)
+
+**Status Tracking:**
+- Books track `bookStatus` (available, checked_out, reading)
+- `checkoutCount` increments each time a book is checked out
+- Timestamps: `createdAt`, `updatedAt`
+
+### **Spring Shell Integration**
+
+Bibby leverages **ComponentFlow** for multi-step, interactive workflows:
+
+- **StringInput** — for titles, author names
+- **SingleItemSelector** — for selecting from bookcases, shelves, books
+- **NumberInput** — for specifying author counts
+
+Example flow architecture (from `book add`):
+```java
+ComponentFlow flow = componentFlowBuilder.clone()
+    .withStringInput("title")
+        .name("Title:_")
+    .and()
+    .withNumberInput("authorCount")
+        .name("How many authors?:_")
+    .and().build();
+```
+
+This creates a stateful, conversational interface that feels less like running commands and more like having a dialogue.
 
 ------
 
