@@ -88,7 +88,7 @@ public class BookService {
     }
 
     public List<BookSummary> getBooksForShelf(Long shelfId) {
-        return bookRepository.findBookSummariesByShelf_ShelfIdOrderByTitleAsc(shelfId);
+        return bookRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
     }
 }
 

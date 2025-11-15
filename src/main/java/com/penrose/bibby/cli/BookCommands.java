@@ -359,8 +359,6 @@ public class BookCommands extends AbstractShellComponent {
 
         BookEntity bookEntity = bookService.findBookByTitle(title);
 
-        System.out.println(bookService.getBooksForShelf(bookEntity.getShelfId()));
-
         showLoading();
 
         Thread.sleep(500);
