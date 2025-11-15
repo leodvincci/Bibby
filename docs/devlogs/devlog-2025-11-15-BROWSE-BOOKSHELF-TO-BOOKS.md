@@ -118,7 +118,8 @@ You added the final screenshot showing the entire working flow:
 
 
 
-![image-20251115154528090](/home/leodpenrose/.var/app/io.typora.Typora/config/Typora/typora-user-images/image-20251115154528090.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8f562cc8-1560-44f6-9d87-c75739f20eb0" />
+
 
 It’s now fully integrated and feels like a real system.
 
