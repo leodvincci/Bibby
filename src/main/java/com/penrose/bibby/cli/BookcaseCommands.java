@@ -118,9 +118,7 @@ public class BookcaseCommands extends AbstractShellComponent {
         Map<String, String> bookShelfOptions = new LinkedHashMap<>();
         for(ShelfSummary s: shelfSummaries ){
             bookShelfOptions.put(String.format(
-                    """
-                        %s                   \u001B[0m\u001B[1m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m
-                    """
+                        "%-10s    \u001B[38;5;197m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m"
                     ,s.label(),s.bookCount()),s.shelfId().toString());
         }
 
