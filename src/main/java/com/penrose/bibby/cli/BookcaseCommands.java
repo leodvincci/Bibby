@@ -137,10 +137,17 @@ public class BookcaseCommands extends AbstractShellComponent {
 
     public void selectBookFromShelf(Long shelfId){
         Map<String, String> bookOptions = new LinkedHashMap<>();
+
         for(BookSummary bs: bookService.getBooksForShelf(shelfId) ){
             bookOptions.put(String.format(
                     "\u001B[38;5;197m%-10s  \u001B[0m"
                     ,bs.title()),String.valueOf(bs.bookId()));
+        }
+
+        if (bookOptions.isEmpty()) {
+            getTerminal().writer().println("No books found on this shelf .");
+            getTerminal().writer().flush();
+            return; // end flow for now
         }
 
         ComponentFlow flow = componentFlowBuilder.clone()
