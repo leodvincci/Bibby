@@ -86,6 +86,10 @@ public class BookService {
     public List<BookEntity> findBooksByShelf(Long id) {
         return bookRepository.findByShelfId(id);
     }
+
+    public List<BookSummary> getBooksForShelf(Long shelfId) {
+        return bookRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
+    }
 }
 
 

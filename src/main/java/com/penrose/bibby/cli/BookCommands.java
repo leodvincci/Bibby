@@ -354,6 +354,7 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");
 
+
         Thread.sleep(1000);
 
         BookEntity bookEntity = bookService.findBookByTitle(title);

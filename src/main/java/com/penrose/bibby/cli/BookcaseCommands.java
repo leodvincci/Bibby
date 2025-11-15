@@ -2,6 +2,7 @@ package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookService;
+import com.penrose.bibby.library.book.BookSummary;
 import com.penrose.bibby.library.bookcase.Bookcase;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
@@ -118,9 +119,7 @@ public class BookcaseCommands extends AbstractShellComponent {
         Map<String, String> bookShelfOptions = new LinkedHashMap<>();
         for(ShelfSummary s: shelfSummaries ){
             bookShelfOptions.put(String.format(
-                    """
-                        %s                   \u001B[0m\u001B[1m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m
-                    """
+                        "%-10s    \u001B[38;5;197m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m"
                     ,s.label(),s.bookCount()),s.shelfId().toString());
         }
 
@@ -132,9 +131,35 @@ public class BookcaseCommands extends AbstractShellComponent {
                 .build();
         ComponentFlow.ComponentFlowResult result = flow.run();
 
-
+        selectBookFromShelf(Long.parseLong(result.getContext().get("shelfSelected")));
 
 }
+
+    public void selectBookFromShelf(Long shelfId){
+        Map<String, String> bookOptions = new LinkedHashMap<>();
+
+        for(BookSummary bs: bookService.getBooksForShelf(shelfId) ){
+            bookOptions.put(String.format(
+                    "\u001B[38;5;197m%-10s  \u001B[0m"
+                    ,bs.title()),String.valueOf(bs.bookId()));
+        }
+
+        if (bookOptions.isEmpty()) {
+            getTerminal().writer().println("No books found on this shelf .");
+            getTerminal().writer().flush();
+            return; // end flow for now
+        }
+
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("shelfSelected")
+                .name("Select a Book")
+                .selectItems(bookOptions)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+        System.out.println();
+    }
 
 
 
