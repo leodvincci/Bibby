@@ -21,7 +21,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 |---------|-------|--------|-----------------|
 | **CLEAN CODE FUNDAMENTALS** |
 | 1 | [Meaningful Names](./01-meaningful-names.md) | ✅ Complete | 2025-11-16 |
-| 2 | Functions | ⏳ Pending | - |
+| 2 | [Functions](./02-functions.md) | ✅ Complete | 2025-11-16 |
 | 3 | Comments | ⏳ Pending | - |
 | 4 | Formatting | ⏳ Pending | - |
 | 5 | Objects and Data Structures | ⏳ Pending | - |
@@ -63,10 +63,11 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 1: Meaningful Names**
-- 13 naming violations identified
-- 10 action items prioritized
-- Estimated refactoring time: 3 hours
+**Section 2: Functions**
+- 8 function violations identified
+- 3 deep-dive refactorings provided
+- Main focus: 81-line addBook() → 6-line main function
+- Estimated refactoring time: 8 hours
 
 ---
 
@@ -186,5 +187,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 1 / 28
-**Progress:** 3.6%
+**Sections Completed:** 2 / 28
+**Progress:** 7.1%
