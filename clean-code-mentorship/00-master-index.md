@@ -22,7 +22,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | **CLEAN CODE FUNDAMENTALS** |
 | 1 | [Meaningful Names](./01-meaningful-names.md) | ✅ Complete | 2025-11-16 |
 | 2 | [Functions](./02-functions.md) | ✅ Complete | 2025-11-16 |
-| 3 | Comments | ⏳ Pending | - |
+| 3 | [Comments](./03-comments.md) | ✅ Complete | 2025-11-16 |
 | 4 | Formatting | ⏳ Pending | - |
 | 5 | Objects and Data Structures | ⏳ Pending | - |
 | 6 | Error Handling | ⏳ Pending | - |
@@ -63,11 +63,11 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 2: Functions**
-- 8 function violations identified
-- 3 deep-dive refactorings provided
-- Main focus: 81-line addBook() → 6-line main function
-- Estimated refactoring time: 8 hours
+**Section 3: Comments**
+- 5 comment issues identified (redundancy, section markers)
+- 4 categories of missing documentation identified
+- Key learning: Comments are a last resort, code should be self-documenting
+- Estimated refactoring time: 5 hours
 
 ---
 
@@ -187,5 +187,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 2 / 28
-**Progress:** 7.1%
+**Sections Completed:** 3 / 28
+**Progress:** 10.7%
