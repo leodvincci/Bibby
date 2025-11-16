@@ -90,6 +90,15 @@ public class BookService {
     public List<BookSummary> getBooksForShelf(Long shelfId) {
         return bookRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
     }
+
+
+    public BookDetailView getBookDetails(Long bookId){
+        return bookRepository.getBookDetailView(bookId);
+    }
+
+    public Optional<BookEntity> findBookById(Long bookId) {
+        return bookRepository.findById(bookId);
+    }
 }
 
 

@@ -21,7 +21,6 @@ public class BookEntity {
     private String genre;
     private int edition;
     private String description;
-    private Long  authorId;
     private Long shelfId;
     private Integer checkoutCount;
     private String bookStatus;
@@ -95,12 +94,7 @@ public class BookEntity {
     public void setEdition(int edition) {
         this.edition = edition;
     }
-    public Long getAuthorId() {
-        return authorId;
-    }
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
+
     public String getDescription() {
         return description;
     }

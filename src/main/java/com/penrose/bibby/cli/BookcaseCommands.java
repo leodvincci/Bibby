@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.book.BookDetailView;
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.book.BookSummary;
@@ -14,9 +15,7 @@ import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Command(command = "bookcase", group = "Bookcase Commands")
@@ -159,8 +158,43 @@ public class BookcaseCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult result = flow.run();
 
         System.out.println();
+
+        getBookDetailsView(Long.parseLong(result.getContext().get("shelfSelected")));
+
     }
 
+    public void getBookDetailsView(Long bookId){
+        BookDetailView bookDetails = bookService.getBookDetails(bookId);
+        String res = String.format(
+                """
+                    Title \u001B[38;5;197m%-10s  \u001B[0m
+                    Authors \u001B[38;5;197m%-10s  \u001B[0m
+                    Bookcase \u001B[38;5;197m%-10s  \u001B[0m
+                    Bookshelf \u001B[38;5;197m%-10s  \u001B[0m
+                    Book Status \u001B[38;5;197m%-10s  \u001B[0m
+                """,bookDetails.title(),bookDetails.authors(),bookDetails.bookcaseLabel(),bookDetails.shelfLabel(),bookDetails.bookStatus());
+
+
+        System.out.println( res );
+        Map<String, String> checkOutOptions = new LinkedHashMap<>();
+
+        checkOutOptions.put("Yes", "1");
+        checkOutOptions.put("No", "2");
+
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("optionSelected")
+                .name("Would You Like To Check-Out?")
+                .selectItems(checkOutOptions)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+        if(result.getContext().get("optionSelected").equals("1") ){
+            Optional<BookEntity> bookEntity = bookService.findBookById(bookId);
+            bookService.checkOutBook(bookEntity.get());
+        }
+
+    }
 
 
 
