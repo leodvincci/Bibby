@@ -24,7 +24,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 2 | [Functions](./02-functions.md) | ✅ Complete | 2025-11-16 |
 | 3 | [Comments](./03-comments.md) | ✅ Complete | 2025-11-16 |
 | 4 | [Formatting](./04-formatting.md) | ✅ Complete | 2025-11-16 |
-| 5 | Objects and Data Structures | ⏳ Pending | - |
+| 5 | [Objects and Data Structures](./05-objects-data-structures.md) | ✅ Complete | 2025-11-16 |
 | 6 | Error Handling | ⏳ Pending | - |
 | 7 | Boundaries | ⏳ Pending | - |
 | 8 | Unit Tests | ⏳ Pending | - |
@@ -63,12 +63,12 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 4: Formatting**
-- 8 formatting issues identified
-- BookCommands.java at 594 lines (3x recommended max) - critical to split
-- Vertical spacing missing in entity classes
-- Long lines with ANSI codes need extraction
-- Estimated refactoring time: 8 hours
+**Section 5: Objects and Data Structures**
+- Anemic domain model anti-pattern identified throughout
+- Law of Demeter violations (train wrecks) in BookCommands
+- Duplicate domain models (Book vs BookEntity) causing confusion
+- Business logic in services instead of domain models
+- Estimated refactoring time: 10 hours
 
 ---
 
@@ -188,5 +188,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 4 / 28
-**Progress:** 14.3%
+**Sections Completed:** 5 / 28
+**Progress:** 17.9%
