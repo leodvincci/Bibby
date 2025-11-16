@@ -27,7 +27,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 5 | [Objects and Data Structures](./05-objects-data-structures.md) | ✅ Complete | 2025-11-16 |
 | 6 | [Error Handling](./06-error-handling.md) | ✅ Complete | 2025-11-16 |
 | 7 | [Boundaries](./07-boundaries.md) | ✅ Complete | 2025-11-16 |
-| 8 | Unit Tests | ⏳ Pending | - |
+| 8 | [Unit Tests](./08-unit-tests.md) | ✅ Complete | 2025-11-16 |
 | 9 | Classes | ⏳ Pending | - |
 | 10 | Systems | ⏳ Pending | - |
 | 11 | Emergence | ⏳ Pending | - |
@@ -63,12 +63,13 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 7: Boundaries**
-- Managing third-party dependencies (Spring Boot, Spring Shell, Spring Data JPA)
-- ComponentFlow usage spread across 20+ locations in command classes
-- Need for PromptService interface to abstract Spring Shell
-- Missing learning tests for framework integration
-- Estimated refactoring time: 4-6 hours
+**Section 8: Unit Tests**
+- ZERO meaningful tests in codebase (0% coverage)
+- Empty test skeleton in BookCommandsTest (false confidence)
+- 10 untested methods in BookService with complex logic
+- Missing Mockito usage despite having dependency
+- Critical null-pointer risks in checkInBook() method
+- Estimated testing implementation: 10-13 hours
 
 ---
 
@@ -188,5 +189,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 7 / 28
-**Progress:** 25%
+**Sections Completed:** 8 / 28
+**Progress:** 29%
