@@ -23,7 +23,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 1 | [Meaningful Names](./01-meaningful-names.md) | ✅ Complete | 2025-11-16 |
 | 2 | [Functions](./02-functions.md) | ✅ Complete | 2025-11-16 |
 | 3 | [Comments](./03-comments.md) | ✅ Complete | 2025-11-16 |
-| 4 | Formatting | ⏳ Pending | - |
+| 4 | [Formatting](./04-formatting.md) | ✅ Complete | 2025-11-16 |
 | 5 | Objects and Data Structures | ⏳ Pending | - |
 | 6 | Error Handling | ⏳ Pending | - |
 | 7 | Boundaries | ⏳ Pending | - |
@@ -63,11 +63,12 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 3: Comments**
-- 5 comment issues identified (redundancy, section markers)
-- 4 categories of missing documentation identified
-- Key learning: Comments are a last resort, code should be self-documenting
-- Estimated refactoring time: 5 hours
+**Section 4: Formatting**
+- 8 formatting issues identified
+- BookCommands.java at 594 lines (3x recommended max) - critical to split
+- Vertical spacing missing in entity classes
+- Long lines with ANSI codes need extraction
+- Estimated refactoring time: 8 hours
 
 ---
 
@@ -187,5 +188,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 3 / 28
-**Progress:** 10.7%
+**Sections Completed:** 4 / 28
+**Progress:** 14.3%
