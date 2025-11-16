@@ -29,7 +29,6 @@ public class BookService {
 
         if (authorEntity == null) {
             authorEntity = new AuthorEntity(firstName, lastName);
-//            authorEntity = AuthorMapper.toEntity(new Author(firstName,lastName));
             authorRepository.save(authorEntity);
         }
 
@@ -42,20 +41,14 @@ public class BookService {
     }
 
     public BookEntity findBookByTitle(String title){
-//        System.out.println("Service Searching for " + title);
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findByTitleIgnoreCase(title));
         List<BookEntity> bookEntities = bookRepository.findByTitleContaining(title);
         for(BookEntity b : bookEntities){
             System.out.println(b.getTitle());
         }
-//        System.out.println(bookEntity.toString());
 
         if(bookEntity.isEmpty()){
-//            System.out.println("Book Not Found");
             return null;
-        }else{
-//            System.out.println("Book Found");
-
         }
         return bookEntity.get();
     }

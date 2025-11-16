@@ -42,9 +42,7 @@ public class BookMapper {
         bookEntity.setGenre(book.getGenre() !=null ? book.getGenre().getGenreName() : null);
         bookEntity.setEdition(book.getEdition());
         bookEntity.setDescription(book.getDescription());
-//        bookEntity.setAuthorId(book.getAuthor() != null ? book.getAuthor().getAuthorId() : null);
         bookEntity.setShelfId(book.getShelf() != null ? book.getShelf().getId() : null);
-//        bookEntity.setCheckedOut(book.isCheckedOut());
         bookEntity.setCheckoutCount(book.getCheckoutCount());
         bookEntity.setBookStatus(book.getStatus() != null ? book.getStatus().name() : null);
         bookEntity.setCreatedAt(book.getCreatedAt());
