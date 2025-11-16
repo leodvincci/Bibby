@@ -13,8 +13,6 @@ public class StartupRunner implements CommandLineRunner {
 
         System.out.println(">>> Bibby is awake. Seeding data now...");
 
-        // call whatever you want here
-        // e.g. create a book, save it, print results, etc.
-        // bookService.addBook("Pride and Prejudice", "Jane Austen");
+        // TODO: Add data seeding logic here if needed
     }
 }

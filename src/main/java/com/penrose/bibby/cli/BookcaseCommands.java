@@ -87,32 +87,13 @@ public class BookcaseCommands extends AbstractShellComponent {
 
         ComponentFlow.ComponentFlowResult result = flow.run();
 
-//        System.out.println("LOOOK: ");
-//        System.out.println(result.getContext().get("bookcaseSelected").toString());
-//        System.out.println(shelfService.getShelfSummariesForBookcase(Long.parseLong(result.getContext().get("bookcaseSelected"))));
-//        System.out.println(":::::::::::::::::::::::::");
-
         selectShelf(Long.parseLong(result.getContext().get("bookcaseSelected")));
-
-
 
 
 
         }
 
-//        for(BookcaseEntity b : bookcaseService.getAllBookcases()){
-//            int shelfBookCount = 0;
-//            List<ShelfEntity> shelves = shelfService.findByBookcaseId(b.getBookcaseId());
-//            for(ShelfEntity s : shelves){
-//                List<BookEntity> bookList = bookService.findBooksByShelf(s.getShelfId());
-//                shelfBookCount += bookList.size();
-//            }
-//            System.out.println(bookcaseRowFormater(b,shelfBookCount));
-//            System.out.println(b.getBookcaseLabel() + ":" + b.getShelfCapacity());
-
-
     public void selectShelf(Long bookCaseId){
-//        System.out.println("YUP!");
         List<ShelfSummary> shelfSummaries = shelfService.getShelfSummariesForBookcase(bookCaseId);
 
         Map<String, String> bookShelfOptions = new LinkedHashMap<>();

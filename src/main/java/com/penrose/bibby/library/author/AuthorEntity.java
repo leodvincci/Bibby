@@ -23,7 +23,6 @@ public class AuthorEntity {
 
     public AuthorEntity(String firstName, String lastName) {
         this.firstName = firstName;
-//        this.middleInitial = middleInitial;
         this.lastName = lastName;
         this.fullName = String.format("%s %s", firstName, lastName);
     }

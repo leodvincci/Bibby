@@ -83,7 +83,6 @@ public class BookCommands extends AbstractShellComponent {
         String lastName = res.getContext().get("authorLastName", String.class);
         BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
         bookService.createNewBook(bookRequestDTO);
-//        new AuthorEntity(firstName, lastName);
     }
 
     @Command(command = "add", description = "Add a new book to your library database")
@@ -117,12 +116,6 @@ public class BookCommands extends AbstractShellComponent {
         }
 
         Thread.sleep(1000);
-//        String[] authorFullName = author.split(" ");
-
-//        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authorFullName[0], authorFullName[1]);
-
-//        bookService.addBook(title,authorFullName[0],authorFullName[1]);
-//        bookService.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
         Thread.sleep(1750);
@@ -219,7 +212,6 @@ public class BookCommands extends AbstractShellComponent {
 
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
-        //get the book
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("bookTitle")
@@ -291,8 +283,6 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + authorFirstName + " " + authorLastName + " — a fine choice. Let me check the shelves...");
         Thread.sleep(4000);
         showLoading();
-
-        //call controller to search by first and last name.
 
 
 
@@ -466,7 +456,6 @@ public class BookCommands extends AbstractShellComponent {
 
     @Command(command = "check-out", description = "Check-Out a book from the library")
     public void checkOutBook(){
-        //prompt users what book to check out
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("bookTitle" )
@@ -475,8 +464,6 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult res = flow.run();
 
         String bookTitle = res.getContext().get("bookTitle");
-
-        //Need to search for the book to see if it's in the system
 
         BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
         String bookcaseLabel = "N.A";
@@ -489,7 +476,6 @@ public class BookCommands extends AbstractShellComponent {
                 bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
                 bookshelfLabel = shelfEntity.get().getShelfLabel();
         }if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
-//            System.out.println("\n\u001B[36m</>\u001B[0m: This one’s already off the shelf. No double-dipping on checkouts.\n");
             System.out.println(
                     """
                     
@@ -500,16 +486,8 @@ public class BookCommands extends AbstractShellComponent {
                     """);
             
 
-
         }else{
-//            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-//            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
             List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
-//            if(shelfEntity.isEmpty() || bookcaseEntity.isEmpty()){
-//                System.out.println("Book Has No Shelf Location");
-//                return;
-//            }
-            //confirm checkout
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -527,7 +505,6 @@ public class BookCommands extends AbstractShellComponent {
             res = flow.run();
 
             if (res.getContext().get("isConfirmed").equals("y")){
-                //change status
                 bookService.checkOutBook(bookEntity);
                 System.out.println(
                         String.format("""
@@ -548,9 +525,6 @@ public class BookCommands extends AbstractShellComponent {
                         """);
             }
         }
-
-
-        //due date feature out of scope for now
 
     }
 
@@ -580,7 +554,6 @@ public class BookCommands extends AbstractShellComponent {
         }
 
         List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
-        //confirm checkout
 
         System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkin\n\u001B[0m
@@ -617,6 +590,5 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "suggest-shelf", description = "Use AI to recommend optimal shelf placement for a book.")
     public void suggestBookShelf(){
         System.out.println("Book should be placed on Shelf: G-16");
-//        System.out.println("Book should be placed on Shelf: G-16");
     }
 }
