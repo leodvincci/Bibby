@@ -28,7 +28,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 6 | [Error Handling](./06-error-handling.md) | ✅ Complete | 2025-11-16 |
 | 7 | [Boundaries](./07-boundaries.md) | ✅ Complete | 2025-11-16 |
 | 8 | [Unit Tests](./08-unit-tests.md) | ✅ Complete | 2025-11-16 |
-| 9 | Classes | ⏳ Pending | - |
+| 9 | [Classes](./09-classes.md) | ✅ Complete | 2025-11-16 |
 | 10 | Systems | ⏳ Pending | - |
 | 11 | Emergence | ⏳ Pending | - |
 | 12 | Concurrency | ⏳ Pending | - |
@@ -63,13 +63,13 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 8: Unit Tests**
-- ZERO meaningful tests in codebase (0% coverage)
-- Empty test skeleton in BookCommandsTest (false confidence)
-- 10 untested methods in BookService with complex logic
-- Missing Mockito usage despite having dependency
-- Critical null-pointer risks in checkInBook() method
-- Estimated testing implementation: 10-13 hours
+**Section 9: Classes**
+- BookcaseService violates SRP (manages both bookcases AND shelves)
+- BookcaseCommands mixes UI formatting with business logic
+- Anemic domain models throughout (entities with no behavior)
+- AuthorEntity has redundant fullName field (inconsistency risk)
+- ShelfService adds no value (just delegates to repository)
+- Estimated refactoring time: 5-8 hours
 
 ---
 
@@ -189,5 +189,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 8 / 28
-**Progress:** 29%
+**Sections Completed:** 9 / 28
+**Progress:** 32%
