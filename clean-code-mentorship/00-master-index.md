@@ -26,7 +26,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 4 | [Formatting](./04-formatting.md) | ✅ Complete | 2025-11-16 |
 | 5 | [Objects and Data Structures](./05-objects-data-structures.md) | ✅ Complete | 2025-11-16 |
 | 6 | [Error Handling](./06-error-handling.md) | ✅ Complete | 2025-11-16 |
-| 7 | Boundaries | ⏳ Pending | - |
+| 7 | [Boundaries](./07-boundaries.md) | ✅ Complete | 2025-11-16 |
 | 8 | Unit Tests | ⏳ Pending | - |
 | 9 | Classes | ⏳ Pending | - |
 | 10 | Systems | ⏳ Pending | - |
@@ -63,12 +63,12 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 6: Error Handling**
-- ZERO error handling throughout entire codebase (critical issue!)
-- Returning null instead of Optional
-- Dangerous .get() calls on Optional without checking
-- No custom exceptions, no validation, no try-catch blocks
-- Estimated refactoring time: 7 hours
+**Section 7: Boundaries**
+- Managing third-party dependencies (Spring Boot, Spring Shell, Spring Data JPA)
+- ComponentFlow usage spread across 20+ locations in command classes
+- Need for PromptService interface to abstract Spring Shell
+- Missing learning tests for framework integration
+- Estimated refactoring time: 4-6 hours
 
 ---
 
@@ -188,5 +188,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 6 / 28
-**Progress:** 21.4%
+**Sections Completed:** 7 / 28
+**Progress:** 25%
