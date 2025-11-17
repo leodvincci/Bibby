@@ -456,26 +456,26 @@ public class BookCommands extends AbstractShellComponent {
 
     @Command(command = "check-out", description = "Check-Out a book from the library")
     public void checkOutBook(){
-        ComponentFlow flow;
-        flow = componentFlowBuilder.clone()
+        ComponentFlow bookTitleFlow;
+        bookTitleFlow = componentFlowBuilder.clone()
                 .withStringInput("bookTitle" )
                 .name("Book Title:")
                 .and().build();
-        ComponentFlow.ComponentFlowResult result = flow.run();
+        ComponentFlow.ComponentFlowResult bookTitleResult = bookTitleFlow.run();
 
-        String bookTitle = result.getContext().get("bookTitle");
+        String bookTitle = bookTitleResult.getContext().get("bookTitle");
 
-        BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
-        String bookcaseLabel = "N.A";
-        String bookshelfLabel ="N.A";
-        if(bookEntity == null){
+        BookEntity book = bookService.findBookByTitle(bookTitle);
+        String bookcaseName = "N.A";
+        String shelfName ="N.A";
+        if(book == null){
             System.out.println("Book Not Found.");
-        }else if(bookEntity.getShelfId() != null){
-                Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-                Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
-                bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
-                bookshelfLabel = shelfEntity.get().getShelfLabel();
-        }if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
+        }else if(book.getShelfId() != null){
+                Optional<ShelfEntity> shelf = shelfService.findShelfById(book.getShelfId());
+                Optional<BookcaseEntity> bookcase = bookcaseService.findBookCaseById(shelf.get().getBookcaseId());
+                bookcaseName = bookcase.get().getBookcaseLabel();
+                shelfName = shelf.get().getShelfLabel();
+        }if (book.getBookStatus().equals("CHECKED_OUT")){
             System.out.println(
                     """
                     
@@ -487,7 +487,7 @@ public class BookCommands extends AbstractShellComponent {
             
 
         }else{
-            List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
+            List<AuthorEntity> authors = bookService.findAuthorsByBookId(book.getBookId());
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -497,7 +497,7 @@ public class BookCommands extends AbstractShellComponent {
                             
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,bookEntity.getTitle(), authors, bookEntity.getBookStatus(), bookcaseLabel ,bookshelfLabel));
+                    """,book.getTitle(), authors, book.getBookStatus(), bookcaseName ,shelfName));
             ComponentFlow confirmationFlow = componentFlowBuilder.clone()
                     .withStringInput("isConfirmed")
                     .name("y or n:_ ")
@@ -505,7 +505,7 @@ public class BookCommands extends AbstractShellComponent {
             ComponentFlow.ComponentFlowResult confirmationResult = confirmationFlow.run();
 
             if (confirmationResult.getContext().get("isConfirmed").equals("y")){
-                bookService.checkOutBook(bookEntity);
+                bookService.checkOutBook(book);
                 System.out.println(
                         String.format("""
                         
