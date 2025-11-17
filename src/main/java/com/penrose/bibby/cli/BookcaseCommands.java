@@ -1,10 +1,10 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.cli.book.BookCommands;
 import com.penrose.bibby.library.book.BookDetailView;
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.book.BookSummary;
-import com.penrose.bibby.library.bookcase.Bookcase;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;

@@ -1,6 +1,5 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.book;
 
-import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.BookController;
@@ -9,11 +8,10 @@ import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
-import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.util.BibbyResponses;
 import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
@@ -25,11 +23,25 @@ import java.util.*;
 @Command(command = "book", group = "Book Commands")
 public class BookCommands extends AbstractShellComponent {
 
-    final BookService bookService;
-    final BookController bookController;
-    final BookcaseService bookcaseService;
-    final ShelfService shelfService;
-    final AuthorService authorService;
+    private final BookService bookService;
+    private final BookController bookController;
+    private final BookcaseService bookcaseService;
+    private final ShelfService shelfService;
+    private final AuthorService authorService;
+    private final BibbyResponses bibbyResponses;
+    private final BookComponentFlow bookComponentFlow;
+    private final ComponentFlow.Builder componentFlowBuilder;
+
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookComponentFlow bookComponentFlow, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, BibbyResponses bibbyResponses) {
+        this.componentFlowBuilder = componentFlowBuilder;
+        this.bookService = bookService;
+        this.bookController = bookController;
+        this.bookcaseService = bookcaseService;
+        this.shelfService = shelfService;
+        this.authorService = authorService;
+        this.bookComponentFlow = bookComponentFlow;
+        this.bibbyResponses = bibbyResponses;
+    }
 
 
 
@@ -40,100 +52,34 @@ public class BookCommands extends AbstractShellComponent {
     //
     // ───────────────────────────────────────────────────────────────────
 
-
-
-
-    List<String> bibbySearchResponses = new ArrayList<>(List.of(
-            "Got it — searching the stacks for books by",
-            "Sure thing — I’ll take a quick look through the shelves for",
-            "Alright - Give me a sec...checking the catalogue for books by",
-            "Hold on, I’m diving into the stacks — Let’s see what we’ve got by",
-            "Searching for books by",
-            "Let’s take a quiet look through the shelves for",
-            "On it — I’ll go dig through the stacks. Hope the intern filed things alphabetically this time."
-    ));
-
-    public void setBibbySearchResponses(String bibbySearchResponses) {
-        this.bibbySearchResponses.add(bibbySearchResponses);
-    }
-
-    private final ComponentFlow.Builder componentFlowBuilder;
-
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService) {
-        this.componentFlowBuilder = componentFlowBuilder;
-        this.bookService = bookService;
-        this.bookController = bookController;
-        this.bookcaseService = bookcaseService;
-        this.shelfService = shelfService;
-        this.authorService = authorService;
-    }
-
-    public void authorNameComponentFlow(String title){
-        ComponentFlow flow2;
-        flow2 = componentFlowBuilder.clone()
-                .withStringInput("authorFirstName")
-                .name("Author's First Name:_")
-                .and()
-                .withStringInput("authorLastName")
-                .name("Author's Last Name:_")
-                .and().build();
-
-        ComponentFlow.ComponentFlowResult res = flow2.run();
-        String firstName  = res.getContext().get("authorFirstName", String.class);
-        String lastName = res.getContext().get("authorLastName", String.class);
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
-        bookService.createNewBook(bookRequestDTO);
-    }
-
     @Command(command = "add", description = "Add a new book to your library database")
     public void addBook() throws InterruptedException {
         ComponentFlow flow;
-        ComponentFlow flow2;
-        int authorCount;
-        String title;
-        String author;
+        int authorCount = bookComponentFlow.getAuthorCount();
+        String title = bookComponentFlow.getBookTitle();
+        String[] authorName = bookComponentFlow.getAuthorName();
+        String authorFirstName = authorName[0];
+        String authorLastname = authorName[1];
 
-
-
-        flow = componentFlowBuilder.clone()
-                .withStringInput("title")
-                .name("Book Title:_")
-                .and()
-                .withStringInput("author_count")
-                .name("Number of Authors:_")
-                .and()
-                .build();
-
-        ComponentFlow.ComponentFlowResult result = flow.run();
-        authorCount = Integer.parseInt(result.getContext().get("author_count",String.class));
-
-
-
-         title  = result.getContext().get("title", String.class);
 
         for(int i = 0; i < authorCount; i++){
-            authorNameComponentFlow(title);
+            BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authorFirstName, authorLastname);
+            bookService.createNewBook(bookRequestDTO);
         }
 
-        Thread.sleep(1000);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
-        Thread.sleep(1750);
         System.out.printf("\u001B[36m</>\033[0m:'%s', right?",title);
-        Thread.sleep(2350);
         System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
-        Thread.sleep(3800);
         System.out.println("\n\u001B[36m</>\033[0m: Should I recommend where it belongs?\n");
-        Thread.sleep(1000);
 
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("recommendShelf")
                 .selectItems(yesNoOptions())
                 .and().build();
-        result = flow.run();
+        ComponentFlow.ComponentFlowResult result = flow.run();
 
         if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
-            Thread.sleep(2000);
             System.out.println(
                     """
                     \u001B[36m</>\033[0m: Recommended Shelf → \u001B[33mD-48\033[0m: Programming & Engineering.
@@ -143,7 +89,6 @@ public class BookCommands extends AbstractShellComponent {
                     """
             );
 
-            Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m:Shall I make it official and slide this one onto the shelf?\n");
 
             flow = componentFlowBuilder.clone()
@@ -153,14 +98,11 @@ public class BookCommands extends AbstractShellComponent {
             result = flow.run();
 
             if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
-                Thread.sleep(2000);
                 System.out.println("\u001B[36m</>\033[0m: And there it is — " + "Shelf \u001B[33mD-48\033[0m" + ", freshly updated with another gem.\n");
             }else{
-                Thread.sleep(2000);
                 System.out.println("\u001B[36m</>\033[0m: No rush. Every book finds its home eventually.\n");
             }
         }else{
-            Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m: Fair enough. We can pick another shelf anytime.\n");
         }
 
@@ -169,21 +111,50 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
-    public void showLoading() throws InterruptedException {
-        LoadingBar.showProgressBar("Loading books from shelf...", 40, 150);
+
+
+    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
+    public void addToShelf(){
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("bookTitle")
+                .name("What book are you shelving?:_")
+                .and()
+                .withSingleItemSelector("bookcase")
+                .name("Choose a Bookcase:_")
+                .selectItems(bookCaseOptions())
+                .and().build();
+        ComponentFlow.ComponentFlowResult res = flow.run();
+        String title = res.getContext().get("bookTitle",String.class);
+        Long bookCaseId = Long.parseLong(res.getContext().get("bookcase",String.class));
+
+        flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("bookshelf")
+                .name("Chose a shelf position")
+                .selectItems(bookShelfOptions(bookCaseId))
+                .and().build();
+
+        res = flow.run();
+
+        BookEntity bookEnt = bookService.findBookByTitle(title);
+        if(bookEnt == null){
+            System.out.println("Book Not Found In Library");
+        }else {
+            Long shelfId = Long.parseLong(res.getContext().get("bookshelf",String.class));
+            bookEnt.setShelfId(shelfId);
+            bookService.updateBook(bookEnt);
+            ShelfEntity shelf = shelfService.findShelfById(shelfId).get();
+            System.out.printf("Added \"%s\" To %s.",title.toUpperCase(),shelf.getShelfLabel());
+        }
+
     }
 
-
-
-
-    /*
-
-        Book Search Commands
-
-    */
-
-
-
+    // ───────────────────────────────────────────────────────────────────
+    //
+    //                        Book Search Commands
+    //
+    //
+    // ───────────────────────────────────────────────────────────────────
 
     @Command(command = "search", description = "Search for books by title, author, genre, or location using an interactive prompt.")
     public void searchBook() throws InterruptedException {
@@ -209,57 +180,7 @@ public class BookCommands extends AbstractShellComponent {
 
     }
 
-
-    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
-    public void addToShelf(){
-        ComponentFlow flow;
-        flow = componentFlowBuilder.clone()
-                .withStringInput("bookTitle")
-                .name("What book are you shelving?:_")
-                .and()
-                .withSingleItemSelector("bookcase")
-                .name("Choose a Bookcase:_")
-                .selectItems(bookCaseOptions())
-                .and().build();
-        ComponentFlow.ComponentFlowResult res = flow.run();
-        String title = res.getContext().get("bookTitle",String.class);
-        Long bookCaseId = Long.parseLong(res.getContext().get("bookcase",String.class));
-        System.out.println("BOOK CASE ID: " + bookCaseId);
-
-
-        flow = componentFlowBuilder.clone()
-                .withSingleItemSelector("bookshelf")
-                .name("Chose a shelf position")
-                .selectItems(bookShelfOptions(bookCaseId))
-                .and().build();
-
-
-        res = flow.run();
-
-
-
-
-        BookEntity bookEnt = bookService.findBookByTitle(title);
-        if(bookEnt == null){
-            System.out.println("Book Not Found In Library");
-        }else {
-            Long shelfId = Long.parseLong(res.getContext().get("bookshelf",String.class));
-            System.out.println(shelfId);
-            System.out.println(title);
-            bookEnt.setShelfId(shelfId);
-            bookService.updateBook(bookEnt);
-            System.out.println("Added Book To the Shelf!");
-        }
-
-    }
-
-    public void searchByAuthorVoice(){
-        List<String> searchResponses = new ArrayList<>();
-
-    }
-
     public void searchByAuthor() throws InterruptedException {
-
         System.out.println("\n\u001B[95mSearch by Author");
 
         ComponentFlow componentFlow;
@@ -278,16 +199,9 @@ public class BookCommands extends AbstractShellComponent {
         authorLastName =res.getContext().get("authorLastName",String.class);
 
 
-
-        Thread.sleep(1000);
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + authorFirstName + " " + authorLastName + " — a fine choice. Let me check the shelves...");
-        Thread.sleep(4000);
-        showLoading();
-
-
 
         System.out.println("\n\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
-        Thread.sleep(2000);
 
         System.out.println("""
                 ──────────────────────────────────────────────
@@ -297,38 +211,11 @@ public class BookCommands extends AbstractShellComponent {
                 """);
         System.out.println("\u001B[90m───────────────────────────────────────────────\u001B[0m");
 
-        Thread.sleep(500);
 
         askBookCheckOut();
     }
 
-    public void checkOutBookByID() throws InterruptedException {
-        ComponentFlow componentFlow;
-        componentFlow = componentFlowBuilder.clone()
-                .withStringInput("bookID")
-                .name("Book ID#:_ ")
-                .and().build();
 
-        componentFlow.run();
-
-
-        Thread.sleep(2300);
-        System.out.println("\u001B[36m</>\u001B[0m:Persuading the shelf to let go...\n");
-        Thread.sleep(2300);
-
-        Thread.sleep(1000);
-        System.out.println("\u001B[36m</>\u001B[0m:Dusting off the cover...\n");
-        Thread.sleep(2300);
-        System.out.println("\u001B[36m</>\u001B[0m:Logging transaction...\n");
-        Thread.sleep(1000);
-        System.out.println("\u001B[36m</>\u001B[0m:Checking it out...please hold while I fake progress bars.\n");
-        Thread.sleep(1000);
-        showLoading();
-        Thread.sleep(2000);
-        System.out.println("\n\u001B[36m</>\u001B[0m:Don’t forget to check it back in… or at least feel guilty about it.\n");
-
-
-    }
 
     public void searchByTitle() throws InterruptedException {
         System.out.println("\n");
@@ -349,10 +236,6 @@ public class BookCommands extends AbstractShellComponent {
 
         BookEntity bookEntity = bookService.findBookByTitle(title);
 
-        showLoading();
-
-        Thread.sleep(500);
-
         if (bookEntity == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
         }else if(bookEntity.getShelfId() == null){
@@ -362,8 +245,6 @@ public class BookCommands extends AbstractShellComponent {
             Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
             System.out.println("\nBook Was Found \nBookcase: " + bookcaseEntity.get().getBookcaseLabel() + "\nShelf: " + shelfEntity.get().getShelfLabel() + "\n");
         }
-
-        Thread.sleep(2000);
 
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("searchDecision")
@@ -426,6 +307,9 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
+
+
+
     private Map<String, String> bookShelfOptions(Long bookcaseId) {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
@@ -446,6 +330,20 @@ public class BookCommands extends AbstractShellComponent {
         return options;
     }
 
+    public void checkOutBookByID() throws InterruptedException {
+        ComponentFlow componentFlow;
+        componentFlow = componentFlowBuilder.clone()
+                .withStringInput("bookID")
+                .name("Book ID#:_ ")
+                .and().build();
+
+        componentFlow.run();
+        System.out.println("\u001B[36m</>\u001B[0m:Persuading the shelf to let go...\n");
+        System.out.println("\u001B[36m</>\u001B[0m:Dusting off the cover...\n");
+        System.out.println("\u001B[36m</>\u001B[0m:Logging transaction...\n");
+        System.out.println("\u001B[36m</>\u001B[0m:Checking it out...please hold while I fake progress bars.\n");
+        System.out.println("\n\u001B[36m</>\u001B[0m:Don’t forget to check it back in… or at least feel guilty about it.\n");
+    }
 
 
 
@@ -476,14 +374,7 @@ public class BookCommands extends AbstractShellComponent {
                 bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
                 bookshelfLabel = shelfEntity.get().getShelfLabel();
         }if (bookEntity.getBookStatus().equals("CHECKED_OUT")){
-            System.out.println(
-                    """
-                    
-                    \u001B[38;5;63m  .---.
-                    \u001B[38;5;63m (* @ *)  \u001B[36m\u001B[38;5;220m "This one’s already off the shelf. No double-dipping on checkouts."
-                    \u001B[38;5;63m  \\|=|/
-                    
-                    """);
+            System.out.println(bibbyResponses.bookCheckoutNotAvailable());
             
 
         }else{
