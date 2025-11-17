@@ -33,7 +33,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 11 | [Emergence](./11-emergence.md) | ✅ Complete | 2025-11-16 |
 | 12 | [Concurrency](./12-concurrency.md) | ✅ Complete | 2025-11-16 |
 | 13 | [Successive Refinement](./13-successive-refinement.md) | ✅ Complete | 2025-11-16 |
-| 14 | Smells and Heuristics | ⏳ Pending | - |
+| 14 | [Smells and Heuristics](./14-smells-heuristics.md) | ✅ Complete | 2025-11-16 |
 | **SPRING FRAMEWORK MASTERY** |
 | 15 | Spring Boot Fundamentals & Best Practices | ⏳ Pending | - |
 | 16 | Spring Shell Mastery | ⏳ Pending | - |
@@ -63,13 +63,14 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 13: Successive Refinement**
-- Case study: Refactoring addBook() from 81 lines → 8 lines
-- 5 refinement iterations demonstrating incremental improvement
-- Extract constants, extract methods, apply abstractions, move responsibilities
-- Creating PromptService to eliminate ComponentFlow duplication (100+ lines)
-- 4-phase refactoring roadmap: abstractions → commands → services → tests
-- Estimated refactoring time: 24-32 hours total (major cleanup effort)
+**Section 14: Smells and Heuristics** ✅ CLEAN CODE FUNDAMENTALS COMPLETE!
+- Comprehensive catalog of 35+ code smells from Uncle Bob's Chapter 17
+- Critical: 0% test coverage, ComponentFlow duplication (20+ times), null pointer risks
+- High priority: Thread.sleep (25x), System.out.println (47x), feature envy, long methods
+- Quick reference checklist for daily code reviews
+- Weekly cleanup session plan
+- ALL 14 Clean Code Fundamentals sections now complete (100%)
+- Ready to begin Spring Framework Mastery!
 
 ---
 
@@ -189,5 +190,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 13 / 28
-**Progress:** 46%
+**Sections Completed:** 14 / 28
+**Progress:** 50% 🎉 CLEAN CODE FUNDAMENTALS COMPLETE!
