@@ -31,7 +31,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 9 | [Classes](./09-classes.md) | ✅ Complete | 2025-11-16 |
 | 10 | [Systems](./10-systems.md) | ✅ Complete | 2025-11-16 |
 | 11 | [Emergence](./11-emergence.md) | ✅ Complete | 2025-11-16 |
-| 12 | Concurrency | ⏳ Pending | - |
+| 12 | [Concurrency](./12-concurrency.md) | ✅ Complete | 2025-11-16 |
 | 13 | Successive Refinement | ⏳ Pending | - |
 | 14 | Smells and Heuristics | ⏳ Pending | - |
 | **SPRING FRAMEWORK MASTERY** |
@@ -63,14 +63,13 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 11: Emergence**
-- MASSIVE duplication: ComponentFlow pattern repeated 20+ times (100+ lines)
-- Thread.sleep() duplicated 25 times with hardcoded delays
-- System.out.println 47 times (should be logging/output service)
-- ANSI color codes scattered everywhere (magic strings)
-- Dead code: searchByAuthorVoice() method does nothing
-- Hardcoded fake search results (not functional)
-- Estimated refactoring time: 7-11 hours to eliminate duplication
+**Section 12: Concurrency**
+- Missing @Transactional on checkOutBook() and checkInBook() methods
+- Race condition in createNewBook() (no unique constraints on database)
+- Read-modify-write operations without transaction boundaries
+- Business logic in command classes instead of services
+- No unique constraints on book titles or author names
+- Estimated refactoring time: 2-3 hours to fix transaction issues
 
 ---
 
@@ -190,5 +189,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-16
-**Sections Completed:** 11 / 28
-**Progress:** 39%
+**Sections Completed:** 12 / 28
+**Progress:** 43%
