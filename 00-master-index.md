@@ -11,7 +11,7 @@
 ## Progress Tracker
 
 - [x] **Section 1:** Codebase Foundation ✅ **(COMPLETE)**
-- [ ] Section 2: Java Type System & Primitives
+- [x] **Section 2:** Java Type System & Primitives ✅ **(COMPLETE)**
 - [ ] Section 3: Control Flow & Logic
 - [ ] Section 4: Methods & Parameters
 - [ ] Section 5: OOP - Encapsulation & Abstraction
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 1 / 33
-**Current Focus:** Codebase Foundation Analysis Complete
+**Sections Completed:** 2 / 33
+**Current Focus:** Java Type System & Primitives Complete
 
 ---
 
@@ -69,10 +69,16 @@
 ### Core Java Fundamentals (Sections 2-12)
 
 **Section 2: Java Type System & Primitives**
-- **Planned Topics:** int vs Integer in your entities, Long for IDs, autoboxing risks, type consistency
-- **Real Examples From:** BookEntity (publicationYear), ShelfEntity (shelfPosition), checkoutCount patterns
-- **Duration:** 15-20 min read
+- **File:** `02-type-system-primitives.md`
+- **Duration:** 20-25 min read
 - **Prerequisites:** Section 1
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand primitives (int, long) vs wrappers (Integer, Long)
+  - Learn when to use each type in JPA entities
+  - Identify autoboxing risks and NullPointerException traps
+  - Refactor BookEntity numeric fields for consistency
+  - Master null safety with wrapper types
 
 **Section 3: Control Flow & Logic**
 - **Planned Topics:** if/else patterns, switch expressions, loop constructs, short-circuiting
