@@ -35,7 +35,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 13 | [Successive Refinement](./13-successive-refinement.md) | ✅ Complete | 2025-11-16 |
 | 14 | [Smells and Heuristics](./14-smells-heuristics.md) | ✅ Complete | 2025-11-16 |
 | **SPRING FRAMEWORK MASTERY** |
-| 15 | Spring Boot Fundamentals & Best Practices | ⏳ Pending | - |
+| 15 | [Spring Boot Fundamentals & Best Practices](./15-spring-boot-fundamentals.md) | ✅ Complete | 2025-11-17 |
 | 16 | Spring Shell Mastery | ⏳ Pending | - |
 | 17 | Web API Design & Best Practices | ⏳ Pending | - |
 | 18 | Spring Data JPA & Database Best Practices | ⏳ Pending | - |
@@ -63,14 +63,16 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 14: Smells and Heuristics** ✅ CLEAN CODE FUNDAMENTALS COMPLETE!
-- Comprehensive catalog of 35+ code smells from Uncle Bob's Chapter 17
-- Critical: 0% test coverage, ComponentFlow duplication (20+ times), null pointer risks
-- High priority: Thread.sleep (25x), System.out.println (47x), feature envy, long methods
-- Quick reference checklist for daily code reviews
-- Weekly cleanup session plan
-- ALL 14 Clean Code Fundamentals sections now complete (100%)
-- Ready to begin Spring Framework Mastery!
+**Section 15: Spring Boot Fundamentals & Best Practices** ✅ SPRING FRAMEWORK MASTERY BEGINS!
+- Analyzed Spring Boot 3.5.7 configuration and auto-configuration
+- Found field injection in StartupRunner (should use constructor injection)
+- Identified GET endpoint using @RequestBody (HTTP violation in BookController)
+- Missing environment-specific profiles (dev/test/prod)
+- No custom @Configuration classes (relying entirely on auto-configuration)
+- Recommended constructor injection, application profiles, and proper REST semantics
+- Action items: 6-8 hours estimated
+- CLEAN CODE FUNDAMENTALS: 100% complete (Sections 1-14)
+- SPRING FRAMEWORK MASTERY: Now in progress (Section 15 complete, 13 remaining)
 
 ---
 
@@ -189,6 +191,6 @@ Use this space to track your thoughts as you progress:
 
 ---
 
-**Last Updated:** 2025-11-16
-**Sections Completed:** 14 / 28
-**Progress:** 50% 🎉 CLEAN CODE FUNDAMENTALS COMPLETE!
+**Last Updated:** 2025-11-17
+**Sections Completed:** 15 / 28
+**Progress:** 54% 🚀 SPRING FRAMEWORK MASTERY BEGINS!
