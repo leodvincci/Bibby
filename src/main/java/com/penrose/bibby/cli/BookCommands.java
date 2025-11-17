@@ -243,7 +243,7 @@ public class BookCommands extends AbstractShellComponent {
         if(bookEnt == null){
             System.out.println("Book Not Found In Library");
         }else {
-            Long shelfId = Long.parseLong(res.getContext().get("bookshelf",String.class));
+            Long shelfId = Long.parseLong(result.getContext().get("bookshelf",String.class));
             System.out.println(shelfId);
             System.out.println(title);
             bookEnt.setShelfId(shelfId);
@@ -372,7 +372,7 @@ public class BookCommands extends AbstractShellComponent {
                 .and().build();
 
         result = flow.run();
-        if (res.getContext().get("searchDecision",String.class).equalsIgnoreCase("Yes")){
+        if (result.getContext().get("searchDecision",String.class).equalsIgnoreCase("Yes")){
             searchBook();
         }
     }
@@ -573,7 +573,7 @@ public class BookCommands extends AbstractShellComponent {
                 .and().build();
         result = flow.run();
 
-        if(res.getContext().get("isConfirmed").equals("y")){
+        if(result.getContext().get("isConfirmed").equals("y")){
             bookService.checkInBook(bookTitle);
             System.out.println(
                     """
