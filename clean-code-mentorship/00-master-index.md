@@ -36,7 +36,7 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 | 14 | [Smells and Heuristics](./14-smells-heuristics.md) | ✅ Complete | 2025-11-16 |
 | **SPRING FRAMEWORK MASTERY** |
 | 15 | [Spring Boot Fundamentals & Best Practices](./15-spring-boot-fundamentals.md) | ✅ Complete | 2025-11-17 |
-| 16 | Spring Shell Mastery | ⏳ Pending | - |
+| 16 | [Spring Shell Mastery](./16-spring-shell-mastery.md) | ✅ Complete | 2025-11-17 |
 | 17 | Web API Design & Best Practices | ⏳ Pending | - |
 | 18 | Spring Data JPA & Database Best Practices | ⏳ Pending | - |
 | 19 | Spring Boot + Spring Shell Architecture | ⏳ Pending | - |
@@ -63,16 +63,18 @@ This is your comprehensive guide to applying Robert C. Martin's Clean Code princ
 - **Testing:** JUnit (in progress)
 
 ### Current Focus
-**Section 15: Spring Boot Fundamentals & Best Practices** ✅ SPRING FRAMEWORK MASTERY BEGINS!
-- Analyzed Spring Boot 3.5.7 configuration and auto-configuration
-- Found field injection in StartupRunner (should use constructor injection)
-- Identified GET endpoint using @RequestBody (HTTP violation in BookController)
-- Missing environment-specific profiles (dev/test/prod)
-- No custom @Configuration classes (relying entirely on auto-configuration)
-- Recommended constructor injection, application profiles, and proper REST semantics
-- Action items: 6-8 hours estimated
-- CLEAN CODE FUNDAMENTALS: 100% complete (Sections 1-14)
-- SPRING FRAMEWORK MASTERY: Now in progress (Section 15 complete, 13 remaining)
+**Section 16: Spring Shell Mastery** ✅ CLI ARCHITECTURE DEEP DIVE!
+- Analyzed 594-line BookCommands.java and identified architectural issues
+- CRITICAL BUG: authorNameComponentFlow creates duplicate books (BookCommands.java:71-86, 114-116)
+- Found layer violation: CLI depends on BookController (web layer)
+- ComponentFlow duplication: 20+ instances of identical prompt patterns
+- Thread.sleep() scattered 25 times with no way to disable for testing
+- Null pointer risks: Optional.get() calls without isPresent() checks (BookCommands.java:475, 478)
+- Zero input validation: Integer.parseInt crashes on invalid input
+- Recommended: PromptService abstraction, ConsoleOutputService, command splitting
+- Recommended: @Option support for scriptable commands
+- Action items: 12-16 hours estimated (3 critical bugs to fix immediately)
+- SPRING FRAMEWORK MASTERY: Section 2/14 complete (57% overall progress)
 
 ---
 
@@ -192,5 +194,5 @@ Use this space to track your thoughts as you progress:
 ---
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 15 / 28
-**Progress:** 54% 🚀 SPRING FRAMEWORK MASTERY BEGINS!
+**Sections Completed:** 16 / 28
+**Progress:** 57% 🎯 CLI ARCHITECTURE MASTERY!
