@@ -78,9 +78,9 @@ public class BookCommands extends AbstractShellComponent {
                 .name("Author's Last Name:_")
                 .and().build();
 
-        ComponentFlow.ComponentFlowResult res = flow2.run();
-        String firstName  = res.getContext().get("authorFirstName", String.class);
-        String lastName = res.getContext().get("authorLastName", String.class);
+        ComponentFlow.ComponentFlowResult result = flow2.run();
+        String firstName  = result.getContext().get("authorFirstName", String.class);
+        String lastName = result.getContext().get("authorLastName", String.class);
         BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
         bookService.createNewBook(bookRequestDTO);
     }
@@ -221,9 +221,9 @@ public class BookCommands extends AbstractShellComponent {
                 .name("Choose a Bookcase:_")
                 .selectItems(bookCaseOptions())
                 .and().build();
-        ComponentFlow.ComponentFlowResult res = flow.run();
-        String title = res.getContext().get("bookTitle",String.class);
-        Long bookCaseId = Long.parseLong(res.getContext().get("bookcase",String.class));
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        String title = result.getContext().get("bookTitle",String.class);
+        Long bookCaseId = Long.parseLong(result.getContext().get("bookcase",String.class));
         System.out.println("BOOK CASE ID: " + bookCaseId);
 
 
@@ -234,7 +234,7 @@ public class BookCommands extends AbstractShellComponent {
                 .and().build();
 
 
-        res = flow.run();
+        result = flow.run();
 
 
 
@@ -273,9 +273,9 @@ public class BookCommands extends AbstractShellComponent {
                 .name("Enter author Last Name:_")
                 .and().build();
 
-        ComponentFlow.ComponentFlowResult res = componentFlow.run();
-        authorFirstName =res.getContext().get("authorFirstName",String.class);
-        authorLastName =res.getContext().get("authorLastName",String.class);
+        ComponentFlow.ComponentFlowResult result = componentFlow.run();
+        authorFirstName = result.getContext().get("authorFirstName",String.class);
+        authorLastName = result.getContext().get("authorLastName",String.class);
 
 
 
@@ -339,8 +339,8 @@ public class BookCommands extends AbstractShellComponent {
                 .name("Enter book title:_")
                 .and().build();
 
-        ComponentFlow.ComponentFlowResult res = flow.run();
-        title = res.getContext().get("bookTitle",String.class);
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        title = result.getContext().get("bookTitle",String.class);
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");
 
@@ -371,7 +371,7 @@ public class BookCommands extends AbstractShellComponent {
                 .selectItems(yesNoOptions())
                 .and().build();
 
-        res = flow.run();
+        result = flow.run();
         if (res.getContext().get("searchDecision",String.class).equalsIgnoreCase("Yes")){
             searchBook();
         }
@@ -387,8 +387,8 @@ public class BookCommands extends AbstractShellComponent {
                 .selectItems(yesNoOptions())
                 .and().build();
 
-        ComponentFlow.ComponentFlowResult res = flow.run();
-        String checkOutResponse = res.getContext().get("checkOutDecision",String.class);
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        String checkOutResponse = result.getContext().get("checkOutDecision",String.class);
         if(checkOutResponse.equalsIgnoreCase("yes")){
             checkOutBookByID();
         }else {
@@ -461,9 +461,9 @@ public class BookCommands extends AbstractShellComponent {
                 .withStringInput("bookTitle" )
                 .name("Book Title:")
                 .and().build();
-        ComponentFlow.ComponentFlowResult res = flow.run();
+        ComponentFlow.ComponentFlowResult result = flow.run();
 
-        String bookTitle = res.getContext().get("bookTitle");
+        String bookTitle = result.getContext().get("bookTitle");
 
         BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
         String bookcaseLabel = "N.A";
@@ -535,9 +535,9 @@ public class BookCommands extends AbstractShellComponent {
                 .withStringInput("bookTitle" )
                 .name("Book Title:")
                 .and().build();
-        ComponentFlow.ComponentFlowResult res = flow.run();
+        ComponentFlow.ComponentFlowResult result = flow.run();
 
-        String bookTitle = res.getContext().get("bookTitle");
+        String bookTitle = result.getContext().get("bookTitle");
 
         BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
 
@@ -571,7 +571,7 @@ public class BookCommands extends AbstractShellComponent {
                 .withStringInput("isConfirmed" )
                 .name("y or n:_ ")
                 .and().build();
-        res = flow.run();
+        result = flow.run();
 
         if(res.getContext().get("isConfirmed").equals("y")){
             bookService.checkInBook(bookTitle);
