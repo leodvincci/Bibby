@@ -388,8 +388,8 @@ public class BookCommands extends AbstractShellComponent {
                 .and().build();
 
         ComponentFlow.ComponentFlowResult res = flow.run();
-        String theRes = res.getContext().get("checkOutDecision",String.class);
-        if(theRes.equalsIgnoreCase("yes")){
+        String checkOutResponse = res.getContext().get("checkOutDecision",String.class);
+        if(checkOutResponse.equalsIgnoreCase("yes")){
             checkOutBookByID();
         }else {
             Thread.sleep(1000);
@@ -498,13 +498,13 @@ public class BookCommands extends AbstractShellComponent {
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
                     """,bookEntity.getTitle(), authors, bookEntity.getBookStatus(), bookcaseLabel ,bookshelfLabel));
-            flow = componentFlowBuilder.clone()
-                    .withStringInput("isConfirmed" )
+            ComponentFlow confirmationFlow = componentFlowBuilder.clone()
+                    .withStringInput("isConfirmed")
                     .name("y or n:_ ")
                     .and().build();
-            res = flow.run();
+            ComponentFlow.ComponentFlowResult confirmationResult = confirmationFlow.run();
 
-            if (res.getContext().get("isConfirmed").equals("y")){
+            if (confirmationResult.getContext().get("isConfirmed").equals("y")){
                 bookService.checkOutBook(bookEntity);
                 System.out.println(
                         String.format("""
