@@ -19,7 +19,7 @@
 - [x] **Section 7:** Constructors & Object Lifecycle ✅ **(COMPLETE)**
 - [x] **Section 8:** Packages & Visibility ✅ **(COMPLETE)**
 - [x] **Section 9:** Collections Framework ✅ **(COMPLETE)**
-- [ ] Section 10: Generics & Type Safety
+- [x] **Section 10:** Generics & Type Safety ✅ **(COMPLETE)**
 - [ ] Section 11: Exception Handling
 - [ ] Section 12: Memory Model Basics
 - [ ] Section 13: Lambda Expressions & Functional Interfaces
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 9 / 33
-**Current Focus:** Collections Framework Complete
+**Sections Completed:** 10 / 33
+**Current Focus:** Generics & Type Safety Complete
 
 ---
 
@@ -174,10 +174,19 @@
   - Use Collections utility methods effectively
 
 **Section 10: Generics & Type Safety**
-- **Planned Topics:** Generic types, bounded parameters, type erasure, wildcards
-- **Real Examples From:** JpaRepository<BookEntity, Long>, repository method signatures, Optional<T>
-- **Duration:** 20-25 min read
+- **File:** `10-generics-type-safety.md`
+- **Duration:** 70 min read
 - **Prerequisites:** Sections 1-9
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand generic type parameters (<T>, <E>, <K, V>)
+  - Decode JpaRepository<BookEntity, Long> in repositories
+  - Master Optional<T> type safety
+  - Understand type erasure and runtime implications
+  - Use bounded type parameters (<T extends>)
+  - Apply wildcard types (? extends, ? super)
+  - Create generic utility methods
+  - Follow PECS principle (Producer Extends, Consumer Super)
 
 **Section 11: Exception Handling**
 - **Planned Topics:** Checked vs unchecked, exception hierarchy, custom exceptions
@@ -473,5 +482,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 9 of 33*
-*Next Up: Section 10 - Generics & Type Safety*
+*Current Section: 10 of 33*
+*Next Up: Section 11 - Exception Handling*
