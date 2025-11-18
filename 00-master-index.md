@@ -15,7 +15,7 @@
 - [x] **Section 3:** Control Flow & Logic ✅ **(COMPLETE)**
 - [x] **Section 4:** Methods & Parameters ✅ **(COMPLETE)**
 - [x] **Section 5:** OOP - Encapsulation & Abstraction ✅ **(COMPLETE)**
-- [ ] Section 6: OOP - Inheritance & Polymorphism
+- [x] **Section 6:** OOP - Inheritance & Polymorphism ✅ **(COMPLETE)**
 - [ ] Section 7: Constructors & Object Lifecycle
 - [ ] Section 8: Packages & Visibility
 - [ ] Section 9: Collections Framework
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 5 / 33
-**Current Focus:** OOP - Encapsulation & Abstraction Complete
+**Sections Completed:** 6 / 33
+**Current Focus:** OOP - Inheritance & Polymorphism Complete
 
 ---
 
@@ -119,10 +119,17 @@
   - Apply information hiding principles
 
 **Section 6: OOP - Inheritance & Polymorphism**
-- **Planned Topics:** Inheritance usage, polymorphism, composition vs inheritance
-- **Real Examples From:** AbstractShellComponent, entity hierarchies, strategy patterns in search
-- **Duration:** 20-25 min read
+- **File:** `06-oop-inheritance-polymorphism.md`
+- **Duration:** 30-35 min read
 - **Prerequisites:** Sections 1-5
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand IS-A vs HAS-A relationships (inheritance vs composition)
+  - Master @Override annotation (compiler safety)
+  - Recognize polymorphism in action (repository interfaces)
+  - Apply favor composition over inheritance principle
+  - Avoid fragile base class problem
+  - Use interface-first design pattern
 
 **Section 7: Constructors & Object Lifecycle**
 - **Planned Topics:** Constructor patterns, initialization, Builder pattern, immutability
