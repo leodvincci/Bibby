@@ -39,14 +39,14 @@
 - [x] **Section 27:** DTO Pattern & Layer Boundaries ✅ **(COMPLETE)**
 - [x] **Section 28:** Validation ✅ **(COMPLETE)**
 - [x] **Section 29:** Transaction Management ✅ **(COMPLETE)**
-- [ ] Section 30: Spring Shell Commands
+- [x] **Section 30:** Spring Shell Commands ✅ **(COMPLETE)**
 - [ ] Section 31: Comprehensive Code Review
 - [ ] Section 32: Hands-On Exercises
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 29 / 33
-**Current Focus:** Transaction Management Complete
+**Sections Completed:** 30 / 33
+**Current Focus:** Spring Shell Commands Complete
 
 ---
 
@@ -481,10 +481,21 @@
   - Grade before: D (1 of 5 write methods), Grade after: A (all transactional)
 
 **Section 30: Spring Shell Commands**
-- **Planned Topics:** Command structure, parameter binding, testing commands
-- **Real Examples From:** BookCommands, ComponentFlow usage, command vs service separation
-- **Duration:** 20-25 min read
+- **File:** `30-spring-shell-commands.md`
+- **Duration:** 65 min read
 - **Prerequisites:** Sections 21-29
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand @Command annotation (class-level and method-level)
+  - Master ComponentFlow for interactive multi-step input
+  - Learn withStringInput() and withSingleItemSelector() patterns
+  - Discover CRITICAL N+1 query bug in bookCaseOptions() (61 queries!)
+  - Fix dangerous Optional.get() calls without isPresent()
+  - Apply projections for CLI performance (ShelfSummary, BookSummary)
+  - Separate command concerns (orchestration) from service concerns (business logic)
+  - Add UX enhancements (ANSI colors, Thread.sleep(), ASCII art, loading bars)
+  - Test Spring Shell commands with ShellTestClient
+  - Grade before: B (delightful UX, performance/safety issues), Grade after: A
 
 ### Integration & Practice (Sections 31-33)
 
@@ -654,5 +665,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 29 of 33*
-*Next Up: Section 30 - Spring Shell Commands*
+*Current Section: 30 of 33*
+*Next Up: Section 31 - Comprehensive Code Review*
