@@ -14,7 +14,7 @@
 - [x] **Section 2:** Java Type System & Primitives ✅ **(COMPLETE)**
 - [x] **Section 3:** Control Flow & Logic ✅ **(COMPLETE)**
 - [x] **Section 4:** Methods & Parameters ✅ **(COMPLETE)**
-- [ ] Section 5: OOP - Encapsulation & Abstraction
+- [x] **Section 5:** OOP - Encapsulation & Abstraction ✅ **(COMPLETE)**
 - [ ] Section 6: OOP - Inheritance & Polymorphism
 - [ ] Section 7: Constructors & Object Lifecycle
 - [ ] Section 8: Packages & Visibility
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 4 / 33
-**Current Focus:** Methods & Parameters Complete
+**Sections Completed:** 5 / 33
+**Current Focus:** OOP - Encapsulation & Abstraction Complete
 
 ---
 
@@ -106,10 +106,17 @@
   - Apply single responsibility to methods
 
 **Section 5: OOP - Encapsulation & Abstraction**
-- **Planned Topics:** Encapsulation violations, access modifiers, abstractions, information hiding
-- **Real Examples From:** Genre package-private fields, entity getters/setters, repository interfaces
-- **Duration:** 20-25 min read
+- **File:** `05-oop-encapsulation-abstraction.md`
+- **Duration:** 30-35 min read
 - **Prerequisites:** Sections 1-4
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Fix package-private fields (Genre, ShelfService)
+  - Use defensive copies for collections (BookEntity.authors)
+  - Understand access modifiers (private, public, protected, package-private)
+  - Build rich domain models (add behavior to entities)
+  - Master repository interfaces as abstractions
+  - Apply information hiding principles
 
 **Section 6: OOP - Inheritance & Polymorphism**
 - **Planned Topics:** Inheritance usage, polymorphism, composition vs inheritance
