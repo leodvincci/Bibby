@@ -38,15 +38,15 @@
 - [x] **Section 26:** Entity Design & JPA ✅ **(COMPLETE)**
 - [x] **Section 27:** DTO Pattern & Layer Boundaries ✅ **(COMPLETE)**
 - [x] **Section 28:** Validation ✅ **(COMPLETE)**
-- [ ] Section 29: Transaction Management
+- [x] **Section 29:** Transaction Management ✅ **(COMPLETE)**
 - [ ] Section 30: Spring Shell Commands
 - [ ] Section 31: Comprehensive Code Review
 - [ ] Section 32: Hands-On Exercises
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 28 / 33
-**Current Focus:** Validation Complete
+**Sections Completed:** 29 / 33
+**Current Focus:** Transaction Management Complete
 
 ---
 
@@ -464,10 +464,21 @@
   - Grade before: F (no validation), Grade after: A (comprehensive coverage)
 
 **Section 29: Transaction Management**
-- **Planned Topics:** @Transactional, propagation, rollback rules
-- **Real Examples From:** BookService.createNewBook, missing transactions, transaction boundaries
-- **Duration:** 25-30 min read
+- **File:** `29-transaction-management.md`
+- **Duration:** 55 min read
 - **Prerequisites:** Sections 25-28
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand ACID properties (Atomicity, Consistency, Isolation, Durability)
+  - Discover CRITICAL BUG: BookcaseService.createNewBookCase() missing @Transactional
+  - Learn when to use @Transactional (writes, multiple operations, consistency)
+  - Master transaction propagation (REQUIRED, REQUIRES_NEW, MANDATORY)
+  - Understand rollback rules (RuntimeException yes, checked Exception no)
+  - Fix missing transactions (checkOutBook, updateBook, checkInBook)
+  - Add readOnly optimization for read methods
+  - Avoid common mistakes (same-class calls, detached entities, large transactions)
+  - Test rollback behavior with @Transactional tests
+  - Grade before: D (1 of 5 write methods), Grade after: A (all transactional)
 
 **Section 30: Spring Shell Commands**
 - **Planned Topics:** Command structure, parameter binding, testing commands
@@ -643,5 +654,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 28 of 33*
-*Next Up: Section 29 - Transaction Management*
+*Current Section: 29 of 33*
+*Next Up: Section 30 - Spring Shell Commands*
