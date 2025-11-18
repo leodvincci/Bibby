@@ -26,7 +26,7 @@
 - [x] **Section 14:** Stream API ✅ **(COMPLETE)**
 - [x] **Section 15:** Optional Best Practices ✅ **(COMPLETE)**
 - [x] **Section 16:** Records & Modern Features ✅ **(COMPLETE)**
-- [ ] Section 17: JUnit & Testing Strategy
+- [x] **Section 17:** JUnit & Testing Strategy ✅ **(COMPLETE)**
 - [ ] Section 18: Mockito & Mocking
 - [ ] Section 19: Maven & Build Process
 - [ ] Section 20: Logging Strategy
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 16 / 33
-**Current Focus:** Records & Modern Features Complete
+**Sections Completed:** 17 / 33
+**Current Focus:** JUnit & Testing Strategy Complete
 
 ---
 
@@ -274,10 +274,18 @@
 ### Development Craft (Sections 17-20)
 
 **Section 17: JUnit & Testing Strategy**
-- **Planned Topics:** Test structure, AAA pattern, test coverage, unit vs integration
-- **Real Examples From:** Missing tests for BookService, empty BookCommandsTest, testing opportunities
-- **Duration:** 25-30 min read
+- **File:** `17-junit-testing-strategy.md`
+- **Duration:** 65 min read
 - **Prerequisites:** Sections 1-16
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Discover Bibby has 0% real test coverage (41 files, 2 empty tests)
+  - Understand why testing matters (confidence, refactoring safety, bug prevention)
+  - Master AAA pattern (Arrange, Act, Assert) for test structure
+  - Learn unit vs integration vs E2E tests (testing pyramid)
+  - Use JUnit 5 and AssertJ assertions effectively
+  - Create priority testing strategy for Bibby services
+  - Write first real tests for BookService (6 essential tests)
 
 **Section 18: Mockito & Mocking**
 - **Planned Topics:** Mocking patterns, stubbing, verification, when to mock
@@ -527,5 +535,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 16 of 33*
-*Next Up: Section 17 - JUnit & Testing Strategy*
+*Current Section: 17 of 33*
+*Next Up: Section 18 - Mockito & Mocking*
