@@ -31,7 +31,7 @@
 - [x] **Section 19:** Maven & Build Process ✅ **(COMPLETE)**
 - [x] **Section 20:** Logging Strategy ✅ **(COMPLETE)**
 - [x] **Section 21:** Spring IoC & Dependency Injection ✅ **(COMPLETE)**
-- [ ] Section 22: Component Scanning & Stereotypes
+- [x] **Section 22:** Component Scanning & Stereotypes ✅ **(COMPLETE)**
 - [ ] Section 23: Bean Lifecycle & Scopes
 - [ ] Section 24: Spring Boot Auto-Configuration
 - [ ] Section 25: Spring Data JPA Deep Dive
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 21 / 33
-**Current Focus:** Spring IoC & Dependency Injection Complete
+**Sections Completed:** 22 / 33
+**Current Focus:** Component Scanning & Stereotypes Complete
 
 ---
 
@@ -350,10 +350,19 @@
   - Verify no circular dependencies in Bibby (acyclic dependency graph)
 
 **Section 22: Component Scanning & Stereotypes**
-- **Planned Topics:** @Component, @Service, @Repository usage, component scan config
-- **Real Examples From:** Your service classes, repository interfaces, command components
-- **Duration:** 15-20 min read
+- **File:** `22-component-scanning-stereotypes.md`
+- **Duration:** 45 min read
 - **Prerequisites:** Section 21
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand component scanning (automatic bean discovery)
+  - Learn @SpringBootApplication includes @ComponentScan
+  - Master stereotype annotations (@Component, @Service, @Repository, @RestController)
+  - Discover all stereotypes are @Component under the hood (same annotation!)
+  - Analyze Bibby's 10-package structure (41 Java files, 17 beans discovered)
+  - Understand @CommandScan for Spring Shell commands
+  - Learn default scan path (com.penrose.bibby.**)
+  - Customize component scanning (include/exclude patterns)
 
 **Section 23: Bean Lifecycle & Scopes**
 - **Planned Topics:** Singleton beans, scope decisions, initialization callbacks
@@ -571,5 +580,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 21 of 33*
-*Next Up: Section 22 - Component Scanning & Stereotypes*
+*Current Section: 22 of 33*
+*Next Up: Section 23 - Bean Lifecycle & Scopes*
