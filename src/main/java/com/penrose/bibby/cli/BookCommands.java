@@ -1,6 +1,5 @@
 package com.penrose.bibby.cli;
 
-import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.BookController;
@@ -9,11 +8,10 @@ import com.penrose.bibby.library.book.BookRequestDTO;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
-import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
+
 import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
