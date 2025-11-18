@@ -12,7 +12,7 @@
 
 - [x] **Section 1:** Codebase Foundation ✅ **(COMPLETE)**
 - [x] **Section 2:** Java Type System & Primitives ✅ **(COMPLETE)**
-- [ ] Section 3: Control Flow & Logic
+- [x] **Section 3:** Control Flow & Logic ✅ **(COMPLETE)**
 - [ ] Section 4: Methods & Parameters
 - [ ] Section 5: OOP - Encapsulation & Abstraction
 - [ ] Section 6: OOP - Inheritance & Polymorphism
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 2 / 33
-**Current Focus:** Java Type System & Primitives Complete
+**Sections Completed:** 3 / 33
+**Current Focus:** Control Flow & Logic Complete
 
 ---
 
@@ -81,10 +81,16 @@
   - Master null safety with wrapper types
 
 **Section 3: Control Flow & Logic**
-- **Planned Topics:** if/else patterns, switch expressions, loop constructs, short-circuiting
-- **Real Examples From:** BookService.findBookByTitle, BookCommands.searchBook, validation logic
-- **Duration:** 15-20 min read
-- **Prerequisites:** Section 1
+- **File:** `03-control-flow-logic.md`
+- **Duration:** 25-30 min read
+- **Prerequisites:** Sections 1-2
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Master guard clauses to reduce nesting (flatten pyramid of doom)
+  - Use switch expressions instead of if-else chains (Java 14+)
+  - Safe Optional handling (check isEmpty() before get())
+  - Short-circuit evaluation for null safety
+  - Choose appropriate loop types (for vs enhanced for)
 
 **Section 4: Methods & Parameters**
 - **Planned Topics:** Pass-by-value, method overloading, parameter validation, return types
