@@ -33,7 +33,7 @@
 - [x] **Section 21:** Spring IoC & Dependency Injection ✅ **(COMPLETE)**
 - [x] **Section 22:** Component Scanning & Stereotypes ✅ **(COMPLETE)**
 - [x] **Section 23:** Bean Lifecycle & Scopes ✅ **(COMPLETE)**
-- [ ] Section 24: Spring Boot Auto-Configuration
+- [x] **Section 24:** Spring Boot Auto-Configuration ✅ **(COMPLETE)**
 - [ ] Section 25: Spring Data JPA Deep Dive
 - [ ] Section 26: Entity Design & JPA
 - [ ] Section 27: DTO Pattern & Layer Boundaries
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 23 / 33
-**Current Focus:** Bean Lifecycle & Scopes Complete
+**Sections Completed:** 24 / 33
+**Current Focus:** Spring Boot Auto-Configuration Complete
 
 ---
 
@@ -380,10 +380,19 @@
   - Recognize stateless beans are perfect for singleton scope
 
 **Section 24: Spring Boot Auto-Configuration**
-- **Planned Topics:** Starters, auto-configuration, customization
-- **Real Examples From:** Your pom.xml dependencies, application.properties, auto-configured beans
-- **Duration:** 20-25 min read
+- **File:** `24-spring-boot-auto-configuration.md`
+- **Duration:** 55 min read
 - **Prerequisites:** Sections 21-23
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand @EnableAutoConfiguration and how it works
+  - Master conditional annotations (@ConditionalOnClass, @ConditionalOnMissingBean, @ConditionalOnProperty)
+  - Learn what Spring Boot auto-configures (DataSource, Hibernate, JPA, Transactions, Tomcat, Jackson, Spring Shell)
+  - Discover Bibby has ZERO @Configuration classes (perfect Spring Boot usage!)
+  - Analyze 150+ auto-configuration classes (~30 active for Bibby, ~120 skipped)
+  - Customize auto-configuration with application.properties (23 lines total)
+  - Debug auto-configuration with debug=true and bean listing
+  - Understand how dependencies trigger auto-configuration
 
 **Section 25: Spring Data JPA Deep Dive**
 - **Planned Topics:** Repository magic, query methods, custom queries, projections
@@ -589,5 +598,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 23 of 33*
-*Next Up: Section 24 - Spring Boot Auto-Configuration*
+*Current Section: 24 of 33*
+*Next Up: Section 25 - Spring Data JPA Deep Dive*
