@@ -23,7 +23,7 @@
 - [x] **Section 11:** Exception Handling ✅ **(COMPLETE)**
 - [x] **Section 12:** Memory Model Basics ✅ **(COMPLETE)**
 - [x] **Section 13:** Lambda Expressions & Functional Interfaces ✅ **(COMPLETE)**
-- [ ] Section 14: Stream API
+- [x] **Section 14:** Stream API ✅ **(COMPLETE)**
 - [ ] Section 15: Optional Best Practices
 - [ ] Section 16: Records & Modern Features
 - [ ] Section 17: JUnit & Testing Strategy
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 13 / 33
-**Current Focus:** Lambda Expressions & Functional Interfaces Complete
+**Sections Completed:** 14 / 33
+**Current Focus:** Stream API Complete
 
 ---
 
@@ -233,10 +233,17 @@
   - Choose readability over "modern" code style
 
 **Section 14: Stream API**
-- **Planned Topics:** Stream operations, map/filter/collect, readability tradeoffs
-- **Real Examples From:** For-loops in BookCommands, collection transformations, query results processing
-- **Duration:** 25-30 min read
+- **File:** `14-stream-api.md`
+- **Duration:** 60 min read
 - **Prerequisites:** Section 13
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand streams vs collections (lazy evaluation, single-use)
+  - Master intermediate operations (map, filter, flatMap) vs terminal operations (collect, forEach, reduce)
+  - Use Collectors.toMap() for List-to-Map transformations
+  - Apply mapToInt().sum() for aggregations (eliminate nested loops)
+  - Recognize when NOT to use streams (early termination, indexing, complex logic)
+  - Refactor BookcaseCommands nested loop (best stream opportunity in Bibby)
 
 **Section 15: Optional Best Practices**
 - **Planned Topics:** Optional anti-patterns, chaining, proper usage, when NOT to use
@@ -506,5 +513,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 13 of 33*
-*Next Up: Section 14 - Stream API*
+*Current Section: 14 of 33*
+*Next Up: Section 15 - Optional Best Practices*
