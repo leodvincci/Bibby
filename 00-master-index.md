@@ -30,7 +30,7 @@
 - [x] **Section 18:** Mockito & Mocking ✅ **(COMPLETE)**
 - [x] **Section 19:** Maven & Build Process ✅ **(COMPLETE)**
 - [x] **Section 20:** Logging Strategy ✅ **(COMPLETE)**
-- [ ] Section 21: Spring IoC & Dependency Injection
+- [x] **Section 21:** Spring IoC & Dependency Injection ✅ **(COMPLETE)**
 - [ ] Section 22: Component Scanning & Stereotypes
 - [ ] Section 23: Bean Lifecycle & Scopes
 - [ ] Section 24: Spring Boot Auto-Configuration
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 20 / 33
-**Current Focus:** Logging Strategy Complete
+**Sections Completed:** 21 / 33
+**Current Focus:** Spring IoC & Dependency Injection Complete
 
 ---
 
@@ -335,10 +335,19 @@
 ### Spring & Spring Boot (Sections 21-30)
 
 **Section 21: Spring IoC & Dependency Injection**
-- **Planned Topics:** ApplicationContext, bean definitions, constructor injection, circular dependencies
-- **Real Examples From:** BookService constructor, AuthorService missing injection, bean lifecycle
-- **Duration:** 25-30 min read
+- **File:** `21-spring-ioc-dependency-injection.md`
+- **Duration:** 60 min read
 - **Prerequisites:** Sections 1-20
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand Inversion of Control (Spring creates objects for you)
+  - Master ApplicationContext as the IoC container (big map of beans)
+  - Learn 3 injection types: constructor (best), setter (rare), field (deprecated)
+  - Discover CRITICAL BUG: AuthorService has no injection (NullPointerException!)
+  - Analyze Bibby's excellent constructor injection (BookService, ShelfService, BookCommands)
+  - Refactor field injection in StartupRunner to constructor injection
+  - Understand bean lifecycle (@PostConstruct, @PreDestroy)
+  - Verify no circular dependencies in Bibby (acyclic dependency graph)
 
 **Section 22: Component Scanning & Stereotypes**
 - **Planned Topics:** @Component, @Service, @Repository usage, component scan config
@@ -562,5 +571,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 20 of 33*
-*Next Up: Section 21 - Spring IoC & Dependency Injection*
+*Current Section: 21 of 33*
+*Next Up: Section 22 - Component Scanning & Stereotypes*
