@@ -20,7 +20,7 @@
 - [x] **Section 8:** Packages & Visibility ✅ **(COMPLETE)**
 - [x] **Section 9:** Collections Framework ✅ **(COMPLETE)**
 - [x] **Section 10:** Generics & Type Safety ✅ **(COMPLETE)**
-- [ ] Section 11: Exception Handling
+- [x] **Section 11:** Exception Handling ✅ **(COMPLETE)**
 - [ ] Section 12: Memory Model Basics
 - [ ] Section 13: Lambda Expressions & Functional Interfaces
 - [ ] Section 14: Stream API
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 10 / 33
-**Current Focus:** Generics & Type Safety Complete
+**Sections Completed:** 11 / 33
+**Current Focus:** Exception Handling Complete
 
 ---
 
@@ -189,10 +189,19 @@
   - Follow PECS principle (Producer Extends, Consumer Super)
 
 **Section 11: Exception Handling**
-- **Planned Topics:** Checked vs unchecked, exception hierarchy, custom exceptions
-- **Real Examples From:** ResponseStatusException in BookcaseService, transaction rollback scenarios
-- **Duration:** 20-25 min read
+- **File:** `11-exception-handling.md`
+- **Duration:** 60 min read
 - **Prerequisites:** Sections 1-10
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand checked vs unchecked exceptions
+  - Master ResponseStatusException in Spring Boot
+  - Know when (and when NOT) to use try-catch
+  - Create custom exception classes
+  - Understand exception hierarchy and inheritance
+  - Handle transaction rollback on exceptions
+  - Apply exception handling best practices
+  - Use try-with-resources for automatic cleanup
 
 **Section 12: Memory Model Basics**
 - **Planned Topics:** Stack vs heap, object references, garbage collection, immutability
@@ -482,5 +491,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 10 of 33*
-*Next Up: Section 11 - Exception Handling*
+*Current Section: 11 of 33*
+*Next Up: Section 12 - Memory Model Basics*
