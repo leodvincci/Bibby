@@ -34,7 +34,7 @@
 - [x] **Section 22:** Component Scanning & Stereotypes ✅ **(COMPLETE)**
 - [x] **Section 23:** Bean Lifecycle & Scopes ✅ **(COMPLETE)**
 - [x] **Section 24:** Spring Boot Auto-Configuration ✅ **(COMPLETE)**
-- [ ] Section 25: Spring Data JPA Deep Dive
+- [x] **Section 25:** Spring Data JPA Deep Dive ✅ **(COMPLETE)**
 - [ ] Section 26: Entity Design & JPA
 - [ ] Section 27: DTO Pattern & Layer Boundaries
 - [ ] Section 28: Validation
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 24 / 33
-**Current Focus:** Spring Boot Auto-Configuration Complete
+**Sections Completed:** 25 / 33
+**Current Focus:** Spring Data JPA Deep Dive Complete
 
 ---
 
@@ -395,10 +395,20 @@
   - Understand how dependencies trigger auto-configuration
 
 **Section 25: Spring Data JPA Deep Dive**
-- **Planned Topics:** Repository magic, query methods, custom queries, projections
-- **Real Examples From:** BookRepository query methods, native queries, BookSummary projections
-- **Duration:** 30-35 min read
+- **File:** `25-spring-data-jpa-deep-dive.md`
+- **Duration:** 60 min read
 - **Prerequisites:** Sections 21-24
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand how Spring Data JPA generates implementations from method names (proxy pattern)
+  - Master query method naming conventions (16 methods analyzed from Bibby)
+  - Learn property expression resolution and nested navigation (findByBooks_BookId)
+  - Use @Query for complex queries (JPQL vs native SQL)
+  - Master projection patterns (BookSummary, BookDetailView, ShelfSummary records)
+  - Discover BookEntity.shelfId should be @ManyToOne relationship (design issue)
+  - Analyze all 5 repositories (BookRepository, AuthorRepository, ShelfRepository, BookcaseRepository, CatalogRepository)
+  - Fix return types to use Optional for null safety
+  - Grade: A- (excellent Spring Data JPA usage, minor improvements needed)
 
 **Section 26: Entity Design & JPA**
 - **Planned Topics:** Entity annotations, relationships, ID generation, equals/hashCode
@@ -598,5 +608,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 24 of 33*
-*Next Up: Section 25 - Spring Data JPA Deep Dive*
+*Current Section: 25 of 33*
+*Next Up: Section 26 - Entity Design & JPA*
