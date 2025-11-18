@@ -27,7 +27,7 @@
 - [x] **Section 15:** Optional Best Practices ✅ **(COMPLETE)**
 - [x] **Section 16:** Records & Modern Features ✅ **(COMPLETE)**
 - [x] **Section 17:** JUnit & Testing Strategy ✅ **(COMPLETE)**
-- [ ] Section 18: Mockito & Mocking
+- [x] **Section 18:** Mockito & Mocking ✅ **(COMPLETE)**
 - [ ] Section 19: Maven & Build Process
 - [ ] Section 20: Logging Strategy
 - [ ] Section 21: Spring IoC & Dependency Injection
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 17 / 33
-**Current Focus:** JUnit & Testing Strategy Complete
+**Sections Completed:** 18 / 33
+**Current Focus:** Mockito & Mocking Complete
 
 ---
 
@@ -288,10 +288,19 @@
   - Write first real tests for BookService (6 essential tests)
 
 **Section 18: Mockito & Mocking**
-- **Planned Topics:** Mocking patterns, stubbing, verification, when to mock
-- **Real Examples From:** Testing services with repository mocks, testing commands with service mocks
-- **Duration:** 20-25 min read
+- **File:** `18-mockito-mocking.md`
+- **Duration:** 55 min read
 - **Prerequisites:** Section 17
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand what mocking is and why we need it
+  - Master @Mock, @InjectMocks, and MockitoExtension
+  - Use when(), thenReturn(), thenThrow() to stub behavior
+  - Verify interactions with verify() and argument matchers
+  - Apply any(), eq(), argThat() for flexible matching
+  - Use ArgumentCaptor for complex verification
+  - Create complete BookServiceTest with all Mockito patterns
+  - Know when to mock vs when NOT to mock
 
 **Section 19: Maven & Build Process**
 - **Planned Topics:** Dependency management, build lifecycle, plugins
@@ -535,5 +544,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 17 of 33*
-*Next Up: Section 18 - Mockito & Mocking*
+*Current Section: 18 of 33*
+*Next Up: Section 19 - Maven & Build Process*
