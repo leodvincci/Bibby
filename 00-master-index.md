@@ -29,7 +29,7 @@
 - [x] **Section 17:** JUnit & Testing Strategy ✅ **(COMPLETE)**
 - [x] **Section 18:** Mockito & Mocking ✅ **(COMPLETE)**
 - [x] **Section 19:** Maven & Build Process ✅ **(COMPLETE)**
-- [ ] Section 20: Logging Strategy
+- [x] **Section 20:** Logging Strategy ✅ **(COMPLETE)**
 - [ ] Section 21: Spring IoC & Dependency Injection
 - [ ] Section 22: Component Scanning & Stereotypes
 - [ ] Section 23: Bean Lifecycle & Scopes
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 19 / 33
-**Current Focus:** Maven & Build Process Complete
+**Sections Completed:** 20 / 33
+**Current Focus:** Logging Strategy Complete
 
 ---
 
@@ -318,10 +318,19 @@
   - Analyze Bibby's pom.xml (84 lines, all 7 dependencies explained)
 
 **Section 20: Logging Strategy**
-- **Planned Topics:** Log levels, logging patterns, structured logging, performance
-- **Real Examples From:** SLF4J in BookcaseService, System.out.println in BookCommands, logging gaps
-- **Duration:** 15-20 min read
+- **File:** `20-logging-strategy.md`
+- **Duration:** 50 min read
 - **Prerequisites:** Section 1
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand logging vs printing (diagnostic vs user-facing)
+  - Master SLF4J framework and parameterized logging
+  - Learn 5 log levels (TRACE, DEBUG, INFO, WARN, ERROR)
+  - Discover Bibby has ALL logging disabled (application.properties:17-19)
+  - Identify logging gaps (only BookcaseService uses SLF4J)
+  - Remove debug prints (BookService:47, BookController:26)
+  - Configure logging per-package in application.properties
+  - Apply structured logging (JSON) for production systems
 
 ### Spring & Spring Boot (Sections 21-30)
 
@@ -553,5 +562,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 19 of 33*
-*Next Up: Section 20 - Logging Strategy*
+*Current Section: 20 of 33*
+*Next Up: Section 21 - Spring IoC & Dependency Injection*
