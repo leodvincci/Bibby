@@ -36,7 +36,7 @@
 - [x] **Section 24:** Spring Boot Auto-Configuration ✅ **(COMPLETE)**
 - [x] **Section 25:** Spring Data JPA Deep Dive ✅ **(COMPLETE)**
 - [x] **Section 26:** Entity Design & JPA ✅ **(COMPLETE)**
-- [ ] Section 27: DTO Pattern & Layer Boundaries
+- [x] **Section 27:** DTO Pattern & Layer Boundaries ✅ **(COMPLETE)**
 - [ ] Section 28: Validation
 - [ ] Section 29: Transaction Management
 - [ ] Section 30: Spring Shell Commands
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 26 / 33
-**Current Focus:** Entity Design & JPA Complete
+**Sections Completed:** 27 / 33
+**Current Focus:** DTO Pattern & Layer Boundaries Complete
 
 ---
 
@@ -429,10 +429,21 @@
   - Grade before: D, Grade after fixes: A
 
 **Section 27: DTO Pattern & Layer Boundaries**
-- **Planned Topics:** DTO usage, entity exposure, mapping strategies
-- **Real Examples From:** BookRequestDTO, BookEntity vs Book confusion, controller layer
-- **Duration:** 25-30 min read
+- **File:** `27-dto-pattern-layer-boundaries.md`
+- **Duration:** 65 min read
 - **Prerequisites:** Sections 25-26
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand DTO vs Entity (DTOs for transfer, Entities for persistence)
+  - Discover CRITICAL confusion: Book.java, Shelf.java, Bookcase.java duplicate classes (DELETE THEM!)
+  - Learn three-layer architecture (Presentation → Service → Persistence)
+  - Fix services returning entities (should return DTOs)
+  - Master DTO mapping strategies (manual, MapStruct, ModelMapper)
+  - Analyze 2 existing DTOs (BookRequestDTO, BookcaseDTO - both correct!)
+  - Create response DTOs (BookResponse, AuthorResponse, ShelfResponse)
+  - Fix controller anti-patterns (void returns, accessing repositories directly)
+  - Understand layer boundaries (controllers never see entities)
+  - Grade before: D-, Grade after fixes: A
 
 **Section 28: Validation**
 - **Planned Topics:** Bean Validation, custom validators, validation groups
@@ -620,5 +631,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 26 of 33*
-*Next Up: Section 27 - DTO Pattern & Layer Boundaries*
+*Current Section: 27 of 33*
+*Next Up: Section 28 - Validation*
