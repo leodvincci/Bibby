@@ -18,7 +18,7 @@
 - [x] **Section 6:** OOP - Inheritance & Polymorphism ✅ **(COMPLETE)**
 - [x] **Section 7:** Constructors & Object Lifecycle ✅ **(COMPLETE)**
 - [x] **Section 8:** Packages & Visibility ✅ **(COMPLETE)**
-- [ ] Section 9: Collections Framework
+- [x] **Section 9:** Collections Framework ✅ **(COMPLETE)**
 - [ ] Section 10: Generics & Type Safety
 - [ ] Section 11: Exception Handling
 - [ ] Section 12: Memory Model Basics
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 8 / 33
-**Current Focus:** Packages & Visibility Complete
+**Sections Completed:** 9 / 33
+**Current Focus:** Collections Framework Complete
 
 ---
 
@@ -160,10 +160,18 @@
   - Document packages with package-info.java
 
 **Section 9: Collections Framework**
-- **Planned Topics:** List/Set/Map usage, initialization patterns, immutability
-- **Real Examples From:** Set<AuthorEntity> in BookEntity, LinkedHashMap in BookCommands, repository return types
-- **Duration:** 20-25 min read
+- **File:** `09-collections-framework.md`
+- **Duration:** 75 min read
 - **Prerequisites:** Sections 1-8
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Master List vs Set vs Map selection criteria
+  - Fix exposed mutable collections (BookEntity, AuthorEntity)
+  - Understand HashSet for @ManyToMany JPA relationships
+  - Use LinkedHashMap for ordered menus
+  - Apply defensive copying with Collections.unmodifiable*
+  - Choose appropriate collection initialization patterns
+  - Use Collections utility methods effectively
 
 **Section 10: Generics & Type Safety**
 - **Planned Topics:** Generic types, bounded parameters, type erasure, wildcards
@@ -465,5 +473,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 8 of 33*
-*Next Up: Section 9 - Collections Framework*
+*Current Section: 9 of 33*
+*Next Up: Section 10 - Generics & Type Safety*
