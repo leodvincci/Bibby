@@ -11,6 +11,7 @@ import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 
+import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
