@@ -16,7 +16,7 @@
 - [x] **Section 4:** Methods & Parameters ✅ **(COMPLETE)**
 - [x] **Section 5:** OOP - Encapsulation & Abstraction ✅ **(COMPLETE)**
 - [x] **Section 6:** OOP - Inheritance & Polymorphism ✅ **(COMPLETE)**
-- [ ] Section 7: Constructors & Object Lifecycle
+- [x] **Section 7:** Constructors & Object Lifecycle ✅ **(COMPLETE)**
 - [ ] Section 8: Packages & Visibility
 - [ ] Section 9: Collections Framework
 - [ ] Section 10: Generics & Type Safety
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 6 / 33
-**Current Focus:** OOP - Inheritance & Polymorphism Complete
+**Sections Completed:** 7 / 33
+**Current Focus:** Constructors & Object Lifecycle Complete
 
 ---
 
@@ -132,10 +132,18 @@
   - Use interface-first design pattern
 
 **Section 7: Constructors & Object Lifecycle**
-- **Planned Topics:** Constructor patterns, initialization, Builder pattern, immutability
-- **Real Examples From:** BookcaseEntity constructors, AuthorEntity fullName computation, record usage
-- **Duration:** 15-20 min read
+- **File:** `07-constructors-lifecycle.md`
+- **Duration:** 30-35 min read
 - **Prerequisites:** Sections 1-6
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Master constructor overloading (BookcaseEntity pattern)
+  - Eliminate derived state (AuthorEntity fullName)
+  - Use protected no-arg constructors for JPA
+  - Add validation to record constructors
+  - Apply builder pattern for complex objects
+  - Understand JPA entity lifecycle
+  - Create immutable objects with records
 
 **Section 8: Packages & Visibility**
 - **Planned Topics:** Package structure, access modifiers, visibility boundaries
