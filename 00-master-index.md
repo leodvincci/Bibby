@@ -22,7 +22,7 @@
 - [x] **Section 10:** Generics & Type Safety ✅ **(COMPLETE)**
 - [x] **Section 11:** Exception Handling ✅ **(COMPLETE)**
 - [x] **Section 12:** Memory Model Basics ✅ **(COMPLETE)**
-- [ ] Section 13: Lambda Expressions & Functional Interfaces
+- [x] **Section 13:** Lambda Expressions & Functional Interfaces ✅ **(COMPLETE)**
 - [ ] Section 14: Stream API
 - [ ] Section 15: Optional Best Practices
 - [ ] Section 16: Records & Modern Features
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 12 / 33
-**Current Focus:** Memory Model Basics Complete
+**Sections Completed:** 13 / 33
+**Current Focus:** Lambda Expressions & Functional Interfaces Complete
 
 ---
 
@@ -220,10 +220,17 @@
 ### Modern Java Features (Sections 13-16)
 
 **Section 13: Lambda Expressions & Functional Interfaces**
-- **Planned Topics:** Lambda syntax, functional interfaces, method references
-- **Real Examples From:** Opportunities in for-loops, stream replacements, Optional chaining
-- **Duration:** 20-25 min read
+- **File:** `13-lambda-expressions.md`
+- **Duration:** 55 min read
 - **Prerequisites:** Sections 1-12
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand lambda syntax and functional interfaces
+  - Recognize when to use (and NOT use) lambdas
+  - Master Optional chaining with flatMap and orElseThrow
+  - Use method references for cleaner code
+  - Identify refactoring opportunities in Bibby (unsafe Optional.get())
+  - Choose readability over "modern" code style
 
 **Section 14: Stream API**
 - **Planned Topics:** Stream operations, map/filter/collect, readability tradeoffs
@@ -499,5 +506,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 12 of 33*
-*Next Up: Section 13 - Lambda Expressions & Functional Interfaces*
+*Current Section: 13 of 33*
+*Next Up: Section 14 - Stream API*
