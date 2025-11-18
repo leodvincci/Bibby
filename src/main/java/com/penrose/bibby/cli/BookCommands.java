@@ -24,10 +24,11 @@ import java.util.*;
 public class BookCommands extends AbstractShellComponent {
 
     final BookService bookService;
-    final BookController bookController;
     final BookcaseService bookcaseService;
     final ShelfService shelfService;
     final AuthorService authorService;
+
+    final BookController bookController;
 
 
 
@@ -38,22 +39,6 @@ public class BookCommands extends AbstractShellComponent {
     //
     // ───────────────────────────────────────────────────────────────────
 
-
-
-
-    List<String> bibbySearchResponses = new ArrayList<>(List.of(
-            "Got it — searching the stacks for books by",
-            "Sure thing — I’ll take a quick look through the shelves for",
-            "Alright - Give me a sec...checking the catalogue for books by",
-            "Hold on, I’m diving into the stacks — Let’s see what we’ve got by",
-            "Searching for books by",
-            "Let’s take a quiet look through the shelves for",
-            "On it — I’ll go dig through the stacks. Hope the intern filed things alphabetically this time."
-    ));
-
-    public void setBibbySearchResponses(String bibbySearchResponses) {
-        this.bibbySearchResponses.add(bibbySearchResponses);
-    }
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
