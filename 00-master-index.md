@@ -17,7 +17,7 @@
 - [x] **Section 5:** OOP - Encapsulation & Abstraction ✅ **(COMPLETE)**
 - [x] **Section 6:** OOP - Inheritance & Polymorphism ✅ **(COMPLETE)**
 - [x] **Section 7:** Constructors & Object Lifecycle ✅ **(COMPLETE)**
-- [ ] Section 8: Packages & Visibility
+- [x] **Section 8:** Packages & Visibility ✅ **(COMPLETE)**
 - [ ] Section 9: Collections Framework
 - [ ] Section 10: Generics & Type Safety
 - [ ] Section 11: Exception Handling
@@ -44,9 +44,9 @@
 - [ ] Section 32: Hands-On Exercises
 - [ ] Section 33: Your Personalized Learning Roadmap
 
-**Last Updated:** 2025-11-17
-**Sections Completed:** 7 / 33
-**Current Focus:** Constructors & Object Lifecycle Complete
+**Last Updated:** 2025-11-18
+**Sections Completed:** 8 / 33
+**Current Focus:** Packages & Visibility Complete
 
 ---
 
@@ -146,10 +146,18 @@
   - Create immutable objects with records
 
 **Section 8: Packages & Visibility**
-- **Planned Topics:** Package structure, access modifiers, visibility boundaries
-- **Real Examples From:** com.penrose.bibby.library.* organization, public/private/package-private usage
-- **Duration:** 10-15 min read
+- **File:** `08-packages-visibility.md`
+- **Duration:** 90 min read
 - **Prerequisites:** Sections 1-7
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Master package organization using vertical slice architecture
+  - Understand public vs package-private class visibility
+  - Fix critical layering violations (CLI accessing entities)
+  - Use DTOs for cross-layer communication
+  - Make entities and repositories package-private (encapsulation)
+  - Apply "least privilege" principle to visibility
+  - Document packages with package-info.java
 
 **Section 9: Collections Framework**
 - **Planned Topics:** List/Set/Map usage, initialization patterns, immutability
@@ -455,7 +463,7 @@ Take pride in what you've built. Now let's make it even better.
 
 ---
 
-*Master Index Last Updated: 2025-11-17*
+*Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 1 of 33*
-*Next Up: Section 2 - Java Type System & Primitives*
+*Current Section: 8 of 33*
+*Next Up: Section 9 - Collections Framework*
