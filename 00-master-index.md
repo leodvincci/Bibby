@@ -13,7 +13,7 @@
 - [x] **Section 1:** Codebase Foundation ✅ **(COMPLETE)**
 - [x] **Section 2:** Java Type System & Primitives ✅ **(COMPLETE)**
 - [x] **Section 3:** Control Flow & Logic ✅ **(COMPLETE)**
-- [ ] Section 4: Methods & Parameters
+- [x] **Section 4:** Methods & Parameters ✅ **(COMPLETE)**
 - [ ] Section 5: OOP - Encapsulation & Abstraction
 - [ ] Section 6: OOP - Inheritance & Polymorphism
 - [ ] Section 7: Constructors & Object Lifecycle
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-17
-**Sections Completed:** 3 / 33
-**Current Focus:** Control Flow & Logic Complete
+**Sections Completed:** 4 / 33
+**Current Focus:** Methods & Parameters Complete
 
 ---
 
@@ -93,10 +93,17 @@
   - Choose appropriate loop types (for vs enhanced for)
 
 **Section 4: Methods & Parameters**
-- **Planned Topics:** Pass-by-value, method overloading, parameter validation, return types
-- **Real Examples From:** BookEntity constructors, setAuthors() method, service method signatures
-- **Duration:** 15-20 min read
+- **File:** `04-methods-parameters.md`
+- **Duration:** 25-30 min read
 - **Prerequisites:** Sections 1-3
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand pass-by-value (Java copies references, not objects)
+  - Master method overloading (multiple constructors in BookcaseEntity)
+  - Add parameter validation (null checks, fail-fast principle)
+  - Return Optional instead of null for queries
+  - Rename confusing methods (setAuthors → addAuthor)
+  - Apply single responsibility to methods
 
 **Section 5: OOP - Encapsulation & Abstraction**
 - **Planned Topics:** Encapsulation violations, access modifiers, abstractions, information hiding
