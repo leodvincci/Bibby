@@ -41,12 +41,12 @@
 - [x] **Section 29:** Transaction Management ✅ **(COMPLETE)**
 - [x] **Section 30:** Spring Shell Commands ✅ **(COMPLETE)**
 - [x] **Section 31:** Comprehensive Code Review ✅ **(COMPLETE)**
-- [ ] Section 32: Hands-On Exercises
+- [x] **Section 32:** Hands-On Exercises ✅ **(COMPLETE)**
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 31 / 33
-**Current Focus:** Comprehensive Code Review Complete
+**Sections Completed:** 32 / 33
+**Current Focus:** Hands-On Exercises Complete
 
 ---
 
@@ -517,10 +517,21 @@
   - Overall grade after: A (production-ready professional codebase)
 
 **Section 32: Hands-On Exercises**
-- **Planned Topics:** 15 refactoring exercises with solutions
-- **Real Examples From:** All concepts applied to your actual code
-- **Duration:** Variable (practice-based)
+- **File:** `32-hands-on-exercises.md`
+- **Duration:** 8-15 hours (practice-based, 15 exercises total)
 - **Prerequisites:** Sections 1-31
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - 15 hands-on refactoring exercises organized by difficulty
+  - Beginner (1-5): Quick wins (injection, transactions, Optional, equals, logging)
+  - Intermediate (6-10): Moderate refactors (testing, validation, DTOs, N+1 fix)
+  - Advanced (11-15): Complex improvements (relationships, coverage, CI/CD)
+  - Step-by-step solutions for every exercise
+  - Testing guidance and verification steps
+  - Commit messages for each fix
+  - Practice all concepts from Sections 1-31
+  - Progressive difficulty: 15 min → 4 hours per exercise
+  - Complete roadmap: Week 1 (critical), Week 2 (high priority), Weeks 3-4 (advanced)
 
 **Section 33: Your Personalized Learning Roadmap**
 - **Planned Topics:** 12-week plan, daily habits, resources, milestones
@@ -676,5 +687,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 31 of 33*
-*Next Up: Section 32 - Hands-On Exercises*
+*Current Section: 32 of 33*
+*Next Up: Section 33 - Your Personalized Learning Roadmap*
