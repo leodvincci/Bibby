@@ -25,7 +25,7 @@
 - [x] **Section 13:** Lambda Expressions & Functional Interfaces ✅ **(COMPLETE)**
 - [x] **Section 14:** Stream API ✅ **(COMPLETE)**
 - [x] **Section 15:** Optional Best Practices ✅ **(COMPLETE)**
-- [ ] Section 16: Records & Modern Features
+- [x] **Section 16:** Records & Modern Features ✅ **(COMPLETE)**
 - [ ] Section 17: JUnit & Testing Strategy
 - [ ] Section 18: Mockito & Mocking
 - [ ] Section 19: Maven & Build Process
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 15 / 33
-**Current Focus:** Optional Best Practices Complete
+**Sections Completed:** 16 / 33
+**Current Focus:** Records & Modern Features Complete
 
 ---
 
@@ -259,10 +259,17 @@
   - Fix critical vulnerability in BookCommands.java:361-363, 474-477, 550-553
 
 **Section 16: Records & Modern Features**
-- **Planned Topics:** Records for DTOs, text blocks, switch expressions, var inference
-- **Real Examples From:** BookRequestDTO, BookSummary, native queries, opportunities for var
-- **Duration:** 20-25 min read
+- **File:** `16-records-modern-features.md`
+- **Duration:** 50 min read
 - **Prerequisites:** Sections 13-15
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand records as immutable data carriers (5 perfect uses in Bibby)
+  - Master text blocks for readable multi-line strings (17 locations)
+  - Learn switch expressions (no fallthrough, return values)
+  - Explore pattern matching instanceof (Java 16+)
+  - Apply var for type inference (when to use, when not to)
+  - Recognize Bibby already uses modern features excellently (A- grade)
 
 ### Development Craft (Sections 17-20)
 
@@ -520,5 +527,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 15 of 33*
-*Next Up: Section 16 - Records & Modern Features*
+*Current Section: 16 of 33*
+*Next Up: Section 17 - JUnit & Testing Strategy*
