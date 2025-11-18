@@ -35,7 +35,7 @@
 - [x] **Section 23:** Bean Lifecycle & Scopes ✅ **(COMPLETE)**
 - [x] **Section 24:** Spring Boot Auto-Configuration ✅ **(COMPLETE)**
 - [x] **Section 25:** Spring Data JPA Deep Dive ✅ **(COMPLETE)**
-- [ ] Section 26: Entity Design & JPA
+- [x] **Section 26:** Entity Design & JPA ✅ **(COMPLETE)**
 - [ ] Section 27: DTO Pattern & Layer Boundaries
 - [ ] Section 28: Validation
 - [ ] Section 29: Transaction Management
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 25 / 33
-**Current Focus:** Spring Data JPA Deep Dive Complete
+**Sections Completed:** 26 / 33
+**Current Focus:** Entity Design & JPA Complete
 
 ---
 
@@ -411,10 +411,22 @@
   - Grade: A- (excellent Spring Data JPA usage, minor improvements needed)
 
 **Section 26: Entity Design & JPA**
-- **Planned Topics:** Entity annotations, relationships, ID generation, equals/hashCode
-- **Real Examples From:** BookEntity, AuthorEntity, @ManyToMany, missing @ManyToOne opportunities
-- **Duration:** 30-35 min read
+- **File:** `26-entity-design-jpa.md`
+- **Duration:** 75 min read
 - **Prerequisites:** Section 25
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Master entity annotations (@Entity, @Table, @Id, @GeneratedValue)
+  - Understand relationship mappings (@ManyToOne, @OneToMany, @ManyToMany)
+  - Fix critical design issues (BookEntity.shelfId and ShelfEntity.bookcaseId should be @ManyToOne)
+  - Learn ID generation strategies (AUTO perfect for PostgreSQL)
+  - Implement equals()/hashCode() using business keys (isbn, firstName+lastName)
+  - Understand fetch strategies (LAZY vs EAGER, N+1 query problem)
+  - Add cascade operations (CascadeType.ALL for strong ownership)
+  - Analyze all 5 entities (BookEntity, AuthorEntity, ShelfEntity, BookcaseEntity, CatalogEntity)
+  - Discover CatalogEntity has no JPA annotations (delete or fix)
+  - Complete entity relationship diagram (Bookcase → Shelf → Book ↔ Author)
+  - Grade before: D, Grade after fixes: A
 
 **Section 27: DTO Pattern & Layer Boundaries**
 - **Planned Topics:** DTO usage, entity exposure, mapping strategies
@@ -608,5 +620,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 25 of 33*
-*Next Up: Section 26 - Entity Design & JPA*
+*Current Section: 26 of 33*
+*Next Up: Section 27 - DTO Pattern & Layer Boundaries*
