@@ -37,7 +37,7 @@
 - [x] **Section 25:** Spring Data JPA Deep Dive ✅ **(COMPLETE)**
 - [x] **Section 26:** Entity Design & JPA ✅ **(COMPLETE)**
 - [x] **Section 27:** DTO Pattern & Layer Boundaries ✅ **(COMPLETE)**
-- [ ] Section 28: Validation
+- [x] **Section 28:** Validation ✅ **(COMPLETE)**
 - [ ] Section 29: Transaction Management
 - [ ] Section 30: Spring Shell Commands
 - [ ] Section 31: Comprehensive Code Review
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 27 / 33
-**Current Focus:** DTO Pattern & Layer Boundaries Complete
+**Sections Completed:** 28 / 33
+**Current Focus:** Validation Complete
 
 ---
 
@@ -446,10 +446,22 @@
   - Grade before: D-, Grade after fixes: A
 
 **Section 28: Validation**
-- **Planned Topics:** Bean Validation, custom validators, validation groups
-- **Real Examples From:** Missing @NotNull/@Size, validation opportunities in DTOs and entities
-- **Duration:** 20-25 min read
+- **File:** `28-validation.md`
+- **Duration:** 60 min read
 - **Prerequisites:** Section 27
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Discover ZERO validation in Bibby (no dependency, no annotations, no @Valid)
+  - Understand Bean Validation API (@NotNull, @NotBlank, @Size, @Positive, @Pattern, @Email)
+  - Add spring-boot-starter-validation dependency to pom.xml
+  - Annotate all DTOs (CreateBookRequest, CreateBookcaseRequest, UpdateBookRequest)
+  - Enable validation in controllers with @Valid
+  - Create custom validators (@ValidISBN with checksum algorithm)
+  - Add global exception handler for validation errors
+  - Validate both DTOs (API boundary) and Entities (database integrity)
+  - Use validation groups for Create vs Update
+  - Write validation tests (unit and integration)
+  - Grade before: F (no validation), Grade after: A (comprehensive coverage)
 
 **Section 29: Transaction Management**
 - **Planned Topics:** @Transactional, propagation, rollback rules
@@ -631,5 +643,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 27 of 33*
-*Next Up: Section 28 - Validation*
+*Current Section: 28 of 33*
+*Next Up: Section 29 - Transaction Management*
