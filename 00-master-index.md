@@ -24,7 +24,7 @@
 - [x] **Section 12:** Memory Model Basics ✅ **(COMPLETE)**
 - [x] **Section 13:** Lambda Expressions & Functional Interfaces ✅ **(COMPLETE)**
 - [x] **Section 14:** Stream API ✅ **(COMPLETE)**
-- [ ] Section 15: Optional Best Practices
+- [x] **Section 15:** Optional Best Practices ✅ **(COMPLETE)**
 - [ ] Section 16: Records & Modern Features
 - [ ] Section 17: JUnit & Testing Strategy
 - [ ] Section 18: Mockito & Mocking
@@ -45,8 +45,8 @@
 - [ ] Section 33: Your Personalized Learning Roadmap
 
 **Last Updated:** 2025-11-18
-**Sections Completed:** 14 / 33
-**Current Focus:** Stream API Complete
+**Sections Completed:** 15 / 33
+**Current Focus:** Optional Best Practices Complete
 
 ---
 
@@ -246,10 +246,17 @@
   - Refactor BookcaseCommands nested loop (best stream opportunity in Bibby)
 
 **Section 15: Optional Best Practices**
-- **Planned Topics:** Optional anti-patterns, chaining, proper usage, when NOT to use
-- **Real Examples From:** BookService.findBookByTitle, get() calls in BookCommands, null returns
-- **Duration:** 20-25 min read
+- **File:** `15-optional-best-practices.md`
+- **Duration:** 55 min read
 - **Prerequisites:** Sections 13-14
+- **Status:** ✅ COMPLETE
+- **Key Outcomes:**
+  - Understand Optional as explicit "maybe absent" container
+  - Identify 11 unsafe .get() calls in Bibby (crash risks)
+  - Master safe alternatives (orElse, orElseThrow, ifPresent, orElseGet)
+  - Use flatMap() for Optional chaining (eliminate nested .get() calls)
+  - Recognize when NOT to use Optional (parameters, fields, collections)
+  - Fix critical vulnerability in BookCommands.java:361-363, 474-477, 550-553
 
 **Section 16: Records & Modern Features**
 - **Planned Topics:** Records for DTOs, text blocks, switch expressions, var inference
@@ -513,5 +520,5 @@ Take pride in what you've built. Now let's make it even better.
 
 *Master Index Last Updated: 2025-11-18*
 *Journey Started: 2025-11-17*
-*Current Section: 14 of 33*
-*Next Up: Section 15 - Optional Best Practices*
+*Current Section: 15 of 33*
+*Next Up: Section 16 - Records & Modern Features*
