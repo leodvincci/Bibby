@@ -3,6 +3,59 @@
 
 ---
 
+## The Story: "The $4M Upgrade That Changed Nothing"
+
+The VP of Operations was furious. "We spent $4 million upgrading our manufacturing line, and throughput hasn't budged. Explain that."
+
+The consultant pulled up the system diagram. Six months ago, the factory produced 1,000 widgets per day. After massive investments in:
+- New raw material handling system ($800K)
+- Upgraded assembly robots ($1.2M)
+- Additional quality inspection stations ($600K)
+- Expanded packaging equipment ($900K)
+- Better warehouse automation ($500K)
+
+Current production: **1,003 widgets per day.**
+
+"A 0.3% improvement?" The VP's voice was ice cold.
+
+The plant manager, Chen, had tried to warn them before the upgrades. "The problem is Station 4 — the heat treatment ovens. They can only process 1,000 units per day. It's been the bottleneck for three years."
+
+The consultant had dismissed her concern. "We're optimizing the entire line. Every improvement adds up."
+
+Except they didn't. The upgraded raw material system now processed 2,000 units per hour instead of 1,500. **Result:** Raw materials piled up faster. The assembly robots worked 30% faster. **Result:** More widgets queued at the oven. Quality inspection was faster. **Result:** Inspectors had more idle time. Packaging was faster. **Result:** Packaging waited for ovens anyway.
+
+**The only improvement:** Raw material waste decreased slightly (better handling), giving them the 0.3% gain.
+
+Meanwhile, competitor across town spent $400,000 on two additional ovens. **Their throughput doubled** from 1,000 to 2,000 widgets per day.
+
+Chen had done the math from the start:
+
+```
+BEFORE UPGRADE:
+Raw Material Handling: 1,500 units/day capacity
+Assembly Robots:       1,200 units/day capacity
+Heat Treatment Ovens:  1,000 units/day capacity  ← BOTTLENECK
+Quality Inspection:    1,500 units/day capacity
+Packaging:             1,300 units/day capacity
+
+System Throughput = 1,000 units/day (limited by ovens)
+
+AFTER $4M UPGRADE:
+Raw Material Handling: 2,000 units/day capacity ✓
+Assembly Robots:       1,560 units/day capacity ✓
+Heat Treatment Ovens:  1,000 units/day capacity  ← STILL THE BOTTLENECK
+Quality Inspection:    2,000 units/day capacity ✓
+Packaging:             1,800 units/day capacity ✓
+
+System Throughput = 1,000 units/day (STILL limited by ovens)
+```
+
+**The lesson:** $4M spent everywhere EXCEPT the constraint = $4M wasted. $400K spent ON the constraint = 2× throughput.
+
+This is why understanding constraints is the highest-ROI skill you'll learn. **Systems move at the speed of their slowest point. Improve anything else, and you've just made the queue longer.**
+
+---
+
 ## Introduction: The Petroleum Terminal That Taught Me Everything
 
 You're standing at a petroleum terminal watching trucks line up. Pipeline receipts are flowing in at full capacity — 10,000 barrels per hour. Storage tanks are filling. Everything seems fine until you notice: **only 6 trucks are getting loaded per hour**, and the terminal can handle 8,000 barrels per hour of truck loadout.
