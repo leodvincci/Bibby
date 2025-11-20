@@ -99,16 +99,11 @@ public class BookCommands extends AbstractShellComponent {
             authorNameComponentFlow(title);
         }
 
-        Thread.sleep(1000);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
-        Thread.sleep(1750);
         System.out.printf("\u001B[36m</>\033[0m:'%s', right?",title);
-        Thread.sleep(2350);
         System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
-        Thread.sleep(3800);
         System.out.println("\n\u001B[36m</>\033[0m: Should I recommend where it belongs?\n");
-        Thread.sleep(1000);
 
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("recommendShelf")
@@ -117,7 +112,6 @@ public class BookCommands extends AbstractShellComponent {
         result = flow.run();
 
         if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
-            Thread.sleep(2000);
             System.out.println(
                     """
                     \u001B[36m</>\033[0m: Recommended Shelf → \u001B[33mD-48\033[0m: Programming & Engineering.
@@ -127,7 +121,6 @@ public class BookCommands extends AbstractShellComponent {
                     """
             );
 
-            Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m:Shall I make it official and slide this one onto the shelf?\n");
 
             flow = componentFlowBuilder.clone()
@@ -137,14 +130,11 @@ public class BookCommands extends AbstractShellComponent {
             result = flow.run();
 
             if(result.getContext().get("recommendShelf",String.class).equalsIgnoreCase("yes")){
-                Thread.sleep(2000);
                 System.out.println("\u001B[36m</>\033[0m: And there it is — " + "Shelf \u001B[33mD-48\033[0m" + ", freshly updated with another gem.\n");
             }else{
-                Thread.sleep(2000);
                 System.out.println("\u001B[36m</>\033[0m: No rush. Every book finds its home eventually.\n");
             }
         }else{
-            Thread.sleep(2000);
             System.out.println("\u001B[36m</>\033[0m: Fair enough. We can pick another shelf anytime.\n");
         }
 

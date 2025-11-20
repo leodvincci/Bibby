@@ -24,6 +24,7 @@ public class BookService {
         String firstName = bookRequestDTO.firstName();
         String lastName = bookRequestDTO.lastName();
         String title = bookRequestDTO.title();
+
         BookEntity bookEntity = bookRepository.findByTitle(title);
         AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName, lastName);
 
