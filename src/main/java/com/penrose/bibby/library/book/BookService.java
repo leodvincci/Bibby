@@ -36,11 +36,11 @@ public class BookService {
         }
 
         if (bookEntity == null) {
-            bookEntity = new BookEntity();
-            bookEntity.setTitle(title);
+            bookEntity = BookFactory.createBook(title,authorEntity);
+            saveBook( bookEntity );
+        }else{
+            System.out.println("Book Already Exists");
         }
-            bookEntity.setAuthors(authorEntity);
-            bookRepository.save(bookEntity);
     }
 
     public BookEntity findBookByTitle(String title){
@@ -59,7 +59,7 @@ public class BookService {
     public void checkOutBook(BookEntity bookEntity){
         if(!bookEntity.getBookStatus().equals(BookStatus.CHECKED_OUT.toString())){
             bookEntity.setBookStatus("CHECKED_OUT");
-            bookRepository.save(bookEntity);
+            saveBook(bookEntity);
         }
 
     }
@@ -98,6 +98,10 @@ public class BookService {
 
     public BookEntity findBookByTitleIgnoreCase(String title){
         return bookRepository.findByTitleIgnoreCase(title);
+    }
+
+    public void saveBook(BookEntity bookEntity){
+        bookRepository.save(bookEntity);
     }
 }
 
