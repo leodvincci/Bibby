@@ -110,19 +110,21 @@ public class BookService {
 
 
     public void checkOutBook(BookEntity bookEntity){
-//        List<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
+        List<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
 
-        Book book = bookMapper(bookEntity, (HashSet<AuthorEntity>) bookEntity.getAuthors());
-        book.checkout();
-        if(!bookEntity.getBookStatus().equals(AvailabilityStatus.CHECKED_OUT.toString())){
-            bookEntity.setBookStatus("CHECKED_OUT");
-            saveBook(bookEntity);
-        }
+        // Create domain object for business logic validation
+        Book book = bookMapper(bookEntity, new HashSet<>(authorEntities));
+        book.checkout(); // This validates and updates the domain object status
+
+        // Update the entity directly instead of converting back
+        bookEntity.setBookStatus(book.getAvailabilityStatus().name());
+        saveBook(bookEntity);
     }
 
-    public Book bookMapper(BookEntity bookEntity, HashSet<AuthorEntity> authorEntities){
+
+    public Book bookMapper(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
         Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-        return BookMapper.toDomain(bookEntity, (HashSet<AuthorEntity>) bookEntity.getAuthors(), shelfEntity.orElse(null));
+        return BookMapper.toDomain(bookEntity, authorEntities, shelfEntity.orElse(null));
     }
 
 

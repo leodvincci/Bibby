@@ -34,7 +34,7 @@ public class Book {
         this.authors = authors;
     }
     
-    public void checkout(){
+    public boolean checkout(){
 
         //needs to check if a book is already checked out
         if(this.availabilityStatus != AvailabilityStatus.AVAILABLE){
@@ -43,6 +43,7 @@ public class Book {
 
         //change status to check out
         this.availabilityStatus = AvailabilityStatus.CHECKED_OUT;
+        return true;
     }
 
     public boolean isCheckedOut(){
