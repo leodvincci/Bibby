@@ -9,6 +9,29 @@ public class Shelf {
     private String shelfLabel;
     private int shelfPosition;
 
+    public Bookcase getBookCase() {
+        return bookCase;
+    }
+
+    public void setBookCase(Bookcase bookCase) {
+        this.bookCase = bookCase;
+    }
+
+    public String getShelfLabel() {
+        return shelfLabel;
+    }
+
+    public void setShelfLabel(String shelfLabel) {
+        this.shelfLabel = shelfLabel;
+    }
+
+    public int getShelfPosition() {
+        return shelfPosition;
+    }
+
+    public void setShelfPosition(int shelfPosition) {
+        this.shelfPosition = shelfPosition;
+    }
 
     public Shelf() {
 

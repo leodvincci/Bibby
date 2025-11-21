@@ -10,10 +10,10 @@ import java.util.Set;
 @Component
 public class BookFactory {
 
-    public BookEntity createBook(String title, AuthorEntity author){
+    public BookEntity createBook(String title, Set<AuthorEntity> authors){
         BookEntity bookEntity = new BookEntity();
         bookEntity.setTitle(title);
-        bookEntity.setAuthors(author);
+        bookEntity.setAuthors(authors);
         return bookEntity;
     }
 

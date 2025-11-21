@@ -1,12 +1,27 @@
 package com.penrose.bibby.library.book;
 
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.Shelf;
+import com.penrose.bibby.library.shelf.ShelfEntity;
+import com.penrose.bibby.library.shelf.ShelfMapper;
+
+import java.util.HashSet;
+import java.util.List;
 
 public class BookMapper {
 
-    public static Book toDomain(BookEntity e, AuthorEntity authorEntity, Shelf shelf, Genre genre){
+    public static Book toDomain(BookEntity e, HashSet<AuthorEntity> authorEntities, ShelfEntity shelfEntity){
+
+        HashSet<Author> authors = new HashSet<>();
+        Shelf shelf = ShelfMapper.toDomain(shelfEntity);
+
+        for (AuthorEntity authorEntity : authorEntities) {
+            authors.add(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
+        }
+
         if (e == null){
             return null;
         }
@@ -14,11 +29,11 @@ public class BookMapper {
         book.setId(e.getBookId());
         book.setEdition(e.getEdition());
         book.setTitle(e.getTitle());
-        book.setAuthor(authorEntity);
+        book.setAuthors(authors);
         book.setIsbn(e.getIsbn());
         book.setPublisher(e.getPublisher());
         book.setPublicationYear(e.getPublicationYear());
-        book.setGenre(genre);
+//        book.setGenre(genre);
         book.setShelf(shelf);
         book.setDescription(e.getDescription());
         book.setCheckoutCount(e.getCheckoutCount());

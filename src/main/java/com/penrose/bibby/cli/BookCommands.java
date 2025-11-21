@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli;
 
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.BookController;
@@ -52,7 +53,7 @@ public class BookCommands extends AbstractShellComponent {
         this.authorService = authorService;
     }
 
-    public void authorNameComponentFlow(String title){
+    public Author authorNameComponentFlow(String title){
         ComponentFlow flow2;
         flow2 = componentFlowBuilder.clone()
                 .withStringInput("authorFirstName")
@@ -65,8 +66,10 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult result = flow2.run();
         String firstName  = result.getContext().get("authorFirstName", String.class);
         String lastName = result.getContext().get("authorLastName", String.class);
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
-        bookService.createNewBook(bookRequestDTO);
+//        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
+//        bookService.createNewBook(bookRequestDTO);
+        return new Author(firstName,lastName);
+
     }
 
     @Command(command = "add", description = "Add a new book to your library database")
@@ -93,11 +96,15 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-         title  = result.getContext().get("title", String.class);
+        title  = result.getContext().get("title", String.class);
 
+        List<Author> authors = new ArrayList<>();
         for(int i = 0; i < authorCount; i++){
-            authorNameComponentFlow(title);
+            authors.add(authorNameComponentFlow(title));
         }
+        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authors);
+        bookService.createNewBook(bookRequestDTO);
+
 
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");

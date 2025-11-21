@@ -30,7 +30,7 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String title, Set<AuthorEntity> authors) {
+    public BookEntity(String title, HashSet<AuthorEntity> authors) {
         this.title = title;
         this.authors = authors;
     }
@@ -51,8 +51,8 @@ public class BookEntity {
         return authors;
     }
 
-    public void setAuthors(AuthorEntity authors) {
-        this.authors.add(authors);
+    public void setAuthors(Set<AuthorEntity> authors) {
+        this.authors.addAll(authors);
     }
 
     public void setBookId(Long id) {
