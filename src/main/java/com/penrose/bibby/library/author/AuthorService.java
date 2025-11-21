@@ -20,6 +20,10 @@ public class AuthorService {
        return authorRepository.findByFirstNameAndLastName(firstName, lastName);
    }
 
+   public AuthorEntity findById(Long id){
+       return authorRepository.findById(id).orElse(null);
+   }
+
    public AuthorEntity createNewAuthor(String authorFirstName, String authorLastName){
         AuthorEntity authorEntity = new AuthorEntity();
         authorEntity.setFirstName(authorFirstName);

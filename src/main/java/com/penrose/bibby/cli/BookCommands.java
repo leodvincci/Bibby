@@ -221,7 +221,7 @@ public class BookCommands extends AbstractShellComponent {
             System.out.println(shelfId);
             System.out.println(title);
             bookEnt.setShelfId(shelfId);
-            bookService.updateBook(bookEnt);
+            bookService.saveBook(bookEnt);
             System.out.println("Added Book To the Shelf!");
         }
 
@@ -461,7 +461,7 @@ public class BookCommands extends AbstractShellComponent {
             
 
         }else{
-            List<AuthorEntity> authors = bookService.findAuthorsByBookId(book.getBookId());
+            List<AuthorEntity> authors = authorService.findByBookId(book.getBookId());
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -527,7 +527,7 @@ public class BookCommands extends AbstractShellComponent {
             bookshelfLabel = shelfEntity.get().getShelfLabel();
         }
 
-        List<AuthorEntity> authors = bookService.findAuthorsByBookId(bookEntity.getBookId());
+        List<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
 
         System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkin\n\u001B[0m
