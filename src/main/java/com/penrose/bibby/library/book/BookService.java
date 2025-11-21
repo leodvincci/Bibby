@@ -2,6 +2,7 @@ package com.penrose.bibby.library.book;
 
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorRepository;
+import com.penrose.bibby.library.author.AuthorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,11 +12,13 @@ import java.util.Optional;
 @Service
 public class BookService {
 
-    final BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    private final AuthorService authorService;
     private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository){
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, AuthorService authorService){
         this.bookRepository = bookRepository;
+        this.authorService = authorService;
         this.authorRepository = authorRepository;
     }
 
@@ -24,20 +27,20 @@ public class BookService {
         String firstName = bookRequestDTO.firstName();
         String lastName = bookRequestDTO.lastName();
         String title = bookRequestDTO.title();
-        BookEntity bookEntity = bookRepository.findByTitle(title);
-        AuthorEntity authorEntity = authorRepository.findByFirstNameAndLastName(firstName, lastName);
+
+        BookEntity bookEntity = findBookByTitleIgnoreCase(title);
+        AuthorEntity authorEntity = authorService.findByAuthorFirstNameLastName(firstName, lastName);
 
         if (authorEntity == null) {
-            authorEntity = new AuthorEntity(firstName, lastName);
-            authorRepository.save(authorEntity);
+            authorEntity = authorService.createNewAuthor(firstName,lastName);
         }
 
         if (bookEntity == null) {
-            bookEntity = new BookEntity();
-            bookEntity.setTitle(title);
+            bookEntity = BookFactory.createBook(title,authorEntity);
+            saveBook( bookEntity );
+        }else{
+            System.out.println("Book Already Exists");
         }
-            bookEntity.setAuthors(authorEntity);
-            bookRepository.save(bookEntity);
     }
 
     public BookEntity findBookByTitle(String title){
@@ -56,7 +59,7 @@ public class BookService {
     public void checkOutBook(BookEntity bookEntity){
         if(!bookEntity.getBookStatus().equals(BookStatus.CHECKED_OUT.toString())){
             bookEntity.setBookStatus("CHECKED_OUT");
-            bookRepository.save(bookEntity);
+            saveBook(bookEntity);
         }
 
     }
@@ -91,6 +94,14 @@ public class BookService {
 
     public Optional<BookEntity> findBookById(Long bookId) {
         return bookRepository.findById(bookId);
+    }
+
+    public BookEntity findBookByTitleIgnoreCase(String title){
+        return bookRepository.findByTitleIgnoreCase(title);
+    }
+
+    public void saveBook(BookEntity bookEntity){
+        bookRepository.save(bookEntity);
     }
 }
 
