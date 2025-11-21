@@ -11,6 +11,9 @@ public class Book {
     private Long id;
     private int edition;
     private String title;
+    //Why does my Book DOMAIN model not have an Author? But an AuthorEntity?
+    //AuthorEntry should probably be a Domain Model and not an Entity.
+    //Mixing Layers.
     private AuthorEntity authorEntity;
     private String isbn;
     private String publisher;
@@ -18,7 +21,7 @@ public class Book {
     private Genre genre;
     private Shelf shelf;
     private String description;
-    private BookStatus status;
+    private AvailabilityStatus availabilityStatus;
     private Integer checkoutCount;
     private LocalDate createdAt;
     private LocalDate updatedAt;
@@ -30,6 +33,21 @@ public class Book {
         this.id = id;
         this.title = title;
         this.authorEntity = authorEntity;
+    }
+    
+    public void checkout(){
+
+        //needs to check if a book is already checked out
+        if(this.availabilityStatus != AvailabilityStatus.AVAILABLE){
+            throw new IllegalStateException("Book is already checked out");
+        }
+
+        //change status to check out
+        this.availabilityStatus = AvailabilityStatus.CHECKED_OUT;
+    }
+
+    public boolean isCheckedOut(){
+        return availabilityStatus == AvailabilityStatus.CHECKED_OUT;
     }
 
     public String getDescription() {
@@ -104,12 +122,12 @@ public class Book {
         this.shelf = shelf;
     }
 
-    public BookStatus getStatus() {
-        return status;
+    public AvailabilityStatus getAvailabilityStatus() {
+        return availabilityStatus;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
+    public void setAvailabilityStatus(AvailabilityStatus status) {
+        this.availabilityStatus = status;
     }
 
     public Integer getCheckoutCount() {
@@ -156,7 +174,7 @@ public class Book {
                 ", genre=" + genre +
                 ", shelf=" + shelf +
                 ", description='" + description + '\'' +
-                ", status=" + status +
+                ", status=" + availabilityStatus +
                 ", checkoutCount=" + checkoutCount +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
