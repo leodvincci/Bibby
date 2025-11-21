@@ -16,6 +16,12 @@ public class AuthorService {
         return authorRepository.findByBooks_BookId(id);
     }
 
+    public List<AuthorEntity> findAll(){
+        return authorRepository.findAll();
+    }
+
+
+
    public AuthorEntity findByAuthorFirstNameLastName(String firstName, String lastName){
        return authorRepository.findByFirstNameAndLastName(firstName, lastName);
    }
