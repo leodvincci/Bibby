@@ -6,6 +6,7 @@ import com.penrose.bibby.library.author.AuthorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,29 +27,27 @@ public class BookService {
 
     @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
-        BookEntity bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
-        AuthorEntity authorEntity = authorService.findOrCreateAuthor(bookRequestDTO.firstName(),bookRequestDTO.lastName());
+        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
 
-        if (bookEntity == null) {
-            bookEntity = BookFactory.createBook(bookRequestDTO.title(), authorEntity);
-            saveBook( bookEntity );
-        }else{
-            System.out.println("Book Already Exists");
+        if (bookEntity.isPresent()) {
+            throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
         }
+
+        AuthorEntity authorEntity = authorService.findOrCreateAuthor(bookRequestDTO.firstName(),bookRequestDTO.lastName());
+        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntity));
+
     }
 
 
     public BookEntity findBookByTitle(String title){
-        Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findByTitleIgnoreCase(title));
+        Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
         List<BookEntity> bookEntities = bookRepository.findByTitleContaining(title);
+
         for(BookEntity b : bookEntities){
             System.out.println(b.getTitle());
         }
 
-        if(bookEntity.isEmpty()){
-            return null;
-        }
-        return bookEntity.get();
+        return bookEntity.orElse(null);
     }
 
     public void checkOutBook(BookEntity bookEntity){
@@ -91,7 +90,7 @@ public class BookService {
         return bookRepository.findById(bookId);
     }
 
-    public BookEntity findBookByTitleIgnoreCase(String title){
+    public Optional<BookEntity> findBookByTitleIgnoreCase(String title){
         return bookRepository.findByTitleIgnoreCase(title);
     }
 
