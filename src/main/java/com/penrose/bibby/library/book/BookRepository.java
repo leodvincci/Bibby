@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository <BookEntity, Long> {
@@ -15,7 +16,7 @@ public interface BookRepository extends JpaRepository <BookEntity, Long> {
 
     BookEntity findByTitle(String title);
 
-    BookEntity findByTitleIgnoreCase(String title);
+    Optional<BookEntity> findByTitleIgnoreCase(String title);
 
     List<BookEntity> findByTitleContaining(String title);
 
