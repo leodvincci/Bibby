@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.genre.Genre;
-import com.penrose.bibby.library.shelf.*;
+import com.penrose.bibby.library.shelf.Shelf;
 
 public class Book {
     private Long id;
@@ -23,6 +23,14 @@ public class Book {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    public Book() {
+    }
+
+    public Book(Long id, String title, AuthorEntity authorEntity) {
+        this.id = id;
+        this.title = title;
+        this.authorEntity = authorEntity;
+    }
 
     public String getDescription() {
         return description;
@@ -30,16 +38,6 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Book(){
-
-    }
-
-    public Book(Long id, String title, AuthorEntity authorEntity) {
-        this.id = id;
-        this.title = title;
-        this.authorEntity = authorEntity;
     }
 
     public Long getId() {
@@ -154,7 +152,7 @@ public class Book {
                 ", author=" + authorEntity +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", publicationYear='" + publicationYear + '\'' +
+                ", publicationYear=" + publicationYear +
                 ", genre=" + genre +
                 ", shelf=" + shelf +
                 ", description='" + description + '\'' +
@@ -167,6 +165,7 @@ public class Book {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
         return Objects.equals(id, book.id);
