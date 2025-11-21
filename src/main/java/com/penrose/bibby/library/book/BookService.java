@@ -98,7 +98,9 @@ public class BookService {
 
 
     public void checkOutBook(BookEntity bookEntity){
-        if(!bookEntity.getBookStatus().equals(BookStatus.CHECKED_OUT.toString())){
+//        Book book = BookMapper.toDomain(bookEntity);
+//        book.checkout();
+        if(!bookEntity.getBookStatus().equals(AvailabilityStatus.CHECKED_OUT.toString())){
             bookEntity.setBookStatus("CHECKED_OUT");
             saveBook(bookEntity);
         }
@@ -106,7 +108,7 @@ public class BookService {
 
     public void checkInBook(String bookTitle) {
         BookEntity bookEntity = findBookByTitle(bookTitle);
-        bookEntity.setBookStatus(BookStatus.AVAILABLE.toString());
+        bookEntity.setBookStatus(AvailabilityStatus.AVAILABLE.toString());
         saveBook(bookEntity);
     }
 

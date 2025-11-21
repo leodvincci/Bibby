@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book;
 
-public enum BookStatus {
+public enum AvailabilityStatus {
     AVAILABLE,
     CHECKED_OUT,
     RESERVED,

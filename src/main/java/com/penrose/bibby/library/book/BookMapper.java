@@ -22,7 +22,7 @@ public class BookMapper {
         book.setShelf(shelf);
         book.setDescription(e.getDescription());
         book.setCheckoutCount(e.getCheckoutCount());
-        book.setStatus(e.getBookStatus() != null ? BookStatus.valueOf(e.getBookStatus()) : null);
+        book.setAvailabilityStatus(e.getBookStatus() != null ? AvailabilityStatus.valueOf(e.getBookStatus()) : null);
         book.setCreatedAt(e.getCreatedAt());
         book.setUpdatedAt(e.getUpdatedAt());
         return book;
@@ -44,7 +44,7 @@ public class BookMapper {
         bookEntity.setDescription(book.getDescription());
         bookEntity.setShelfId(book.getShelf() != null ? book.getShelf().getId() : null);
         bookEntity.setCheckoutCount(book.getCheckoutCount());
-        bookEntity.setBookStatus(book.getStatus() != null ? book.getStatus().name() : null);
+        bookEntity.setBookStatus(book.getAvailabilityStatus() != null ? book.getAvailabilityStatus().name() : null);
         bookEntity.setCreatedAt(book.getCreatedAt());
         bookEntity.setUpdatedAt(book.getUpdatedAt());
 
