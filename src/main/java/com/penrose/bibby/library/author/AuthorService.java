@@ -28,4 +28,11 @@ public class AuthorService {
         return authorRepository.save(authorEntity);
    }
 
+   public AuthorEntity findOrCreateAuthor(String authorFirstName, String authorLastName){
+        AuthorEntity authorEntity = findByAuthorFirstNameLastName(authorFirstName, authorLastName);
+        if (authorEntity == null) {
+            authorEntity = createNewAuthor(authorFirstName,authorLastName);
+        }
+        return authorEntity;
+   }
 }
