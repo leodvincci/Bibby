@@ -96,12 +96,7 @@ public class BookService {
         bookRepository.save(bookEntity);
     }
 
-    /**
-     * Updates the status of a book to "CHECKED_OUT" if it is not already checked out.
-     * The method will persist the status change in the data store.
-     *
-     * @param bookEntity the book entity to be checked out
-     */
+
     public void checkOutBook(BookEntity bookEntity){
         if(!bookEntity.getBookStatus().equals(BookStatus.CHECKED_OUT.toString())){
             bookEntity.setBookStatus("CHECKED_OUT");
