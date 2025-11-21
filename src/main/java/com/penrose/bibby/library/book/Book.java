@@ -1,9 +1,10 @@
 package com.penrose.bibby.library.book;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
-import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.Shelf;
 
@@ -11,10 +12,7 @@ public class Book {
     private Long id;
     private int edition;
     private String title;
-    //Why does my Book DOMAIN model not have an Author? But an AuthorEntity?
-    //AuthorEntry should probably be a Domain Model and not an Entity.
-    //Mixing Layers.
-    private AuthorEntity authorEntity;
+    private List<Author> authors;
     private String isbn;
     private String publisher;
     private int publicationYear;
@@ -29,10 +27,10 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, AuthorEntity authorEntity) {
+    public Book(Long id, String title, List<Author> authors) {
         this.id = id;
         this.title = title;
-        this.authorEntity = authorEntity;
+        this.authors = authors;
     }
     
     public void checkout(){
@@ -74,12 +72,12 @@ public class Book {
         this.title = title;
     }
 
-    public AuthorEntity getAuthor() {
-        return authorEntity;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(AuthorEntity authorEntity) {
-        this.authorEntity = authorEntity;
+    public void addAuthors(Author author) {
+        authors.add(author);
     }
 
     public String getIsbn() {
@@ -166,15 +164,16 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
+                ", edition=" + edition +
                 ", title='" + title + '\'' +
-                ", author=" + authorEntity +
+                ", authors=" + authors +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", publicationYear=" + publicationYear +
                 ", genre=" + genre +
                 ", shelf=" + shelf +
                 ", description='" + description + '\'' +
-                ", status=" + availabilityStatus +
+                ", availabilityStatus=" + availabilityStatus +
                 ", checkoutCount=" + checkoutCount +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
