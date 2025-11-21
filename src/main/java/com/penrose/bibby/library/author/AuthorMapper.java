@@ -14,10 +14,7 @@ public class AuthorMapper {
     }
 
     public static Author toDomain(Long id, String firstName, String lastName){
-        Author author = new Author(firstName,lastName);
-
-        return author;
-
+        return new Author(id,firstName,lastName);
     }
 
 }

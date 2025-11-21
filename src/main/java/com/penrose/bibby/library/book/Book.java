@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.book;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class Book {
     private Long id;
     private int edition;
     private String title;
-    private List<Author> authors;
+    private HashSet<Author> authors;
     private String isbn;
     private String publisher;
     private int publicationYear;
@@ -27,7 +28,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, List<Author> authors) {
+    public Book(Long id, String title, HashSet<Author> authors) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -72,12 +73,16 @@ public class Book {
         this.title = title;
     }
 
-    public List<Author> getAuthors() {
+    public HashSet<Author> getAuthors() {
         return authors;
     }
 
     public void addAuthors(Author author) {
         authors.add(author);
+    }
+
+    public void setAuthors(HashSet<Author> authors) {
+        this.authors = authors;
     }
 
     public String getIsbn() {

@@ -1,3 +1,9 @@
 package com.penrose.bibby.library.book;
 
-public record BookRequestDTO(String title, String firstName, String lastName) {}
+import com.penrose.bibby.library.author.Author;
+
+import java.util.List;
+
+public record BookRequestDTO(String title, List<Author> authors) {
+
+}

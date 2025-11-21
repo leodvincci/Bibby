@@ -1,12 +1,18 @@
 package com.penrose.bibby.library.book;
 
+import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
+import com.penrose.bibby.library.shelf.Shelf;
+import com.penrose.bibby.library.shelf.ShelfEntity;
+import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BookService {
@@ -14,11 +20,13 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookFactory BookFactory;
+    private final ShelfService shelfService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService,BookFactory bookFactory){
+    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.BookFactory = bookFactory;
+        this.shelfService = shelfService;
     }
 
     // ============================================================
@@ -36,11 +44,15 @@ public class BookService {
     @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
         Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
+        System.out.println("DEBUG: " + bookEntity.isPresent() + "?");
         if (bookEntity.isPresent()) {
             throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
         }
-        AuthorEntity authorEntity = authorService.findOrCreateAuthor(bookRequestDTO.firstName(),bookRequestDTO.lastName());
-        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntity));
+        Set<AuthorEntity> authorEntities = new HashSet<>();
+        for(Author author : bookRequestDTO.authors()){
+            authorEntities.add(authorService.findOrCreateAuthor(author.getFirstName(),author.getLastName()));
+        }
+        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntities));
     }
 
 
@@ -98,13 +110,21 @@ public class BookService {
 
 
     public void checkOutBook(BookEntity bookEntity){
-//        Book book = BookMapper.toDomain(bookEntity);
-//        book.checkout();
+//        List<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
+
+        Book book = bookMapper(bookEntity, (HashSet<AuthorEntity>) bookEntity.getAuthors());
+        book.checkout();
         if(!bookEntity.getBookStatus().equals(AvailabilityStatus.CHECKED_OUT.toString())){
             bookEntity.setBookStatus("CHECKED_OUT");
             saveBook(bookEntity);
         }
     }
+
+    public Book bookMapper(BookEntity bookEntity, HashSet<AuthorEntity> authorEntities){
+        Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+        return BookMapper.toDomain(bookEntity, (HashSet<AuthorEntity>) bookEntity.getAuthors(), shelfEntity.orElse(null));
+    }
+
 
     public void checkInBook(String bookTitle) {
         BookEntity bookEntity = findBookByTitle(bookTitle);

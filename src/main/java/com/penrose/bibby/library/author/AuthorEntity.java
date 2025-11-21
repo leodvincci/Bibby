@@ -4,6 +4,7 @@ import com.penrose.bibby.library.book.BookEntity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,11 +31,11 @@ public class AuthorEntity {
     public AuthorEntity() {
     }
 
-    public Set<BookEntity> getBooks() {
-        return books;
+    public HashSet<BookEntity> getBooks() {
+        return (HashSet<BookEntity>) books;
     }
 
-    public void setBooks(Set<BookEntity> books) {
+    public void setBooks(HashSet<BookEntity> books) {
         this.books = books;
     }
 
