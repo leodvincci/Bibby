@@ -24,24 +24,17 @@ public class BookService {
 
     @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
-        String firstName = bookRequestDTO.firstName();
-        String lastName = bookRequestDTO.lastName();
-        String title = bookRequestDTO.title();
-
-        BookEntity bookEntity = findBookByTitleIgnoreCase(title);
-        AuthorEntity authorEntity = authorService.findByAuthorFirstNameLastName(firstName, lastName);
-
-        if (authorEntity == null) {
-            authorEntity = authorService.createNewAuthor(firstName,lastName);
-        }
+        BookEntity bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
+        AuthorEntity authorEntity = authorService.findOrCreateAuthor(bookRequestDTO.firstName(),bookRequestDTO.lastName());
 
         if (bookEntity == null) {
-            bookEntity = BookFactory.createBook(title,authorEntity);
+            bookEntity = BookFactory.createBook(bookRequestDTO.title(), authorEntity);
             saveBook( bookEntity );
         }else{
             System.out.println("Book Already Exists");
         }
     }
+
 
     public BookEntity findBookByTitle(String title){
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findByTitleIgnoreCase(title));
