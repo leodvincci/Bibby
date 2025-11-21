@@ -15,11 +15,13 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final AuthorRepository authorRepository;
+    private final BookFactory BookFactory;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, AuthorService authorService){
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, AuthorService authorService,BookFactory bookFactory){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.authorRepository = authorRepository;
+        this.BookFactory = bookFactory;
     }
 
     @Transactional
