@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.bookcase;
-import com.penrose.bibby.library.shelf.Shelf;
-import com.penrose.bibby.library.shelf.ShelfEntity;
+import com.penrose.bibby.library.shelf.ShelfFactory;
 import com.penrose.bibby.library.shelf.ShelfRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +12,16 @@ import java.util.Optional;
 
 @Service
 public class BookcaseService {
+    private final ShelfFactory shelfFactory;
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
     private final ResponseStatusException existingRecordError = new ResponseStatusException(HttpStatus.CONFLICT,"Bookcase with the label already exist");
     private final ShelfRepository shelfRepository;
-    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfRepository shelfRepository) {
+
+    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfRepository shelfRepository, ShelfFactory shelfFactory) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;
+        this.shelfFactory = shelfFactory;
     }
 
     public String createNewBookCase(String label, int capacity){
@@ -41,11 +43,7 @@ public class BookcaseService {
     }
 
     public void addShelf(BookcaseEntity bookcaseEntity, int label, int position){
-        ShelfEntity shelfEntity = new ShelfEntity();
-        shelfEntity.setBookcaseId(bookcaseEntity.getBookcaseId());
-        shelfEntity.setShelfLabel("Shelf " + Integer.valueOf(label).toString());
-        shelfEntity.setShelfPosition(position);
-        shelfRepository.save(shelfEntity);
+        shelfRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label));
     }
 
     public List<BookcaseEntity> getAllBookcases(){
@@ -55,10 +53,4 @@ public class BookcaseService {
     public Optional<BookcaseEntity> findBookCaseById(Long id){
         return bookcaseRepository.findById(id);
     }
-
-
-
-
-
-
 }
