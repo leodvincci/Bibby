@@ -3,7 +3,6 @@ package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
-import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.stereotype.Service;
