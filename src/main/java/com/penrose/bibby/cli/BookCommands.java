@@ -205,8 +205,6 @@ public class BookCommands extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult result = flow.run();
         String title = result.getContext().get("bookTitle",String.class);
         Long bookCaseId = Long.parseLong(result.getContext().get("bookcase",String.class));
-        System.out.println("BOOK CASE ID: " + bookCaseId);
-
 
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookshelf")
