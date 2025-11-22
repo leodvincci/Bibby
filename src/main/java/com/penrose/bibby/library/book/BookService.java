@@ -8,10 +8,10 @@ import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class BookService {
@@ -33,19 +33,18 @@ public class BookService {
     // ============================================================
 
     /**
-     * Creates a new book entry in the system. If a book with the same title already exists,
-     * an exception is thrown. The method also ensures that the authors of the book are either
-     * found or created before associating them with the new book.
+     * Creates a new book entry in the system. Validates that the book does not already
+     * exist, extracts associated author entities, and persists the book to storage.
      *
-     * @param bookRequestDTO the data transfer object containing information about the book to be created,
-     *                       including its title and a list of authors
-     * @throws IllegalArgumentException if a book with the same title already exists in the system
+     * @param bookDTO the data transfer object containing information about the
+     *                       book to be created, including its title and list of authors
      */
     @Transactional
-    public void createNewBook(BookRequestDTO bookRequestDTO){
-        validateBookNotExists(bookRequestDTO);
-        Set<AuthorEntity> authorEntities = extractAuthorEntities(bookRequestDTO);
-        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntities));
+    public void createNewBook(BookRequestDTO bookDTO){
+        validateRequest(bookDTO);
+        validateBookDoesNotExist(bookDTO);
+        Set<AuthorEntity> authorEntities = extractAuthorEntities(bookDTO);
+        saveBook(BookFactory.createBook(bookDTO.title(), authorEntities));
     }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
@@ -57,10 +56,35 @@ public class BookService {
     }
 
 
-    private void validateBookNotExists(BookRequestDTO bookRequestDTO){
-        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
+    private void validateBookDoesNotExist(BookRequestDTO bookDTO){
+        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookDTO.title());
         if (bookEntity.isPresent()) {
-            throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
+            throw new IllegalArgumentException("Book Already Exists: " + bookDTO.title());
+        }
+    }
+
+    private void validateRequest(BookRequestDTO bookDTO) {
+        if (bookDTO == null) {
+            throw new IllegalArgumentException("Book request cannot be null");
+        }
+        if (bookDTO.title() == null || bookDTO.title().isBlank()) {
+            throw new IllegalArgumentException("Book title cannot be blank");
+        }
+        if (bookDTO.authors() == null || bookDTO.authors().isEmpty()) {
+            throw new IllegalArgumentException("Book must have at least one author");
+        }
+
+        // Validate each author
+        for (Author author : bookDTO.authors()) {
+            if (author == null) {
+                throw new IllegalArgumentException("Author cannot be null");
+            }
+            if (author.getFirstName() == null || author.getFirstName().isBlank()) {
+                throw new IllegalArgumentException("Author first name cannot be blank");
+            }
+            if (author.getLastName() == null || author.getLastName().isBlank()) {
+                throw new IllegalArgumentException("Author last name cannot be blank");
+            }
         }
     }
 

@@ -33,6 +33,8 @@ public class BookEntity {
     public BookEntity(String title, HashSet<AuthorEntity> authors) {
         this.title = title;
         this.authors = authors;
+        this.createdAt = LocalDate.now();
+        this.availabilityStatus = AvailabilityStatus.AVAILABLE.toString();
     }
 
     @ManyToMany

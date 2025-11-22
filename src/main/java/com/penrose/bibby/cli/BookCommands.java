@@ -16,12 +16,12 @@ import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
-import org.springframework.stereotype.Component;
+import org.springframework.shell.standard.ShellComponent;
 
 import java.util.*;
 
 
-@Component
+@ShellComponent
 @Command(command = "book", group = "Book Commands")
 public class BookCommands extends AbstractShellComponent {
 

@@ -14,6 +14,8 @@ public class BookFactory {
         BookEntity bookEntity = new BookEntity();
         bookEntity.setTitle(title);
         bookEntity.setAuthors(authors);
+        bookEntity.setCreatedAt(java.time.LocalDate.now());
+        bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.name());
         return bookEntity;
     }
 
