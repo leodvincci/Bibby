@@ -456,7 +456,7 @@ public class BookCommands extends AbstractShellComponent {
                 Optional<BookcaseEntity> bookcase = bookcaseService.findBookCaseById(shelf.get().getBookcaseId());
                 bookcaseName = bookcase.get().getBookcaseLabel();
                 shelfName = shelf.get().getShelfLabel();
-        }if (book.getBookStatus().equals("CHECKED_OUT")){
+        }if (book.getAvailabilityStatus().equals("CHECKED_OUT")){
             System.out.println(
                     """
                     
@@ -478,7 +478,7 @@ public class BookCommands extends AbstractShellComponent {
                             
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,book.getTitle(), authors, book.getBookStatus(), bookcaseName ,shelfName));
+                    """,book.getTitle(), authors, book.getAvailabilityStatus(), bookcaseName ,shelfName));
             ComponentFlow confirmationFlow = componentFlowBuilder.clone()
                     .withStringInput("isConfirmed")
                     .name("y or n:_ ")
@@ -545,7 +545,7 @@ public class BookCommands extends AbstractShellComponent {
                             
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,bookEntity.getTitle(), authors, bookEntity.getBookStatus(), bookcaseLabel ,bookshelfLabel));
+                    """,bookEntity.getTitle(), authors, bookEntity.getAvailabilityStatus(), bookcaseLabel ,bookshelfLabel));
 
 
         flow = componentFlowBuilder.clone()
