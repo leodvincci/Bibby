@@ -8,6 +8,43 @@ public class Shelf {
     private Bookcase bookCase;
     private String shelfLabel;
     private int shelfPosition;
+    private int bookCount;
+    private int shelfCapacity;
+    private boolean isFull;
+
+
+
+
+    public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int shelfCapacity) {
+        this.bookCase = bookCase;
+        this.shelfLabel = shelfLabel;
+        this.shelfPosition = shelfPosition;
+        this.shelfCapacity = shelfCapacity;
+    }
+
+    public int getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(int bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public int getShelfCapacity() {
+        return shelfCapacity;
+    }
+
+    public void setShelfCapacity(int shelfCapacity) {
+        this.shelfCapacity = shelfCapacity;
+    }
+
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public void setFull(boolean full) {
+        isFull = full;
+    }
 
     public Bookcase getBookCase() {
         return bookCase;
