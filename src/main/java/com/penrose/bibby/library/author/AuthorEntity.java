@@ -75,4 +75,5 @@ public class AuthorEntity {
     public void setAuthorId(Long id) {
         this.authorId = id;
     }
+
 }
