@@ -31,14 +31,15 @@ public class BookService {
     // ============================================================
     //      CREATE Operations
     // ============================================================
+
     /**
-     * Creates a new book with the specified details. If a book with the same title already exists,
-     * an IllegalArgumentException is thrown. The method also ensures that the author of the book
-     * is retrieved or created and associates the book with the author.
+     * Creates a new book entry in the system. If a book with the same title already exists,
+     * an exception is thrown. The method also ensures that the authors of the book are either
+     * found or created before associating them with the new book.
      *
-     * @param bookRequestDTO the data transfer object containing the title of the book, the author's first name,
-     *                       and the author's last name
-     * @throws IllegalArgumentException if a book with the specified title already exists
+     * @param bookRequestDTO the data transfer object containing information about the book to be created,
+     *                       including its title and a list of authors
+     * @throws IllegalArgumentException if a book with the same title already exists in the system
      */
     @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
@@ -115,7 +116,7 @@ public class BookService {
         book.checkout(); // This validates and updates the domain object status
 
         // Update the entity directly instead of converting back
-        bookEntity.setBookStatus(book.getAvailabilityStatus().name());
+        bookEntity.setAvailabilityStatus(book.getAvailabilityStatus().name());
         saveBook(bookEntity);
     }
 
@@ -128,7 +129,7 @@ public class BookService {
 
     public void checkInBook(String bookTitle) {
         BookEntity bookEntity = findBookByTitle(bookTitle);
-        bookEntity.setBookStatus(AvailabilityStatus.AVAILABLE.toString());
+        bookEntity.checkIn();
         saveBook(bookEntity);
     }
 

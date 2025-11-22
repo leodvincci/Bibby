@@ -23,7 +23,7 @@ public class BookEntity {
     private String description;
     private Long shelfId;
     private Integer checkoutCount;
-    private String bookStatus;
+    private String availabilityStatus;
     private java.time.LocalDate createdAt;
     private java.time.LocalDate updatedAt;
 
@@ -113,11 +113,11 @@ public class BookEntity {
     public void setCheckoutCount(Integer checkoutCount) {
         this.checkoutCount = checkoutCount;
     }
-    public String getBookStatus() {
-        return bookStatus;
+    public String getAvailabilityStatus() {
+        return availabilityStatus;
     }
-    public void setBookStatus(String bookStatus) {
-        this.bookStatus = bookStatus;
+    public void setAvailabilityStatus(String bookStatus) {
+        this.availabilityStatus = bookStatus;
     }
     public LocalDate getCreatedAt() {
         return createdAt;
@@ -132,5 +132,15 @@ public class BookEntity {
         this.updatedAt = updatedAt;
     }
 
+    public void checkIn(){
+        if(availabilityStatus == null){
+            throw new IllegalStateException("Book has no availability status");
+        }
+        if(availabilityStatus.equals(AvailabilityStatus.CHECKED_OUT.toString())){
+            setAvailabilityStatus(AvailabilityStatus.AVAILABLE.toString());
+        }else{
+            throw new IllegalStateException("Book is not checked out");
+        }
+    }
 
 }
