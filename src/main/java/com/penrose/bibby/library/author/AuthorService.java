@@ -6,10 +6,12 @@ import java.util.List;
 
 @Service
 public class AuthorService {
-    AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
+    private final AuthorEntityFactory authorEntityFactory;
 
-    public AuthorService(AuthorRepository authorRepository) {
+    public AuthorService(AuthorRepository authorRepository, AuthorEntityFactory authorEntityFactory) {
         this.authorRepository = authorRepository;
+        this.authorEntityFactory = authorEntityFactory;
     }
 
     public List<AuthorEntity> findByBookId(Long id){
@@ -31,12 +33,9 @@ public class AuthorService {
    }
 
    public AuthorEntity createNewAuthor(String authorFirstName, String authorLastName){
-        AuthorEntity authorEntity = new AuthorEntity();
-        authorEntity.setFirstName(authorFirstName);
-        authorEntity.setLastName(authorLastName);
-        authorEntity.setFullName(authorFirstName + " " + authorLastName);
-        return authorRepository.save(authorEntity);
+        return authorRepository.save(authorEntityFactory.createEntity(authorFirstName,authorLastName));
    }
+
 
    public AuthorEntity findOrCreateAuthor(String authorFirstName, String authorLastName){
         AuthorEntity authorEntity = findByAuthorFirstNameLastName(authorFirstName, authorLastName);
