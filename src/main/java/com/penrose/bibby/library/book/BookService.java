@@ -43,8 +43,7 @@ public class BookService {
     public void createNewBook(BookRequestDTO bookDTO){
         validateRequest(bookDTO);
         validateBookDoesNotExist(bookDTO);
-        Set<AuthorEntity> authorEntities = extractAuthorEntities(bookDTO);
-        saveBook(BookFactory.createBook(bookDTO.title(), authorEntities));
+        saveBook(BookFactory.createBook(bookDTO.title(), extractAuthorEntities(bookDTO)));
     }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
