@@ -44,7 +44,6 @@ public class BookService {
     @Transactional
     public void createNewBook(BookRequestDTO bookRequestDTO) {
         Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
-        System.out.println("DEBUG: " + bookEntity.isPresent() + "?");
         if (bookEntity.isPresent()) {
             throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
         }
