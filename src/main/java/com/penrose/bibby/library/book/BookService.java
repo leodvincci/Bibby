@@ -57,9 +57,10 @@ public class BookService {
 
     private void validateBookDoesNotExist(BookRequestDTO bookDTO){
         Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookDTO.title());
-        if (bookEntity.isPresent()) {
-            throw new IllegalArgumentException("Book Already Exists: " + bookDTO.title());
-        }
+        bookEntity.ifPresent(existingBook -> {
+            throw new IllegalArgumentException("Book Already Exists: " + existingBook.getTitle());
+        });
+
     }
 
     private void validateRequest(BookRequestDTO bookDTO) {
@@ -112,7 +113,6 @@ public class BookService {
      */
     public BookEntity findBookByTitle(String title){
         Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
-
         return bookEntity.orElse(null);
     }
 

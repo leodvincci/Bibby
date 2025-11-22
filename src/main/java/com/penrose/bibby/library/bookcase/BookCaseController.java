@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.bookcase;
 
-import com.penrose.bibby.library.shelf.Shelf;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
