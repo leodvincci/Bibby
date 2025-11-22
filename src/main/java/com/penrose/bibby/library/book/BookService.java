@@ -42,27 +42,37 @@ public class BookService {
      * @throws IllegalArgumentException if a book with the same title already exists in the system
      */
     @Transactional
-    public void createNewBook(BookRequestDTO bookRequestDTO) {
-        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
-        if (bookEntity.isPresent()) {
-            throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
-        }
+    public void createNewBook(BookRequestDTO bookRequestDTO){
+        validateBookNotExists(bookRequestDTO);
+        Set<AuthorEntity> authorEntities = extractAuthorEntities(bookRequestDTO);
+        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntities));
+    }
+
+    private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(Author author : bookRequestDTO.authors()){
             authorEntities.add(authorService.findOrCreateAuthor(author.getFirstName(),author.getLastName()));
         }
-        saveBook(BookFactory.createBook(bookRequestDTO.title(), authorEntities));
+        return authorEntities;
+    }
+
+
+    private void validateBookNotExists(BookRequestDTO bookRequestDTO){
+        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookRequestDTO.title());
+        if (bookEntity.isPresent()) {
+            throw new IllegalArgumentException("Book Already Exists: " + bookRequestDTO.title());
+        }
     }
 
 
     // ============================================================
     //      READ Operations
     // ============================================================
-    public Optional<BookEntity> findBookById(Long bookId) {
+    public Optional<BookEntity> findBookById(Long bookId){
         return bookRepository.findById(bookId);
     }
 
-    public List<BookEntity> findBooksByShelf(Long id) {
+    public List<BookEntity> findBooksByShelf(Long id){
         return bookRepository.findByShelfId(id);
     }
 
@@ -91,7 +101,7 @@ public class BookService {
         return bookEntities;
     }
 
-    public List<BookSummary> getBooksForShelf(Long shelfId) {
+    public List<BookSummary> getBooksForShelf(Long shelfId){
         return bookRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
     }
 
@@ -127,7 +137,7 @@ public class BookService {
     }
 
 
-    public void checkInBook(String bookTitle) {
+    public void checkInBook(String bookTitle){
         BookEntity bookEntity = findBookByTitle(bookTitle);
         bookEntity.checkIn();
         saveBook(bookEntity);
