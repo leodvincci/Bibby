@@ -24,26 +24,26 @@ public class BookcaseService {
         this.shelfFactory = shelfFactory;
     }
 
-    public String createNewBookCase(String label, int capacity){
+    public String createNewBookCase(String label, int shelfCapacity, int bookCapacity){
         BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLabel(label);
         if(bookcaseEntity !=null){
             log.error("Failed to save Record - Record already exist",existingRecordError);
             throw existingRecordError;
         }
         else{
-            bookcaseEntity = new BookcaseEntity(label,capacity);
+            bookcaseEntity = new BookcaseEntity(label,shelfCapacity,bookCapacity*shelfCapacity);
             bookcaseRepository.save(bookcaseEntity);
 
             for(int i = 0; i < bookcaseEntity.getShelfCapacity(); i++){
-                addShelf(bookcaseEntity,i,i);
+                addShelf(bookcaseEntity,i,i,bookCapacity);
             }
             log.info("Created new bookcase: {}",bookcaseEntity.getBookcaseLabel());
-            return "Created New Bookcase " + label + " with shelf capacity of " + capacity;
+            return "Created New Bookcase " + label + " with shelf shelfCapacity of " + shelfCapacity;
         }
     }
 
-    public void addShelf(BookcaseEntity bookcaseEntity, int label, int position){
-        shelfRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label));
+    public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity){
+        shelfRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label,bookCapacity));
     }
 
     public List<BookcaseEntity> getAllBookcases(){

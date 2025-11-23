@@ -10,18 +10,19 @@ public class BookcaseEntity {
     private Long bookcaseId;
     private String bookcaseLabel;
     private String bookcaseDescription;
-
+    private int bookCapacity;
 
 
     private int shelfCapacity;
 
 
-    public BookcaseEntity(String bookcaseLabel, int shelfCapacity) {
+    public BookcaseEntity(String bookcaseLabel, int shelfCapacity, int bookCapacity) {
         this.bookcaseLabel = bookcaseLabel;
         this.shelfCapacity = shelfCapacity;
+        this.bookCapacity = bookCapacity;
     }
 
-    public BookcaseEntity(Long bookcaseId, String bookcaseLabel,int shelfCapacity) {
+    public BookcaseEntity(Long bookcaseId, String bookcaseLabel,int shelfCapacity, int bookCapacity) {
         this.bookcaseId = bookcaseId;
         this.bookcaseLabel = bookcaseLabel;
         this.shelfCapacity = shelfCapacity;
@@ -61,5 +62,13 @@ public class BookcaseEntity {
 
     public void setBookcaseDescription(String bookcaseDescription) {
         this.bookcaseDescription = bookcaseDescription;
+    }
+
+    public int getBookCapacity() {
+        return bookCapacity;
+    }
+
+    public void setBookCapacity(int bookCapacity) {
+        this.bookCapacity = bookCapacity;
     }
 }

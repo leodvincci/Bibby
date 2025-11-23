@@ -16,9 +16,8 @@ public class ShelfEntity {
     private String shelfLabel;
     private Long bookcaseId;
     private int shelfPosition;
-    private int shelfCapacity;
+    private int bookCapacity;
     private String shelfDescription;
-
 
 
     public ShelfEntity() {
@@ -49,12 +48,12 @@ public class ShelfEntity {
         this.shelfPosition = shelfPosition;
     }
 
-    public int getShelfCapacity() {
-        return shelfCapacity;
+    public int getBookCapacity() {
+        return bookCapacity;
     }
 
-    public void setShelfCapacity(int shelfCapacity) {
-        this.shelfCapacity = shelfCapacity;
+    public void setBookCapacity(int shelfCapacity) {
+        this.bookCapacity = shelfCapacity;
     }
 
 

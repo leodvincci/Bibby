@@ -43,17 +43,62 @@ public class BookcaseCommands extends AbstractShellComponent {
 
     @Command(command = "add", description = "Create a new bookcase in the library.")
     public void addBookcase() throws InterruptedException {
+
+
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withStringInput("bookcaseLabel")
-                .name("Give this bookcase a label:_")
+                .name("What should we call this new bookcase?:_")
                 .and()
-                .withStringInput("shelfCapacity")
-                .name("How many shelves?:_")
+                .withStringInput("shelfCount")
+                .name("How many shelves does it have?:_")
+                .and()
+                .withStringInput("bookCapacity")
+                .name("And how many books fit on a single shelf?:_")
                 .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
-        bookcaseService.createNewBookCase(result.getContext().get("bookcaseLabel"),Integer.parseInt(result.getContext().get("shelfCapacity")));
+
+        String bookcaseLabel = result.getContext().get("bookcaseLabel");
+        int shelfCount = Integer.parseInt(result.getContext().get("shelfCount"));
+        int bookCapacity = Integer.parseInt(result.getContext().get("bookCapacity"));
+
+        String confirmationMsg = """
+            
+            -----------------------------------
+                    NEW BOOKCASE SUMMARY
+            -----------------------------------
+            Label:          %s
+            Shelf Count:    %s
+            Capacity/Shelf: %s
+            
+            Total Storage:  %d books
+            -----------------------------------
+
+    """.formatted(
+                bookcaseLabel,
+                shelfCount,
+                bookCapacity,
+                (shelfCount * bookCapacity)
+        );
+
+        System.out.println(confirmationMsg);
+
+
+      flow = componentFlowBuilder.clone()
+                .withStringInput("confirmation")
+                .name("Are these details correct? (y/n):_")
+                .and()
+                .build();
+
+      ComponentFlow.ComponentFlowResult res =  flow.run();
+      if(res.getContext().get("confirmation").equals("Y") | res.getContext().get("confirmation").equals("y")) {
+          bookcaseService.createNewBookCase(bookcaseLabel,shelfCount,bookCapacity);
+          System.out.println("Created");
+      }else{
+          System.out.println("Not Created");
+      }
+
 
     }
 
