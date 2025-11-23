@@ -36,7 +36,6 @@ public class BookMapper {
 //        book.setGenre(genre);
         book.setShelf(shelf);
         book.setDescription(e.getDescription());
-        book.setCheckoutCount(e.getCheckoutCount());
         book.setAvailabilityStatus(e.getAvailabilityStatus() != null ? AvailabilityStatus.valueOf(e.getAvailabilityStatus()) : null);
         book.setCreatedAt(e.getCreatedAt());
         book.setUpdatedAt(e.getUpdatedAt());
@@ -61,7 +60,6 @@ public class BookMapper {
                 authorEntity.setAuthorId(author.getAuthorId());
                 authorEntity.setFirstName(author.getFirstName());
                 authorEntity.setLastName(author.getLastName());
-                authorEntity.setFullName(author.getFirstName() + " " + author.getLastName());
                 authorEntities.add(authorEntity);
             }
             bookEntity.setAuthors(authorEntities);
@@ -73,7 +71,6 @@ public class BookMapper {
         bookEntity.setEdition(book.getEdition());
         bookEntity.setDescription(book.getDescription());
         bookEntity.setShelfId(book.getShelf() != null ? book.getShelf().getId() : null);
-        bookEntity.setCheckoutCount(book.getCheckoutCount());
         bookEntity.setAvailabilityStatus(book.getAvailabilityStatus() != null ? book.getAvailabilityStatus().name() : null);
         bookEntity.setCreatedAt(book.getCreatedAt());
         bookEntity.setUpdatedAt(book.getUpdatedAt());

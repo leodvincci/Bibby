@@ -9,7 +9,6 @@ public class AuthorMapper {
         AuthorEntity authorEntity = new AuthorEntity();
         authorEntity.setFirstName(firstName);
         authorEntity.setLastName(lastName);
-        authorEntity.setFullName(firstName + " " + lastName);
         return authorEntity;
     }
 

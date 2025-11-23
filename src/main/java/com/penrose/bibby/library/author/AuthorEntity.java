@@ -15,17 +15,15 @@ public class AuthorEntity {
     private Long authorId;
     private String firstName;
     private String lastName;
-    private String fullName;
 
     @Override
     public String toString() {
-        return fullName;
+        return firstName + " " + lastName;
     }
 
     public AuthorEntity(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.fullName = String.format("%s %s", firstName, lastName);
     }
 
     public AuthorEntity() {
@@ -56,16 +54,6 @@ public class AuthorEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public Long getAuthorId() {

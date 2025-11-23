@@ -16,22 +16,10 @@ public class ShelfEntity {
     private String shelfLabel;
     private Long bookcaseId;
     private int shelfPosition;
-    private int bookCount;
     private int shelfCapacity;
     private String shelfDescription;
 
 
-    public boolean isFull() {
-        return bookCount >= shelfCapacity;
-    }
-
-    public String getShelfDescription() {
-        return shelfDescription;
-    }
-
-    public void setShelfDescription(String shelfDescription) {
-        this.shelfDescription = shelfDescription;
-    }
 
     public ShelfEntity() {
 
@@ -60,13 +48,6 @@ public class ShelfEntity {
     public void setShelfPosition(int shelfPosition) {
         this.shelfPosition = shelfPosition;
     }
-    public int getBookCount() {
-        return bookCount;
-    }
-
-    public void setBookCount(int bookCount) {
-        this.bookCount = bookCount;
-    }
 
     public int getShelfCapacity() {
         return shelfCapacity;
@@ -75,4 +56,15 @@ public class ShelfEntity {
     public void setShelfCapacity(int shelfCapacity) {
         this.shelfCapacity = shelfCapacity;
     }
+
+
+    public String getShelfDescription() {
+        return shelfDescription;
+    }
+
+    public void setShelfDescription(String shelfDescription) {
+        this.shelfDescription = shelfDescription;
+    }
+
+
 }
