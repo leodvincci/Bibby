@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
 
-    AuthorEntity getByFullName(String fullName);
-
     Optional<AuthorEntity> findByFirstNameAndLastName(String firstName, String lastName);
 
     @Query("SELECT a FROM AuthorEntity a JOIN a.books b WHERE b.bookId = :bookId")

@@ -3,15 +3,15 @@ package com.penrose.bibby.library.shelf;
 import com.penrose.bibby.library.book.Book;
 import com.penrose.bibby.library.bookcase.Bookcase;
 
+import java.util.List;
+
 public class Shelf {
     private Long id;
     private Bookcase bookCase;
     private String shelfLabel;
+    private String shelfDescription;
     private int shelfPosition;
-    private int bookCount;
     private int shelfCapacity;
-    private boolean isFull;
-
 
 
 
@@ -22,13 +22,6 @@ public class Shelf {
         this.shelfCapacity = shelfCapacity;
     }
 
-    public int getBookCount() {
-        return bookCount;
-    }
-
-    public void setBookCount(int bookCount) {
-        this.bookCount = bookCount;
-    }
 
     public int getShelfCapacity() {
         return shelfCapacity;
@@ -36,14 +29,6 @@ public class Shelf {
 
     public void setShelfCapacity(int shelfCapacity) {
         this.shelfCapacity = shelfCapacity;
-    }
-
-    public boolean isFull() {
-        return isFull;
-    }
-
-    public void setFull(boolean full) {
-        isFull = full;
     }
 
     public Bookcase getBookCase() {
@@ -93,4 +78,11 @@ public class Shelf {
 
     }
 
+    public String getShelfDescription() {
+        return shelfDescription;
+    }
+
+    public void setShelfDescription(String shelfDescription) {
+        this.shelfDescription = shelfDescription;
+    }
 }

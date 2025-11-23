@@ -2,7 +2,6 @@ package com.penrose.bibby.library.book;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 import com.penrose.bibby.library.author.Author;
@@ -21,7 +20,6 @@ public class Book {
     private Shelf shelf;
     private String description;
     private AvailabilityStatus availabilityStatus;
-    private Integer checkoutCount;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -134,14 +132,6 @@ public class Book {
         this.availabilityStatus = status;
     }
 
-    public Integer getCheckoutCount() {
-        return checkoutCount;
-    }
-
-    public void setCheckoutCount(Integer checkoutCount) {
-        this.checkoutCount = checkoutCount;
-    }
-
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -180,7 +170,6 @@ public class Book {
                 ", shelf=" + shelf +
                 ", description='" + description + '\'' +
                 ", availabilityStatus=" + availabilityStatus +
-                ", checkoutCount=" + checkoutCount +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

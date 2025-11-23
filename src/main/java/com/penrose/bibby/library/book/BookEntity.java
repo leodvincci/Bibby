@@ -22,7 +22,6 @@ public class BookEntity {
     private int edition;
     private String description;
     private Long shelfId;
-    private Integer checkoutCount;
     private String availabilityStatus;
     private java.time.LocalDate createdAt;
     private java.time.LocalDate updatedAt;
@@ -109,12 +108,7 @@ public class BookEntity {
     public void setShelfId(Long shelfId) {
         this.shelfId = shelfId;
     }
-    public Integer getCheckoutCount() {
-        return checkoutCount;
-    }
-    public void setCheckoutCount(Integer checkoutCount) {
-        this.checkoutCount = checkoutCount;
-    }
+
     public String getAvailabilityStatus() {
         return availabilityStatus;
     }
