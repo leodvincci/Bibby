@@ -3,14 +3,10 @@ package com.penrose.bibby.cli;
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
-import com.penrose.bibby.library.book.BookController;
-import com.penrose.bibby.library.book.BookEntity;
-import com.penrose.bibby.library.book.BookRequestDTO;
-import com.penrose.bibby.library.book.BookService;
+import com.penrose.bibby.library.book.*;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
-import com.penrose.bibby.library.shelf.ShelfEntity;
-import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.library.shelf.*;
 
 import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
@@ -32,6 +28,8 @@ public class BookCommands extends AbstractShellComponent {
 
     final BookController bookController;
     final CliPromptService cliPrompt;
+    final ShelfMapper shelfMapper;
+    final BookMapper bookMapper;
 
 
 
@@ -45,7 +43,7 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookController = bookController;
@@ -53,6 +51,8 @@ public class BookCommands extends AbstractShellComponent {
         this.shelfService = shelfService;
         this.authorService = authorService;
         this.cliPrompt = cliPrompt;
+        this.shelfMapper = shelfMapper;
+        this.bookMapper = bookMapper;
     }
 
 
@@ -210,6 +210,11 @@ public class BookCommands extends AbstractShellComponent {
             Long shelfId = Long.parseLong(result.getContext().get("bookshelf",String.class));
             System.out.println(shelfId);
             System.out.println(title);
+            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
+
+            System.out.println(shelf);
+//            shelf.addBook(bookMapper.toDomain(bookEnt,authorService.findByBookId(bookEnt.getBookId()),shelfService.findShelfById(shelfId).get()));
+
             bookEnt.setShelfId(shelfId);
             bookService.saveBook(bookEnt);
             System.out.println("Added Book To the Shelf!");
@@ -451,7 +456,7 @@ public class BookCommands extends AbstractShellComponent {
             
 
         }else{
-            List<AuthorEntity> authors = authorService.findByBookId(book.getBookId());
+            Set<AuthorEntity> authors = authorService.findByBookId(book.getBookId());
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -517,7 +522,7 @@ public class BookCommands extends AbstractShellComponent {
             bookshelfLabel = shelfEntity.get().getShelfLabel();
         }
 
-        List<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
+        Set<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
 
         System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkin\n\u001B[0m

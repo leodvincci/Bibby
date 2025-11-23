@@ -20,12 +20,14 @@ public class BookService {
     private final AuthorService authorService;
     private final BookFactory BookFactory;
     private final ShelfService shelfService;
+    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService){
+    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
+        this.bookMapper = bookMapper;
     }
 
     // ============================================================
@@ -142,7 +144,7 @@ public class BookService {
 
 
     public void checkOutBook(BookEntity bookEntity){
-        List<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
+        Set<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
 
         // Create domain object for business logic validation
         Book book = bookMapper(bookEntity, new HashSet<>(authorEntities));
@@ -156,7 +158,7 @@ public class BookService {
 
     public Book bookMapper(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
         Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-        return BookMapper.toDomain(bookEntity, authorEntities, shelfEntity.orElse(null));
+        return bookMapper.toDomain(bookEntity, authorEntities, shelfEntity.orElse(null));
     }
 
 
