@@ -18,8 +18,12 @@ public class ShelfEntity {
     private int shelfPosition;
     private int bookCount;
     private int shelfCapacity;
-    private boolean isFull;
     private String shelfDescription;
+
+
+    public boolean isFull() {
+        return bookCount >= shelfCapacity;
+    }
 
     public String getShelfDescription() {
         return shelfDescription;
@@ -70,13 +74,5 @@ public class ShelfEntity {
 
     public void setShelfCapacity(int shelfCapacity) {
         this.shelfCapacity = shelfCapacity;
-    }
-
-    public boolean isFull() {
-        return isFull;
-    }
-
-    public void setFull(boolean full) {
-        isFull = full;
     }
 }
