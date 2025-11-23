@@ -7,19 +7,27 @@ import java.util.List;
 
 public class Shelf {
     private Long id;
-    private Bookcase bookCase;
+//    private Bookcase bookCase;
     private String shelfLabel;
     private String shelfDescription;
     private int shelfPosition;
-    private int shelfCapacity;
+    private int bookCapacity;
     private List<Book> books;
 
 
-    public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int shelfCapacity) {
-        this.bookCase = bookCase;
+    public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int bookCapacity) {
+//        this.bookCase = bookCase;
         this.shelfLabel = shelfLabel;
         this.shelfPosition = shelfPosition;
-        this.shelfCapacity = shelfCapacity;
+        this.bookCapacity = bookCapacity;
+    }
+
+    public void addBook(Book book){
+        if(books.size() < bookCapacity){
+            books.add(book);
+        }else{
+            throw new RuntimeException("Shelf is full");
+        }
     }
 
     public List<Book> getBooks() {
@@ -29,15 +37,15 @@ public class Shelf {
         this.books = books;
     }
 
-    public int getShelfCapacity() {
-        return shelfCapacity;
+    public int getBookCapacity() {
+        return bookCapacity;
     }
     public int getBookCount() {
         return books.size();
     }
-    public void setBookCase(Bookcase bookCase) {
-        this.bookCase = bookCase;
-    }
+//    public void setBookCase(Bookcase bookCase) {
+//        this.bookCase = bookCase;
+//    }
 
     public String getShelfLabel() {
         return shelfLabel;
@@ -84,5 +92,17 @@ public class Shelf {
 
     public void setShelfDescription(String shelfDescription) {
         this.shelfDescription = shelfDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "Shelf{" +
+                "id=" + id +
+                ", shelfLabel='" + shelfLabel + '\'' +
+                ", shelfDescription='" + shelfDescription + '\'' +
+                ", shelfPosition=" + shelfPosition +
+                ", shelfCapacity=" + bookCapacity +
+                ", books=" + books +
+                '}';
     }
 }

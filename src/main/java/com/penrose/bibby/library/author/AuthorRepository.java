@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
@@ -14,5 +15,5 @@ public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
     Optional<AuthorEntity> findByFirstNameAndLastName(String firstName, String lastName);
 
     @Query("SELECT a FROM AuthorEntity a JOIN a.books b WHERE b.bookId = :bookId")
-    List<AuthorEntity> findByBooks_BookId(@Param("bookId") Long bookId);
+    Set<AuthorEntity> findByBooks_BookId(@Param("bookId") Long bookId);
 }

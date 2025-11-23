@@ -3,6 +3,7 @@ package com.penrose.bibby.library.author;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthorService {
@@ -14,7 +15,7 @@ public class AuthorService {
         this.authorEntityFactory = authorEntityFactory;
     }
 
-    public List<AuthorEntity> findByBookId(Long id){
+    public Set<AuthorEntity> findByBookId(Long id){
         return authorRepository.findByBooks_BookId(id);
     }
 

@@ -6,16 +6,24 @@ import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Component
 public class BookMapper {
+    ShelfMapper shelfMapper;
 
-    public static Book toDomain(BookEntity e, Set<AuthorEntity> authorEntities, ShelfEntity shelfEntity){
+    private BookMapper(ShelfMapper shelfMapper){
+        this.shelfMapper = shelfMapper;
+    }
+
+    public Book toDomain(BookEntity e,
+                         Set<AuthorEntity> authorEntities,
+                         ShelfEntity shelfEntity){
 
         HashSet<Author> authors = new HashSet<>();
-        Shelf shelf = ShelfMapper.toDomain(shelfEntity);
+        Shelf shelf = shelfMapper.toDomain(shelfEntity);
 
         for (AuthorEntity authorEntity : authorEntities) {
             authors.add(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
