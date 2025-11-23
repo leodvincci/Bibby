@@ -31,6 +31,7 @@ public class BookCommands extends AbstractShellComponent {
     final AuthorService authorService;
 
     final BookController bookController;
+    final CliPromptService cliPrompt;
 
 
 
@@ -44,33 +45,17 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookController = bookController;
         this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
         this.authorService = authorService;
+        this.cliPrompt = cliPrompt;
     }
 
-    public Author authorNameComponentFlow(String title){
-        ComponentFlow flow2;
-        flow2 = componentFlowBuilder.clone()
-                .withStringInput("authorFirstName")
-                .name("Author's First Name:_")
-                .and()
-                .withStringInput("authorLastName")
-                .name("Author's Last Name:_")
-                .and().build();
 
-        ComponentFlow.ComponentFlowResult result = flow2.run();
-        String firstName  = result.getContext().get("authorFirstName", String.class);
-        String lastName = result.getContext().get("authorLastName", String.class);
-//        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
-//        bookService.createNewBook(bookRequestDTO);
-        return new Author(firstName,lastName);
-
-    }
 
     @Command(command = "add", description = "Add a new book to your library database")
     public void addBook() throws InterruptedException {
@@ -100,7 +85,7 @@ public class BookCommands extends AbstractShellComponent {
 
         List<Author> authors = new ArrayList<>();
         for(int i = 0; i < authorCount; i++){
-            authors.add(authorNameComponentFlow(title));
+            authors.add(cliPrompt.promptForAuthor(title));
         }
         BookRequestDTO bookRequestDTO = new BookRequestDTO(title,authors);
         bookService.createNewBook(bookRequestDTO);
