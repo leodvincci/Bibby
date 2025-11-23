@@ -12,7 +12,7 @@ public class Shelf {
     private String shelfDescription;
     private int shelfPosition;
     private int shelfCapacity;
-
+    private List<Book> books;
 
 
     public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int shelfCapacity) {
@@ -22,19 +22,19 @@ public class Shelf {
         this.shelfCapacity = shelfCapacity;
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public int getShelfCapacity() {
         return shelfCapacity;
     }
-
-    public void setShelfCapacity(int shelfCapacity) {
-        this.shelfCapacity = shelfCapacity;
+    public int getBookCount() {
+        return books.size();
     }
-
-    public Bookcase getBookCase() {
-        return bookCase;
-    }
-
     public void setBookCase(Bookcase bookCase) {
         this.bookCase = bookCase;
     }
