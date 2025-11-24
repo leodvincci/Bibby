@@ -220,7 +220,6 @@ public class BookCommands extends AbstractShellComponent {
                 throw new IllegalStateException("Shelf is full");
             }else{
                 //            shelf.addBook(bookMapper.toDomain(bookEnt,authorService.findByBookId(bookEnt.getBookId()),shelfService.findShelfById(shelfId).get()));
-                System.out.println(shelfDomain);
                 bookEnt.setShelfId(shelfId);
                 bookService.saveBook(bookEnt);
                 System.out.println("Added Book To the Shelf!");

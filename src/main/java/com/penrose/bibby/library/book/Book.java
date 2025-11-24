@@ -2,6 +2,7 @@ package com.penrose.bibby.library.book;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import com.penrose.bibby.library.author.Author;
@@ -160,20 +161,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", edition=" + edition +
-                ", title='" + title + '\'' +
+        return "Book{ title='" + title + '\'' +
                 ", authors=" + authors +
-                ", isbn='" + isbn + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", publicationYear=" + publicationYear +
-                ", genre=" + genre +
-                ", shelf=" + shelf +
-                ", description='" + description + '\'' +
-                ", availabilityStatus=" + availabilityStatus +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 

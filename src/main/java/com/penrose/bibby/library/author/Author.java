@@ -15,6 +15,7 @@ public class Author {
     }
 
     public Author(Long authorId, String firstName, String lastName) {
+        this.authorId = authorId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -41,5 +42,12 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" + "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
