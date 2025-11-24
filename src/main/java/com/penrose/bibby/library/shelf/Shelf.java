@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.shelf;
 
 import com.penrose.bibby.library.book.Book;
+import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.bookcase.Bookcase;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class Shelf {
     private String shelfDescription;
     private int shelfPosition;
     private int bookCapacity;
-    private List<Book> books;
+    private List<BookEntity> books;
 
 
     public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int bookCapacity) {
@@ -22,18 +23,22 @@ public class Shelf {
         this.bookCapacity = bookCapacity;
     }
 
-    public void addBook(Book book){
-        if(books.size() < bookCapacity){
-            books.add(book);
-        }else{
-            throw new RuntimeException("Shelf is full");
-        }
+//    public void addBook(Book book){
+//        if(books.size() < bookCapacity){
+//            books.add(book);
+//        }else{
+//            throw new RuntimeException("Shelf is full");
+//        }
+//    }
+
+    public boolean isFull(){
+        return books.size() >= bookCapacity;
     }
 
-    public List<Book> getBooks() {
+    public List<BookEntity> getBooks() {
         return books;
     }
-    public void setBooks(List<Book> books) {
+    public void setBooks(List<BookEntity> books) {
         this.books = books;
     }
 
@@ -82,8 +87,12 @@ public class Shelf {
         this.id = id;
     }
 
-    public void addToShelf(Book book){
-
+    public void addToShelf(BookEntity book){
+//        if(books.size() < bookCapacity){
+//            books.add(book);
+//        }else{
+//            throw new RuntimeException("Shelf is full");
+//        }
     }
 
     public String getShelfDescription() {
@@ -94,6 +103,10 @@ public class Shelf {
         this.shelfDescription = shelfDescription;
     }
 
+    public void setBookCapacity(int bookCapacity) {
+        this.bookCapacity = bookCapacity;
+    }
+
     @Override
     public String toString() {
         return "Shelf{" +
@@ -101,7 +114,7 @@ public class Shelf {
                 ", shelfLabel='" + shelfLabel + '\'' +
                 ", shelfDescription='" + shelfDescription + '\'' +
                 ", shelfPosition=" + shelfPosition +
-                ", shelfCapacity=" + bookCapacity +
+                ", bookCapacity=" + bookCapacity +
                 ", books=" + books +
                 '}';
     }

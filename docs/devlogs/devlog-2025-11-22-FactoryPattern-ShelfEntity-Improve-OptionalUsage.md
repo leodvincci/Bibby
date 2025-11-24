@@ -116,21 +116,21 @@ public class BookcaseService {
     private final ShelfFactory shelfFactory;
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
-    private final ShelfRepository shelfRepository;
-    
-    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfRepository shelfRepository, ShelfFactory shelfFactory) {
+    private final ShelfJpaRepository shelfRepository;
+
+    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfJpaRepository shelfRepository, ShelfFactory shelfFactory) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;
         this.shelfFactory = shelfFactory;
     }
-    
-    public void addShelf(BookcaseEntity bookcaseEntity, int label, int position){
+
+    public void addShelf(BookcaseEntity bookcaseEntity, int label, int position) {
         shelfRepository.save(
-            shelfFactory.createEntity(
-                bookcaseEntity.getBookcaseId(),
-                position,
-                String.format("Shelf %s", Integer.valueOf(label).toString())
-            )
+                shelfFactory.createEntity(
+                        bookcaseEntity.getBookcaseId(),
+                        position,
+                        String.format("Shelf %s", Integer.valueOf(label).toString())
+                )
         );
     }
 }
@@ -167,7 +167,7 @@ Wildcard imports obscure class origins and can cause naming conflicts.
 import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfFactory;
-import com.penrose.bibby.library.shelf.ShelfRepository;
+import com.penrose.bibby.library.shelf.ShelfJpaRepository;
 ```
 
 #### Issue 2: Overcomplicated Type Conversion
@@ -217,7 +217,7 @@ package com.penrose.bibby.library.bookcase;
 import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfFactory;
-import com.penrose.bibby.library.shelf.ShelfRepository;
+import com.penrose.bibby.library.shelf.ShelfJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -231,15 +231,15 @@ import java.util.Optional;
 public class BookcaseService {
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
-    private final ShelfRepository shelfRepository;
+    private final ShelfJpaRepository shelfRepository;
     private final ShelfFactory shelfFactory;
-    private final ResponseStatusException existingRecordError = 
-        new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
+    private final ResponseStatusException existingRecordError =
+            new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
 
     public BookcaseService(
-        BookcaseRepository bookcaseRepository, 
-        ShelfRepository shelfRepository, 
-        ShelfFactory shelfFactory
+            BookcaseRepository bookcaseRepository,
+            ShelfJpaRepository shelfJpaRepository,
+            ShelfFactory shelfFactory
     ) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;
@@ -249,14 +249,14 @@ public class BookcaseService {
     public void addShelf(BookcaseEntity bookcaseEntity, int label, int position) {
         String shelfLabel = "Shelf " + label;
         shelfRepository.save(
-            shelfFactory.createEntity(
-                bookcaseEntity.getBookcaseId(),
-                position,
-                shelfLabel
-            )
+                shelfFactory.createEntity(
+                        bookcaseEntity.getBookcaseId(),
+                        position,
+                        shelfLabel
+                )
         );
     }
-    
+
     // ... other methods
 }
 ```

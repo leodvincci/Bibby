@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.bookcase;
 import com.penrose.bibby.library.shelf.ShelfFactory;
-import com.penrose.bibby.library.shelf.ShelfRepository;
+import com.penrose.bibby.library.shelf.ShelfJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,11 @@ public class BookcaseService {
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
     private final ResponseStatusException existingRecordError = new ResponseStatusException(HttpStatus.CONFLICT,"Bookcase with the label already exist");
-    private final ShelfRepository shelfRepository;
+    private final ShelfJpaRepository shelfJpaRepository;
 
-    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfRepository shelfRepository, ShelfFactory shelfFactory) {
+    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfJpaRepository shelfJpaRepository, ShelfFactory shelfFactory) {
         this.bookcaseRepository = bookcaseRepository;
-        this.shelfRepository = shelfRepository;
+        this.shelfJpaRepository = shelfJpaRepository;
         this.shelfFactory = shelfFactory;
     }
 
@@ -43,7 +43,7 @@ public class BookcaseService {
     }
 
     public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity){
-        shelfRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label,bookCapacity));
+        shelfJpaRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label,bookCapacity));
     }
 
     public List<BookcaseEntity> getAllBookcases(){
