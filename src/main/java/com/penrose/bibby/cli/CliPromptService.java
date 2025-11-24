@@ -1,7 +1,6 @@
 package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
