@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ShelfRepository extends JpaRepository<ShelfEntity, Long> {
+public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
 
     List<ShelfEntity> findByBookcaseId(Long bookcaseId);
 

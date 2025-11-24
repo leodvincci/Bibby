@@ -139,4 +139,12 @@ public class BookEntity {
         }
     }
 
+    @Override
+    public String toString() {
+        return "BookEntity{" +
+                "bookId=" + bookId +
+                ", title='" + title + '\'' +
+
+                '}';
+    }
 }

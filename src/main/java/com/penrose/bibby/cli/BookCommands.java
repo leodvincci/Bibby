@@ -30,6 +30,7 @@ public class BookCommands extends AbstractShellComponent {
     final CliPromptService cliPrompt;
     final ShelfMapper shelfMapper;
     final BookMapper bookMapper;
+    final ShelfDomainRepositoryImpl shelfDomainRepository;
 
 
 
@@ -43,7 +44,7 @@ public class BookCommands extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookController = bookController;
@@ -53,6 +54,7 @@ public class BookCommands extends AbstractShellComponent {
         this.cliPrompt = cliPrompt;
         this.shelfMapper = shelfMapper;
         this.bookMapper = bookMapper;
+        this.shelfDomainRepository = shelfDomainRepository;
     }
 
 
@@ -210,14 +212,20 @@ public class BookCommands extends AbstractShellComponent {
             Long shelfId = Long.parseLong(result.getContext().get("bookshelf",String.class));
             System.out.println(shelfId);
             System.out.println(title);
-            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
+//            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
 
-            System.out.println(shelf);
-//            shelf.addBook(bookMapper.toDomain(bookEnt,authorService.findByBookId(bookEnt.getBookId()),shelfService.findShelfById(shelfId).get()));
+//            System.out.println(shelf);
+            Shelf shelfDomain = shelfDomainRepository.getById(shelfId);
+            if(shelfDomain.isFull()){
+                throw new IllegalStateException("Shelf is full");
+            }else{
+                //            shelf.addBook(bookMapper.toDomain(bookEnt,authorService.findByBookId(bookEnt.getBookId()),shelfService.findShelfById(shelfId).get()));
+                System.out.println(shelfDomain);
+                bookEnt.setShelfId(shelfId);
+                bookService.saveBook(bookEnt);
+                System.out.println("Added Book To the Shelf!");
+            }
 
-            bookEnt.setShelfId(shelfId);
-            bookService.saveBook(bookEnt);
-            System.out.println("Added Book To the Shelf!");
         }
 
     }

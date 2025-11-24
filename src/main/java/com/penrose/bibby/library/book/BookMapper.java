@@ -4,6 +4,7 @@ import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorMapper;
 import com.penrose.bibby.library.shelf.Shelf;
+import com.penrose.bibby.library.shelf.ShelfDomainRepositoryImpl;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfMapper;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,12 @@ import java.util.HashSet;
 import java.util.Set;
 @Component
 public class BookMapper {
+    private final ShelfDomainRepositoryImpl shelfDomainRepositoryImpl;
     ShelfMapper shelfMapper;
 
-    private BookMapper(ShelfMapper shelfMapper){
+    private BookMapper(ShelfMapper shelfMapper, ShelfDomainRepositoryImpl shelfDomainRepositoryImpl){
         this.shelfMapper = shelfMapper;
+        this.shelfDomainRepositoryImpl = shelfDomainRepositoryImpl;
     }
 
     public Book toDomain(BookEntity e,
@@ -23,7 +26,8 @@ public class BookMapper {
                          ShelfEntity shelfEntity){
 
         HashSet<Author> authors = new HashSet<>();
-        Shelf shelf = shelfMapper.toDomain(shelfEntity);
+//        Shelf shelf = shelfMapper.toDomain(shelfEntity);
+        Shelf shelf = shelfDomainRepositoryImpl.getById(shelfEntity.getShelfId());
 
         for (AuthorEntity authorEntity : authorEntities) {
             authors.add(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
