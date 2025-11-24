@@ -13,7 +13,7 @@ public class Shelf {
     private String shelfDescription;
     private int shelfPosition;
     private int bookCapacity;
-    private List<BookEntity> books;
+    private List<Book> books;
 
 
     public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int bookCapacity) {
@@ -35,10 +35,10 @@ public class Shelf {
         return books.size() >= bookCapacity;
     }
 
-    public List<BookEntity> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
-    public void setBooks(List<BookEntity> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

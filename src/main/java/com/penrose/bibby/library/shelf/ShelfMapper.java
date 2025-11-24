@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.shelf;
 
+import com.penrose.bibby.library.book.Book;
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import java.util.List;
 public class ShelfMapper {
 
 
-    public Shelf toDomain(ShelfEntity shelfEntity, List<BookEntity> books){
+    public Shelf toDomain(ShelfEntity shelfEntity, List<Book> books){
         Shelf shelf = new Shelf();
         shelf.setId(shelfEntity.getShelfId());
         shelf.setBookCapacity(shelfEntity.getBookCapacity());

@@ -8,11 +8,11 @@ import java.util.Set;
 @Service
 public class AuthorService {
     private final AuthorRepository authorRepository;
-    private final AuthorEntityFactory authorEntityFactory;
+    private final AuthorFactory authorFactory;
 
-    public AuthorService(AuthorRepository authorRepository, AuthorEntityFactory authorEntityFactory) {
+    public AuthorService(AuthorRepository authorRepository, AuthorFactory authorFactory) {
         this.authorRepository = authorRepository;
-        this.authorEntityFactory = authorEntityFactory;
+        this.authorFactory = authorFactory;
     }
 
     public Set<AuthorEntity> findByBookId(Long id){
@@ -28,7 +28,7 @@ public class AuthorService {
    }
 
    public AuthorEntity createAuthor(String authorFirstName, String authorLastName){
-        return authorRepository.save(authorEntityFactory.createEntity(authorFirstName,authorLastName));
+        return authorRepository.save(authorFactory.createEntity(authorFirstName,authorLastName));
    }
 
    public AuthorEntity findOrCreateAuthor(String authorFirstName, String authorLastName){
