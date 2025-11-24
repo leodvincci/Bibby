@@ -11,14 +11,12 @@ public class BookDomainRepositoryImpl implements BookDomainRepository{
     private final BookMapperTwo bookMapperTwo;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final AuthorMapperTwo authorMapperTwo;
 
-    public BookDomainRepositoryImpl(BookMapperTwo bookMapperTwo, BookRepository bookRepository, AuthorRepository authorRepository, AuthorMapperTwo authorMapperTwo) {
+    public BookDomainRepositoryImpl(BookMapperTwo bookMapperTwo, BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookMapperTwo = bookMapperTwo;
 
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.authorMapperTwo = authorMapperTwo;
     }
 
     @Override

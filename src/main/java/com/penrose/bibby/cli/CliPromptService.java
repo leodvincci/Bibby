@@ -15,13 +15,11 @@ import java.util.Map;
 @Component
 public class CliPromptService {
     private final ComponentFlow.Builder componentFlowBuilder;
-    private final BookcaseService bookcaseService;
     private final ShelfService shelfService;
 
     public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, BookcaseService bookcaseService, ShelfService shelfService) {
 
         this.componentFlowBuilder = componentFlowBuilder1;
-        this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
     }
 
@@ -65,12 +63,12 @@ public class CliPromptService {
         return Long.parseLong(result.getContext().get("bookshelf",String.class));
     }
 
-    public Long promptForBookCase(){
+    public Long promptForBookCase(Map<String, String> bookCaseOptions){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookcase")
                 .name("Choose a Bookcase:_")
-                .selectItems(bookCaseOptions())
+                .selectItems(bookCaseOptions)
                 .and().build();
         ComponentFlow.ComponentFlowResult result = flow.run();
         return Long.parseLong(result.getContext().get("bookcase",String.class));
@@ -115,25 +113,22 @@ public class CliPromptService {
     private Map<String, String> buildSearchOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        options.put("Show all books  — \u001B[32mView the complete library\n\u001B[0m", "all");
-        options.put("Title or keyword  —  \u001B[32mSearch by words in the title\n\u001B[0m", "title");
-        options.put("Author  —  \u001B[32mFind books by author name\n\u001B[0m", "author");
-        options.put("Genre  —  \u001B[32mFilter books by literary category\n\u001B[0m", "genre");
-        options.put("Shelf/Location  —  \u001B[32mLocate books by physical shelf ID\n\u001B[0m", "shelf");
-        options.put("Status  — \u001B[32mShow available or checked-out books\n\u001B[0m", "status");
+        options.put("""
+                        Show all books       (View the complete library)""", "all");
+        options.put("""
+                        Title or keyword     (Search by words in the title)""", "title");
+        options.put("""
+                        Author               (Find books by author name)""", "author");
+        options.put("""
+                        Genre                (Filter books by literary category)""", "genre");
+        options.put("""
+                        Shelf/Location       (Locate books by physical shelf ID)""", "shelf");
+        options.put("""
+                        Status               (Show available or checked-out books)""", "status");
         return options;
     }
 
-    private Map<String, String> bookCaseOptions() {
-        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
-        Map<String, String> options = new LinkedHashMap<>();
-        List<BookcaseEntity> bookcaseEntities  = bookcaseService.getAllBookcases();
-        for(BookcaseEntity b : bookcaseEntities){
-            options.put(b.getBookcaseLabel(), b.getBookcaseId().toString());
-        }
 
-        return options;
-    }
 
     private Map<String, String> bookShelfOptions(Long bookcaseId) {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
