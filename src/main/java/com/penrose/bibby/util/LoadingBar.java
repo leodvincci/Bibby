@@ -12,4 +12,8 @@ public class LoadingBar {
         }
         System.out.println("\n✅ Done!");
     }
+
+    public static void showLoading() throws InterruptedException {
+        LoadingBar.showProgressBar("Loading books from shelf...", 40, 150);
+    }
 }
