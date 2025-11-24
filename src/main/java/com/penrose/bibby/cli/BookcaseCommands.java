@@ -38,10 +38,10 @@ public class BookcaseCommands extends AbstractShellComponent {
     }
 
     public String bookcaseRowFormater(BookcaseEntity bookcaseEntity, int bookCount){
-        return String.format(" %-12s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mBooks ", bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
+        return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks", bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
     }
 
-    @Command(command = "add", description = "Create a new bookcase in the library.")
+    @Command(command = "create", description = "Create a new bookcase in the library.")
     public void addBookcase() throws InterruptedException {
 
 
@@ -98,6 +98,7 @@ public class BookcaseCommands extends AbstractShellComponent {
       }else{
           System.out.println("Not Created");
       }
+
 
 
     }
@@ -221,6 +222,8 @@ public class BookcaseCommands extends AbstractShellComponent {
         }
 
     }
+
+
 
 
 

@@ -113,7 +113,7 @@ public class BookCommands extends AbstractShellComponent {
         if(bookEnt == null){
             System.out.println("Book Not Found In Library");
         }else {
-            Long bookCaseId = cliPrompt.promptForBookCase();
+            Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
             Long shelfId = cliPrompt.promptForShelf(bookCaseId);
 //            System.out.println(shelfId);
 //            System.out.println(title);
@@ -368,4 +368,16 @@ public class BookCommands extends AbstractShellComponent {
     public void suggestBookShelf(){
         System.out.println("Book should be placed on Shelf: G-16");
     }
+
+    private Map<String, String> bookCaseOptions() {
+        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
+        Map<String, String> options = new LinkedHashMap<>();
+        List<BookcaseEntity> bookcaseEntities  = bookcaseService.getAllBookcases();
+        for(BookcaseEntity b : bookcaseEntities){
+            options.put(b.getBookcaseLabel(), b.getBookcaseId().toString());
+        }
+
+        return options;
+    }
+
 }
