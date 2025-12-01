@@ -7,7 +7,7 @@ const statusDiv = document.getElementById("status"); // add a <div id="status">
 const codeReader = new BrowserMultiFormatReader();
 
 // 👉 change this to whatever your Bibby endpoint is
-const API_URL = "/import/books";
+const API_URL = "/lookup";
 
 // simple dedupe so we don't spam the API
 let lastIsbn = "";
@@ -20,12 +20,8 @@ async function sendToApi(isbn) {
     try {
         statusDiv.textContent = "Sending to Bibby…";
 
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
+        const response = await fetch(`${API_URL}/${isbn}`, {
+            method: "GET"
         });
 
         if (!response.ok) {
@@ -35,7 +31,7 @@ async function sendToApi(isbn) {
             return;
         }
 
-        statusDiv.textContent = "✅ Sent to Bibby: " + isbn;
+        statusDiv.textContent = `Sent to Bibby: ${isbn}`;
         console.log("Sent to API:", isbn);
     } catch (err) {
         console.error("Network/API error:", err);
