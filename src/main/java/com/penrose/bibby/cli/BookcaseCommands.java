@@ -4,7 +4,6 @@ import com.penrose.bibby.library.book.BookDetailView;
 import com.penrose.bibby.library.book.BookEntity;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.book.BookSummary;
-import com.penrose.bibby.library.bookcase.Bookcase;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;
@@ -42,7 +41,7 @@ public class BookcaseCommands extends AbstractShellComponent {
     }
 
     @Command(command = "create", description = "Create a new bookcase in the library.")
-    public void addBookcase() throws InterruptedException {
+    public void createBookcase() throws InterruptedException {
 
 
         ComponentFlow flow = componentFlowBuilder.clone()
