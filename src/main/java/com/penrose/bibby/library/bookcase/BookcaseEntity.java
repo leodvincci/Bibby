@@ -11,15 +11,13 @@ public class BookcaseEntity {
     private String bookcaseLabel;
     private String bookcaseDescription;
     private int bookCapacity;
-
-
     private int shelfCapacity;
 
 
     public BookcaseEntity(String bookcaseLabel, int shelfCapacity, int bookCapacity) {
         this.bookcaseLabel = bookcaseLabel;
-        this.shelfCapacity = shelfCapacity;
         this.bookCapacity = bookCapacity;
+        setShelfCapacity( shelfCapacity);
     }
 
     public BookcaseEntity(Long bookcaseId, String bookcaseLabel,int shelfCapacity, int bookCapacity) {
@@ -37,6 +35,10 @@ public class BookcaseEntity {
     }
 
     public void setShelfCapacity(int shelfCapacity) {
+        //must have at least one shelf
+        if (shelfCapacity < 1) {
+            shelfCapacity = 1;
+        }
         this.shelfCapacity = shelfCapacity;
     }
 

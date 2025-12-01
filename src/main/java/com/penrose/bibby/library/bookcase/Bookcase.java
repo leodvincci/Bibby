@@ -11,6 +11,10 @@ public class Bookcase {
     }
 
     public void setShelfCapacity(int shelfCapacity) {
+        //must have at least one shelf
+        if (shelfCapacity < 1) {
+            shelfCapacity = 1;
+        }
         this.shelfCapacity = shelfCapacity;
     }
 
