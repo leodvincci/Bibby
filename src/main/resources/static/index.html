@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bibby Scanner</title>
+    <style>
+        video { width: 300px; border: 2px solid black; }
+        #result { margin-top: 1rem; font-size: 1.3rem; }
+    </style>
+</head>
+<body>
+
+<h2>Bibby Webcam Scanner</h2>
+
+<video id="video" autoplay></video>
+<div id="result">Scan something...</div>
+<div id="status"></div>
+
+<!-- ZXing library from CDN -->
+<script src="https://unpkg.com/@zxing/browser@latest"></script>
+<script src="script.js"></script>
+</body>
+</html>
