@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

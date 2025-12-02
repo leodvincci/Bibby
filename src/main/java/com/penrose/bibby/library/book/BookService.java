@@ -10,6 +10,7 @@ import com.penrose.bibby.library.book.dto.BookDetailView;
 import com.penrose.bibby.library.book.dto.BookRequestDTO;
 import com.penrose.bibby.library.book.dto.BookSummary;
 import com.penrose.bibby.library.book.mapping.BookMapper;
+import com.penrose.bibby.library.book.repository.BookRepository;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.stereotype.Service;
