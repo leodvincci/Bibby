@@ -5,6 +5,7 @@ import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.controller.BookController;
 import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
 import com.penrose.bibby.library.book.dto.BookRequestDTO;
 import com.penrose.bibby.library.book.mapping.BookMapper;
 import com.penrose.bibby.library.book.service.BookService;
@@ -29,7 +30,6 @@ public class BookCommands extends AbstractShellComponent {
     final BookcaseService bookcaseService;
     final ShelfService shelfService;
     final AuthorService authorService;
-    final BookController bookController;
     final CliPromptService cliPrompt;
     final ShelfMapper shelfMapper;
     final BookMapper bookMapper;
@@ -38,10 +38,9 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookController bookController, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
-        this.bookController = bookController;
         this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
         this.authorService = authorService;
@@ -112,6 +111,32 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
+        BookEntity bookEnt = bookService.findBookByTitle(title);
+
+        if(bookEnt == null){
+            System.out.println("Book Not Found In Library");
+        }else {
+            Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+            Long shelfId = cliPrompt.promptForShelf(bookCaseId);
+//            System.out.println(shelfId);
+//            System.out.println(title);
+//            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
+//            System.out.println(shelf);
+            Shelf shelfDomain = shelfDomainRepository.getById(shelfId);
+            if(shelfDomain.isFull()){
+                throw new IllegalStateException("Shelf is full");
+            }else{
+                bookEnt.setShelfId(shelfId);
+                bookService.saveBook(bookEnt);
+                System.out.println("Added Book To the Shelf!");
+            }
+        }
+    }
+
+
+    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
+    public void scanToShelf(GoogleBooksResponse bookMetaData){
+        String title = bookMetaData.items().get(0).volumeInfo().title();
         BookEntity bookEnt = bookService.findBookByTitle(title);
 
         if(bookEnt == null){
@@ -384,4 +409,15 @@ public class BookCommands extends AbstractShellComponent {
         return options;
     }
 
+    public void addScanResultCommand(GoogleBooksResponse bookMetaData,String isbn) {
+        System.out.println("\n\u001B[36m</>\u001B[0m: Book scanned successfully. Here's the metadata:");
+        System.out.println(isbn);
+        System.out.println(bookMetaData.items().get(0).volumeInfo().title());
+        System.out.println(bookMetaData.items().get(0).volumeInfo().authors());
+        System.out.println(bookMetaData.items().get(0).volumeInfo().publishedDate());
+        System.out.println(bookMetaData.items().get(0).volumeInfo().categories());
+        System.out.println(bookMetaData.items().get(0).volumeInfo().description());
+        System.out.println();
+        cliPrompt.promptBookConfirmation();
+    }
 }

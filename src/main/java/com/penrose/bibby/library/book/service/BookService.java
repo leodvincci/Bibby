@@ -150,6 +150,22 @@ public class BookService {
         bookRepository.save(bookEntity);
     }
 
+    public BookEntity assignBookToShelf(Long bookId, Long shelfId) {
+        BookEntity bookEntity = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
+        ShelfEntity shelf = shelfService.findShelfById(shelfId)
+                .orElseThrow(() -> new IllegalArgumentException("Shelf not found: " + shelfId));
+
+        long bookCount = bookRepository.countByShelfId(shelfId);
+        if (bookCount >= shelf.getBookCapacity()) {
+            throw new IllegalStateException("Shelf is full");
+        }
+
+        bookEntity.setShelfId(shelfId);
+        saveBook(bookEntity);
+        return bookEntity;
+    }
+
 
     public void checkOutBook(BookEntity bookEntity){
         Set<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
@@ -177,7 +193,6 @@ public class BookService {
     }
 
 }
-
 
 
 

@@ -31,6 +31,10 @@ public class AuthorService {
         return authorRepository.save(authorFactory.createEntity(authorFirstName,authorLastName));
    }
 
+   public void saveAuthor(AuthorEntity authorEntity){
+        authorRepository.save(authorEntity);
+   }
+
    public AuthorEntity findOrCreateAuthor(String authorFirstName, String authorLastName){
         Optional<AuthorEntity> existingAuthor = findAuthorByName(authorFirstName,authorLastName);
         return existingAuthor.orElseGet(()-> createAuthor(authorFirstName,authorLastName));
