@@ -18,7 +18,7 @@ private AuthorEntity authorEntity;  // ❌ Domain → Persistence dependency
 ### Files Affected
 
 - `com.penrose.bibby.library.book.domain.Book` - Domain model with persistence dependency
-- `com.penrose.bibby.library.book.BookMapper` - Expects `AuthorEntity` parameter
+- `com.penrose.bibby.library.book.mapping.BookMapper` - Expects `AuthorEntity` parameter
 - `com.penrose.bibby.library.author.AuthorEntity` - Persistence entity that needs domain counterpart
 
 ### What Exists
@@ -98,7 +98,7 @@ public static Author toDomain(AuthorEntity e) {
 
 ### 4. Update BookMapper
 
-**File:** `com.penrose.bibby.library.book.BookMapper`
+**File:** `com.penrose.bibby.library.book.mapping.BookMapper`
 
 **Changes required:**
 

@@ -3,6 +3,7 @@ package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.author.*;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.mapping.BookMapperTwo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

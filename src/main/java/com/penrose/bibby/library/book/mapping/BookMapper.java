@@ -1,8 +1,9 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.mapping;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorMapper;
+import com.penrose.bibby.library.book.AvailabilityStatus;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.domain.BookEntity;
 import com.penrose.bibby.library.shelf.Shelf;

@@ -6,6 +6,7 @@ import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.*;
 import com.penrose.bibby.library.book.domain.BookEntity;
 import com.penrose.bibby.library.book.dto.BookRequestDTO;
+import com.penrose.bibby.library.book.mapping.BookMapper;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.BookcaseService;
 import com.penrose.bibby.library.shelf.*;
