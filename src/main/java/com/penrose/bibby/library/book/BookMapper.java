@@ -3,15 +3,15 @@ package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorMapper;
+import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.domain.BookEntity;
 import com.penrose.bibby.library.shelf.Shelf;
 import com.penrose.bibby.library.shelf.ShelfDomainRepositoryImpl;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 @Component
 public class BookMapper {

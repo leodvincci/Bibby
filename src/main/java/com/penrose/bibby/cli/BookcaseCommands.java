@@ -1,7 +1,7 @@
 package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.book.BookDetailView;
-import com.penrose.bibby.library.book.BookEntity;
+import com.penrose.bibby.library.book.domain.BookEntity;
 import com.penrose.bibby.library.book.BookService;
 import com.penrose.bibby.library.book.BookSummary;
 import com.penrose.bibby.library.bookcase.BookcaseEntity;

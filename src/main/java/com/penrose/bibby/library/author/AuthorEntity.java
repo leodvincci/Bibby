@@ -1,10 +1,9 @@
 package com.penrose.bibby.library.author;
 
-import com.penrose.bibby.library.book.BookEntity;
+import com.penrose.bibby.library.book.domain.BookEntity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
