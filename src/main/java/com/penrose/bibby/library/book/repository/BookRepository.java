@@ -39,4 +39,6 @@ public interface BookRepository extends JpaRepository <BookEntity, Long> {
         GROUP BY b.book_id, b.title, bc.bookcase_label, s.shelf_label, b.availability_status
     """, nativeQuery = true)
     BookDetailView getBookDetailView(Long bookId);
+
+    long countByShelfId(Long shelfId);
 }
