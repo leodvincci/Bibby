@@ -22,6 +22,7 @@ public class Book {
     private AvailabilityStatus availabilityStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    private String publishedDate;
 
     public Book() {
     }
@@ -54,6 +55,14 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPublishedDate() {
+        return publishedDate;
+    }
+
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
     }
 
     public Long getId() {
@@ -158,8 +167,16 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{ title='" + title + '\'' +
+        return "Book{" +
+                "title='" + title + '\'' +
                 ", authors=" + authors +
+                ", isbn='" + isbn + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", description='" + description + '\'' +
+                ", availabilityStatus=" + availabilityStatus +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", shelf=" + shelf +
                 '}';
     }
 
