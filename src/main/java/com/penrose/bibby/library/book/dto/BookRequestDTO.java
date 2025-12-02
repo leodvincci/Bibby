@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.dto;
 
 import com.penrose.bibby.library.author.Author;
 import java.util.List;

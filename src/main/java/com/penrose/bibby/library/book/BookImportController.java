@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book;
 
+import com.penrose.bibby.library.book.dto.BookImportRequest;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
