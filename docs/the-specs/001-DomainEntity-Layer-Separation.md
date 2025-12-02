@@ -17,8 +17,8 @@ private AuthorEntity authorEntity;  // ❌ Domain → Persistence dependency
 
 ### Files Affected
 
-- `com.penrose.bibby.library.book.Book` - Domain model with persistence dependency
-- `com.penrose.bibby.library.book.BookMapper` - Expects `AuthorEntity` parameter
+- `com.penrose.bibby.library.book.domain.Book` - Domain model with persistence dependency
+- `com.penrose.bibby.library.book.mapping.BookMapper` - Expects `AuthorEntity` parameter
 - `com.penrose.bibby.library.author.AuthorEntity` - Persistence entity that needs domain counterpart
 
 ### What Exists
@@ -32,7 +32,7 @@ private AuthorEntity authorEntity;  // ❌ Domain → Persistence dependency
 
 Based on `BookMapper`, the established pattern is:
 
-- Domain models live in their package (e.g., `com.penrose.bibby.library.book.Book`)
+- Domain models live in their package (e.g., `com.penrose.bibby.library.book.domain.Book`)
 - Entities live in their package with "Entity" suffix (e.g., `BookEntity`)
 - Mappers are static utility classes with `toDomain()` and potentially `toEntity()` methods
 - Mappers handle null checking
@@ -85,7 +85,7 @@ public static Author toDomain(AuthorEntity e) {
 
 ### 3. Update Book Domain Model
 
-**File:** `com.penrose.bibby.library.book.Book`
+**File:** `com.penrose.bibby.library.book.domain.Book`
 
 **Changes required:**
 
@@ -98,7 +98,7 @@ public static Author toDomain(AuthorEntity e) {
 
 ### 4. Update BookMapper
 
-**File:** `com.penrose.bibby.library.book.BookMapper`
+**File:** `com.penrose.bibby.library.book.mapping.BookMapper`
 
 **Changes required:**
 

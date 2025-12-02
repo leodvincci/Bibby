@@ -1,8 +1,7 @@
 package com.penrose.bibby.library.shelf;
 
-import com.penrose.bibby.library.book.Book;
-import com.penrose.bibby.library.book.BookDomainRepository;
-import com.penrose.bibby.library.book.BookRepository;
+import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.repository.BookDomainRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.domain;
 
 import com.penrose.bibby.library.author.AuthorEntity;
 import jakarta.persistence.*;

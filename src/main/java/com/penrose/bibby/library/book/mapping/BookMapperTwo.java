@@ -1,12 +1,14 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.mapping;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorMapperTwo;
+import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.domain.BookFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component

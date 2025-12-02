@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.domain;
 
 import java.time.LocalDate;
 import java.util.HashSet;

@@ -1,8 +1,16 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.service;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorService;
+import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.domain.BookFactory;
+import com.penrose.bibby.library.book.dto.BookDetailView;
+import com.penrose.bibby.library.book.dto.BookRequestDTO;
+import com.penrose.bibby.library.book.dto.BookSummary;
+import com.penrose.bibby.library.book.mapping.BookMapper;
+import com.penrose.bibby.library.book.repository.BookRepository;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.stereotype.Service;
