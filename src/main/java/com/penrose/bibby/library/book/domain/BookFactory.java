@@ -28,4 +28,15 @@ public class BookFactory {
         return book;
     }
 
+    public Book createBookDomainFromJSON(String title, String publisher, String description, String isbn, HashSet<Author> authors){
+        Book book = new Book();
+        book.setIsbn(isbn);
+        book.setTitle(title);
+        book.setAuthors(authors);
+        book.setDescription(description);
+        book.setPublisher(publisher);
+        book.setAvailabilityStatus(AvailabilityStatus.AVAILABLE);
+        return book;
+    }
+
 }

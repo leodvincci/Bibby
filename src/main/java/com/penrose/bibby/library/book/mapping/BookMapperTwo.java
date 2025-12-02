@@ -6,7 +6,9 @@ import com.penrose.bibby.library.author.AuthorMapperTwo;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.domain.BookEntity;
 import com.penrose.bibby.library.book.domain.BookFactory;
+import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,5 +27,24 @@ public class BookMapperTwo {
     public Book toDomain(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
         HashSet<Author> authors = authorMapperTwo.toDomain(authorEntities);
         return bookFactory.createBookDomain(bookEntity,authors);
+    }
+
+    public Book toDomainFromJSON(GoogleBooksResponse googleBooksResponse){
+        HashSet<Author> authors = new HashSet<>();
+
+        for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
+            String [] nameParts = authorName.split(" ", 2);
+            Author author = new Author();
+            author.setFirstName(nameParts[0]);
+            author.setLastName(nameParts[1]);
+            authors.add(author);
+        }
+        String isbn = "";
+        String title = (googleBooksResponse.items().get(0).volumeInfo().title());
+        String publisher = (googleBooksResponse.items().get(0).volumeInfo().publisher());
+        String description = (googleBooksResponse.items().get(0).volumeInfo().description());
+        String publishingDate = (googleBooksResponse.items().get(0).volumeInfo().publishedDate());
+
+        return bookFactory.createBookDomainFromJSON(title,publisher,description,isbn,authors);
     }
 }
