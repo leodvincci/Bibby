@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.book.AvailabilityStatus;
 import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.Shelf;
 

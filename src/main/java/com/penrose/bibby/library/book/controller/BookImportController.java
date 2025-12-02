@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.controller;
 
 import com.penrose.bibby.library.book.dto.BookImportRequest;
 import org.slf4j.Logger;
