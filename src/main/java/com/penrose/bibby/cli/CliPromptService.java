@@ -33,6 +33,17 @@ public class CliPromptService {
         return result.getContext().get("searchDecision",String.class).equalsIgnoreCase("Yes");
     }
 
+    public boolean promptBookConfirmation(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("confirmation")
+                .name("Would you like to add this book to the library?")
+                .selectItems(yesNoOptions())
+                .and().build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("confirmation",String.class).equalsIgnoreCase("Yes");
+    }
+
     public Author promptForAuthor(){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
