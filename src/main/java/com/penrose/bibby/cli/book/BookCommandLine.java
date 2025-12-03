@@ -1,5 +1,6 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.book;
 
+import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
@@ -27,7 +28,7 @@ import java.util.*;
 
 @ShellComponent
 @Command(command = "book", group = "Book Commands")
-public class BookCommands extends AbstractShellComponent {
+public class BookCommandLine extends AbstractShellComponent {
 
     final BookService bookService;
     final BookcaseService bookcaseService;
@@ -41,7 +42,7 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
+    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookcaseService = bookcaseService;
@@ -182,13 +183,9 @@ public class BookCommands extends AbstractShellComponent {
     public void searchByAuthor() throws InterruptedException {
         System.out.println("\n\u001B[95mSearch by Author");
         Author author = cliPrompt.promptForAuthor();
-
-        Thread.sleep(1000);
         System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author.getFirstName() + " " + author.getLastName() + " — a fine choice. Let me check the shelves...");
-        Thread.sleep(4000);
         LoadingBar.showLoading();
         System.out.println("\n\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
-        Thread.sleep(2000);
         System.out.println("""
                 ──────────────────────────────────────────────
                 [12] \u001B[33mMy Life Decoded: The Story of Leo\u001B[0m   \n[Shelf A1] (AVAILABLE)\s
@@ -196,7 +193,6 @@ public class BookCommands extends AbstractShellComponent {
                 [29] \u001B[33mThe Answer is 42 \u001B[0m   \n[Shelf B2] (AVAILABLE)
                 """);
         System.out.println("\u001B[90m───────────────────────────────────────────────\u001B[0m");
-        Thread.sleep(500);
         askBookCheckOut();
     }
 

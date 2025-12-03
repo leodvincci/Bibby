@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.prompt.application;
 
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;

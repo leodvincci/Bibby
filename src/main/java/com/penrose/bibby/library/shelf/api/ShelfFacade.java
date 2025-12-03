@@ -1,10 +1,10 @@
 package com.penrose.bibby.library.shelf.api;
 
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.domain.Shelf;
 
 import java.util.Optional;
 
 public interface ShelfFacade {
 
-    Optional<ShelfEntity> getShelfEntityById(Long shelfId);
+    Optional<Shelf> getShelfEntityById(Long shelfId);
 }
