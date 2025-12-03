@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.author;
 
-import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;

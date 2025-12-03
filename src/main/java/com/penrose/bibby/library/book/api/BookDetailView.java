@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.dto;
+package com.penrose.bibby.library.book.api;
 
 public record BookDetailView(Long bookId, String title, String authors, String bookcaseLabel, String shelfLabel, String bookStatus) {
 }

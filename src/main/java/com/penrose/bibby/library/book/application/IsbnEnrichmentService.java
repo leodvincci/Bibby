@@ -1,11 +1,13 @@
-package com.penrose.bibby.library.book.service;
+package com.penrose.bibby.library.book.application;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorFactory;
 import com.penrose.bibby.library.author.AuthorService;
 import com.penrose.bibby.library.book.domain.*;
-import com.penrose.bibby.library.book.mapping.BookMapperTwo;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

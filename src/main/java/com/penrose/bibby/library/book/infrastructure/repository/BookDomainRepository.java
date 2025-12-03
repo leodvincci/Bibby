@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.repository;
+package com.penrose.bibby.library.book.infrastructure.repository;
 
 import com.penrose.bibby.library.book.domain.Book;
 

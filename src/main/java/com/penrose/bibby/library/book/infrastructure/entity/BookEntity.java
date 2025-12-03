@@ -1,6 +1,7 @@
-package com.penrose.bibby.library.book.domain;
+package com.penrose.bibby.library.book.infrastructure.entity;
 
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

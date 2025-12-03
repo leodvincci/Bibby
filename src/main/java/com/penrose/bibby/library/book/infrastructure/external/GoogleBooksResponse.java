@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.domain;
+package com.penrose.bibby.library.book.infrastructure.external;
 
 import java.util.List;
 

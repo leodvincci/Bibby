@@ -1,14 +1,14 @@
-package com.penrose.bibby.library.book.controller;
+package com.penrose.bibby.web.book;
 
 import com.penrose.bibby.library.author.AuthorRepository;
-import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
-import com.penrose.bibby.library.book.domain.BookEntity;
-import com.penrose.bibby.library.book.dto.BookPlacementResponse;
-import com.penrose.bibby.library.book.dto.BookRequestDTO;
-import com.penrose.bibby.library.book.dto.BookShelfAssignmentRequest;
-import com.penrose.bibby.library.book.service.IsbnEnrichmentService;
-import com.penrose.bibby.library.book.service.BookInfoService;
-import com.penrose.bibby.library.book.service.BookService;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.api.BookPlacementResponse;
+import com.penrose.bibby.library.book.api.BookRequestDTO;
+import com.penrose.bibby.library.book.api.BookShelfAssignmentRequest;
+import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
+import com.penrose.bibby.library.book.application.BookInfoService;
+import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.service.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;

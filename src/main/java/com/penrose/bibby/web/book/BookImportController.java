@@ -1,11 +1,11 @@
-package com.penrose.bibby.library.book.controller;
+package com.penrose.bibby.web.book;
 
-import com.penrose.bibby.library.book.dto.BookImportRequest;
-import com.penrose.bibby.library.book.dto.BookImportResponse;
-import com.penrose.bibby.library.book.domain.BookEntity;
-import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
-import com.penrose.bibby.library.book.service.BookInfoService;
-import com.penrose.bibby.library.book.service.IsbnEnrichmentService;
+import com.penrose.bibby.library.book.infrastructure.external.BookImportRequest;
+import com.penrose.bibby.library.book.infrastructure.external.BookImportResponse;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.application.BookInfoService;
+import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

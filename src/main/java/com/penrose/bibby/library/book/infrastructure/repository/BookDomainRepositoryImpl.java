@@ -1,9 +1,9 @@
-package com.penrose.bibby.library.book.repository;
+package com.penrose.bibby.library.book.infrastructure.repository;
 
 import com.penrose.bibby.library.author.*;
 import com.penrose.bibby.library.book.domain.Book;
-import com.penrose.bibby.library.book.domain.BookEntity;
-import com.penrose.bibby.library.book.mapping.BookMapperTwo;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

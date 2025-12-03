@@ -1,6 +1,5 @@
-package com.penrose.bibby.library.book.domain;
+package com.penrose.bibby.library.book.infrastructure.external;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public record VolumeInfo(String title,

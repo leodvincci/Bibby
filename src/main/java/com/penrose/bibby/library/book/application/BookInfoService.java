@@ -1,7 +1,6 @@
-package com.penrose.bibby.library.book.service;
+package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.book.domain.Book;
-import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

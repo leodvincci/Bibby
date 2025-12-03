@@ -1,14 +1,13 @@
-package com.penrose.bibby.library.book.mapping;
+package com.penrose.bibby.library.book.infrastructure.mapping;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
 import com.penrose.bibby.library.author.AuthorMapperTwo;
 import com.penrose.bibby.library.book.domain.Book;
-import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.domain.BookFactory;
-import com.penrose.bibby.library.book.domain.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
 import java.util.Set;

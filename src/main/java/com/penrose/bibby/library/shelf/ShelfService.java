@@ -2,7 +2,7 @@ package com.penrose.bibby.library.shelf;
 
 import org.springframework.stereotype.Service;
 
-import com.penrose.bibby.library.book.repository.BookRepository;
+import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.repository.BookcaseRepository;
 
