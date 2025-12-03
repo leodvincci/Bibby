@@ -73,6 +73,18 @@ public class CliPromptService {
         return Long.parseLong(result.getContext().get("bookshelf",String.class));
     }
 
+    public String promptForIsbnScan(){
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("isbn")
+                .name("ISBN Number:_")
+                .and()
+                .build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("isbn",String.class);
+    }
+
     public Long promptForBookCase(Map<String, String> bookCaseOptions){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()

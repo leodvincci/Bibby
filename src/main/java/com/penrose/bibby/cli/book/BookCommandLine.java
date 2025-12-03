@@ -112,6 +112,7 @@ public class BookCommandLine extends AbstractShellComponent {
 //        }
     }
 
+
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
@@ -135,6 +136,12 @@ public class BookCommandLine extends AbstractShellComponent {
                 System.out.println("Added Book To the Shelf!");
             }
         }
+    }
+
+    @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
+    public void scanBook() {
+        String isbn = cliPrompt.promptForIsbnScan();
+        System.out.println("Scanned ISBN: " + isbn);
     }
 
 
