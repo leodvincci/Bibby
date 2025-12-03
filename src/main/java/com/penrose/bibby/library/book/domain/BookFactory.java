@@ -2,6 +2,7 @@ package com.penrose.bibby.library.book.domain;
 
 import com.penrose.bibby.library.author.Author;
 import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;

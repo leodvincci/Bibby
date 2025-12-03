@@ -1,6 +1,6 @@
 package com.penrose.bibby.cli;
 
-import com.penrose.bibby.library.book.domain.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import org.junit.jupiter.api.Test;
 
 class BookCommandsTest {
