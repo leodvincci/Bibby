@@ -1,5 +1,7 @@
-package com.penrose.bibby.library.bookcase;
+package com.penrose.bibby.library.bookcase.controller;
 
+import com.penrose.bibby.library.bookcase.service.BookcaseService;
+import com.penrose.bibby.library.bookcase.dto.BookcaseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

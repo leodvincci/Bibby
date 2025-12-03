@@ -1,5 +1,6 @@
-package com.penrose.bibby.library.bookcase;
+package com.penrose.bibby.library.bookcase.repository;
 
+import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

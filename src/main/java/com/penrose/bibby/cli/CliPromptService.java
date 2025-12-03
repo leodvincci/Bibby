@@ -1,7 +1,7 @@
 package com.penrose.bibby.cli;
 
 import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.bookcase.BookcaseService;
+import com.penrose.bibby.library.bookcase.service.BookcaseService;
 import com.penrose.bibby.library.shelf.ShelfEntity;
 import com.penrose.bibby.library.shelf.ShelfService;
 import org.springframework.shell.component.flow.ComponentFlow;

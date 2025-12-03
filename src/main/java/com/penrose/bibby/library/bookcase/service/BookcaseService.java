@@ -1,4 +1,6 @@
-package com.penrose.bibby.library.bookcase;
+package com.penrose.bibby.library.bookcase.service;
+import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.repository.BookcaseRepository;
 import com.penrose.bibby.library.shelf.ShelfFactory;
 import com.penrose.bibby.library.shelf.ShelfJpaRepository;
 import org.slf4j.Logger;

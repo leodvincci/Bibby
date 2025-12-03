@@ -1,4 +1,6 @@
-package com.penrose.bibby.library.bookcase;
+package com.penrose.bibby.library.bookcase.mapping;
+
+import com.penrose.bibby.library.bookcase.domain.Bookcase;
 
 public class BookcaseMapper {
 

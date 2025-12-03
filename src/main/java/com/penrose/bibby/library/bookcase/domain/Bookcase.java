@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.bookcase;
+package com.penrose.bibby.library.bookcase.domain;
 
 public class Bookcase {
     private Long bookcaseId;

@@ -2,7 +2,7 @@ package com.penrose.bibby.library.shelf;
 
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.domain.BookEntity;
-import com.penrose.bibby.library.bookcase.Bookcase;
+import com.penrose.bibby.library.bookcase.domain.Bookcase;
 
 import java.util.List;
 

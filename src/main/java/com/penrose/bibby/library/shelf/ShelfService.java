@@ -3,8 +3,8 @@ package com.penrose.bibby.library.shelf;
 import org.springframework.stereotype.Service;
 
 import com.penrose.bibby.library.book.repository.BookRepository;
-import com.penrose.bibby.library.bookcase.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.BookcaseRepository;
+import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.repository.BookcaseRepository;
 
 import java.util.List;
 import java.util.Optional;
