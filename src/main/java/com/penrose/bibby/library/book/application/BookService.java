@@ -12,7 +12,6 @@ import com.penrose.bibby.library.book.api.BookSummary;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.api.ShelfFacade;
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +29,13 @@ import java.util.Optional;
     private final BookFactory BookFactory;
     private final ShelfService shelfService;
     private final BookMapper bookMapper;
-    private final ShelfFacade shelfFacade;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, ShelfFacade shelfFacade){
+    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
-        this.shelfFacade = shelfFacade;
     }
 
     // ============================================================

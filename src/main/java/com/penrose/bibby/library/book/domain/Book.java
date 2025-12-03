@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import com.penrose.bibby.library.author.domain.Author;
-import com.penrose.bibby.library.genre.Genre;
 import com.penrose.bibby.library.shelf.domain.Shelf;
+import org.stringtemplate.v4.ST;
 
 public class Book {
     private Long id;
@@ -14,9 +14,9 @@ public class Book {
     private String title;
     private HashSet<Author> authors;
     private String isbn;
+    private String genre;
     private String publisher;
     private int publicationYear;
-    private Genre genre;
     private Shelf shelf;
     private String description;
     private AvailabilityStatus availabilityStatus;
@@ -31,6 +31,14 @@ public class Book {
         this.id = id;
         this.title = title;
         this.authors = authors;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public boolean checkout(){
@@ -65,6 +73,10 @@ public class Book {
         this.publishedDate = publishedDate;
     }
 
+    public void setAuthors(HashSet<Author> authors) {
+        this.authors = authors;
+    }
+
     public Long getId() {
         return id;
     }
@@ -89,10 +101,6 @@ public class Book {
         authors.add(author);
     }
 
-    public void setAuthors(HashSet<Author> authors) {
-        this.authors = authors;
-    }
-
     public String getIsbn() {
         return isbn;
     }
@@ -115,14 +123,6 @@ public class Book {
 
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
     }
 
     public Shelf getShelf() {
