@@ -1,5 +1,6 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.bookcase;
 
+import com.penrose.bibby.cli.book.BookCommandLine;
 import com.penrose.bibby.library.book.api.BookDetailView;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.application.BookService;
@@ -18,7 +19,7 @@ import java.util.*;
 
 @Component
 @Command(command = "bookcase", group = "Bookcase Commands")
-public class BookcaseCommands extends AbstractShellComponent {
+public class BookcaseCommandLine extends AbstractShellComponent {
 
 
     private final ComponentFlow.Builder componentFlowBuilder;
@@ -29,7 +30,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
 
 
-    public BookcaseCommands(ComponentFlow.Builder componentFlowBuilder, BookcaseService bookcaseService, ShelfService shelfService, BookService bookService) {
+    public BookcaseCommandLine(ComponentFlow.Builder componentFlowBuilder, BookcaseService bookcaseService, ShelfService shelfService, BookService bookService) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
@@ -122,7 +123,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
     @Command(command = "browse" , description = "Display all bookcases currently in the library, along with their labels, total shelves")
     public void listAllBookcases(){
-        BookCommands bookCommands;
+        BookCommandLine bookCommandLine;
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookcaseSelected")
                 .name("Select a Bookcase")

@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.prompt.infrastructure;
 
 import org.jline.utils.*;
 import org.springframework.shell.jline.*;
