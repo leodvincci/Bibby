@@ -110,7 +110,9 @@ public class BookcaseService {
 **After (Initial Implementation):**
 
 ```java
-import com.penrose.bibby.library.shelf.*;
+
+import com.penrose.bibby.library.shelf.domain.ShelfFactory;
+import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 
 public class BookcaseService {
     private final ShelfFactory shelfFactory;
@@ -164,10 +166,7 @@ Wildcard imports obscure class origins and can cause naming conflicts.
 **Corrected:**
 
 ```java
-import com.penrose.bibby.library.shelf.Shelf;
-import com.penrose.bibby.library.shelf.ShelfEntity;
-import com.penrose.bibby.library.shelf.ShelfFactory;
-import com.penrose.bibby.library.shelf.ShelfJpaRepository;
+
 ```
 
 #### Issue 2: Overcomplicated Type Conversion
@@ -214,10 +213,9 @@ private final ShelfFactory shelfFactory;
 ```java
 package com.penrose.bibby.library.bookcase;
 
-import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.repository.BookcaseRepository;
-import com.penrose.bibby.library.shelf.ShelfFactory;
-import com.penrose.bibby.library.shelf.ShelfJpaRepository;
+import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
+import com.penrose.bibby.library.shelf.domain.ShelfFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -228,14 +226,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookcaseService {
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
-    private final ShelfJpaRepository shelfRepository;
+    private final com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository shelfRepository;
     private final ShelfFactory shelfFactory;
     private final ResponseStatusException existingRecordError =
             new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
 
     public BookcaseService(
             BookcaseRepository bookcaseRepository,
-            ShelfJpaRepository shelfJpaRepository,
+            com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository shelfJpaRepository,
             ShelfFactory shelfFactory
     ) {
         this.bookcaseRepository = bookcaseRepository;

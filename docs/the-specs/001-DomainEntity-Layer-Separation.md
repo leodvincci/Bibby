@@ -19,7 +19,7 @@ private AuthorEntity authorEntity;  // ❌ Domain → Persistence dependency
 
 - `com.penrose.bibby.library.book.domain.Book` - Domain model with persistence dependency
 - `com.penrose.bibby.library.book.mapping.BookMapper` - Expects `AuthorEntity` parameter
-- `com.penrose.bibby.library.author.AuthorEntity` - Persistence entity that needs domain counterpart
+- `com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity` - Persistence entity that needs domain counterpart
 
 ### What Exists
 
@@ -41,7 +41,7 @@ Based on `BookMapper`, the established pattern is:
 
 ### 1. Create Author Domain Model
 
-**File:** `com.penrose.bibby.library.author.Author`
+**File:** `com.penrose.bibby.library.author.domain.Author`
 
 **Requirements:**
 
@@ -56,7 +56,7 @@ Based on `BookMapper`, the established pattern is:
 
 ### 2. Create AuthorMapper
 
-**File:** `com.penrose.bibby.library.author.AuthorMapper`
+**File:** `com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper`
 
 **Requirements:**
 
@@ -102,7 +102,7 @@ public static Author toDomain(AuthorEntity e) {
 
 **Changes required:**
 
-- Add import: `import com.penrose.bibby.library.author.AuthorMapper;`
+- Add import: `import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;`
 - Change line: `book.setAuthor(authorEntity);`
 - To: `book.setAuthor(AuthorMapper.toDomain(authorEntity));`
 - Keep method signature accepting `AuthorEntity` (that's correct - mapper receives entities)

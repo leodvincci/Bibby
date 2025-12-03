@@ -1,8 +1,8 @@
 package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.author.AuthorEntity;
-import com.penrose.bibby.library.author.AuthorService;
+import com.penrose.bibby.library.author.domain.Author;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.domain.BookFactory;
@@ -11,9 +11,9 @@ import com.penrose.bibby.library.book.api.BookRequestDTO;
 import com.penrose.bibby.library.book.api.BookSummary;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
-import com.penrose.bibby.library.shelf.ShelfEntity;
-import com.penrose.bibby.library.shelf.ShelfFacade;
-import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.api.ShelfFacade;
+import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,20 +23,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+    public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookFactory BookFactory;
     private final ShelfService shelfService;
     private final BookMapper bookMapper;
+    private final ShelfFacade shelfFacade;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper){
+    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, ShelfFacade shelfFacade){
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
+        this.shelfFacade = shelfFacade;
     }
 
     // ============================================================

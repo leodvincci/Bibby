@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 
-import com.penrose.bibby.library.author.Author;
+import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.genre.Genre;
-import com.penrose.bibby.library.shelf.Shelf;
+import com.penrose.bibby.library.shelf.domain.Shelf;
 
 public class Book {
     private Long id;

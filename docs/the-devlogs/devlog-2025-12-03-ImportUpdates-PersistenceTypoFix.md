@@ -134,9 +134,8 @@ After this refactor, imports in dependent files follow a clear pattern:
 
 ```java
 // Domain-specific imports grouped by sub-package
-import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.repository.BookcaseRepository;
-import com.penrose.bibby.library.bookcase.service.BookcaseService;
+
+
 ```
 
 The sub-package names in the import path now communicate architectural layer:

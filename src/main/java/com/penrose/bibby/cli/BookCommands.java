@@ -1,17 +1,21 @@
 package com.penrose.bibby.cli;
 
-import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.author.AuthorEntity;
-import com.penrose.bibby.library.author.AuthorService;
+import com.penrose.bibby.library.author.domain.Author;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.api.BookRequestDTO;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.application.BookService;
-import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.service.BookcaseService;
-import com.penrose.bibby.library.shelf.*;
+import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.application.BookcaseService;
 
+import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.shelf.domain.Shelf;
+import com.penrose.bibby.library.shelf.domain.ShelfDomainRepositoryImpl;
+import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
