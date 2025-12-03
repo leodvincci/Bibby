@@ -1,5 +1,5 @@
 package com.penrose.bibby.util;
-import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

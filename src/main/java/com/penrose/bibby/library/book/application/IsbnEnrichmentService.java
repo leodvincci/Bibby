@@ -1,9 +1,9 @@
 package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.author.Author;
-import com.penrose.bibby.library.author.AuthorEntity;
-import com.penrose.bibby.library.author.AuthorFactory;
-import com.penrose.bibby.library.author.AuthorService;
+import com.penrose.bibby.library.author.domain.Author;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.author.domain.AuthorFactory;
+import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;

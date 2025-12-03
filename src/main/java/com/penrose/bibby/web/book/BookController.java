@@ -1,6 +1,6 @@
 package com.penrose.bibby.web.book;
 
-import com.penrose.bibby.library.author.AuthorRepository;
+import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.api.BookPlacementResponse;
@@ -9,10 +9,10 @@ import com.penrose.bibby.library.book.api.BookShelfAssignmentRequest;
 import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.book.application.BookInfoService;
 import com.penrose.bibby.library.book.application.BookService;
-import com.penrose.bibby.library.bookcase.persistence.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.service.BookcaseService;
-import com.penrose.bibby.library.shelf.ShelfEntity;
-import com.penrose.bibby.library.shelf.ShelfService;
+import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.application.BookcaseService;
+import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

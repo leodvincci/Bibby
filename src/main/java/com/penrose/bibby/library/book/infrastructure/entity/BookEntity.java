@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.entity;
 
-import com.penrose.bibby.library.author.AuthorEntity;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import jakarta.persistence.*;
 

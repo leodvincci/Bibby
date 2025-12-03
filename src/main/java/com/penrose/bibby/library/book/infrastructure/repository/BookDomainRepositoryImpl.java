@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
-import com.penrose.bibby.library.author.*;
+import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
