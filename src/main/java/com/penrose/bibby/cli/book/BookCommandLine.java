@@ -269,7 +269,7 @@ public class BookCommandLine extends AbstractShellComponent {
     }
 
     public void searchByTitle() throws InterruptedException {
-        System.out.println("\n");
+        System.out.println("\n\u001B[95mSearch by Title");
         String title = cliPrompt.promptForBookTitle();
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");

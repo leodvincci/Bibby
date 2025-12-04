@@ -153,20 +153,22 @@ public class CliPromptService {
     private Map<String, String> buildSearchOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        options.put("""
-                        Show all books       (View the complete library)""", "all");
+//        options.put("""
+//                        Show all books       (View the complete library)""", "all");
         options.put("""
                         ISBN                 (Search by ISBN)""", "isbn");
         options.put("""
-                        Title or keyword     (Search by words in the title)""", "title");
+                        Title                (Search by the title)""", "title");
+//        options.put("""
+//                        keyword     (Search by words in the title)""", "title");
         options.put("""
                         Author               (Find books by author name)""", "author");
-        options.put("""
-                        Genre                (Filter books by literary category)""", "genre");
-        options.put("""
-                        Shelf/Location       (Locate books by physical shelf ID)""", "shelf");
-        options.put("""
-                        Status               (Show available or checked-out books)""", "status");
+//        options.put("""
+//                        Genre                (Filter books by literary category)""", "genre");
+//        options.put("""
+//                        Shelf/Location       (Locate books by physical shelf ID)""", "shelf");
+//        options.put("""
+//                        Status               (Show available or checked-out books)""", "status");
         return options;
     }
 
