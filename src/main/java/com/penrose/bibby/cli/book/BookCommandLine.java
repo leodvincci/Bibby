@@ -147,9 +147,7 @@ public class BookCommandLine extends AbstractShellComponent {
         multi = multi == null ? "multi" : multi;
 
         if(multi.equalsIgnoreCase("multi")){
-            System.out.println("Scanning multiple books...");
-            List<String> scans = cliPrompt.promptMultiScan();
-            System.out.println(scans.size() + " books were added to the library.");
+            multiBookScan();
         }
 
         if(multi.equalsIgnoreCase("single")) {
@@ -166,31 +164,51 @@ public class BookCommandLine extends AbstractShellComponent {
 
     }
 
+    private void multiBookScan() {
+        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+        ShelfEntity shelfEntity = shelfService.findShelfById(shelfId).get();
+        System.out.println("Scanning multiple books...");
+        List<String> scans = cliPrompt.promptMultiScan();
 
-    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
-    public void scanToShelf(GoogleBooksResponse bookMetaData){
-        String title = bookMetaData.items().get(0).volumeInfo().title();
-        BookEntity bookEnt = bookService.findBookByTitle(title);
+        for (String isbn : scans) {
+            System.out.println("Scanned ISBN: " + isbn);
+            GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
 
-        if(bookEnt == null){
-            System.out.println("Book Not Found In Library");
-        }else {
-            Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
-            Long shelfId = cliPrompt.promptForShelf(bookCaseId);
-//            System.out.println(shelfId);
-//            System.out.println(title);
-//            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
-//            System.out.println(shelf);
-            Shelf shelfDomain = shelfDomainRepository.getById(shelfId);
-            if(shelfDomain.isFull()){
-                throw new IllegalStateException("Shelf is full");
-            }else{
-                bookEnt.setShelfId(shelfId);
-                bookService.saveBook(bookEnt);
-                System.out.println("Added Book To the Shelf!");
-            }
+                BookEntity bookEntity = bookService.createScannedBook(googleBooksResponse, isbn);
+                bookEntity.setShelfId(shelfId);
+                bookService.saveBook(bookEntity);
+                System.out.println("\n\u001B[36m</>\033[0m:" + bookEntity.getTitle() +  " added to Library!");
+
         }
+        System.out.println(scans.size() + " books were added to the library.");
     }
+
+
+//    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
+//    public void scanToShelf(GoogleBooksResponse bookMetaData){
+//        String title = bookMetaData.items().get(0).volumeInfo().title();
+//        BookEntity bookEnt = bookService.findBookByTitle(title);
+//
+//        if(bookEnt == null){
+//            System.out.println("Book Not Found In Library");
+//        }else {
+//            Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+//            Long shelfId = cliPrompt.promptForShelf(bookCaseId);
+////            System.out.println(shelfId);
+////            System.out.println(title);
+////            Shelf shelf = shelfMapper.toDomain(shelfService.findShelfById(shelfId).get());
+////            System.out.println(shelf);
+//            Shelf shelfDomain = shelfDomainRepository.getById(shelfId);
+//            if(shelfDomain.isFull()){
+//                throw new IllegalStateException("Shelf is full");
+//            }else{
+//                bookEnt.setShelfId(shelfId);
+//                bookService.saveBook(bookEnt);
+//                System.out.println("Added Book To the Shelf!");
+//            }
+//        }
+//    }
 
     // ───────────────────────────────────────────────────────────────────
     //

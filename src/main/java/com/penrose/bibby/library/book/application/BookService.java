@@ -58,7 +58,7 @@ import java.util.Optional;
         saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
     }
 
-    public void createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn){
+    public BookEntity createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn){
         BookEntity bookEntity = new BookEntity();
         Set<AuthorEntity> authors = new HashSet<>();
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
@@ -76,6 +76,7 @@ import java.util.Optional;
         bookEntity.setCreatedAt(LocalDate.now());
         bookEntity.setAvailabilityStatus("AVAILABLE");
         saveBook(bookEntity);
+        return bookEntity;
     }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
