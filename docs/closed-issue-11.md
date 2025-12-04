@@ -56,7 +56,7 @@ The enum defines all valid book statuses, with `AVAILABLE` as the designated ini
 
 **File:** [`src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java`](../src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java)
 
-**Lines 33-37:**
+**Lines 33-38:**
 ```java
 public BookEntity(String title, HashSet<AuthorEntity> authors) {
     this.title = title;
@@ -76,7 +76,7 @@ public BookEntity(String title, HashSet<AuthorEntity> authors) {
 
 #### 3.1 Entity Creation (CLI Interactive Flow)
 
-**Lines 14-20:**
+**Lines 14-21:**
 ```java
 public BookEntity createBookEntity(String title, Set<AuthorEntity> authors){
     BookEntity bookEntity = new BookEntity();
@@ -116,7 +116,7 @@ public Book createBookDomainFromJSON(String title, String publisher,
 
 **File:** [`src/main/java/com/penrose/bibby/library/book/application/BookService.java`](../src/main/java/com/penrose/bibby/library/book/application/BookService.java)
 
-**Lines 61-79:**
+**Lines 61-80:**
 ```java
 public BookEntity createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn){
     BookEntity bookEntity = new BookEntity();
@@ -147,16 +147,12 @@ public BookEntity createScannedBook(GoogleBooksResponse googleBooksResponse, Str
 
 **Line 54:**
 ```java
-book.setAvailabilityStatus(e.getAvailabilityStatus() != null 
-    ? AvailabilityStatus.valueOf(e.getAvailabilityStatus()) 
-    : null);
+book.setAvailabilityStatus(e.getAvailabilityStatus() != null ? AvailabilityStatus.valueOf(e.getAvailabilityStatus()) : null);
 ```
 
 **Line 89:**
 ```java
-bookEntity.setAvailabilityStatus(book.getAvailabilityStatus() != null 
-    ? book.getAvailabilityStatus().name() 
-    : null);
+bookEntity.setAvailabilityStatus(book.getAvailabilityStatus() != null ? book.getAvailabilityStatus().name() : null);
 ```
 
 **Purpose:** The mapper safely converts between entity and domain representations, preserving the status value during transformations. While it allows `null` for defensive programming, the factory and entity layers ensure this case never occurs for newly created books.
