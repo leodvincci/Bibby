@@ -4,6 +4,7 @@ import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
+import com.penrose.bibby.library.book.application.BookInfoService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.api.BookRequestDTO;
@@ -22,6 +23,7 @@ import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.shell.standard.ShellComponent;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -37,12 +39,13 @@ public class BookCommandLine extends AbstractShellComponent {
     final CliPromptService cliPrompt;
     final ShelfMapper shelfMapper;
     final BookMapper bookMapper;
+    final BookInfoService bookInfoService;
     final ShelfDomainRepositoryImpl shelfDomainRepository;
     private final ComponentFlow.Builder componentFlowBuilder;
 
 
 
-    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, ShelfDomainRepositoryImpl shelfDomainRepository) {
+    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, BookInfoService bookInfoService, ShelfDomainRepositoryImpl shelfDomainRepository) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookcaseService = bookcaseService;
@@ -51,6 +54,7 @@ public class BookCommandLine extends AbstractShellComponent {
         this.cliPrompt = cliPrompt;
         this.shelfMapper = shelfMapper;
         this.bookMapper = bookMapper;
+        this.bookInfoService = bookInfoService;
         this.shelfDomainRepository = shelfDomainRepository;
     }
 
@@ -142,6 +146,12 @@ public class BookCommandLine extends AbstractShellComponent {
     public void scanBook() {
         String isbn = cliPrompt.promptForIsbnScan();
         System.out.println("Scanned ISBN: " + isbn);
+        GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
+        if(addScanResultCommand(googleBooksResponse,isbn)){
+            bookService.createScannedBook(googleBooksResponse,isbn);
+            System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
+        };
+
     }
 
 
@@ -415,15 +425,31 @@ public class BookCommandLine extends AbstractShellComponent {
         return options;
     }
 
-    public void addScanResultCommand(GoogleBooksResponse bookMetaData,String isbn) {
-        System.out.println("\n\u001B[36m</>\u001B[0m: Book scanned successfully. Here's the metadata:");
-        System.out.println(isbn);
-        System.out.println(bookMetaData.items().get(0).volumeInfo().title());
-        System.out.println(bookMetaData.items().get(0).volumeInfo().authors());
-        System.out.println(bookMetaData.items().get(0).volumeInfo().publishedDate());
-        System.out.println(bookMetaData.items().get(0).volumeInfo().categories());
-        System.out.println(bookMetaData.items().get(0).volumeInfo().description());
+    public boolean addScanResultCommand(GoogleBooksResponse bookMetaData,String isbn) {
+        String title = (bookMetaData.items().get(0).volumeInfo().title());
+        String authors =bookMetaData.items().get(0).volumeInfo().authors().toString();
+        String publishingDate = (bookMetaData.items().get(0).volumeInfo().publishedDate());
+        String categories = String.valueOf(bookMetaData.items().get(0).volumeInfo().categories());
+        String description = (bookMetaData.items().get(0).volumeInfo().description());
+//        System.out.println("\n\u001B[36m</>\u001B[0m: Book scanned successfully. Here's the metadata:");
+        System.out.println("\n\u001B[36m</>\u001B[0m:");
+
+        System.out.printf(""
+                + "========================================\n"
+                + "📚  Book Metadata\n"
+                + "========================================\n"
+                + "\n"
+                + "ISBN:              %s\n"
+                + "Title:             %s\n"
+                + "Authors:           %s\n"
+                + "Published:         %s\n"
+                + "Categories:        %s\n"
+                + "\n"
+                + "Description:\n"
+                + "%s\n"
+                + "\n"
+                + "========================================\n",isbn,title,authors,publishingDate,categories,description);
         System.out.println();
-        cliPrompt.promptBookConfirmation();
+        return cliPrompt.promptBookConfirmation();
     }
 }

@@ -9,6 +9,7 @@ import com.penrose.bibby.library.book.domain.BookFactory;
 import com.penrose.bibby.library.book.api.BookDetailView;
 import com.penrose.bibby.library.book.api.BookRequestDTO;
 import com.penrose.bibby.library.book.api.BookSummary;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
@@ -16,6 +17,7 @@ import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +56,26 @@ import java.util.Optional;
         validateRequest(bookDTO);
         validateBookDoesNotExist(bookDTO);
         saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
+    }
+
+    public void createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn){
+        BookEntity bookEntity = new BookEntity();
+        Set<AuthorEntity> authors = new HashSet<>();
+        for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
+            String [] nameParts = authorName.split(" ", 2);
+            AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
+            authors.add(authorEntity);
+        }
+
+        bookEntity.setIsbn(isbn);
+        bookEntity.setTitle(googleBooksResponse.items().get(0).volumeInfo().title());
+        bookEntity.setPublisher(googleBooksResponse.items().get(0).volumeInfo().publisher());
+        bookEntity.setPublicationYear(Integer.parseInt(googleBooksResponse.items().get(0).volumeInfo().publishedDate().split("-")[0]));
+        bookEntity.setDescription(googleBooksResponse.items().get(0).volumeInfo().description());
+        bookEntity.setAuthors(authors);
+        bookEntity.setCreatedAt(LocalDate.now());
+        bookEntity.setAvailabilityStatus("AVAILABLE");
+        saveBook(bookEntity);
     }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
