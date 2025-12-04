@@ -15,15 +15,13 @@ public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
     List<ShelfEntity> findByBookcaseId(Long bookcaseId);
 
     @Query("""
-        SELECT new com.penrose.bibby.library.shelf.ShelfSummary(
+        SELECT new com.penrose.bibby.library.shelf.api.ShelfSummary(
             s.shelfId,
             s.shelfLabel,
-            COUNT(b.bookId)
+            (SELECT COUNT(b.bookId) FROM com.penrose.bibby.library.book.infrastructure.entity.BookEntity b WHERE b.shelfId = s.shelfId)
         )
         FROM ShelfEntity s
-        LEFT JOIN BookEntity b ON b.shelfId = s.shelfId
         WHERE s.bookcaseId = :bookcaseId
-        GROUP BY s.shelfId, s.shelfLabel
         ORDER BY s.shelfPosition ASC
         """)
     List<ShelfSummary> findShelfSummariesByBookcaseId(@Param("bookcaseId") Long bookcaseId);

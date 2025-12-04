@@ -82,7 +82,7 @@ public class BookMapper {
 
         bookEntity.setPublisher(book.getPublisher());
         bookEntity.setPublicationYear(book.getPublicationYear());
-        bookEntity.setGenre(book.getGenre() !=null ? book.getGenre().getGenreName() : null);
+//        bookEntity.setGenre(book.getGenre() !=null ? book.getGenre().getGenreName() : null);
         bookEntity.setEdition(book.getEdition());
         bookEntity.setDescription(book.getDescription());
         bookEntity.setShelfId(book.getShelf() != null ? book.getShelf().getId() : null);

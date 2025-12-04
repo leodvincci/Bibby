@@ -8,3 +8,5 @@ public interface ShelfFacade {
 
     Optional<Shelf> getShelfEntityById(Long shelfId);
 }
+
+
