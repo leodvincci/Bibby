@@ -141,7 +141,7 @@ public class CliPromptService {
     public String promptForSearchType(){
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("searchType")
-                .name("How would you like to search?")
+                .name("Select a search method:")
                 .selectItems(buildSearchOptions())
                 .max(10)
                 .and()
@@ -156,13 +156,13 @@ public class CliPromptService {
 //        options.put("""
 //                        Show all books       (View the complete library)""", "all");
         options.put("""
-                        ISBN                 (Search by ISBN)""", "isbn");
+                        ISBN                 (e.g., 9780345391803)""", "isbn");
         options.put("""
-                        Title                (Search by the title)""", "title");
+                        Title                (e.g., "The Hitchhiker's Guide to the Galaxy")""", "title");
 //        options.put("""
 //                        keyword     (Search by words in the title)""", "title");
         options.put("""
-                        Author               (Find books by author name)""", "author");
+                        Author               (e.g., Douglas Adams)""", "author");
 //        options.put("""
 //                        Genre                (Filter books by literary category)""", "genre");
 //        options.put("""
