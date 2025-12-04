@@ -117,20 +117,6 @@ public class BookCommandLine extends AbstractShellComponent {
 //            System.out.println("\u001B[36m</>\033[0m: Fair enough. We can pick another shelf anytime.\n");
 //        }
     }
-
-
-//    @Command(command = "", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
-//    public void scanMultiBook(@ShellOption(defaultValue = "leo", value = {"--multi"}) String multi) {
-//
-//        System.out.println(multi);
-//        System.out.println("Scanning multiple books...");
-//
-//        System.out.println("User value: " + multi);
-//
-//    }
-
-
-
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
