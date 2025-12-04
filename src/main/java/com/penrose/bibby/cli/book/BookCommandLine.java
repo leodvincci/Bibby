@@ -224,6 +224,19 @@ public class BookCommandLine extends AbstractShellComponent {
             searchByAuthor();
         }else if(searchType.equalsIgnoreCase("title")){
             searchByTitle();
+        }else if(searchType.equalsIgnoreCase("isbn")){
+            searchByIsbn();
+        }
+    }
+
+    private void searchByIsbn() {
+        System.out.println("\n\u001B[95mSearch by ISBN");
+        String isbn = cliPrompt.promptForIsbnScan();
+        BookEntity bookEntity = bookService.findBookByIsbn(isbn);
+        if(bookEntity == null){
+            System.out.println("\n\u001B[36m</>\u001B[0m: No book found with ISBN: " + isbn + "\n");
+        }else{
+            System.out.println("\n\u001B[36m</>\u001B[0m: Book found: " + bookEntity.getTitle() + "\n");
         }
     }
 

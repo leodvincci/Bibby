@@ -156,6 +156,8 @@ public class CliPromptService {
         options.put("""
                         Show all books       (View the complete library)""", "all");
         options.put("""
+                        ISBN                 (Search by ISBN)""", "isbn");
+        options.put("""
                         Title or keyword     (Search by words in the title)""", "title");
         options.put("""
                         Author               (Find books by author name)""", "author");
