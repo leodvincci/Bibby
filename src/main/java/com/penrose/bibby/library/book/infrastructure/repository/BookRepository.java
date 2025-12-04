@@ -41,4 +41,6 @@ public interface BookRepository extends JpaRepository <BookEntity, Long> {
     BookDetailView getBookDetailView(Long bookId);
 
     long countByShelfId(Long shelfId);
+
+    BookEntity findByIsbn(String isbn);
 }

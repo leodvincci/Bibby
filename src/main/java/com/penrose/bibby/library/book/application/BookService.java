@@ -215,6 +215,9 @@ import java.util.Optional;
         saveBook(bookEntity);
     }
 
+    public BookEntity findBookByIsbn(String isbn) {
+        return bookRepository.findByIsbn(isbn);
+    }
 }
 
 
