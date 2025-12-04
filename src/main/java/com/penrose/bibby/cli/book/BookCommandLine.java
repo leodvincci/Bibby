@@ -233,10 +233,22 @@ public class BookCommandLine extends AbstractShellComponent {
         System.out.println("\n\u001B[95mSearch by ISBN");
         String isbn = cliPrompt.promptForIsbnScan();
         BookEntity bookEntity = bookService.findBookByIsbn(isbn);
-        if(bookEntity == null){
+        if (bookEntity == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m: No book found with ISBN: " + isbn + "\n");
-        }else{
-            System.out.println("\n\u001B[36m</>\u001B[0m: Book found: " + bookEntity.getTitle() + "\n");
+        } else {
+            System.out.println("\n\u001B[36m</>\u001B[0m: Book found: \n");
+            System.out.println("Book Details:");
+            System.out.println("Title: " + bookEntity.getTitle());
+            Set<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
+            System.out.println("Author(s): " + authors);
+            System.out.println("ISBN: " + bookEntity.getIsbn());
+            if (bookEntity.getShelfId() != null) {
+                Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
+                Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+                System.out.println("Location: Bookcase " + bookcaseEntity.get().getBookcaseLabel() + ", Shelf " + shelfEntity.get().getShelfLabel());
+            } else {
+                System.out.println("Location: Not Shelved");
+            }
         }
     }
 
