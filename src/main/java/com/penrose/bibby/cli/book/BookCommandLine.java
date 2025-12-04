@@ -144,7 +144,6 @@ public class BookCommandLine extends AbstractShellComponent {
 
     @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
     public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
-        System.out.println("type = " + multi);
         multi = multi == null ? "multi" : multi;
 
         if(multi.equalsIgnoreCase("multi")){
