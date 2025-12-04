@@ -7,6 +7,7 @@ import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class CliPromptService {
     private final ComponentFlow.Builder componentFlowBuilder;
     private final ShelfService shelfService;
+    List<String> scans = new ArrayList<>();
 
     public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, BookcaseService bookcaseService, ShelfService shelfService) {
 
@@ -42,6 +44,22 @@ public class CliPromptService {
 
         ComponentFlow.ComponentFlowResult result = flow.run();
         return result.getContext().get("confirmation",String.class).equalsIgnoreCase("Yes");
+    }
+
+    public List<String> promptMultiScan(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withStringInput("multiScan")
+                .name("multi scan >:_")
+                .and().build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        String scan = result.getContext().get("multiScan",String.class);
+
+        if(!scan.equalsIgnoreCase("done")){
+            scans.add(scan);
+            promptMultiScan();
+        }
+        return scans;
     }
 
     public Author promptForAuthor(){

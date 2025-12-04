@@ -148,6 +148,8 @@ public class BookCommandLine extends AbstractShellComponent {
 
         if(multi.equalsIgnoreCase("multi")){
             System.out.println("Scanning multiple books...");
+            List<String> scans = cliPrompt.promptMultiScan();
+            System.out.println(scans.size() + " books were added to the library.");
         }
 
         if(multi.equalsIgnoreCase("single")) {
