@@ -20,9 +20,11 @@ import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
+import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellOption;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
@@ -117,6 +119,18 @@ public class BookCommandLine extends AbstractShellComponent {
     }
 
 
+//    @Command(command = "", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
+//    public void scanMultiBook(@ShellOption(defaultValue = "leo", value = {"--multi"}) String multi) {
+//
+//        System.out.println(multi);
+//        System.out.println("Scanning multiple books...");
+//
+//        System.out.println("User value: " + multi);
+//
+//    }
+
+
+
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
@@ -143,14 +157,25 @@ public class BookCommandLine extends AbstractShellComponent {
     }
 
     @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
-    public void scanBook() {
-        String isbn = cliPrompt.promptForIsbnScan();
-        System.out.println("Scanned ISBN: " + isbn);
-        GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
-        if(addScanResultCommand(googleBooksResponse,isbn)){
-            bookService.createScannedBook(googleBooksResponse,isbn);
-            System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
-        };
+    public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
+        System.out.println("type = " + multi);
+        multi = multi == null ? "multi" : multi;
+
+        if(multi.equalsIgnoreCase("multi")){
+            System.out.println("Scanning multiple books...");
+        }
+
+        if(multi.equalsIgnoreCase("single")) {
+            System.out.println("Scanning single book...");
+            String isbn = cliPrompt.promptForIsbnScan();
+            System.out.println("Scanned ISBN: " + isbn);
+            GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
+            if (addScanResultCommand(googleBooksResponse, isbn)) {
+                bookService.createScannedBook(googleBooksResponse, isbn);
+                System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
+            }
+        }
+
 
     }
 
