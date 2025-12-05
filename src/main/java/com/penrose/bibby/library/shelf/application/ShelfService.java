@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.shelf.application;
 
+import com.penrose.bibby.library.shelf.api.ShelfDTO;
+import com.penrose.bibby.library.shelf.api.ShelfFacade;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.shelf.api.ShelfOptionResponse;
@@ -15,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ShelfService {
+public class ShelfService implements ShelfFacade {
 
     ShelfJpaRepository shelfJpaRepository;
     BookRepository bookRepository;
@@ -49,6 +51,7 @@ public class ShelfService {
                 .collect(Collectors.toList());
     }
 
+
     private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
         long bookCount = bookRepository.countByShelfId(shelf.getShelfId());
         BookcaseEntity bookcase = bookcaseRepository.findById(shelf.getBookcaseId()).orElse(null);
@@ -62,5 +65,12 @@ public class ShelfService {
                 bookCount,
                 hasSpace
         );
+    }
+
+    @Override
+    public List<ShelfDTO> getAllDTOShelves(Long bookcaseId) {
+        return getAllShelves(bookcaseId).stream()
+                .map(ShelfDTO::fromEntity)
+                .toList();
     }
 }

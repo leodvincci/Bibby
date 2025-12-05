@@ -1,10 +1,8 @@
 package com.penrose.bibby.cli.prompt.application;
 
 import com.penrose.bibby.library.author.api.AuthorDTO;
-import com.penrose.bibby.library.author.domain.Author;
-import com.penrose.bibby.library.bookcase.application.BookcaseService;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.shelf.api.ShelfDTO;
+import com.penrose.bibby.library.shelf.api.ShelfFacade;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 
@@ -16,13 +14,12 @@ import java.util.Map;
 @Component
 public class CliPromptService {
     private final ComponentFlow.Builder componentFlowBuilder;
-    private final ShelfService shelfService;
     List<String> scans = new ArrayList<>();
+    private final ShelfFacade shelfFacade;
 
-    public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, BookcaseService bookcaseService, ShelfService shelfService) {
-
+    public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, ShelfFacade shelfFacade) {
         this.componentFlowBuilder = componentFlowBuilder1;
-        this.shelfService = shelfService;
+        this.shelfFacade = shelfFacade;
     }
 
     public boolean promptSearchAgain(){
@@ -202,10 +199,10 @@ public class CliPromptService {
     private Map<String, String> bookShelfOptions(Long bookcaseId) {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        List<ShelfEntity> shelves = shelfService.getAllShelves(bookcaseId);
-        for(ShelfEntity s : shelves){
-            System.out.println(s.getBookcaseId());
-            options.put(s.getShelfLabel(), String.valueOf(s.getShelfId()));
+        List<ShelfDTO> shelfDTOS = shelfFacade.getAllDTOShelves(bookcaseId);
+        for(ShelfDTO s : shelfDTOS){
+            System.out.println(s.bookcaseId());
+            options.put(s.shelfLabel(), String.valueOf(s.shelfId()));
         }
 
         return options;
