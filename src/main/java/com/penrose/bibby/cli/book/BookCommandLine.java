@@ -18,7 +18,6 @@ import com.penrose.bibby.library.shelf.domain.Shelf;
 import com.penrose.bibby.library.shelf.domain.ShelfDomainRepositoryImpl;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.util.LoadingBar;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -260,17 +259,6 @@ public class BookCommandLine extends AbstractShellComponent {
 
     public void searchByAuthor() throws InterruptedException {
         System.out.println("\n\u001B[95mSearch by Author");
-        Author author = cliPrompt.promptForAuthor();
-        System.out.println("\n\u001B[36m</>\u001B[0m: Ah, the works of " + author.getFirstName() + " " + author.getLastName() + " — a fine choice. Let me check the shelves...");
-        LoadingBar.showLoading();
-        System.out.println("\n\u001B[36m</>\u001B[0m: Found 2 titles — both are sitting on their shelves, available.");
-        System.out.println("""
-                ──────────────────────────────────────────────
-                [12] \u001B[33mMy Life Decoded: The Story of Leo\u001B[0m   \n[Shelf A1] (AVAILABLE)\s
-                
-                [29] \u001B[33mThe Answer is 42 \u001B[0m   \n[Shelf B2] (AVAILABLE)
-                """);
-        System.out.println("\u001B[90m───────────────────────────────────────────────\u001B[0m");
         askBookCheckOut();
     }
 
@@ -281,8 +269,6 @@ public class BookCommandLine extends AbstractShellComponent {
         System.out.print("\u001B[36m</>\u001B[0m:");
 
         BookEntity bookEntity = bookService.findBookByTitle(title);
-
-        LoadingBar.showLoading();
 
         if (bookEntity == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
@@ -430,18 +416,6 @@ public class BookCommandLine extends AbstractShellComponent {
                 .and().build();
 
         componentFlow.run();
-        Thread.sleep(2300);
-        System.out.println("\u001B[36m</>\u001B[0m:Persuading the shelf to let go...\n");
-        Thread.sleep(2300);
-        Thread.sleep(1000);
-        System.out.println("\u001B[36m</>\u001B[0m:Dusting off the cover...\n");
-        Thread.sleep(2300);
-        System.out.println("\u001B[36m</>\u001B[0m:Logging transaction...\n");
-        Thread.sleep(1000);
-        System.out.println("\u001B[36m</>\u001B[0m:Checking it out...please hold while I fake progress bars.\n");
-        Thread.sleep(1000);
-        LoadingBar.showLoading();
-        Thread.sleep(2000);
         System.out.println("\n\u001B[36m</>\u001B[0m:Don’t forget to check it back in… or at least feel guilty about it.\n");
     }
 
