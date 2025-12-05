@@ -6,10 +6,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class BookInfoService {
+public class IsbnLookupService {
     public final WebClient webClient;
 
-    public BookInfoService(WebClient webClient) {
+    public IsbnLookupService(WebClient webClient) {
         this.webClient = webClient;
     }
 

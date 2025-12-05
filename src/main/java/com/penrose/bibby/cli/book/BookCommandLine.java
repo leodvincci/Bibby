@@ -4,7 +4,7 @@ import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
-import com.penrose.bibby.library.book.application.BookInfoService;
+import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.api.BookRequestDTO;
@@ -25,7 +25,6 @@ import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellOption;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -41,13 +40,13 @@ public class BookCommandLine extends AbstractShellComponent {
     final CliPromptService cliPrompt;
     final ShelfMapper shelfMapper;
     final BookMapper bookMapper;
-    final BookInfoService bookInfoService;
+    final IsbnLookupService isbnLookupService;
     final ShelfDomainRepositoryImpl shelfDomainRepository;
     private final ComponentFlow.Builder componentFlowBuilder;
 
 
 
-    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, BookInfoService bookInfoService, ShelfDomainRepositoryImpl shelfDomainRepository) {
+    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, IsbnLookupService isbnLookupService, ShelfDomainRepositoryImpl shelfDomainRepository) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookcaseService = bookcaseService;
@@ -56,7 +55,7 @@ public class BookCommandLine extends AbstractShellComponent {
         this.cliPrompt = cliPrompt;
         this.shelfMapper = shelfMapper;
         this.bookMapper = bookMapper;
-        this.bookInfoService = bookInfoService;
+        this.isbnLookupService = isbnLookupService;
         this.shelfDomainRepository = shelfDomainRepository;
     }
 
@@ -157,7 +156,7 @@ public class BookCommandLine extends AbstractShellComponent {
             if(!cliPrompt.isbnValidator(isbn)){
                 return;
             }
-            GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
+            GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
             if(googleBooksResponse.items() == null){
                 System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
             }else if (addScanResultCommand(googleBooksResponse, isbn)) {
@@ -176,7 +175,7 @@ public class BookCommandLine extends AbstractShellComponent {
 
         for (String isbn : scans) {
             System.out.println("Scanned ISBN: " + isbn);
-            GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
+            GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
 
                 BookEntity bookEntity = bookService.createScannedBook(googleBooksResponse, isbn);
                 bookEntity.setShelfId(shelfId);

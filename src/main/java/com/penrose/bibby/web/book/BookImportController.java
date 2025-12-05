@@ -4,7 +4,7 @@ import com.penrose.bibby.library.book.infrastructure.external.BookImportRequest;
 import com.penrose.bibby.library.book.infrastructure.external.BookImportResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.book.application.BookInfoService;
+import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 public class BookImportController {
     Logger log = org.slf4j.LoggerFactory.getLogger(BookImportController.class);
 
-    private final BookInfoService bookInfoService;
+    private final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
 
-    public BookImportController(BookInfoService bookInfoService, IsbnEnrichmentService isbnEnrichmentService) {
-        this.bookInfoService = bookInfoService;
+    public BookImportController(IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService) {
+        this.isbnLookupService = isbnLookupService;
         this.isbnEnrichmentService = isbnEnrichmentService;
     }
 
@@ -37,7 +37,7 @@ public class BookImportController {
 
         log.info("Import request for ISBN {}", request.isbn());
 
-        GoogleBooksResponse lookupResponse = bookInfoService.lookupBook(request.isbn()).block();
+        GoogleBooksResponse lookupResponse = isbnLookupService.lookupBook(request.isbn()).block();
         if (lookupResponse == null || lookupResponse.items() == null || lookupResponse.items().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No book found for ISBN " + request.isbn());
         }

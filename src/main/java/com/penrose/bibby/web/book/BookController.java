@@ -1,13 +1,13 @@
 package com.penrose.bibby.web.book;
 
 import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
+import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.api.BookPlacementResponse;
 import com.penrose.bibby.library.book.api.BookRequestDTO;
 import com.penrose.bibby.library.book.api.BookShelfAssignmentRequest;
 import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
-import com.penrose.bibby.library.book.application.BookInfoService;
 import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
@@ -24,15 +24,15 @@ public class BookController {
 
     final BookService bookService;
     final AuthorRepository authorRepository;
-    final BookInfoService bookInfoService;
+    final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
     private final ShelfService shelfService;
     private final BookcaseService bookcaseService;
 
-    public BookController(BookService bookService, AuthorRepository authorRepository, BookInfoService bookInfoService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
+    public BookController(BookService bookService, AuthorRepository authorRepository, IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
         this.bookService = bookService;
         this.authorRepository = authorRepository;
-        this.bookInfoService = bookInfoService;
+        this.isbnLookupService = isbnLookupService;
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.shelfService = shelfService;
         this.bookcaseService = bookcaseService;
@@ -47,7 +47,7 @@ public class BookController {
     @GetMapping("/lookup/{isbn}")
     public Mono<GoogleBooksResponse> getBookInfo(@PathVariable String isbn){
         System.out.println("Controller Lookup For " + isbn);
-        return bookInfoService.lookupBook(isbn).doOnNext(body ->{
+        return isbnLookupService.lookupBook(isbn).doOnNext(body ->{
             System.out.println("Received response for ISBN " + isbn + ": " + body);
         });
     }
