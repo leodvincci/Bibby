@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.book;
+package com.penrose.bibby.infrastructure.web.book;
 
 import com.penrose.bibby.library.book.infrastructure.external.BookImportRequest;
 import com.penrose.bibby.library.book.infrastructure.external.BookImportResponse;

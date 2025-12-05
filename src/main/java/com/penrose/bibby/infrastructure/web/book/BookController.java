@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.book;
+package com.penrose.bibby.infrastructure.web.book;
 
 import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
