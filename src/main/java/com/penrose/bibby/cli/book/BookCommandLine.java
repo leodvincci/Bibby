@@ -1,13 +1,13 @@
 package com.penrose.bibby.cli.book;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
-import com.penrose.bibby.library.author.api.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.book.api.BookRequestDTO;
+import com.penrose.bibby.library.book.contracts.BookRequestDTO;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;

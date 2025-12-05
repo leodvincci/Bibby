@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.shelf.infrastructure.repository;
 
-import com.penrose.bibby.library.shelf.api.ShelfDTO;
-import com.penrose.bibby.library.shelf.api.ShelfSummary;
+import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +15,7 @@ public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
     List<ShelfEntity> findByBookcaseId(Long bookcaseId);
 
     @Query("""
-        SELECT new com.penrose.bibby.library.shelf.api.ShelfSummary(
+        SELECT new com.penrose.bibby.library.shelf.contracts.ShelfSummary(
             s.shelfId,
             s.shelfLabel,
             (SELECT COUNT(b.bookId) FROM com.penrose.bibby.library.book.infrastructure.entity.BookEntity b WHERE b.shelfId = s.shelfId)

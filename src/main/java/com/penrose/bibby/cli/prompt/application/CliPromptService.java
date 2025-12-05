@@ -1,8 +1,8 @@
 package com.penrose.bibby.cli.prompt.application;
 
-import com.penrose.bibby.library.author.api.AuthorDTO;
-import com.penrose.bibby.library.shelf.api.ShelfDTO;
-import com.penrose.bibby.library.shelf.api.ShelfFacade;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.stereotype.Component;
 

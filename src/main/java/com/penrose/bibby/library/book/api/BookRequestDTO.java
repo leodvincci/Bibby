@@ -1,8 +1,0 @@
-package com.penrose.bibby.library.book.api;
-
-import com.penrose.bibby.library.author.api.AuthorDTO;
-import com.penrose.bibby.library.author.domain.Author;
-import java.util.List;
-
-public record BookRequestDTO(String title, List<AuthorDTO> authors) {
-}

@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.shelf.api;
+package com.penrose.bibby.library.shelf.contracts;
 
 public record ShelfOptionResponse(
         Long shelfId,

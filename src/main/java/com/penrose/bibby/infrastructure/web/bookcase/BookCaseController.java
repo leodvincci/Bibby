@@ -1,6 +1,6 @@
 package com.penrose.bibby.infrastructure.web.bookcase;
 
-import com.penrose.bibby.library.bookcase.api.BookcaseDTO;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

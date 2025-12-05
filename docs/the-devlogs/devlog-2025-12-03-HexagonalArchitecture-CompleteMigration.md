@@ -187,12 +187,16 @@ Moving files between packages revealed some tight coupling. For example:
 **Current state**: Cross-domain imports go directly to infrastructure entities. This works but isn't ideal.
 
 **Future improvement**: Use facades for all cross-domain communication:
+
 ```java
 // Instead of:
+
+// Should be:// Instead of:
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 
 // Should be:
-import com.penrose.bibby.library.bookcase.api.BookcaseFacade;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
+
 ```
 
 ### Challenge: Documentation Drift (Again)

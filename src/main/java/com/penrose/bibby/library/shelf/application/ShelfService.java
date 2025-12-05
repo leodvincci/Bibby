@@ -1,11 +1,11 @@
 package com.penrose.bibby.library.shelf.application;
 
-import com.penrose.bibby.library.shelf.api.ShelfDTO;
-import com.penrose.bibby.library.shelf.api.ShelfFacade;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
-import com.penrose.bibby.library.shelf.api.ShelfOptionResponse;
-import com.penrose.bibby.library.shelf.api.ShelfSummary;
+import com.penrose.bibby.library.shelf.contracts.ShelfOptionResponse;
+import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
 import org.springframework.stereotype.Service;
 
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;

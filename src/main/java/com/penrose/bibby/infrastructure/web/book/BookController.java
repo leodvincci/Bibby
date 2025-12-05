@@ -4,9 +4,9 @@ import com.penrose.bibby.library.author.infrastructure.repository.AuthorReposito
 import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.api.BookPlacementResponse;
-import com.penrose.bibby.library.book.api.BookRequestDTO;
-import com.penrose.bibby.library.book.api.BookShelfAssignmentRequest;
+import com.penrose.bibby.library.book.contracts.BookPlacementResponse;
+import com.penrose.bibby.library.book.contracts.BookRequestDTO;
+import com.penrose.bibby.library.book.contracts.BookShelfAssignmentRequest;
 import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;

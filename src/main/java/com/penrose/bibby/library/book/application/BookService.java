@@ -1,15 +1,15 @@
 package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.author.api.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
-import com.penrose.bibby.library.book.api.BookFacade;
+import com.penrose.bibby.library.book.contracts.BookFacade;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.domain.BookFactory;
-import com.penrose.bibby.library.book.api.BookDetailView;
-import com.penrose.bibby.library.book.api.BookRequestDTO;
-import com.penrose.bibby.library.book.api.BookSummary;
+import com.penrose.bibby.library.book.contracts.BookDetailView;
+import com.penrose.bibby.library.book.contracts.BookRequestDTO;
+import com.penrose.bibby.library.book.contracts.BookSummary;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;

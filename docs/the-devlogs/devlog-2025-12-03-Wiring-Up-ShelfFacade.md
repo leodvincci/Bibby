@@ -189,10 +189,13 @@ The `fromEntity()` factory lives on the DTO. This is a pragmatic choice—the DT
 ```
 
 **Now only imports:**
+
 ```java
-+ import com.penrose.bibby.library.author.api.AuthorDTO;
-+ import com.penrose.bibby.library.shelf.api.ShelfDTO;
-+ import com.penrose.bibby.library.shelf.api.ShelfFacade;
++import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
++
++ 
 ```
 
 The CLI layer only sees `api/` packages. Domain and infrastructure are hidden.

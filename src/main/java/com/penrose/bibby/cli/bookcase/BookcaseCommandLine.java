@@ -1,15 +1,15 @@
 package com.penrose.bibby.cli.bookcase;
 
 import com.penrose.bibby.cli.book.BookCommandLine;
-import com.penrose.bibby.library.book.api.BookDetailView;
+import com.penrose.bibby.library.book.contracts.BookDetailView;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.application.BookService;
-import com.penrose.bibby.library.book.api.BookSummary;
+import com.penrose.bibby.library.book.contracts.BookSummary;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.application.ShelfService;
-import com.penrose.bibby.library.shelf.api.ShelfSummary;
+import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
