@@ -157,7 +157,6 @@ public class BookCommandLine extends AbstractShellComponent {
             if(!cliPrompt.isbnValidator(isbn)){
                 return;
             }
-            System.out.println("Passes Here");
             GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
             if (addScanResultCommand(googleBooksResponse, isbn)) {
                 bookService.createScannedBook(googleBooksResponse, isbn);
