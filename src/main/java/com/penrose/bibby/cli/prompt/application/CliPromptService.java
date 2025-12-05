@@ -96,11 +96,35 @@ public class CliPromptService {
         flow = componentFlowBuilder.clone()
                 .withStringInput("isbn")
                 .name("ISBN Number:_")
+                .next( ctx -> {
+                    String value = ctx.getResultValue();
+                    if(value.equalsIgnoreCase(":q")){
+                        return null;
+                    }else if(isbnValidator(value)){
+                        return null;
+                    }
+                    ctx.setResultValue(null);
+                    ctx.setInput("");
+                    ctx.setDefaultValue("");
+                    return "isbn";
+                 })
                 .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
         return result.getContext().get("isbn",String.class);
+    }
+
+    public boolean isbnValidator(String isbn){
+        if(isbn.startsWith("978") && isbn.length() == 13){
+            return true;
+        }else if(isbn.equalsIgnoreCase(":q")){
+            System.out.println("\u001B[31mISBN entry cancelled by user.\u001B[0m");
+            return false;
+        }else {
+            System.out.println("\u001B[31mInvalid ISBN. Please enter a valid 13-digit ISBN starting with '978'.\u001B[0m");
+            return false;
+        }
     }
 
     public Long promptForBookCase(Map<String, String> bookCaseOptions){

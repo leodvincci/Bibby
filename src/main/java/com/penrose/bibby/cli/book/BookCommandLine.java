@@ -144,6 +144,7 @@ public class BookCommandLine extends AbstractShellComponent {
 
     @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
     public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
+
         multi = multi == null ? "multi" : multi;
 
         if(multi.equalsIgnoreCase("multi")){
@@ -151,17 +152,18 @@ public class BookCommandLine extends AbstractShellComponent {
         }
 
         if(multi.equalsIgnoreCase("single")) {
-            System.out.println("Scanning single book...");
+            System.out.println("\n\u001B[95mSingle Book Scan");
             String isbn = cliPrompt.promptForIsbnScan();
-            System.out.println("Scanned ISBN: " + isbn);
+            if(!cliPrompt.isbnValidator(isbn)){
+                return;
+            }
+            System.out.println("Passes Here");
             GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
             if (addScanResultCommand(googleBooksResponse, isbn)) {
                 bookService.createScannedBook(googleBooksResponse, isbn);
                 System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
             }
         }
-
-
     }
 
     private void multiBookScan() {
@@ -232,6 +234,10 @@ public class BookCommandLine extends AbstractShellComponent {
     private void searchByIsbn() {
         System.out.println("\n\u001B[95mSearch by ISBN");
         String isbn = cliPrompt.promptForIsbnScan();
+        if(isbn == null){
+            System.out.println("NULL ISBN RETURNED");
+            return;
+        }
         BookEntity bookEntity = bookService.findBookByIsbn(isbn);
         if (bookEntity == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m: No book found with ISBN: " + isbn + "\n");
