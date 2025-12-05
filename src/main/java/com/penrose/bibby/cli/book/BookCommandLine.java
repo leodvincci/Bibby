@@ -158,7 +158,9 @@ public class BookCommandLine extends AbstractShellComponent {
                 return;
             }
             GoogleBooksResponse googleBooksResponse = bookInfoService.lookupBook(isbn).block();
-            if (addScanResultCommand(googleBooksResponse, isbn)) {
+            if(googleBooksResponse.items() == null){
+                System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
+            }else if (addScanResultCommand(googleBooksResponse, isbn)) {
                 bookService.createScannedBook(googleBooksResponse, isbn);
                 System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
             }
