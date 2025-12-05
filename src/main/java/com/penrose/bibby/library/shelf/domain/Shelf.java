@@ -1,14 +1,10 @@
 package com.penrose.bibby.library.shelf.domain;
 
 import com.penrose.bibby.library.book.domain.Book;
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.bookcase.domain.Bookcase;
-
 import java.util.List;
 
 public class Shelf {
     private Long id;
-//    private Bookcase bookCase;
     private String shelfLabel;
     private String shelfDescription;
     private int shelfPosition;
@@ -16,20 +12,11 @@ public class Shelf {
     private List<Book> books;
 
 
-    public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int bookCapacity) {
-//        this.bookCase = bookCase;
+    public Shelf(String shelfLabel, int shelfPosition, int bookCapacity) {
         this.shelfLabel = shelfLabel;
         this.shelfPosition = shelfPosition;
         this.bookCapacity = bookCapacity;
     }
-
-//    public void addBook(Book book){
-//        if(books.size() < bookCapacity){
-//            books.add(book);
-//        }else{
-//            throw new RuntimeException("Shelf is full");
-//        }
-//    }
 
     public boolean isFull(){
         return books.size() >= bookCapacity;
@@ -48,9 +35,7 @@ public class Shelf {
     public int getBookCount() {
         return books.size();
     }
-//    public void setBookCase(Bookcase bookCase) {
-//        this.bookCase = bookCase;
-//    }
+
 
     public String getShelfLabel() {
         return shelfLabel;
@@ -85,14 +70,6 @@ public class Shelf {
     }
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void addToShelf(BookEntity book){
-//        if(books.size() < bookCapacity){
-//            books.add(book);
-//        }else{
-//            throw new RuntimeException("Shelf is full");
-//        }
     }
 
     public String getShelfDescription() {
