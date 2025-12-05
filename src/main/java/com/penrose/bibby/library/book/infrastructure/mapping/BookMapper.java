@@ -3,6 +3,7 @@ package com.penrose.bibby.library.book.infrastructure.mapping;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
+import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
@@ -49,7 +50,7 @@ public class BookMapper {
         book.setPublisher(e.getPublisher());
         book.setPublicationYear(e.getPublicationYear());
 //        book.setGenre(genre);
-        book.setShelf(shelf);
+        book.setShelfId(shelf.getId());
         book.setDescription(e.getDescription());
         book.setAvailabilityStatus(e.getAvailabilityStatus() != null ? AvailabilityStatus.valueOf(e.getAvailabilityStatus()) : null);
         book.setCreatedAt(e.getCreatedAt());
@@ -85,7 +86,7 @@ public class BookMapper {
 //        bookEntity.setGenre(book.getGenre() !=null ? book.getGenre().getGenreName() : null);
         bookEntity.setEdition(book.getEdition());
         bookEntity.setDescription(book.getDescription());
-        bookEntity.setShelfId(book.getShelf() != null ? book.getShelf().getId() : null);
+        bookEntity.setShelfId(book.getShelfId());
         bookEntity.setAvailabilityStatus(book.getAvailabilityStatus() != null ? book.getAvailabilityStatus().name() : null);
         bookEntity.setCreatedAt(book.getCreatedAt());
         bookEntity.setUpdatedAt(book.getUpdatedAt());

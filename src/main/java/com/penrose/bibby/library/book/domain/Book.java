@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.shelf.domain.Shelf;
-import org.stringtemplate.v4.ST;
 
 public class Book {
     private Long id;
@@ -17,7 +16,7 @@ public class Book {
     private String genre;
     private String publisher;
     private int publicationYear;
-    private Shelf shelf;
+    private Long shelfId;
     private String description;
     private AvailabilityStatus availabilityStatus;
     private LocalDate createdAt;
@@ -124,13 +123,11 @@ public class Book {
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
     }
-
-    public Shelf getShelf() {
-        return shelf;
+    public Long getShelfId() {
+        return shelfId;
     }
-
-    public void setShelf(Shelf shelf) {
-        this.shelf = shelf;
+    public void setShelfId(Long shelfId) {
+        this.shelfId = shelfId;
     }
 
     public AvailabilityStatus getAvailabilityStatus() {
@@ -176,7 +173,7 @@ public class Book {
                 ", availabilityStatus=" + availabilityStatus +
                 ", publishedDate='" + publishedDate + '\'' +
                 ", updatedAt=" + updatedAt +
-                ", shelf=" + shelf +
+                ", shelfId=" + shelfId +
                 '}';
     }
 
