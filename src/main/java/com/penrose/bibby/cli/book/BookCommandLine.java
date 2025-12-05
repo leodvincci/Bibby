@@ -2,7 +2,6 @@ package com.penrose.bibby.cli.book;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.api.AuthorDTO;
-import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
