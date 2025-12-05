@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli.prompt.application;
 
+import com.penrose.bibby.library.author.api.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
@@ -62,7 +63,7 @@ public class CliPromptService {
         return scans;
     }
 
-    public Author promptForAuthor(){
+    public AuthorDTO promptForAuthor(){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("authorFirstName")
@@ -77,7 +78,7 @@ public class CliPromptService {
         String lastName = result.getContext().get("authorLastName", String.class);
 //        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
 //        bookService.createNewBook(bookRequestDTO);
-        return new Author(firstName,lastName);
+        return new AuthorDTO(firstName,lastName);
 
     }
 

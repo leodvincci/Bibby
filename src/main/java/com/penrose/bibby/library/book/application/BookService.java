@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book.application;
 
+import com.penrose.bibby.library.author.api.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
@@ -81,8 +82,8 @@ import java.util.Optional;
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
         Set<AuthorEntity> authorEntities = new HashSet<>();
-        for(Author author : bookRequestDTO.authors()){
-            authorEntities.add(authorService.findOrCreateAuthor(author.getFirstName(),author.getLastName()));
+        for(AuthorDTO author : bookRequestDTO.authors()){
+            authorEntities.add(authorService.findOrCreateAuthor(author.firstName(),author.lastName()));
         }
         return authorEntities;
     }
@@ -108,14 +109,14 @@ import java.util.Optional;
         }
 
         // Validate each author
-        for (Author author : bookDTO.authors()) {
+        for (AuthorDTO author : bookDTO.authors()) {
             if (author == null) {
                 throw new IllegalArgumentException("Author cannot be null");
             }
-            if (author.getFirstName() == null || author.getFirstName().isBlank()) {
+            if (author.firstName() == null || author.firstName().isBlank()) {
                 throw new IllegalArgumentException("Author first name cannot be blank");
             }
-            if (author.getLastName() == null || author.getLastName().isBlank()) {
+            if (author.lastName() == null || author.lastName().isBlank()) {
                 throw new IllegalArgumentException("Author last name cannot be blank");
             }
         }

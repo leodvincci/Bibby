@@ -1,6 +1,7 @@
 package com.penrose.bibby.cli.book;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
+import com.penrose.bibby.library.author.api.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
@@ -68,9 +69,10 @@ public class BookCommandLine extends AbstractShellComponent {
     public void addBook() throws InterruptedException {
         String title = cliPrompt.promptForBookTitle();
         int authorCount = cliPrompt.promptForBookAuthorCount();
-        List<Author> authors = new ArrayList<>();
+        List<AuthorDTO> authors = new ArrayList<>();
 
         for (int i = 0; i < authorCount; i++) {
+
             authors.add(cliPrompt.promptForAuthor());
         }
 
