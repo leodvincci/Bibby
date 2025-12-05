@@ -11,7 +11,7 @@ import java.util.List;
 public class ShelfMapper {
 
 
-    public Shelf toDomain(ShelfEntity shelfEntity, List<Book> books){
+    public Shelf toDomain(ShelfEntity shelfEntity, List<Long> bookIds){
         Shelf shelf = new Shelf();
         shelf.setId(shelfEntity.getShelfId());
         shelf.setBookCapacity(shelfEntity.getBookCapacity());
@@ -19,7 +19,7 @@ public class ShelfMapper {
         shelf.setShelfLabel(shelfEntity.getShelfLabel());
         shelf.setShelfPosition(shelfEntity.getShelfPosition());
         shelf.setShelfDescription(shelfEntity.getShelfDescription());
-        shelf.setBooks(books);
+        shelf.setBooks(bookIds);
         return shelf;
     }
 

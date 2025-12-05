@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.shelf.infrastructure.repository;
 
+import com.penrose.bibby.library.shelf.api.ShelfDTO;
 import com.penrose.bibby.library.shelf.api.ShelfSummary;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

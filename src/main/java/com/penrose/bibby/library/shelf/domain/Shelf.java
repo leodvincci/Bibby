@@ -9,7 +9,7 @@ public class Shelf {
     private String shelfDescription;
     private int shelfPosition;
     private int bookCapacity;
-    private List<Book> books;
+    private List<Long> bookIds;
 
 
     public Shelf(String shelfLabel, int shelfPosition, int bookCapacity) {
@@ -19,21 +19,21 @@ public class Shelf {
     }
 
     public boolean isFull(){
-        return books.size() >= bookCapacity;
+        return bookIds.size() >= bookCapacity;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Long> getBooks() {
+        return bookIds;
     }
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBooks(List<Long> books) {
+        this.bookIds = books;
     }
 
     public int getBookCapacity() {
         return bookCapacity;
     }
     public int getBookCount() {
-        return books.size();
+        return bookIds.size();
     }
 
 
@@ -92,7 +92,7 @@ public class Shelf {
                 ", shelfDescription='" + shelfDescription + '\'' +
                 ", shelfPosition=" + shelfPosition +
                 ", bookCapacity=" + bookCapacity +
-                ", books=" + books +
+                ", books=" + bookIds +
                 '}';
     }
 }
