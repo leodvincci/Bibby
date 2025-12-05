@@ -291,11 +291,11 @@ public class BookCommandLine extends AbstractShellComponent {
             searchBook();
         }
     }
-
-    @Command(command = "list", description = "View all books with optional filters and sorting.")
-    public void listBooks(){
-        System.out.println("Listing all books /w filter");
-    }
+//
+//    @Command(command = "list", description = "View all books with optional filters and sorting.")
+//    public void listBooks(){
+//        System.out.println("Listing all books /w filter");
+//    }
 
     // ───────────────────────────────────────────────────────────────────
     //
