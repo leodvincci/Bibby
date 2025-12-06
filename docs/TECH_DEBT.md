@@ -1,20 +1,11 @@
 # Technical Debt Register
 
-> Last updated: 2025-12-05
+> Last updated: 2025-12-06
 > Philosophy: Debt is a natural byproduct of learning. Track it, prioritize it, tell stories about it.
 
 ---
 
 ## 🔴 High Priority — Blocking Architectural Goals
-
-### CLI Layer Violates Contract Boundaries
-**Location:** `BookCommandLine.java`, `BookcaseCommandLine.java`  
-**Symptom:** Direct imports of `AuthorEntity`, `BookcaseEntity`, `AuthorService`, `BookService`  
-**Why it matters:** Your devlog says "CLI only sees contracts packages" but code doesn't match. This is the gap between documented architecture and reality.  
-**Path forward:** Create `BookFacade`, `AuthorFacade` that expose DTOs. CLI calls facades only.  
-**Interview angle:** "I renamed packages to 'contracts' and that exposed coupling I hadn't enforced yet."
-
----
 
 ### Half-Migrated Mapper Infrastructure  
 **Location:** `BookMapper` vs `BookMapperTwo`, `AuthorMapper` vs `AuthorMapperTwo`  
@@ -22,9 +13,9 @@
 **Why it matters:** Confuses future-you, inconsistent patterns, cognitive load  
 **Path forward:** 
 1. `git grep "BookMapper " --exclude="*MapperTwo*"` to find usages
-2. Migrate all to MapperTwo
-3. Delete old mappers
-4. Rename MapperTwo → Mapper  
+2. Migrate all to one mapper
+3. Delete redundant mapper
+4. Rename to single `BookMapper`  
 **Interview angle:** "I learned that half-migrated code is worse than old code."
 
 ---
@@ -40,6 +31,15 @@
 
 ## 🟡 Medium Priority — Code Smells, Interview Material
 
+### Redundant Service + Facade Dependencies
+**Location:** `BookCommandLine.java`  
+**Symptom:** Constructor has both `BookService` AND `BookFacade`, both `ShelfService` AND `ShelfFacade`  
+**Why it matters:** Facades exist to replace direct service usage—having both defeats the purpose  
+**Path forward:** Remove concrete service dependencies, use only facades  
+**Interview angle:** "The refactoring wasn't complete until I removed the old dependencies, not just added the new ones."
+
+---
+
 ### N+1 Query in Book Loading
 **Location:** `BookDomainRepositoryImpl`  
 **Symptom:** Loading books triggers individual author queries  
@@ -49,12 +49,12 @@
 
 ---
 
-### CliPromptService Dependency Coupling
-**Location:** `CliPromptService.java`  
-**Symptom:** Injects `BookcaseService`, `ShelfService` to fetch data for prompts  
-**Why it matters:** Service depends on services instead of receiving data — harder to test, tighter coupling  
-**Path forward:** Refactor methods to accept data as parameters, let callers fetch  
-**Interview angle:** "I improved cohesion but accidentally increased coupling. Here's how I recognized and fixed it."
+### ShelfDomainRepositoryImpl in Wrong Package
+**Location:** `library/shelf/domain/ShelfDomainRepositoryImpl.java`  
+**Symptom:** Implementation class in `domain/` package instead of `infrastructure/`  
+**Why it matters:** Domain package should contain only domain logic, not JPA implementations  
+**Path forward:** Move to `infrastructure/repository/`  
+**Interview angle:** "The interface is domain-owned, but the implementation is infrastructure."
 
 ---
 
@@ -76,19 +76,12 @@
 
 ---
 
-### Code Duplication in CLI
-**Location:** `BookCommands.java`, `CliPromptService.java`  
-**Symptom:** `yesNoOptions()` exists in both classes  
-**Why it matters:** DRY violation, maintenance burden  
-**Path forward:** Single source of truth in CliPromptService  
-
----
-
-### Incomplete CLI Refactoring
-**Location:** `checkInBook()` method  
-**Symptom:** Still has inline ComponentFlow instead of using CliPromptService  
-**Why it matters:** Inconsistent with rest of refactoring  
-**Path forward:** Extract to CliPromptService like other prompts  
+### Missing BookcaseFacade
+**Location:** `BookCommandLine.java`, `CliPromptService.java`  
+**Symptom:** Still using `BookcaseService` directly while other modules use facades  
+**Why it matters:** Inconsistent pattern—Author, Book, Shelf have facades but Bookcase doesn't  
+**Path forward:** Create `BookcaseFacade` interface, have `BookcaseService` implement it  
+**Interview angle:** "I applied the pattern systematically across all modules."
 
 ---
 
@@ -96,8 +89,8 @@
 
 ### Aggregate Loading Strategy
 **Question:** Should `Shelf` eagerly load `List<Book>` or hold `List<BookId>`?  
-**Why parked:** No performance problems yet, premature optimization  
-**Trigger to revisit:** When shelf listing becomes slow, or when you need to demonstrate lazy loading knowledge
+**Status:** Resolved for now—using `List<Long> bookIds`  
+**Trigger to revisit:** When you need full Book objects and lazy loading becomes relevant
 
 ---
 
@@ -115,11 +108,20 @@
 
 ---
 
+### Debug Output in Production Code
+**Location:** Various files  
+**Symptom:** `System.out.println()` calls for debugging  
+**Why parked:** Low priority, doesn't affect architecture  
+**Trigger to revisit:** Before any demo or code review
+
+---
+
 ## ❓ Open Questions — Future Research
 
-- Should domain aggregates hold IDs instead of full objects? (performance vs convenience)
-- When is eager loading justified vs lazy loading?
 - How to handle cross-aggregate transactions in a modular monolith?
+- When is eager loading justified vs lazy loading?
+- Should facades return domain objects or only DTOs?
+- How to version API contracts when modules evolve independently?
 
 ---
 
@@ -142,7 +144,33 @@ Weight away from:
 
 | Item | Resolution | Date |
 |------|------------|------|
+| NPE in `findBooksByShelf()` | Fixed null list initialization, now uses stream mapping | 2025-12-06 |
+| CLI Layer Violates Contract Boundaries | Created facades (Author, Book, Shelf), removed all infrastructure imports from CLI. **ArchUnit test now passes.** | 2025-12-06 |
+| Infrastructure types in CLI | Replaced `BookEntity`→`BookDTO`, `ShelfEntity`→`ShelfDTO`, `GoogleBooksResponse`→`BookMetaDataResponse` | 2025-12-06 |
+| Mapper imports in CLI | Removed `BookMapper`, `ShelfMapper` imports; mapping now internal to services | 2025-12-06 |
+| CliPromptService Dependency Coupling | Now uses `ShelfFacade` instead of `ShelfService` directly | 2025-12-06 |
+| Constructor bloat (11 deps) | Reduced to 9 by removing mapper dependencies | 2025-12-06 |
 | `api` → `contracts` terminology | Renamed all packages | 2025-12-05 |
 | Package-by-feature structure | Reorganized all modules | 2025-12-03 |
 | Dead code (Genre.java, User.java) | Deleted | 2025-12-05 |
+| Aggregate object references | Changed `Shelf.books` and `Book.shelf` to ID references | 2025-12-03 |
 
+---
+
+## 🏆 Milestone: Architecture Enforcement
+
+**Date:** 2025-12-06 @ 1:15 AM
+
+The ArchUnit test `cli_should_not_depend_on_infrastructure()` now passes:
+
+```
+✓ 1 test passed, 1 test total, 139ms
+```
+
+This means:
+- CLI layer imports only from `contracts/` packages
+- No entity, mapper, or infrastructure types leak into CLI
+- Future violations will fail the build
+- Architecture is self-defending
+
+This was a full day of refactoring to achieve. The pattern is now established for all modules.
