@@ -1,4 +1,13 @@
 package com.penrose.bibby.library.bookcase.contracts;
 
-public class BookcaseFacade {
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BookcaseFacade {
+    Optional<BookcaseDTO> findBookCaseById(Long aLong);
+
+    List<BookcaseDTO> getAllBookcases();
+
 }
