@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,13 +48,10 @@ public class ShelfService implements ShelfFacade {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public List<BookDTO> findBooksByShelf(Long aLong) {
         List<BookEntity> books = bookRepository.findByShelfId(aLong);
-        List<BookDTO> bookDTOs = new java.util.ArrayList<>();
-        if (books == null) {
-            return List.of();
-        }
         return books.stream()
                 .map(BookDTO::fromEntity)
                 .collect(Collectors.toList());

@@ -30,9 +30,9 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String title, HashSet<AuthorEntity> authors) {
+    public BookEntity(String title, Set<AuthorEntity> authors) {
         this.title = title;
-        this.authors = authors;
+        this.authors =authors;
         this.createdAt = LocalDate.now();
         this.availabilityStatus = AvailabilityStatus.AVAILABLE.toString();
     }
@@ -49,15 +49,8 @@ public class BookEntity {
         return bookId;
     }
 
-    public Set<AuthorEntity> getAuthors() {
-        return authors;
-    }
 
-    public void setAuthors(Set<AuthorEntity> authors) {
-        this.authors.addAll(authors);
-    }
-
-    public void setBookId(Long id) {
+  public void setBookId(Long id) {
         this.bookId = id;
     }
     public String getTitle() {
@@ -140,12 +133,30 @@ public class BookEntity {
         }
     }
 
+    public Set<AuthorEntity> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<AuthorEntity> authors) {
+        this.authors = authors;
+    }
+
     @Override
     public String toString() {
         return "BookEntity{" +
                 "bookId=" + bookId +
                 ", title='" + title + '\'' +
-
+                ", isbn='" + isbn + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", publicationYear=" + publicationYear +
+                ", genre='" + genre + '\'' +
+                ", edition=" + edition +
+                ", description='" + description + '\'' +
+                ", shelfId=" + shelfId +
+                ", availabilityStatus='" + availabilityStatus + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", authors=" + authors +
                 '}';
     }
 }

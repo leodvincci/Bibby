@@ -12,17 +12,13 @@ import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksRespons
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
     public class BookService implements BookFacade {
@@ -64,19 +60,19 @@ import java.util.Optional;
 
     public BookDTO createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn, Long shelfId){
         BookEntity bookEntity = new BookEntity();
-        Set<Long> authorIds = new HashSet<>();
+        List<String> authors = new ArrayList<>();
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
             AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
-            authorIds.add(authorEntity.getAuthorId());
+            authors.add(nameParts[0] + " " + nameParts[1]);
             authorEntities.add(authorEntity);
         }
 
         BookDTO bookDTO = new BookDTO(null,
                 0,
                 googleBooksResponse.items().get(0).volumeInfo().title(),
-                authorIds,
+                authors,
                 isbn,
                 null,
                 googleBooksResponse.items().get(0).volumeInfo().publisher(),
@@ -283,7 +279,11 @@ import java.util.Optional;
     }
 
     public BookDTO findBookByIsbn(String isbn) {
+        System.out.println("isbn in service: " + isbn);
         BookEntity bookEntity = bookRepository.findByIsbn(isbn);
+        if(bookEntity == null){
+            throw new IllegalArgumentException("Book not found with ISBN: " + isbn);
+        }
         return bookMapper.toDTOfromEntity(bookEntity);
     }
 

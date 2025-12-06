@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.book.infrastructure.mapping;
 
-import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
@@ -22,14 +21,10 @@ import java.util.List;
 import java.util.Set;
 @Component
 public class BookMapper {
-    private final ShelfDomainRepositoryImpl shelfDomainRepositoryImpl;
-    private final AuthorService authorService;
     ShelfMapper shelfMapper;
 
-    private BookMapper(ShelfMapper shelfMapper, ShelfDomainRepositoryImpl shelfDomainRepositoryImpl, AuthorService authorService){
+    private BookMapper(ShelfMapper shelfMapper){
         this.shelfMapper = shelfMapper;
-        this.shelfDomainRepositoryImpl = shelfDomainRepositoryImpl;
-        this.authorService = authorService;
     }
 
     public Book toDomain(BookDTO bookDTO,
@@ -38,7 +33,6 @@ public class BookMapper {
 
         HashSet<Author> authors = new HashSet<>();
 //        Shelf shelf = shelfMapper.toDomain(shelfEntity);
-        Shelf shelf = shelfDomainRepositoryImpl.getById(shelfDTO.shelfId());
 
         for (AuthorDTO authorDTO : authorDTOs) {
             authors.add(AuthorMapper.toDomain(authorDTO.id(), authorDTO.firstName(), authorDTO.lastName()));
@@ -57,7 +51,7 @@ public class BookMapper {
         book.setPublisher(bookDTO.publisher());
         book.setPublicationYear(bookDTO.publicationYear());
 //        book.setGenre(genre);
-        book.setShelfId(shelf.getId());
+        book.setShelfId(shelfDTO.shelfId());
         book.setDescription(bookDTO.description());
         book.setAvailabilityStatus(bookDTO.availabilityStatus());
         book.setCreatedAt(bookDTO.createdAt());
@@ -72,7 +66,6 @@ public class BookMapper {
 
         List<String> authors = new ArrayList<>();
 //        Shelf shelf = shelfMapper.toDomain(shelfEntity);
-        Shelf shelf = shelfDomainRepositoryImpl.getById(shelfDTO.getShelfId());
 
         for (AuthorDTO authorDTO : authorDTOs) {
             authors.add(authorDTO.firstName() + " " + authorDTO.lastName());
@@ -91,7 +84,7 @@ public class BookMapper {
         book.setPublisher(e.getPublisher());
         book.setPublicationYear(e.getPublicationYear());
 //        book.setGenre(genre);
-        book.setShelfId(shelf.getId());
+        book.setShelfId(shelfDTO.getShelfId());
         book.setDescription(e.getDescription());
         book.setAvailabilityStatus(e.getAvailabilityStatus() != null ? AvailabilityStatus.valueOf(e.getAvailabilityStatus()) : null);
         book.setCreatedAt(e.getCreatedAt());
@@ -152,7 +145,7 @@ public class BookMapper {
                 String[] names = author.split(" ");
                 String firstName = names[0];
                 String lastName = names.length > 1 ? names[1] : "";
-                authorEntities.add(authorService.findAuthorByName(firstName, lastName).get());
+                authorEntities.add(new AuthorEntity(firstName, lastName));
             }
             bookEntity.setAuthors(authorEntities);
         }

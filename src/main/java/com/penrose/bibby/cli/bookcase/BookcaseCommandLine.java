@@ -105,14 +105,15 @@ public class BookcaseCommandLine extends AbstractShellComponent {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
         List<BookcaseDTO> bookcaseDTOs = bookcaseService.getAllBookcases();
-        for (BookcaseDTO b : bookcaseDTOs) {
+        for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
             int shelfBookCount = 0;
-            List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(b.bookcaseId());
+            List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId());
+
             for(ShelfDTO s : shelves){
                 List<BookDTO> bookList = shelfFacade.findBooksByShelf(s.shelfId());
                 shelfBookCount += bookList.size();
             }
-            options.put(bookcaseRowFormater(b,shelfBookCount), b.bookcaseId().toString());
+            options.put(bookcaseRowFormater(bookcaseDTO,shelfBookCount), bookcaseDTO.bookcaseId().toString());
         }
         return  options;
     }

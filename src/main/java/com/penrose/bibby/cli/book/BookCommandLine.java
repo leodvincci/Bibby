@@ -61,8 +61,46 @@ public class BookCommandLine extends AbstractShellComponent {
     //
     //
     // ───────────────────────────────────────────────────────────────────
+
+    @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
+    public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
+
+        multi = multi == null ? "multi" : multi;
+
+        if(multi.equalsIgnoreCase("multi")){
+            multiBookScan();
+        }
+
+        if(multi.equalsIgnoreCase("single")) {
+            System.out.println("\n\u001B[95mSingle Book Scan");
+            String isbn = cliPrompt.promptForIsbnScan();
+            if(!cliPrompt.isbnValidator(isbn)){
+                return;
+            }
+
+            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+            if(bookMetaDataResponse == null){
+                System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
+            }else if (cliPrompt.promptBookConfirmation()) {
+
+                bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, null);
+
+                System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
+            }
+        }
+    }
+
+
     @Command(command = "add", description = "Add a new book to your library database")
-    public void addBook() throws InterruptedException {
+    public void addBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
+        if(scan == null && multi == null){
+            scanBook("multi");
+            return;
+        }else if(multi != null){
+            multiBookScan();
+            return;
+
+        }
         String title = cliPrompt.promptForBookTitle();
         int authorCount = cliPrompt.promptForBookAuthorCount();
         List<AuthorDTO> authors = new ArrayList<>();
@@ -101,33 +139,7 @@ public class BookCommandLine extends AbstractShellComponent {
         }
     }
 
-    @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
-    public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
 
-        multi = multi == null ? "multi" : multi;
-
-        if(multi.equalsIgnoreCase("multi")){
-            multiBookScan();
-        }
-
-        if(multi.equalsIgnoreCase("single")) {
-            System.out.println("\n\u001B[95mSingle Book Scan");
-            String isbn = cliPrompt.promptForIsbnScan();
-            if(!cliPrompt.isbnValidator(isbn)){
-                return;
-            }
-
-            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-            if(bookMetaDataResponse == null){
-                System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
-            }else if (addScanResultCommand(bookMetaDataResponse, isbn)) {
-
-                bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, null);
-
-                System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
-            }
-        }
-    }
 
     private void multiBookScan() {
         Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
@@ -408,21 +420,21 @@ public class BookCommandLine extends AbstractShellComponent {
 //        String publishingDate = bookMetaData.pulblishedDate();
 //        String categories = bookMetaData.categories().toString();
         String description = bookMetaData.description();
-        System.out.println("\n\u001B[36m</>\u001B[0m:");
-
-        System.out.printf(""
-                + "========================================\n"
-                + "📚  Book Metadata\n"
-                + "========================================\n"
-                + "\n"
-                + "ISBN:              %s\n"
-                + "Title:             %s\n"
-                + "Authors:           %s\n"
-                + "\n"
-                + "Description:\n"
-                + "%s\n"
-                + "\n"
-                + "========================================\n",isbn,title,authors,description);
+//        System.out.println("\n\u001B[36m</>\u001B[0m:");
+//
+//        System.out.printf(""
+//                + "========================================\n"
+//                + "📚  Book Metadata\n"
+//                + "========================================\n"
+//                + "\n"
+//                + "ISBN:              %s\n"
+//                + "Title:             %s\n"
+//                + "Authors:           %s\n"
+//                + "\n"
+//                + "Description:\n"
+//                + "%s\n"
+//                + "\n"
+//                + "========================================\n",isbn,title,authors,description);
         System.out.println();
         return cliPrompt.promptBookConfirmation();
     }

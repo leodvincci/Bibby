@@ -6,15 +6,12 @@ import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public record BookDTO(Long id,
                       int edition,
                       String title,
-                      Set<Long> authorIds,
+                      List<String> authors,
                       String isbn,
                       String genre,
                       String publisher,
@@ -28,16 +25,18 @@ public record BookDTO(Long id,
 
 
     public static BookDTO fromEntity(BookEntity bookEntity) {
-        Set<Long> authorIds = new HashSet<>();
-        for (AuthorEntity author : bookEntity.getAuthors()) {
-            authorIds.add(author.getAuthorId());
-        }
+
+        List<String> authors = new ArrayList<>();
+
+            for (AuthorEntity author : bookEntity.getAuthors()) {
+                authors.add(author.getFirstName() + " " + author.getLastName());
+            }
 
         return new BookDTO(
                 bookEntity.getBookId(),
                 bookEntity.getEdition(),
                 bookEntity.getTitle(),
-                authorIds,
+                authors,
                 bookEntity.getIsbn(),
                 bookEntity.getGenre(),
                 bookEntity.getPublisher(),

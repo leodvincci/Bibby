@@ -8,6 +8,7 @@ import com.penrose.bibby.library.book.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
+import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,16 @@ import java.util.stream.Collectors;
 public class IsbnEnrichmentService {
 
     private static final Logger log = LoggerFactory.getLogger(IsbnEnrichmentService.class);
+    private final BookRepository bookRepository;
     AuthorFactory authorFactory;
     BookMapperTwo bookMapper;
-    BookService bookService;
     AuthorService authorService;
 
-    public IsbnEnrichmentService( AuthorService authorService, BookService bookService, AuthorFactory authorFactory, BookMapperTwo bookMapper) {
+    public IsbnEnrichmentService(AuthorService authorService, AuthorFactory authorFactory, BookMapperTwo bookMapper, BookRepository bookRepository) {
         this.authorFactory = authorFactory;
         this.bookMapper = bookMapper;
-        this.bookService = bookService;
         this.authorService = authorService;
+        this.bookRepository = bookRepository;
     }
 
     public BookEntity enrichIsbn(GoogleBooksResponse googleBooksResponse, String isbn){
@@ -52,10 +53,10 @@ public class IsbnEnrichmentService {
         -------------------------------------------
         """.formatted(
                 book.getTitle(),
-//                book.getAuthors()
-//                        .stream()
-//                        .map(a -> a.getFirstName() + " " + a.getLastName())
-//                        .collect(Collectors.joining(", ")),
+                book.getAuthors()
+                        .stream()
+                        .map(a -> a.split(" ")[0] + " " + a.split(" ")[1])
+                        .collect(Collectors.joining(", ")),
                 book.getPublisher(),
                 isbn,
                 wrapText(book.getDescription(), 80)
@@ -79,7 +80,7 @@ public class IsbnEnrichmentService {
         bookEntity.setPublisher(book.getPublisher());
 //        bookEntity.setPublicationYear(Integer.parseInt(book.getPublishedDate().split("-")[0]));
         System.out.println("book = " + bookEntity);
-        bookService.saveBook(bookEntity);
+//        bookRepository.save(bookEntity);
         return bookEntity;
     }
 
