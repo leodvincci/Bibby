@@ -2,7 +2,6 @@ package com.penrose.bibby.cli.book;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
@@ -245,7 +244,7 @@ public class BookCommandLine extends AbstractShellComponent {
             System.out.println("\n\u001B[36m</>\u001B[0m: Book found: \n");
             System.out.println("Book Details:");
             System.out.println("Title: " + bookEntity.getTitle());
-            Set<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
+            Set<AuthorDTO> authors = authorService.findByBookId(bookEntity.getBookId());
             System.out.println("Author(s): " + authors);
             System.out.println("ISBN: " + bookEntity.getIsbn());
             if (bookEntity.getShelfId() != null) {
@@ -319,7 +318,7 @@ public class BookCommandLine extends AbstractShellComponent {
                     
                     """);
         }else{
-            Set<AuthorEntity> authors = authorService.findByBookId(book.getBookId());
+            Set<AuthorDTO> authors = authorService.findByBookId(book.getBookId());
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -375,7 +374,7 @@ public class BookCommandLine extends AbstractShellComponent {
             bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
             bookshelfLabel = shelfEntity.get().getShelfLabel();
         }
-        Set<AuthorEntity> authors = authorService.findByBookId(bookEntity.getBookId());
+        Set<AuthorDTO> authors = authorService.findByBookId(bookEntity.getBookId());
 
         System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkin\n\u001B[0m
