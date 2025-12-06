@@ -21,7 +21,8 @@ public class AuthorService implements AuthorFacade {
     }
 
     public Set<AuthorDTO> findByBookId(Long id){
-        return authorRepository.findByBooks_BookId(id);
+        Set<AuthorEntity> authorEntities = authorRepository.findByBooks_BookId(id);
+        return AuthorDTO.toDTOSet(authorEntities);
     }
 
     public List<AuthorEntity> findAll(){

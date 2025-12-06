@@ -1,28 +1,32 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
+import com.penrose.bibby.library.author.application.AuthorService;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class BookDomainRepositoryImpl implements BookDomainRepository{
-    private final BookMapperTwo bookMapperTwo;
-    private final BookMapper    bookMapper;
+    private final BookMapper  bookMapper;
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
 
-    public BookDomainRepositoryImpl(BookMapperTwo bookMapperTwo, BookMapper bookMapper, BookRepository bookRepository, AuthorRepository authorRepository) {
-        this.bookMapperTwo = bookMapperTwo;
+    public BookDomainRepositoryImpl(
+            BookMapper bookMapper,
+            BookRepository bookRepository,
+            AuthorService authorService) {
+
         this.bookMapper = bookMapper;
-
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
+
     }
 
     @Override
@@ -30,13 +34,12 @@ public class BookDomainRepositoryImpl implements BookDomainRepository{
         List<BookEntity> bookEntities = bookRepository.findByShelfId(shelfId);
         List<Book> books = new ArrayList<>();
 
+        Set<AuthorDTO> authorDTO = null;
+        ShelfDTO shelfDTO = null;
+
         for(BookEntity bookEntity : bookEntities){
-            books.add(
-                    bookMapper.toDomain(
-                            bookEntity,
-                            authorRepository.findByBooks_BookId(bookEntity.getBookId()),
-                            bookEntity.getShelfId()
-                    ));
+            Book book = bookMapper.toDomainFromEntity(bookEntity);
+            books.add(book);
         }
         return books;
     }

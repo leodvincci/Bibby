@@ -1,7 +1,7 @@
 package com.penrose.bibby.infrastructure.web.book;
 
 import com.penrose.bibby.library.book.infrastructure.external.BookImportRequest;
-import com.penrose.bibby.library.book.infrastructure.external.BookImportResponse;
+import com.penrose.bibby.library.book.contracts.BookMetaDataResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
@@ -30,7 +30,7 @@ public class BookImportController {
     }
 
     @PostMapping("/import/books")
-    public ResponseEntity<BookImportResponse> importBook(@RequestBody BookImportRequest request) {
+    public ResponseEntity<BookMetaDataResponse> importBook(@RequestBody BookImportRequest request) {
         if (request == null || request.isbn() == null || request.isbn().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ISBN is required");
         }
@@ -47,7 +47,7 @@ public class BookImportController {
                 .map(author -> author.getFirstName() + " " + author.getLastName())
                 .collect(Collectors.toList());
 
-        BookImportResponse response = new BookImportResponse(
+        BookMetaDataResponse response = new BookMetaDataResponse(
                 savedBook.getBookId(),
                 savedBook.getTitle(),
                 savedBook.getIsbn(),

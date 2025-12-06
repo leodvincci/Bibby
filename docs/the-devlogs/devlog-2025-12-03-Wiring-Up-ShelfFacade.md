@@ -181,11 +181,12 @@ The `fromEntity()` factory lives on the DTO. This is a pragmatic choice—the DT
 ### Removed Direct Imports
 
 **CliPromptService no longer imports:**
+
 ```java
-- import com.penrose.bibby.library.author.domain.Author;
-- import com.penrose.bibby.library.bookcase.application.BookcaseService;
-- import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-- import com.penrose.bibby.library.shelf.application.ShelfService;
+-
+-
+-
+- 
 ```
 
 **Now only imports:**

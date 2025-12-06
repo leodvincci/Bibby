@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.book.infrastructure.external;
+package com.penrose.bibby.library.book.contracts;
 
 import java.util.List;
 
-public record BookImportResponse(
+public record BookMetaDataResponse(
         Long bookId,
         String title,
         String isbn,

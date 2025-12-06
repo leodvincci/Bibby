@@ -2,6 +2,7 @@ package com.penrose.bibby.library.book.domain;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import com.penrose.bibby.library.author.domain.Author;
@@ -11,7 +12,7 @@ public class Book {
     private Long id;
     private int edition;
     private String title;
-    private HashSet<Author> authors;
+    private List<String> authors;
     private String isbn;
     private String genre;
     private String publisher;
@@ -26,7 +27,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, HashSet<Author> authors) {
+    public Book(Long id, String title, List<String> authors) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -72,9 +73,6 @@ public class Book {
         this.publishedDate = publishedDate;
     }
 
-    public void setAuthors(HashSet<Author> authors) {
-        this.authors = authors;
-    }
 
     public Long getId() {
         return id;
@@ -92,12 +90,12 @@ public class Book {
         this.title = title;
     }
 
-    public HashSet<Author> getAuthors() {
+    public List<String> getAuthors() {
         return authors;
     }
 
-    public void addAuthors(Author author) {
-        authors.add(author);
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
     }
 
     public String getIsbn() {
@@ -165,15 +163,20 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", edition=" + edition +
+                ", title='" + title + '\'' +
                 ", authors=" + authors +
                 ", isbn='" + isbn + '\'' +
+                ", genre='" + genre + '\'' +
                 ", publisher='" + publisher + '\'' +
+                ", publicationYear=" + publicationYear +
+                ", shelfId=" + shelfId +
                 ", description='" + description + '\'' +
                 ", availabilityStatus=" + availabilityStatus +
-                ", publishedDate='" + publishedDate + '\'' +
+                ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", shelfId=" + shelfId +
+                ", publishedDate='" + publishedDate + '\'' +
                 '}';
     }
 

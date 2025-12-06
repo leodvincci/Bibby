@@ -6,4 +6,8 @@ public interface BookFacade {
     BookDTO findBookByIsbn(String isbn);
 
     BookDTO findBookByTitle(String title);
+
+    BookMetaDataResponse findBookMetaDataByIsbn(String isbn);
+
+    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
 }

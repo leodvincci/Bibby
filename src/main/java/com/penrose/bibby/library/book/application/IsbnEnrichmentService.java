@@ -52,10 +52,10 @@ public class IsbnEnrichmentService {
         -------------------------------------------
         """.formatted(
                 book.getTitle(),
-                book.getAuthors()
-                        .stream()
-                        .map(a -> a.getFirstName() + " " + a.getLastName())
-                        .collect(Collectors.joining(", ")),
+//                book.getAuthors()
+//                        .stream()
+//                        .map(a -> a.getFirstName() + " " + a.getLastName())
+//                        .collect(Collectors.joining(", ")),
                 book.getPublisher(),
                 isbn,
                 wrapText(book.getDescription(), 80)
@@ -63,8 +63,8 @@ public class IsbnEnrichmentService {
 
         log.info("\n{}", pretty);
         HashSet<AuthorEntity> authors = new HashSet<>();
-        for(Author author : book.getAuthors()){
-            AuthorEntity authorEntity = authorFactory.createEntity(author.getFirstName(),author.getLastName());
+        for(String author : book.getAuthors()){
+            AuthorEntity authorEntity = authorFactory.createEntity(author.split(" ")[0], author.contains(" ") ? author.substring(author.indexOf(" ") +1) : "");
             authorService.saveAuthor(authorEntity);
             authors.add(authorEntity);
         }

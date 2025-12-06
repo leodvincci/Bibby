@@ -11,10 +11,12 @@ import com.penrose.bibby.library.book.domain.BookFactory;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -24,19 +26,22 @@ import java.util.Optional;
 
 @Service
     public class BookService implements BookFacade {
-
+    private final IsbnEnrichmentService isbnEnrichmentService;
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookFactory BookFactory;
     private final ShelfService shelfService;
     private final BookMapper bookMapper;
+    private final IsbnLookupService isbnLookupService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper){
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService){
+        this.isbnEnrichmentService = isbnEnrichmentService;
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
+        this.isbnLookupService = isbnLookupService;
     }
 
     // ============================================================
@@ -99,9 +104,9 @@ import java.util.Optional;
 
 
     private void validateBookDoesNotExist(BookRequestDTO bookDTO){
-        Optional<BookEntity> bookEntity = findBookByTitleIgnoreCase(bookDTO.title());
+        Optional<BookDTO> bookEntity = findBookByTitleIgnoreCase(bookDTO.title());
         bookEntity.ifPresent(existingBook -> {
-            throw new IllegalArgumentException("Book Already Exists: " + existingBook.getTitle());
+            throw new IllegalArgumentException("Book Already Exists: " + existingBook.title());
         });
 
     }
@@ -135,8 +140,9 @@ import java.util.Optional;
     // ============================================================
     //      READ Operations
     // ============================================================
-    public Optional<BookEntity> findBookById(Long bookId){
-        return bookRepository.findById(bookId);
+    public Optional<BookDTO> findBookById(Long bookId){
+        BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+        return Optional.of(BookDTO.fromEntity(bookEntity));
     }
 
     public List<BookEntity> findBooksByShelf(Long id){
@@ -144,7 +150,8 @@ import java.util.Optional;
     }
 
     public Optional<BookDTO> findBookByTitleIgnoreCase(String title){
-        return bookRepository.findByTitleIgnoreCase(title);
+        Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
+        return Optional.of(BookDTO.fromEntity(bookEntity.orElse(null)));
     }
 
     /**
@@ -157,6 +164,54 @@ import java.util.Optional;
     public BookDTO findBookByTitle(String title){
         Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
         return bookMapper.toDTOfromEntity(bookEntity.orElse(null));
+
+    }
+
+    @Override
+    public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
+        GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
+        if (googleBooksResponse == null || googleBooksResponse.items() == null || googleBooksResponse.items().isEmpty()) {
+            throw new IllegalArgumentException("No book data found for ISBN: " + isbn);
+        }
+        BookEntity bookEntity = isbnEnrichmentService.enrichIsbn(googleBooksResponse, isbn);
+
+        List<String> authors = bookEntity.getAuthors().stream()
+                .map(author -> author.getFirstName() + " " + author.getLastName())
+                .toList();
+
+        return new BookMetaDataResponse(
+                bookEntity.getBookId(),
+                bookEntity.getTitle(),
+                bookEntity.getIsbn(),
+                authors,
+                bookEntity.getPublisher(),
+                bookEntity.getDescription()
+        );
+    }
+
+    @Override
+    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
+        BookEntity bookEntity = new BookEntity();
+        Set<Long> authorIds = new HashSet<>();
+        Set<AuthorEntity> authorEntities = new HashSet<>();
+        for(String authorName : bookMetaDataResponse.authors()) {
+            String [] nameParts = authorName.split(" ", 2);
+            AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
+            authorIds.add(authorEntity.getAuthorId());
+            authorEntities.add(authorEntity);
+        }
+
+
+        bookEntity.setTitle(bookMetaDataResponse.title());
+        bookEntity.setIsbn(isbn);
+        bookEntity.setPublisher(bookMetaDataResponse.publisher());
+        bookEntity.setDescription(bookMetaDataResponse.description());
+        bookEntity.setShelfId(shelfId);
+        bookEntity.setAuthors(authorEntities);
+        bookEntity.setCreatedAt(LocalDate.now());
+        bookEntity.setUpdatedAt(LocalDate.now());
+        bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.toString());
+        saveBook(bookEntity);
 
     }
 
@@ -187,11 +242,11 @@ import java.util.Optional;
     public BookEntity assignBookToShelf(Long bookId, Long shelfId) {
         BookEntity bookEntity = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
-        ShelfEntity shelf = shelfService.findShelfById(shelfId)
+        ShelfDTO shelf = shelfService.findShelfById(shelfId)
                 .orElseThrow(() -> new IllegalArgumentException("Shelf not found: " + shelfId));
 
         long bookCount = bookRepository.countByShelfId(shelfId);
-        if (bookCount >= shelf.getBookCapacity()) {
+        if (bookCount >= shelf.bookCapacity()) {
             throw new IllegalStateException("Shelf is full");
         }
 
@@ -209,19 +264,20 @@ import java.util.Optional;
         book.checkout(); // This validates and updates the domain object status
 
         // Update the entity directly instead of converting back
-        bookDTO.setAvailabilityStatus(book.getAvailabilityStatus().name());
-        saveBook(bookDTO);
+        book.setAvailabilityStatus(book.getAvailabilityStatus());
+        BookEntity bookEntity = bookMapper.toEntity(book);
+        saveBook(bookEntity);
     }
 
 
     public Book bookMapper(BookDTO bookDTO, Set<AuthorDTO> authorDTOs){
-        Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+        Optional<ShelfDTO> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
         return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
     }
 
 
     public void checkInBook(String bookTitle){
-        BookEntity bookEntity = findBookByTitle(bookTitle);
+        BookEntity bookEntity = bookRepository.findBookEntityByTitle(bookTitle);
         bookEntity.checkIn();
         saveBook(bookEntity);
     }

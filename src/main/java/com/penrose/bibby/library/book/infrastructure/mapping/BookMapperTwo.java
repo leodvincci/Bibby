@@ -10,7 +10,9 @@ import com.penrose.bibby.library.book.domain.BookFactory;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -30,14 +32,14 @@ public class BookMapperTwo {
 //    }
 
     public Book toDomainFromJSON(GoogleBooksResponse googleBooksResponse){
-        HashSet<Author> authors = new HashSet<>();
+        List<String> authors = new ArrayList<>();
 
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
             Author author = new Author();
             author.setFirstName(nameParts[0]);
             author.setLastName(nameParts[1]);
-            authors.add(author);
+            authors.add(author.getFirstName() + " " + author.getLastName());
         }
         String isbn = "";
         String title = (googleBooksResponse.items().get(0).volumeInfo().title());

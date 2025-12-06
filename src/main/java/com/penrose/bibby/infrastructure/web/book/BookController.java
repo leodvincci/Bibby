@@ -9,8 +9,10 @@ import com.penrose.bibby.library.book.contracts.BookRequestDTO;
 import com.penrose.bibby.library.book.contracts.BookShelfAssignmentRequest;
 import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.book.application.BookService;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.http.HttpStatus;
@@ -72,17 +74,17 @@ public class BookController {
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
-        ShelfEntity shelf = shelfService.findShelfById(request.shelfId())
+        ShelfDTO shelf = shelfService.findShelfById(request.shelfId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf not found"));
-        BookcaseEntity bookcase = bookcaseService.findBookCaseById(shelf.getBookcaseId())
+        BookcaseDTO bookcase = bookcaseService.findBookCaseById(shelf.bookcaseId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bookcase not found"));
 
         BookPlacementResponse response = new BookPlacementResponse(
                 updatedBook.getBookId(),
                 updatedBook.getTitle(),
-                shelf.getShelfId(),
-                shelf.getShelfLabel(),
-                bookcase.getBookcaseLabel()
+                shelf.shelfId(),
+                shelf.shelfLabel(),
+                bookcase.bookcaseLabel()
         );
 
         return ResponseEntity.ok(response);

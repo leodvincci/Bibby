@@ -75,7 +75,7 @@ public class CliPromptService {
         String lastName = result.getContext().get("authorLastName", String.class);
 //        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,firstName, lastName);
 //        bookService.createNewBook(bookRequestDTO);
-        return new AuthorDTO(firstName,lastName);
+        return new AuthorDTO(null,firstName,lastName);
 
     }
 

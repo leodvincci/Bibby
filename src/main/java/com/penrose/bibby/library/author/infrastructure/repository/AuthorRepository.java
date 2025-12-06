@@ -16,5 +16,5 @@ public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
     Optional<AuthorEntity> findByFirstNameAndLastName(String firstName, String lastName);
 
     @Query("SELECT a FROM AuthorEntity a JOIN a.books b WHERE b.bookId = :bookId")
-    Set<AuthorDTO> findByBooks_BookId(@Param("bookId") Long bookId);
+    Set<AuthorEntity> findByBooks_BookId(@Param("bookId") Long bookId);
 }

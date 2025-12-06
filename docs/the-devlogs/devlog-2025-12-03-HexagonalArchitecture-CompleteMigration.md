@@ -126,11 +126,10 @@ import com.penrose.bibby.library.shelf.*;
 ```
 
 **After:**
+
 ```java
-import com.penrose.bibby.library.shelf.application.ShelfService;
-import com.penrose.bibby.library.shelf.domain.Shelf;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
+
+
 ```
 
 **Benefits:**
