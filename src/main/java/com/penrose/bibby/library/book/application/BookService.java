@@ -3,13 +3,11 @@ package com.penrose.bibby.library.book.application;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
-import com.penrose.bibby.library.book.contracts.BookFacade;
+import com.penrose.bibby.library.book.contracts.*;
+import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.domain.BookFactory;
-import com.penrose.bibby.library.book.contracts.BookDetailView;
-import com.penrose.bibby.library.book.contracts.BookRequestDTO;
-import com.penrose.bibby.library.book.contracts.BookSummary;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
@@ -59,25 +57,36 @@ import java.util.Optional;
         saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
     }
 
-    public BookEntity createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn){
+    public BookDTO createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn, Long shelfId){
         BookEntity bookEntity = new BookEntity();
-        Set<AuthorEntity> authors = new HashSet<>();
+        Set<Long> authorIds = new HashSet<>();
+        Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
             AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
-            authors.add(authorEntity);
+            authorIds.add(authorEntity.getAuthorId());
+            authorEntities.add(authorEntity);
         }
 
-        bookEntity.setIsbn(isbn);
-        bookEntity.setTitle(googleBooksResponse.items().get(0).volumeInfo().title());
-        bookEntity.setPublisher(googleBooksResponse.items().get(0).volumeInfo().publisher());
-        bookEntity.setPublicationYear(Integer.parseInt(googleBooksResponse.items().get(0).volumeInfo().publishedDate().split("-")[0]));
-        bookEntity.setDescription(googleBooksResponse.items().get(0).volumeInfo().description());
-        bookEntity.setAuthors(authors);
-        bookEntity.setCreatedAt(LocalDate.now());
-        bookEntity.setAvailabilityStatus("AVAILABLE");
+        BookDTO bookDTO = new BookDTO(null,
+                0,
+                googleBooksResponse.items().get(0).volumeInfo().title(),
+                authorIds,
+                isbn,
+                null,
+                googleBooksResponse.items().get(0).volumeInfo().publisher(),
+                Integer.parseInt(googleBooksResponse.items().get(0).volumeInfo().publishedDate().split("-")[0]),
+                shelfId,
+                googleBooksResponse.items().get(0).volumeInfo().description(),
+                AvailabilityStatus.AVAILABLE,
+                LocalDate.now(),
+                LocalDate.now(),
+                null
+        );
+
+        bookEntity = bookMapper.toEntityFromDTO(bookDTO,authorEntities);
         saveBook(bookEntity);
-        return bookEntity;
+        return bookDTO;
     }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
@@ -134,7 +143,7 @@ import java.util.Optional;
         return bookRepository.findByShelfId(id);
     }
 
-    public Optional<BookEntity> findBookByTitleIgnoreCase(String title){
+    public Optional<BookDTO> findBookByTitleIgnoreCase(String title){
         return bookRepository.findByTitleIgnoreCase(title);
     }
 
@@ -145,9 +154,10 @@ import java.util.Optional;
      * @param title the title of the book to search for
      * @return the book entity with the specified title, or null if no such book exists
      */
-    public BookEntity findBookByTitle(String title){
+    public BookDTO findBookByTitle(String title){
         Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
-        return bookEntity.orElse(null);
+        return bookMapper.toDTOfromEntity(bookEntity.orElse(null));
+
     }
 
     public List<BookEntity> findBookByKeyword(String keyword){
@@ -191,22 +201,22 @@ import java.util.Optional;
     }
 
 
-    public void checkOutBook(BookEntity bookEntity){
-        Set<AuthorEntity> authorEntities = authorService.findByBookId(bookEntity.getBookId());
+    public void checkOutBook(BookDTO bookDTO){
+        Set<AuthorDTO> authorEntities = authorService.findByBookId(bookDTO.id());
 
         // Create domain object for business logic validation
-        Book book = bookMapper(bookEntity, new HashSet<>(authorEntities));
+        Book book = bookMapper(bookDTO, new HashSet<>(authorEntities));
         book.checkout(); // This validates and updates the domain object status
 
         // Update the entity directly instead of converting back
-        bookEntity.setAvailabilityStatus(book.getAvailabilityStatus().name());
-        saveBook(bookEntity);
+        bookDTO.setAvailabilityStatus(book.getAvailabilityStatus().name());
+        saveBook(bookDTO);
     }
 
 
-    public Book bookMapper(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
-        Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-        return bookMapper.toDomain(bookEntity, authorEntities, shelfEntity.orElse(null));
+    public Book bookMapper(BookDTO bookDTO, Set<AuthorDTO> authorDTOs){
+        Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+        return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
     }
 
 
@@ -216,8 +226,17 @@ import java.util.Optional;
         saveBook(bookEntity);
     }
 
-    public BookEntity findBookByIsbn(String isbn) {
-        return bookRepository.findByIsbn(isbn);
+    public BookDTO findBookByIsbn(String isbn) {
+        BookEntity bookEntity = bookRepository.findByIsbn(isbn);
+        return bookMapper.toDTOfromEntity(bookEntity);
+    }
+
+    @Override
+    public void setShelfForBook(Long id, Long shelfId) {
+        BookEntity bookEntity = bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found: " + id));
+        bookEntity.setShelfId(shelfId);
+        saveBook(bookEntity);
     }
 }
 

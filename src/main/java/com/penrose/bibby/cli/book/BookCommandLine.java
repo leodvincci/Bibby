@@ -1,22 +1,23 @@
 package com.penrose.bibby.cli.book;
 
+
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
+import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.application.AuthorService;
+import com.penrose.bibby.library.author.contracts.AuthorFacade;
 import com.penrose.bibby.library.book.application.IsbnLookupService;
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.contracts.BookDTO;
+import com.penrose.bibby.library.book.contracts.BookFacade;
 import com.penrose.bibby.library.book.contracts.BookRequestDTO;
-import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.application.BookService;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
-
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import com.penrose.bibby.library.shelf.domain.Shelf;
 import com.penrose.bibby.library.shelf.domain.ShelfDomainRepositoryImpl;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -31,30 +32,31 @@ import java.util.*;
 @Command(command = "book", group = "Book Commands")
 public class BookCommandLine extends AbstractShellComponent {
 
+    final AuthorFacade authorFacade;
+    private final BookFacade bookFacade;
     final BookService bookService;
     final BookcaseService bookcaseService;
     final ShelfService shelfService;
-    final AuthorService authorService;
+    final IsbnLookupService isbnLookupService;
     final CliPromptService cliPrompt;
     final ShelfMapper shelfMapper;
     final BookMapper bookMapper;
-    final IsbnLookupService isbnLookupService;
     final ShelfDomainRepositoryImpl shelfDomainRepository;
     private final ComponentFlow.Builder componentFlowBuilder;
 
 
-
-    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorService authorService, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, IsbnLookupService isbnLookupService, ShelfDomainRepositoryImpl shelfDomainRepository) {
+    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorFacade authorFacade, CliPromptService cliPrompt, ShelfMapper shelfMapper, BookMapper bookMapper, IsbnLookupService isbnLookupService, ShelfDomainRepositoryImpl shelfDomainRepository, BookFacade bookFacade) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookcaseService = bookcaseService;
         this.shelfService = shelfService;
-        this.authorService = authorService;
+        this.authorFacade = authorFacade;
         this.cliPrompt = cliPrompt;
         this.shelfMapper = shelfMapper;
         this.bookMapper = bookMapper;
         this.isbnLookupService = isbnLookupService;
         this.shelfDomainRepository = shelfDomainRepository;
+        this.bookFacade = bookFacade;
     }
 
     // ───────────────────────────────────────────────────────────────────
@@ -118,9 +120,8 @@ public class BookCommandLine extends AbstractShellComponent {
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
-        BookEntity bookEnt = bookService.findBookByTitle(title);
-
-        if(bookEnt == null){
+        BookDTO bookDTO = bookService.findBookByTitle(title);
+        if(bookDTO == null){
             System.out.println("Book Not Found In Library");
         }else {
             Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
@@ -133,8 +134,12 @@ public class BookCommandLine extends AbstractShellComponent {
             if(shelfDomain.isFull()){
                 throw new IllegalStateException("Shelf is full");
             }else{
-                bookEnt.setShelfId(shelfId);
-                bookService.saveBook(bookEnt);
+
+//                bookEnt.setShelfId(shelfId);
+//                bookService.saveBook(bookEnt);
+
+                bookFacade.setShelfForBook(bookDTO.id(), shelfId);
+
                 System.out.println("Added Book To the Shelf!");
             }
         }
@@ -159,7 +164,9 @@ public class BookCommandLine extends AbstractShellComponent {
             if(googleBooksResponse.items() == null){
                 System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
             }else if (addScanResultCommand(googleBooksResponse, isbn)) {
-                bookService.createScannedBook(googleBooksResponse, isbn);
+
+                bookService.createScannedBook(googleBooksResponse, isbn, null);
+
                 System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
             }
         }
@@ -176,10 +183,14 @@ public class BookCommandLine extends AbstractShellComponent {
             System.out.println("Scanned ISBN: " + isbn);
             GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
 
-                BookEntity bookEntity = bookService.createScannedBook(googleBooksResponse, isbn);
-                bookEntity.setShelfId(shelfId);
-                bookService.saveBook(bookEntity);
-                System.out.println("\n\u001B[36m</>\033[0m:" + bookEntity.getTitle() +  " added to Library!");
+            BookDTO bookDTO = bookService.createScannedBook(googleBooksResponse, isbn, shelfId);
+
+//          bookEntity.setShelfId(shelfId);
+//          bookService.saveBook(bookEntity);
+
+            bookFacade.setShelfForBook(bookDTO.id(),shelfId);
+
+                System.out.println("\n\u001B[36m</>\033[0m:" + bookDTO.title() +  " added to Library!");
 
         }
         System.out.println(scans.size() + " books were added to the library.");
@@ -237,20 +248,22 @@ public class BookCommandLine extends AbstractShellComponent {
             System.out.println("NULL ISBN RETURNED");
             return;
         }
-        BookEntity bookEntity = bookService.findBookByIsbn(isbn);
-        if (bookEntity == null) {
+//        BookDTO bookDTO = bookService.findBookByIsbn(isbn);
+        BookDTO bookDTO = bookFacade.findBookByIsbn(isbn);
+
+        if (bookDTO == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m: No book found with ISBN: " + isbn + "\n");
         } else {
             System.out.println("\n\u001B[36m</>\u001B[0m: Book found: \n");
             System.out.println("Book Details:");
-            System.out.println("Title: " + bookEntity.getTitle());
-            Set<AuthorDTO> authors = authorService.findByBookId(bookEntity.getBookId());
+            System.out.println("Title: " + bookDTO.title());
+            Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
             System.out.println("Author(s): " + authors);
-            System.out.println("ISBN: " + bookEntity.getIsbn());
-            if (bookEntity.getShelfId() != null) {
-                Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-                Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
-                System.out.println("Location: Bookcase " + bookcaseEntity.get().getBookcaseLabel() + ", Shelf " + shelfEntity.get().getShelfLabel());
+            System.out.println("ISBN: " + bookDTO.isbn());
+            if (bookDTO.shelfId() != null) {
+                Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+                Optional<BookcaseDTO> bookcaseDTO = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+                System.out.println("Location: Bookcase " + bookcaseDTO.get().bookcaseLabel() + ", Shelf " + shelfEntity.get().getShelfLabel());
             } else {
                 System.out.println("Location: Not Shelved");
             }
@@ -268,16 +281,16 @@ public class BookCommandLine extends AbstractShellComponent {
         System.out.println("\u001B[36m</>\u001B[0m:Hold on, I’m diving into the stacks — Let’s see if I can find " + title);
         System.out.print("\u001B[36m</>\u001B[0m:");
 
-        BookEntity bookEntity = bookService.findBookByTitle(title);
+        BookDTO bookDTO = bookFacade.findBookByTitle(title);
 
-        if (bookEntity == null) {
+        if (bookDTO == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
-        }else if(bookEntity.getShelfId() == null){
+        }else if(bookDTO.shelfId() == null){
             System.out.println("\nBook Was Found Without a Location\n");
         }else{
-            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
-            System.out.println("\nBook Was Found \nBookcase: " + bookcaseEntity.get().getBookcaseLabel() + "\n" + shelfEntity.get().getShelfLabel() + "\n");
+            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<BookcaseDTO> bookcaseDTO = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+            System.out.println("\nBook Was Found \nBookcase: " + bookcaseDTO.get().bookcaseLabel() + "\n" + shelfEntity.get().getShelfLabel() + "\n");
         }
         if (cliPrompt.promptSearchAgain()){
             searchBook();
@@ -298,17 +311,17 @@ public class BookCommandLine extends AbstractShellComponent {
     @Command(command = "check-out", description = "Check-Out a book from the library")
     public void checkOutBook(){
         String bookTitle = cliPrompt.promptForBookTitle();
-        BookEntity book = bookService.findBookByTitle(bookTitle);
+        BookDTO bookDTO = bookService.findBookByTitle(bookTitle);
         String bookcaseName = "N.A";
         String shelfName ="N.A";
-        if(book == null){
+        if(bookDTO == null){
             System.out.println("Book Not Found.");
-        }else if(book.getShelfId() != null){
-            Optional<ShelfEntity> shelf = shelfService.findShelfById(book.getShelfId());
-            Optional<BookcaseEntity> bookcase = bookcaseService.findBookCaseById(shelf.get().getBookcaseId());
-            bookcaseName = bookcase.get().getBookcaseLabel();
+        }else if(bookDTO.shelfId() != null){
+            Optional<ShelfEntity> shelf = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<BookcaseDTO> bookcase = bookcaseService.findBookCaseById(shelf.get().getBookcaseId());
+            bookcaseName = bookcase.get().bookcaseLabel();
             shelfName = shelf.get().getShelfLabel();
-        }if (book.getAvailabilityStatus().equals("CHECKED_OUT")){
+        }if (bookDTO.availabilityStatus().toString().equals("CHECKED_OUT")){
             System.out.println(
                     """
                     
@@ -318,7 +331,7 @@ public class BookCommandLine extends AbstractShellComponent {
                     
                     """);
         }else{
-            Set<AuthorDTO> authors = authorService.findByBookId(book.getBookId());
+            Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
             System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkout\n\u001B[0m
                             \033[31mTitle\u001B[0m %s
@@ -328,7 +341,7 @@ public class BookCommandLine extends AbstractShellComponent {
                             
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,book.getTitle(), authors, book.getAvailabilityStatus(), bookcaseName ,shelfName));
+                    """,bookDTO.title(), authors, bookDTO.availabilityStatus(), bookcaseName ,shelfName));
             ComponentFlow confirmationFlow = componentFlowBuilder.clone()
                     .withStringInput("isConfirmed")
                     .name("y or n:_ ")
@@ -336,7 +349,7 @@ public class BookCommandLine extends AbstractShellComponent {
             ComponentFlow.ComponentFlowResult confirmationResult = confirmationFlow.run();
 
             if (confirmationResult.getContext().get("isConfirmed").equals("y")){
-                bookService.checkOutBook(book);
+                bookService.checkOutBook(bookDTO);
                 System.out.println(
                         String.format("""
                         
@@ -362,19 +375,19 @@ public class BookCommandLine extends AbstractShellComponent {
     @Command(command = "check-in",description = "Return a borrowed book to the library and update its shelf placement.")
     public void checkInBook(){
         String bookTitle = cliPrompt.promptForBookTitle();
-        BookEntity bookEntity = bookService.findBookByTitle(bookTitle);
+        BookDTO bookDTO = bookService.findBookByTitle(bookTitle);
 
         String bookcaseLabel = "No Assigned Bookcase";
         String bookshelfLabel = "No Assigned Bookshelf";
-        if(bookEntity == null){
+        if(bookDTO == null){
             System.out.println("Book Not Found");
-        }else if(bookEntity.getShelfId() != null){
-            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookEntity.getShelfId());
-            Optional<BookcaseEntity> bookcaseEntity = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
-            bookcaseLabel = bookcaseEntity.get().getBookcaseLabel();
+        }else if(bookDTO.shelfId() != null){
+            Optional<ShelfEntity> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<BookcaseDTO> bookcaseDTO = bookcaseService.findBookCaseById(shelfEntity.get().getBookcaseId());
+            bookcaseLabel = bookcaseDTO.get().bookcaseLabel();
             bookshelfLabel = shelfEntity.get().getShelfLabel();
         }
-        Set<AuthorDTO> authors = authorService.findByBookId(bookEntity.getBookId());
+        Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
 
         System.out.println(String.format("""
                     \n\u001B[32mConfirm Checkin\n\u001B[0m
@@ -385,7 +398,7 @@ public class BookCommandLine extends AbstractShellComponent {
                             
                             \033[31mBookcase\u001B[0m %s
                             \033[31mShelf\u001B[0m %s
-                    """,bookEntity.getTitle(), authors, bookEntity.getAvailabilityStatus(), bookcaseLabel ,bookshelfLabel));
+                    """,bookDTO.title(), authors, bookDTO.availabilityStatus(), bookcaseLabel ,bookshelfLabel));
 
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
@@ -452,9 +465,9 @@ public class BookCommandLine extends AbstractShellComponent {
     private Map<String, String> bookCaseOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        List<BookcaseEntity> bookcaseEntities  = bookcaseService.getAllBookcases();
-        for(BookcaseEntity b : bookcaseEntities){
-            options.put(b.getBookcaseLabel(), b.getBookcaseId().toString());
+        List<BookcaseDTO> bookcaseDTOs  = bookcaseService.getAllBookcases();
+        for(BookcaseDTO b : bookcaseDTOs){
+            options.put(b.bookcaseLabel(), b.bookcaseId().toString());
         }
 
         return options;

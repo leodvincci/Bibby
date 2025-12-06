@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.mapping;
 
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapperTwo;
@@ -23,10 +24,10 @@ public class BookMapperTwo {
         this.authorMapperTwo = authorMapperTwo;
     }
 
-    public Book toDomain(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
-        HashSet<Author> authors = authorMapperTwo.toDomain(authorEntities);
-        return bookFactory.createBookDomain(bookEntity,authors);
-    }
+//    public Book toDTOfromEntity(BookEntity bookEntity, Set<AuthorDTO> authorDTOs){
+//        HashSet<AuthorDTO> authors = authorMapperTwo.toDomain(authorDTOs);
+//        return bookFactory.createBookDomain(bookEntity,authors);
+//    }
 
     public Book toDomainFromJSON(GoogleBooksResponse googleBooksResponse){
         HashSet<Author> authors = new HashSet<>();
