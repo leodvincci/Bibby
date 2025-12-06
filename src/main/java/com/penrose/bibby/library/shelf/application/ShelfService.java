@@ -4,7 +4,9 @@ import com.penrose.bibby.library.book.contracts.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
+import com.penrose.bibby.library.shelf.domain.Shelf;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.shelf.contracts.ShelfOptionResponse;
 import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
@@ -25,11 +27,13 @@ public class ShelfService implements ShelfFacade {
     ShelfJpaRepository shelfJpaRepository;
     BookRepository bookRepository;
     BookcaseRepository bookcaseRepository;
+    ShelfMapper shelfMapper;
 
-    public ShelfService(ShelfJpaRepository shelfJpaRepository, BookRepository bookRepository, BookcaseRepository bookcaseRepository) {
+    public ShelfService(ShelfMapper shelfMapper,ShelfJpaRepository shelfJpaRepository, BookRepository bookRepository, BookcaseRepository bookcaseRepository) {
         this.shelfJpaRepository = shelfJpaRepository;
         this.bookRepository = bookRepository;
         this.bookcaseRepository = bookcaseRepository;
+        this.shelfMapper = new ShelfMapper();
     }
 
     public List<ShelfEntity> getAllShelves(Long bookCaseId){
@@ -59,6 +63,22 @@ public class ShelfService implements ShelfFacade {
 
     public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
         return shelfJpaRepository.findShelfSummariesByBookcaseId(bookcaseId);
+    }
+
+    public Shelf mapToDomain(ShelfDTO shelfDTO) {
+        return new Shelf(
+                shelfDTO.shelfLabel(),
+                shelfDTO.shelfPosition(),
+                shelfDTO.bookCapacity()
+        );
+    }
+
+    @Override
+    public Boolean isFull(ShelfDTO shelfDTO) {
+        Optional<ShelfEntity> shelfEntity = shelfJpaRepository.findById(shelfDTO.shelfId());
+        Shelf shelf = shelfEntity.map(shelfMapper::toDomain).orElse(null);
+        assert shelf != null;
+        return shelf.isFull();
     }
 
     public List<ShelfOptionResponse> getShelfOptions() {

@@ -17,4 +17,8 @@ public interface BookFacade {
     void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
 
     void createNewBook(BookRequestDTO bookRequestDTO);
+
+    void checkOutBook(BookDTO bookDTO);
+
+    void checkInBook(String bookTitle);
 }

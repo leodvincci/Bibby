@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.shelf.infrastructure.mapping;
 
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.domain.Shelf;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import org.springframework.stereotype.Component;
@@ -10,15 +11,14 @@ import java.util.List;
 public class ShelfMapper {
 
 
-    public Shelf toDomain(ShelfEntity shelfDTO, List<Long> bookIds){
+    public Shelf toDomain(ShelfEntity shelfEntity){
         Shelf shelf = new Shelf();
-        shelf.setId(shelfDTO.getShelfId());
-        shelf.setBookCapacity(shelfDTO.getBookCapacity());
-        shelf.setLabel(shelfDTO.getShelfLabel());
-        shelf.setShelfLabel(shelfDTO.getShelfLabel());
-        shelf.setShelfPosition(shelfDTO.getShelfPosition());
-        shelf.setShelfDescription(shelfDTO.getShelfDescription());
-        shelf.setBooks(bookIds);
+        shelf.setId(shelfEntity.getShelfId());
+        shelf.setBookCapacity(shelfEntity.getBookCapacity());
+        shelf.setLabel(shelfEntity.getShelfLabel());
+        shelf.setShelfPosition(shelfEntity.getShelfPosition());
+        shelf.setShelfDescription(shelfEntity.getShelfDescription());
+
         return shelf;
     }
 
@@ -31,4 +31,15 @@ public class ShelfMapper {
 
         return shelf;
     }
+
+//    public Shelf toDomain(ShelfEntity shelfEntity) {
+//        Shelf shelf = new Shelf();
+//        shelf.setId(shelfEntity.getShelfId());
+//        shelf.setBookCapacity(shelfEntity.getBookCapacity());
+//        shelf.setLabel(shelfEntity.getShelfLabel());
+//        shelf.setShelfLabel(shelfEntity.getShelfLabel());
+//        shelf.setShelfPosition(shelfEntity.getShelfPosition());
+//        shelf.setShelfDescription(shelfEntity.getShelfDescription());
+//        return shelf;
+//    }
 }

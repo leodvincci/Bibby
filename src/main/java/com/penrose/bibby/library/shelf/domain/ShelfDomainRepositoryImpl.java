@@ -29,7 +29,7 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
         ShelfEntity entity = jpaRepository.findById(id).orElse(null);
         List<Book> books = bookDomainRepository.getBooksByShelfId(id);
         List<Long> bookIds = books.stream().map(Book::getId).toList();
-        return shelfMapper.toDomain(entity,bookIds);
+        return shelfMapper.toDomainFromDTO(entity,bookIds);
     }
 
     @Override

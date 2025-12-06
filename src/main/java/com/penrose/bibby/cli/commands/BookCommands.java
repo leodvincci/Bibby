@@ -1,26 +1,25 @@
 package com.penrose.bibby.cli.commands;
 
+import org.springframework.shell.command.annotation.Command;
+import org.springframework.shell.command.annotation.Option;
+import org.springframework.shell.standard.AbstractShellComponent;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.component.flow.ComponentFlow;
+import org.springframework.shell.standard.ShellOption;
+
+import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
 import com.penrose.bibby.library.book.contracts.BookMetaDataResponse;
-import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
-import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.cli.prompt.application.CliPromptService;
-import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.contracts.AuthorFacade;
 import com.penrose.bibby.library.book.contracts.BookDTO;
 import com.penrose.bibby.library.book.contracts.BookFacade;
 import com.penrose.bibby.library.book.contracts.BookRequestDTO;
-import com.penrose.bibby.library.book.application.BookService;
-import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.AuthorFacade;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
-import com.penrose.bibby.library.shelf.domain.Shelf;
-import com.penrose.bibby.library.shelf.domain.ShelfDomainRepositoryImpl;
-import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
-import org.springframework.shell.component.flow.ComponentFlow;
-import org.springframework.shell.standard.AbstractShellComponent;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellOption;
+
+import com.penrose.bibby.cli.prompt.application.CliPromptService;
 
 import java.util.*;
 
@@ -32,32 +31,25 @@ public class BookCommands extends AbstractShellComponent {
     private final AuthorFacade authorFacade;
     private final BookFacade bookFacade;
     private final BookcaseFacade bookcaseFacade;
+    private final PromptFacade promptFacade;
     private final ShelfFacade shelfFacade;
-    private final BookService bookService;
-    private final ShelfService shelfService;
     private final CliPromptService cliPrompt;
-    private final ShelfDomainRepositoryImpl shelfDomainRepository;
     private final ComponentFlow.Builder componentFlowBuilder;
 
 
     public BookCommands(ComponentFlow.Builder componentFlowBuilder,
-                        BookService bookService,
-                        ShelfService shelfService,
                         AuthorFacade authorFacade,
                         ShelfFacade shelfFacade,
                         CliPromptService cliPrompt,
-                        ShelfDomainRepositoryImpl shelfDomainRepository,
                         BookFacade bookFacade,
-                        BookcaseFacade bookcaseFacade) {
+                        BookcaseFacade bookcaseFacade, PromptFacade promptFacade) {
         this.componentFlowBuilder = componentFlowBuilder;
-        this.bookService = bookService;
-        this.shelfService = shelfService;
         this.authorFacade = authorFacade;
         this.shelfFacade = shelfFacade;
         this.cliPrompt = cliPrompt;
-        this.shelfDomainRepository = shelfDomainRepository;
         this.bookFacade = bookFacade;
         this.bookcaseFacade = bookcaseFacade;
+        this.promptFacade = promptFacade;
     }
 
     // ───────────────────────────────────────────────────────────────────
@@ -115,7 +107,7 @@ public class BookCommands extends AbstractShellComponent {
         }
 
         BookRequestDTO bookRequestDTO = new BookRequestDTO(title, authors);
-        bookService.createNewBook(bookRequestDTO);
+        bookFacade.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
         System.out.printf("\u001B[36m</>\033[0m:'%s', right?", title);
@@ -126,14 +118,15 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
         String title = cliPrompt.promptForBookTitle();
-        BookDTO bookDTO = bookService.findBookByTitle(title);
+        BookDTO bookDTO = bookFacade.findBookByTitle(title);
         if(bookDTO == null){
             System.out.println("Book Not Found In Library");
         }else {
             Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
             Long shelfId = cliPrompt.promptForShelf(bookCaseId);
-            Shelf shelfDomain = shelfDomainRepository.getById(shelfId);
-            if(shelfDomain.isFull()){
+            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(shelfId);
+            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
+            if(isFull){
                 throw new IllegalStateException("Shelf is full");
             }else{
 
@@ -194,7 +187,7 @@ public class BookCommands extends AbstractShellComponent {
             System.out.println("NULL ISBN RETURNED");
             return;
         }
-//        BookDTO bookDTO = bookService.findBookByIsbn(isbn);
+
         BookDTO bookDTO = bookFacade.findBookByIsbn(isbn);
 
         if (bookDTO == null) {
@@ -207,7 +200,7 @@ public class BookCommands extends AbstractShellComponent {
             System.out.println("Author(s): " + authors);
             System.out.println("ISBN: " + bookDTO.isbn());
             if (bookDTO.shelfId() != null) {
-                Optional<ShelfDTO> shelfDTO = shelfService.findShelfById(bookDTO.shelfId());
+                Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
 
                 Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
 
@@ -236,7 +229,7 @@ public class BookCommands extends AbstractShellComponent {
         }else if(bookDTO.shelfId() == null){
             System.out.println("\nBook Was Found Without a Location\n");
         }else{
-            Optional<ShelfDTO> shelfDTO = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
             Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
             System.out.println("\nBook Was Found \nBookcase: " + bookcaseDTO.get().bookcaseLabel() + "\n" + shelfDTO.get().shelfLabel() + "\n");
         }
@@ -259,13 +252,13 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "check-out", description = "Check-Out a book from the library")
     public void checkOutBook(){
         String bookTitle = cliPrompt.promptForBookTitle();
-        BookDTO bookDTO = bookService.findBookByTitle(bookTitle);
+        BookDTO bookDTO = bookFacade.findBookByTitle(bookTitle);
         String bookcaseName = "N.A";
         String shelfName ="N.A";
         if(bookDTO == null){
             System.out.println("Book Not Found.");
         }else if(bookDTO.shelfId() != null){
-            Optional<ShelfDTO> shelf = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<ShelfDTO> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
             Optional<BookcaseDTO> bookcase = bookcaseFacade.findBookCaseById(shelf.get().bookcaseId());
             bookcaseName = bookcase.get().bookcaseLabel();
             shelfName = shelf.get().shelfLabel();
@@ -297,7 +290,7 @@ public class BookCommands extends AbstractShellComponent {
             ComponentFlow.ComponentFlowResult confirmationResult = confirmationFlow.run();
 
             if (confirmationResult.getContext().get("isConfirmed").equals("y")){
-                bookService.checkOutBook(bookDTO);
+                bookFacade.checkOutBook(bookDTO);
                 System.out.println(
                         String.format("""
                         
@@ -323,14 +316,14 @@ public class BookCommands extends AbstractShellComponent {
     @Command(command = "check-in",description = "Return a borrowed book to the library and update its shelf placement.")
     public void checkInBook(){
         String bookTitle = cliPrompt.promptForBookTitle();
-        BookDTO bookDTO = bookService.findBookByTitle(bookTitle);
+        BookDTO bookDTO = bookFacade.findBookByTitle(bookTitle);
 
         String bookcaseLabel = "No Assigned Bookcase";
         String bookshelfLabel = "No Assigned Bookshelf";
         if(bookDTO == null){
             System.out.println("Book Not Found");
         }else if(bookDTO.shelfId() != null){
-            Optional<ShelfDTO> shelfDTO = shelfService.findShelfById(bookDTO.shelfId());
+            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
             Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
             bookcaseLabel = bookcaseDTO.get().bookcaseLabel();
             bookshelfLabel = shelfDTO.get().shelfLabel();
@@ -357,7 +350,7 @@ public class BookCommands extends AbstractShellComponent {
         result = flow.run();
 
         if(result.getContext().get("isConfirmed").equals("y")){
-            bookService.checkInBook(bookTitle);
+            bookFacade.checkInBook(bookTitle);
             System.out.println(
                     """
                     

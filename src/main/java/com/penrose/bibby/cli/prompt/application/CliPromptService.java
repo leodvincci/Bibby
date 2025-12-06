@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli.prompt.application;
 
+import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class CliPromptService {
+public class CliPromptService implements PromptFacade {
     private final ComponentFlow.Builder componentFlowBuilder;
     List<String> scans = new ArrayList<>();
     private final ShelfFacade shelfFacade;
