@@ -1,14 +1,14 @@
 package com.penrose.bibby.cli.bookcase;
 
 import com.penrose.bibby.cli.book.BookCommandLine;
+import com.penrose.bibby.library.book.contracts.BookDTO;
 import com.penrose.bibby.library.book.contracts.BookDetailView;
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.application.BookService;
 import com.penrose.bibby.library.book.contracts.BookSummary;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
 import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -24,21 +24,19 @@ public class BookcaseCommandLine extends AbstractShellComponent {
 
     private final ComponentFlow.Builder componentFlowBuilder;
     private final BookcaseService bookcaseService;
-    private final ShelfService shelfService;
     private final BookService bookService;
+    private final ShelfFacade shelfFacade;
 
 
-
-
-    public BookcaseCommandLine(ComponentFlow.Builder componentFlowBuilder, BookcaseService bookcaseService, ShelfService shelfService, BookService bookService) {
+    public BookcaseCommandLine(ComponentFlow.Builder componentFlowBuilder, BookcaseService bookcaseService, BookService bookService, ShelfFacade shelfFacade) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookcaseService = bookcaseService;
-        this.shelfService = shelfService;
         this.bookService = bookService;
+        this.shelfFacade = shelfFacade;
     }
 
-    public String bookcaseRowFormater(BookcaseEntity bookcaseEntity, int bookCount){
-        return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks", bookcaseEntity.getBookcaseLabel().toUpperCase(),bookcaseEntity.getShelfCapacity(),bookCount);
+    public String bookcaseRowFormater(BookcaseDTO bookcaseDTO, int bookCount){
+        return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks", bookcaseDTO.bookcaseLabel().toUpperCase(),bookcaseDTO.shelfCapacity(),bookCount);
     }
 
     @Command(command = "create", description = "Create a new bookcase in the library.")
@@ -106,15 +104,15 @@ public class BookcaseCommandLine extends AbstractShellComponent {
     private Map<String, String> bookCaseOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        List<BookcaseEntity> bookcaseEntities = bookcaseService.getAllBookcases();
-        for (BookcaseEntity b : bookcaseEntities) {
+        List<BookcaseDTO> bookcaseDTOs = bookcaseService.getAllBookcases();
+        for (BookcaseDTO b : bookcaseDTOs) {
             int shelfBookCount = 0;
-            List<ShelfEntity> shelves = shelfService.findByBookcaseId(b.getBookcaseId());
-            for(ShelfEntity s : shelves){
-                List<BookEntity> bookList = bookService.findBooksByShelf(s.getShelfId());
+            List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(b.bookcaseId());
+            for(ShelfDTO s : shelves){
+                List<BookDTO> bookList = shelfFacade.findBooksByShelf(s.shelfId());
                 shelfBookCount += bookList.size();
             }
-            options.put(bookcaseRowFormater(b,shelfBookCount), b.getBookcaseId().toString());
+            options.put(bookcaseRowFormater(b,shelfBookCount), b.bookcaseId().toString());
         }
         return  options;
     }
@@ -140,7 +138,7 @@ public class BookcaseCommandLine extends AbstractShellComponent {
         }
 
     public void selectShelf(Long bookCaseId){
-        List<ShelfSummary> shelfSummaries = shelfService.getShelfSummariesForBookcase(bookCaseId);
+        List<ShelfSummary> shelfSummaries = shelfFacade.getShelfSummariesForBookcase(bookCaseId);
 
         Map<String, String> bookShelfOptions = new LinkedHashMap<>();
         for(ShelfSummary s: shelfSummaries ){
@@ -217,8 +215,8 @@ public class BookcaseCommandLine extends AbstractShellComponent {
         ComponentFlow.ComponentFlowResult result = flow.run();
 
         if(result.getContext().get("optionSelected").equals("1") ){
-            Optional<BookEntity> bookEntity = bookService.findBookById(bookId);
-            bookService.checkOutBook(bookEntity.get());
+            Optional<BookDTO> bookDTO = bookService.findBookById(bookId);
+            bookService.checkOutBook(bookDTO.get());
         }
 
     }

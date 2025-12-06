@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
+import com.penrose.bibby.library.book.contracts.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.contracts.BookDetailView;
 import com.penrose.bibby.library.book.contracts.BookSummary;

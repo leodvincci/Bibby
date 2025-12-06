@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.shelf.application;
 
+import com.penrose.bibby.library.book.contracts.BookDTO;
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
@@ -33,12 +35,28 @@ public class ShelfService implements ShelfFacade {
         return shelfJpaRepository.findByBookcaseId(bookCaseId);
     }
 
-    public Optional<ShelfEntity> findShelfById(Long shelfId) {
-        return shelfJpaRepository.findById(shelfId);
+    public Optional<ShelfDTO> findShelfById(Long shelfId) {
+        ShelfEntity shelfEntity = shelfJpaRepository.findById(shelfId).orElse(null);
+        return Optional.of(ShelfDTO.fromEntity(shelfEntity));
     }
 
-    public List<ShelfEntity> findByBookcaseId(Long bookcaseId) {
-        return shelfJpaRepository.findByBookcaseId(bookcaseId);
+    public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
+        List<ShelfEntity> shelves = shelfJpaRepository.findByBookcaseId(bookcaseId);
+        return shelves.stream()
+                .map(ShelfDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDTO> findBooksByShelf(Long aLong) {
+        List<BookEntity> books = bookRepository.findByShelfId(aLong);
+        List<BookDTO> bookDTOs = new java.util.ArrayList<>();
+        if (books == null) {
+            return List.of();
+        }
+        return books.stream()
+                .map(BookDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
@@ -68,9 +86,9 @@ public class ShelfService implements ShelfFacade {
     }
 
     @Override
-    public List<ShelfDTO> getAllDTOShelves(Long bookcaseId) {
+    public List<com.penrose.bibby.library.shelf.contracts.ShelfDTO> getAllDTOShelves(Long bookcaseId) {
         return getAllShelves(bookcaseId).stream()
-                .map(ShelfDTO::fromEntity)
+                .map(com.penrose.bibby.library.shelf.contracts.ShelfDTO::fromEntity)
                 .toList();
     }
 }

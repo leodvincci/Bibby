@@ -1,4 +1,5 @@
 package com.penrose.bibby.library.bookcase.application;
+import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
 import com.penrose.bibby.library.shelf.domain.ShelfFactory;
@@ -48,11 +49,21 @@ public class BookcaseService {
         shelfJpaRepository.save(shelfFactory.createEntity(bookcaseEntity.getBookcaseId(),position, "Shelf " + label,bookCapacity));
     }
 
-    public List<BookcaseEntity> getAllBookcases(){
-        return bookcaseRepository.findAll();
+    public List<BookcaseDTO> getAllBookcases(){
+        List<BookcaseEntity> bookcaseEntities = bookcaseRepository.findAll();
+        return bookcaseEntities.stream()
+                .map(entity -> new BookcaseDTO(
+                        entity.getBookcaseId(),
+                        entity.getBookcaseLabel(),
+                        entity.getShelfCapacity(),
+                        entity.getBookCapacity()
+                ))
+                .toList();
     }
 
-    public Optional<BookcaseEntity> findBookCaseById(Long id){
-        return bookcaseRepository.findById(id);
+    public Optional<BookcaseDTO> findBookCaseById(Long id){
+        Optional<BookcaseEntity> bookcaseEntity = bookcaseRepository.findById(id);
+
+         return BookcaseDTO.fromEntity(bookcaseEntity);
     }
 }

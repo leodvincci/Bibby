@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.author.application;
 
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.AuthorFacade;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.domain.AuthorFactory;
 import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
@@ -9,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class AuthorService {
+public class AuthorService implements AuthorFacade {
     private final AuthorRepository authorRepository;
     private final AuthorFactory authorFactory;
 
@@ -18,8 +20,9 @@ public class AuthorService {
         this.authorFactory = authorFactory;
     }
 
-    public Set<AuthorEntity> findByBookId(Long id){
-        return authorRepository.findByBooks_BookId(id);
+    public Set<AuthorDTO> findByBookId(Long id){
+        Set<AuthorEntity> authorEntities = authorRepository.findByBooks_BookId(id);
+        return AuthorDTO.toDTOSet(authorEntities);
     }
 
     public List<AuthorEntity> findAll(){

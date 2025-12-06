@@ -6,6 +6,7 @@ import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -20,7 +21,7 @@ public class BookFactory {
         return bookEntity;
     }
 
-    public Book createBookDomain(BookEntity bookEntity, HashSet<Author> authors){
+    public Book createBookDomain(BookEntity bookEntity, List<String> authors){
         Book book = new Book();
         book.setId(bookEntity.getBookId());
         book.setTitle(bookEntity.getTitle());
@@ -29,7 +30,7 @@ public class BookFactory {
         return book;
     }
 
-    public Book createBookDomainFromJSON(String title, String publisher, String description, String isbn, HashSet<Author> authors){
+    public Book createBookDomainFromJSON(String title, String publisher, String description, String isbn, List<String> authors){
         Book book = new Book();
         book.setIsbn(isbn);
         book.setTitle(title);

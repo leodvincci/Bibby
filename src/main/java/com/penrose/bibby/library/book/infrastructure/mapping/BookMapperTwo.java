@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.mapping;
 
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapperTwo;
@@ -9,7 +10,9 @@ import com.penrose.bibby.library.book.domain.BookFactory;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -23,20 +26,20 @@ public class BookMapperTwo {
         this.authorMapperTwo = authorMapperTwo;
     }
 
-    public Book toDomain(BookEntity bookEntity, Set<AuthorEntity> authorEntities){
-        HashSet<Author> authors = authorMapperTwo.toDomain(authorEntities);
-        return bookFactory.createBookDomain(bookEntity,authors);
-    }
+//    public Book toDTOfromEntity(BookEntity bookEntity, Set<AuthorDTO> authorDTOs){
+//        HashSet<AuthorDTO> authors = authorMapperTwo.toDomain(authorDTOs);
+//        return bookFactory.createBookDomain(bookEntity,authors);
+//    }
 
     public Book toDomainFromJSON(GoogleBooksResponse googleBooksResponse){
-        HashSet<Author> authors = new HashSet<>();
+        List<String> authors = new ArrayList<>();
 
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
             Author author = new Author();
             author.setFirstName(nameParts[0]);
             author.setLastName(nameParts[1]);
-            authors.add(author);
+            authors.add(author.getFirstName() + " " + author.getLastName());
         }
         String isbn = "";
         String title = (googleBooksResponse.items().get(0).volumeInfo().title());
