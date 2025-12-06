@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.book.application;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.AuthorFacade;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.application.AuthorService;
 import com.penrose.bibby.library.book.contracts.*;
@@ -29,8 +30,9 @@ import java.util.*;
     private final ShelfService shelfService;
     private final BookMapper bookMapper;
     private final IsbnLookupService isbnLookupService;
+    private final AuthorFacade authorFacade;
 
-    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService){
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorFacade authorFacade){
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.bookRepository = bookRepository;
         this.authorService = authorService;
@@ -38,6 +40,7 @@ import java.util.*;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
         this.isbnLookupService = isbnLookupService;
+        this.authorFacade = authorFacade;
     }
 
     // ============================================================
@@ -253,7 +256,7 @@ import java.util.*;
 
 
     public void checkOutBook(BookDTO bookDTO){
-        Set<AuthorDTO> authorEntities = authorService.findByBookId(bookDTO.id());
+        Set<AuthorDTO> authorEntities = authorFacade.findByBookId(bookDTO.id());
 
         // Create domain object for business logic validation
         Book book = bookMapper(bookDTO, new HashSet<>(authorEntities));

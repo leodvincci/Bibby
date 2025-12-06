@@ -10,4 +10,6 @@ public interface BookFacade {
     BookMetaDataResponse findBookMetaDataByIsbn(String isbn);
 
     void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
+
+    void createNewBook(BookRequestDTO bookRequestDTO);
 }

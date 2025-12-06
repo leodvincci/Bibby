@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli.book;
+package com.penrose.bibby.cli.commands;
 
 import com.penrose.bibby.library.book.contracts.BookMetaDataResponse;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
@@ -28,7 +28,7 @@ import java.util.*;
 
 @ShellComponent
 @Command(command = "book", group = "Book Commands")
-public class BookCommandLine extends AbstractShellComponent {
+public class BookCommands extends AbstractShellComponent {
 
     final AuthorFacade authorFacade;
     final ShelfFacade shelfFacade;
@@ -42,7 +42,7 @@ public class BookCommandLine extends AbstractShellComponent {
     private final ComponentFlow.Builder componentFlowBuilder;
 
 
-    public BookCommandLine(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorFacade authorFacade, ShelfFacade shelfFacade, CliPromptService cliPrompt, IsbnLookupService isbnLookupService, ShelfDomainRepositoryImpl shelfDomainRepository, BookFacade bookFacade) {
+    public BookCommands(ComponentFlow.Builder componentFlowBuilder, BookService bookService, BookcaseService bookcaseService, ShelfService shelfService, AuthorFacade authorFacade, ShelfFacade shelfFacade, CliPromptService cliPrompt, IsbnLookupService isbnLookupService, ShelfDomainRepositoryImpl shelfDomainRepository, BookFacade bookFacade) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.bookService = bookService;
         this.bookcaseService = bookcaseService;
@@ -92,7 +92,7 @@ public class BookCommandLine extends AbstractShellComponent {
 
 
     @Command(command = "add", description = "Add a new book to your library database")
-    public void addBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
+    public void registerBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
         if(scan == null && multi == null){
             scanBook("multi");
             return;
