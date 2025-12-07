@@ -32,6 +32,16 @@ public class ShelfMapper {
         return shelf;
     }
 
+    public Shelf toDomainFromDTO(ShelfEntity entity, List<Long> bookIds) {
+        Shelf shelf = toDomain(entity);
+        shelf.setShelfLabel(entity.getShelfLabel());
+        shelf.setBookCapacity(entity.getBookCapacity());
+        shelf.setId(entity.getShelfId());
+        shelf.setShelfPosition(entity.getShelfPosition());
+        shelf.setBooks(bookIds);
+        return shelf;
+    }
+
 //    public Shelf toDomain(ShelfEntity shelfEntity) {
 //        Shelf shelf = new Shelf();
 //        shelf.setId(shelfEntity.getShelfId());
