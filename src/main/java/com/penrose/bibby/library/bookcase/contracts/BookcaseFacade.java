@@ -10,4 +10,5 @@ public interface BookcaseFacade {
 
     List<BookcaseDTO> getAllBookcases();
 
+    void createNewBookCase(String bookcaseLabel, int shelfCount, int bookCapacity);
 }

@@ -21,4 +21,10 @@ public interface BookFacade {
     void checkOutBook(BookDTO bookDTO);
 
     void checkInBook(String bookTitle);
+
+    List<BookSummary> getBooksForShelf(Long shelfId);
+
+    BookDetailView getBookDetails(Long bookId);
+
+    Optional<BookDTO> findBookById(Long bookId);
 }
