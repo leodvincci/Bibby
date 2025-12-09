@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.application;
+package com.penrose.bibby.library.book.core.application;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;

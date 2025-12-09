@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.contracts;
+package com.penrose.bibby.library.book.contracts.dtos;
 
 public record BookPlacementResponse(
         Long bookId,

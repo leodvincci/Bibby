@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.application;
+package com.penrose.bibby.library.book.core.application;
 
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Service;

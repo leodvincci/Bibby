@@ -1,7 +1,9 @@
-package com.penrose.bibby.library.book.application;
+package com.penrose.bibby.library.book.core.application;
 
+import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.*;
-import com.penrose.bibby.library.book.contracts.ports.BookFacade;
+import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +12,6 @@ import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.core.domain.BookFactory;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 
 import com.penrose.bibby.library.shelf.application.ShelfService;
@@ -27,22 +28,22 @@ import java.util.*;
 @Service
     public class BookService implements BookFacade {
     private final ShelfService shelfService;
-    private final AuthorFacade authorFacade;
     private final BookRepository bookRepository;
+    private final AuthorAccessPort authorAccessPort;
 
     private final BookFactory BookFactory;
     private final BookMapper bookMapper;
     private final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
 
-    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorFacade authorFacade){
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorAccessPort authorAccessPort){
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.bookRepository = bookRepository;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
         this.isbnLookupService = isbnLookupService;
-        this.authorFacade = authorFacade;
+        this.authorAccessPort = authorAccessPort;
     }
 
     // ============================================================
@@ -69,9 +70,9 @@ import java.util.*;
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
-            AuthorDTO authorDTO = authorFacade.findOrCreateAuthor(nameParts[0],nameParts[1]);
+            AuthorRef author = authorAccessPort.findOrCreateAuthor(nameParts[0],nameParts[1]);
             authors.add(nameParts[0] + " " + nameParts[1]);
-            authorEntities.add(AuthorDTO.AuthorDTOtoEntity(authorDTO));
+            authorEntities.add(AuthorDTO.AuthorRefToEntity(author));
         }
 
         BookDTO bookDTO = new BookDTO(null,
@@ -98,7 +99,7 @@ import java.util.*;
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(AuthorDTO author : bookRequestDTO.authors()){
-            authorEntities.add(AuthorDTO.AuthorDTOtoEntity(authorFacade.findOrCreateAuthor(author.firstName(),author.lastName())));
+            authorEntities.add(AuthorDTO.AuthorRefToEntity(authorAccessPort.findOrCreateAuthor(author.firstName(),author.lastName())));
         }
         return authorEntities;
     }
@@ -197,7 +198,7 @@ import java.util.*;
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : bookMetaDataResponse.authors()) {
             String [] nameParts = authorName.split(" ", 2);
-            AuthorEntity authorEntity = AuthorDTO.AuthorDTOtoEntity(authorFacade.findOrCreateAuthor(nameParts[0],nameParts[1]));
+            AuthorEntity authorEntity = AuthorDTO.AuthorRefToEntity(authorAccessPort.findOrCreateAuthor(nameParts[0],nameParts[1]));
             authorIds.add(authorEntity.getAuthorId());
             authorEntities.add(authorEntity);
         }
@@ -258,7 +259,7 @@ import java.util.*;
 
 
     public void checkOutBook(BookDTO bookDTO){
-        Set<AuthorDTO> authorEntities = authorFacade.findByBookId(bookDTO.id());
+        Set<AuthorDTO> authorEntities = authorAccessPort.findByBookId(bookDTO.id());
 
         // Create domain object for business logic validation
         Book book = bookMapper(bookDTO, new HashSet<>(authorEntities));

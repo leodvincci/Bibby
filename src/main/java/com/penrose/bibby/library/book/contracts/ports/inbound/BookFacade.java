@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.contracts.ports;
+package com.penrose.bibby.library.book.contracts.ports.inbound;
 
 import com.penrose.bibby.library.book.contracts.dtos.*;
 

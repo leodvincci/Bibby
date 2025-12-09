@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.contracts;
+package com.penrose.bibby.library.book.contracts.dtos;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 
