@@ -13,6 +13,7 @@
 Bibby is an interactive CLI tool for managing a real-life library of physical books. It started as a sandbox for exploring interactive CLI flows in Java, and evolved into a full-fledged system for tracking books, shelves, and bookcases — with personality sprinkled in.
 
 **New in v0.3:** Scan book barcodes with your webcam, automatically fetch metadata from Google Books, and place books on shelves in one seamless workflow.
+<img width="2538" height="1022" alt="image" src="https://github.com/user-attachments/assets/726b6fed-1272-4745-853c-3fbef4b019f4" />
 
 ---
 
