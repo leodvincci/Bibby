@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.author.infrastructure.repository;
 
-import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface AuthorRepository extends JpaRepository <AuthorEntity, Long> {
+public interface AuthorJpaRepository extends JpaRepository <AuthorEntity, Long> {
 
     Optional<AuthorEntity> findByFirstNameAndLastName(String firstName, String lastName);
 

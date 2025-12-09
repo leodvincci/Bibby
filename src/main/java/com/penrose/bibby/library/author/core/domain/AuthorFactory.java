@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.author.domain;
+package com.penrose.bibby.library.author.core.domain;
 
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import org.springframework.stereotype.Component;

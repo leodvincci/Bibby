@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.author.domain;
+package com.penrose.bibby.library.author.core.domain;
 
 public class Author {
     private Long authorId;

@@ -1,7 +1,8 @@
-package com.penrose.bibby.library.author.core.contracts;
+package com.penrose.bibby.library.author.contracts;
 
 
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.book.AuthorRef;
 
 import java.util.Optional;
 import java.util.Set;
@@ -32,6 +33,14 @@ public record AuthorDTO (Long id, String firstName, String lastName) {
         authorEntity.setAuthorId(authorDTO.id());
         authorEntity.setFirstName(authorDTO.firstName());
         authorEntity.setLastName(authorDTO.lastName());
+        return authorEntity;
+    }
+
+    public static AuthorEntity AuthorRefToEntity(AuthorRef authorRef) {
+        AuthorEntity authorEntity = new AuthorEntity();
+        authorEntity.setAuthorId(authorRef.getAuthorId());
+        authorEntity.setFirstName(authorRef.getAuthorFirstName());
+        authorEntity.setLastName(authorRef.getAuthorLastName());
         return authorEntity;
     }
 }
