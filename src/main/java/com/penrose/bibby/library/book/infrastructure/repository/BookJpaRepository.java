@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository <BookEntity, Long> {
+public interface BookJpaRepository extends JpaRepository <BookEntity, Long> {
 
     BookEntity findBookEntityByTitle(String title);
 

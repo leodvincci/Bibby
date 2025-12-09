@@ -3,12 +3,10 @@ package com.penrose.bibby.library.book.core.application;
 import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
+import com.penrose.bibby.library.book.core.domain.*;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
-import com.penrose.bibby.library.book.core.domain.Book;
-import com.penrose.bibby.library.book.core.domain.BookFactory;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
@@ -20,7 +18,7 @@ import com.penrose.bibby.library.shelf.core.application.ShelfService;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
+import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -28,22 +26,26 @@ import java.util.*;
 @Service
     public class BookService implements BookFacade {
     private final ShelfService shelfService;
-    private final BookRepository bookRepository;
+    private final BookJpaRepository bookJpaRepository;
     private final AuthorAccessPort authorAccessPort;
 
     private final BookFactory BookFactory;
     private final BookMapper bookMapper;
     private final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
+    private final BookDomainRepository bookDomainRepository;
+    Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
-    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorAccessPort authorAccessPort){
+
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookJpaRepository bookJpaRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorAccessPort authorAccessPort, BookDomainRepository bookDomainRepository){
         this.isbnEnrichmentService = isbnEnrichmentService;
-        this.bookRepository = bookRepository;
+        this.bookJpaRepository = bookJpaRepository;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
         this.isbnLookupService = isbnLookupService;
         this.authorAccessPort = authorAccessPort;
+        this.bookDomainRepository = bookDomainRepository;
     }
 
     // ============================================================
@@ -59,9 +61,19 @@ import java.util.*;
      */
     @Transactional
     public void createNewBook(BookRequestDTO bookDTO){
-        validateRequest(bookDTO);
-        validateBookDoesNotExist(bookDTO);
-        saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
+//        validateRequest(bookDTO);
+//        validateBookDoesNotExist(bookDTO);
+
+        Book book = new Book();
+        book.setTitle(new Title(bookDTO.title()));
+        List<AuthorRef> authorRefs = new ArrayList<>();
+        for(AuthorDTO authorDTO : bookDTO.authors()){
+            AuthorRef authorRef = new AuthorRef(null, new AuthorName(authorDTO.firstName(), authorDTO.lastName()));
+            authorRefs.add(authorRef);
+        }
+        book.setIsbn(new Isbn(bookDTO.isbn()));
+        registerBook(book);
+        logger.info("Created new book: {}", bookDTO.title());
     }
 
 // I think I can get rid of this method
@@ -145,16 +157,16 @@ import java.util.*;
     //      READ Operations
     // ============================================================
     public Optional<BookDTO> findBookById(Long bookId){
-        BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+        BookEntity bookEntity = bookJpaRepository.findById(bookId).orElse(null);
         return Optional.of(BookDTO.fromEntity(bookEntity));
     }
 
     public List<BookEntity> findBooksByShelf(Long id){
-        return bookRepository.findByShelfId(id);
+        return bookJpaRepository.findByShelfId(id);
     }
 
     public Optional<BookDTO> findBookByTitleIgnoreCase(String title){
-        Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
+        Optional<BookEntity> bookEntity = bookJpaRepository.findByTitleIgnoreCase(title);
         return Optional.of(BookDTO.fromEntity(bookEntity.orElse(null)));
     }
 
@@ -166,7 +178,7 @@ import java.util.*;
      * @return the book entity with the specified title, or null if no such book exists
      */
     public BookDTO findBookByTitle(String title){
-        Optional<BookEntity> bookEntity = bookRepository.findByTitleIgnoreCase(title);
+        Optional<BookEntity> bookEntity = bookJpaRepository.findByTitleIgnoreCase(title);
         return bookMapper.toDTOfromEntity(bookEntity.orElse(null));
 
     }
@@ -215,12 +227,13 @@ import java.util.*;
         bookEntity.setCreatedAt(LocalDate.now());
         bookEntity.setUpdatedAt(LocalDate.now());
         bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.toString());
-        saveBook(bookEntity);
+        Book book = bookMapper.toDomainFromEntity(bookEntity);
+        registerBook(book);
 
     }
 
     public List<BookEntity> findBookByKeyword(String keyword){
-        List<BookEntity> bookEntities = bookRepository.findByTitleContaining(keyword);
+        List<BookEntity> bookEntities = bookJpaRepository.findByTitleContaining(keyword);
         for(BookEntity book : bookEntities){
             System.out.println(book.getTitle());
         }
@@ -228,34 +241,40 @@ import java.util.*;
     }
 
     public List<BookSummary> getBooksForShelf(Long shelfId){
-        return bookRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
+        return bookJpaRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
     }
 
     public BookDetailView getBookDetails(Long bookId){
-        return bookRepository.getBookDetailView(bookId);
+        return bookJpaRepository.getBookDetailView(bookId);
     }
 
 
     // ============================================================
     // UPDATE Operations
     // ============================================================
-    public void saveBook(BookEntity bookEntity){
-        bookRepository.save(bookEntity);
+
+
+
+    public void registerBook(Book book){
+        bookDomainRepository.registerBook(book);
     }
 
+
+
     public BookEntity assignBookToShelf(Long bookId, Long shelfId) {
-        BookEntity bookEntity = bookRepository.findById(bookId)
+        BookEntity bookEntity = bookJpaRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
         ShelfDTO shelf = shelfService.findShelfById(shelfId)
                 .orElseThrow(() -> new IllegalArgumentException("Shelf not found: " + shelfId));
 
-        long bookCount = bookRepository.countByShelfId(shelfId);
+        long bookCount = bookJpaRepository.countByShelfId(shelfId);
         if (bookCount >= shelf.bookCapacity()) {
             throw new IllegalStateException("Shelf is full");
         }
 
         bookEntity.setShelfId(shelfId);
-        saveBook(bookEntity);
+        Book book = bookMapper.toDomainFromEntity(bookEntity);
+        registerBook(book);
         return bookEntity;
     }
 
@@ -270,7 +289,7 @@ import java.util.*;
         // Update the entity directly instead of converting back
         book.setAvailabilityStatus(book.getAvailabilityStatus());
         BookEntity bookEntity = bookMapper.toEntity(book);
-        saveBook(bookEntity);
+        registerBook(book);
     }
 
 
@@ -280,15 +299,17 @@ import java.util.*;
     }
 
 
+    // todo: use bookDomainRepository instead of bookJpaRepository directly
     public void checkInBook(String bookTitle){
-        BookEntity bookEntity = bookRepository.findBookEntityByTitle(bookTitle);
+        BookEntity bookEntity = bookJpaRepository.findBookEntityByTitle(bookTitle);
         bookEntity.checkIn();
-        saveBook(bookEntity);
+        Book book = bookMapper.toDomainFromEntity(bookEntity);
+        registerBook(book);
     }
 
     public BookDTO findBookByIsbn(String isbn) {
         System.out.println("isbn in service: " + isbn);
-        BookEntity bookEntity = bookRepository.findByIsbn(isbn);
+        BookEntity bookEntity = bookJpaRepository.findByIsbn(isbn);
         if(bookEntity == null){
             throw new IllegalArgumentException("Book not found with ISBN: " + isbn);
         }
@@ -297,10 +318,11 @@ import java.util.*;
 
     @Override
     public void setShelfForBook(Long id, Long shelfId) {
-        BookEntity bookEntity = bookRepository.findById(id)
+        BookEntity bookEntity = bookJpaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found: " + id));
         bookEntity.setShelfId(shelfId);
-        saveBook(bookEntity);
+        Book book = bookMapper.toDomainFromEntity(bookEntity);
+        registerBook(book);
     }
 }
 

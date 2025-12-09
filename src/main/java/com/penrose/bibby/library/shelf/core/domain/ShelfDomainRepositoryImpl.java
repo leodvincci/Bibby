@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.shelf.core.domain;
 
 import com.penrose.bibby.library.book.core.domain.Book;
-import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
+import com.penrose.bibby.library.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;

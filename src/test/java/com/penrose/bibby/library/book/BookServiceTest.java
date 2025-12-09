@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
+import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.book.core.application.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class BookServiceTest {
 
     @Mock
-    private BookRepository bookRepository;
+    private BookJpaRepository bookJpaRepository;
 
     @InjectMocks
     private BookService serviceUnderTest;  // Replace with your actual class name
@@ -41,7 +41,7 @@ class BookServiceTest {
 
         List<BookEntity> expectedBooks = Arrays.asList(book1, book2, book3);
 
-        when(bookRepository.findByTitleContaining(keyword))
+        when(bookJpaRepository.findByTitleContaining(keyword))
                 .thenReturn(expectedBooks);
 
         // Act
@@ -50,14 +50,14 @@ class BookServiceTest {
         // Assert
         assertEquals(3, result.size());
         assertEquals(expectedBooks, result);
-        verify(bookRepository).findByTitleContaining(keyword);
+        verify(bookJpaRepository).findByTitleContaining(keyword);
     }
 
     @Test
     void findBookByKeyword_WhenNoBooks_ShouldReturnEmptyList() {
         // Arrange
         String keyword = "NonExistent";
-        when(bookRepository.findByTitleContaining(keyword))
+        when(bookJpaRepository.findByTitleContaining(keyword))
                 .thenReturn(Collections.emptyList());
 
         // Act
@@ -65,7 +65,7 @@ class BookServiceTest {
 
         // Assert
         assertTrue(result.isEmpty());
-        verify(bookRepository).findByTitleContaining(keyword);
+        verify(bookJpaRepository).findByTitleContaining(keyword);
     }
 
 

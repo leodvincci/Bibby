@@ -5,7 +5,7 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
+import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import org.springframework.stereotype.Component;
 
@@ -16,21 +16,21 @@ import java.util.Set;
 @Component
 public class BookDomainRepositoryImpl implements BookDomainRepository {
     private final BookMapper  bookMapper;
-    private final BookRepository bookRepository;
+    private final BookJpaRepository bookJpaRepository;
 
     public BookDomainRepositoryImpl(
             BookMapper bookMapper,
-            BookRepository bookRepository,
+            BookJpaRepository bookJpaRepository,
             AuthorService authorService) {
 
         this.bookMapper = bookMapper;
-        this.bookRepository = bookRepository;
+        this.bookJpaRepository = bookJpaRepository;
 
     }
 
     @Override
     public List<Book> getBooksByShelfId(Long shelfId) {
-        List<BookEntity> bookEntities = bookRepository.findByShelfId(shelfId);
+        List<BookEntity> bookEntities = bookJpaRepository.findByShelfId(shelfId);
         List<Book> books = new ArrayList<>();
 
         Set<AuthorDTO> authorDTO = null;
