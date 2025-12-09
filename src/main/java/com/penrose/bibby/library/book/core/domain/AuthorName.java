@@ -2,26 +2,22 @@ package com.penrose.bibby.library.book.core.domain;
 
 public record AuthorName (String firstName, String lastName) {
 
-
-    @Override
-    public String toString() {
-        return "AuthorName{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+    public AuthorName {
+        if (firstName == null || firstName.isBlank()) {
+            throw new IllegalArgumentException("First name cannot be null or blank");
+        }
+        if (lastName == null || lastName.isBlank()) {
+            throw new IllegalArgumentException("Last name cannot be null or blank");
+        }
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
 
     public String getFullName() {
         return firstName + " " + lastName;
     }
 
-
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }
