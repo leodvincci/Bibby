@@ -1,5 +1,5 @@
 
-https://github.com/user-attachments/assets/0e50d227-056a-47e7-b62b-65f9c86aeaf6
+![Adobe Express - Generating_Bibby_Retro_Futuristic_Intro_Sequence (1)](https://github.com/user-attachments/assets/740509ac-3692-4c69-bb3e-5af9f6a1082e)
 
 ![Java](https://img.shields.io/badge/Java-17-blue?style=for-the-badge&logo=openjdk)
 ![Spring Shell](https://img.shields.io/badge/Spring%20Shell-Interactive%20CLI-brightgreen?style=for-the-badge&logo=spring)
