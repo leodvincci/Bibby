@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AuthorRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.penrose.bibby.library.author.core.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: AuthorRepository (com.penrose.bibby.library.author.core.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AuthorRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.penrose.bibby.library.author.core.domain;
+&nbsp;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface AuthorRepository {
+&nbsp;
+&nbsp;    Set&lt;Author&gt; findAuthorsByBookId(Long id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves an Author by its unique identifier.
+&nbsp;     *
+&nbsp;     * &lt;p&gt;&lt;strong&gt;Domain Meaning:&lt;/strong&gt;&lt;br&gt;
+&nbsp;     * This method looks up an Author in the persistence store using its ID,
+&nbsp;     * returning the corresponding domain Author if found.
+&nbsp;     *
+&nbsp;     * &lt;p&gt;&lt;strong&gt;Contract:&lt;/strong&gt;
+&nbsp;     * &lt;ul&gt;
+&nbsp;     *   &lt;li&gt;Returns an {@code Optional} containing the Author if found.&lt;/li&gt;
+&nbsp;     *   &lt;li&gt;Returns {@code Optional.empty()} if no Author exists with the given ID.&lt;/li&gt;
+&nbsp;     *   &lt;li&gt;Never returns {@code null}.&lt;/li&gt;
+&nbsp;     *   &lt;li&gt;Always returns a domain-level {@code Author} object, not an entity.&lt;/li&gt;
+&nbsp;     * &lt;/ul&gt;
+&nbsp;     *
+&nbsp;     * @param id the unique identifier of the Author to retrieve; must not be {@code null}.
+&nbsp;     * @return an {@code Optional} containing the domain {@code Author} if found,
+&nbsp;     *         or {@code Optional.empty()} if not found
+&nbsp;     */
+&nbsp;    Optional&lt;Author&gt; findAuthorById(Long id);
+&nbsp;
+&nbsp;    /**
+&nbsp;     Creates a new Author using the provided first and last name, persists it, and returns the resulting domain Author.
+&nbsp;     *
+&nbsp;     * @param authorFirstName the author&#39;s given name
+&nbsp;     * @param authorLastName the author&#39;s family name
+&nbsp;     * @return the newly created Author domain object, including its generated ID
+&nbsp;     */
+&nbsp;    Author createAuthor(String authorFirstName, String authorLastName);
+&nbsp;
+&nbsp;    void updateAuthor(Author author);
+&nbsp;
+&nbsp;    Optional&lt;Author&gt; findByFirstNameAndLastName(String firstName, String lastName);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 02:08</div>
+</div>
+</body>
+</html>

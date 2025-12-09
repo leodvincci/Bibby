@@ -4,7 +4,7 @@ public class AuthorName {
     String authorName;
 
     public AuthorName(String authorName){
-        this.authorName = authorName;
+        this.authorName = normalizeString(authorName);
     }
 
     public String getAuthorName(){
@@ -41,9 +41,26 @@ public class AuthorName {
         }
     }
 
-    public String normalized(){
-        return authorName.trim().replaceAll("\\s+", " ");
+    public String normalized() {
+        String result = authorName;
+        result = result.replaceAll("^\\s+", "");
+        result = result.replaceAll("\\s+$", "");
+        result = result.replaceAll("\\s{2,}", " ");
+        result = result.replaceAll("\\.", "");
+        return result;
     }
 
+    public String normalizeString(String name) {
+        String result = name;
+        result = result.replaceAll("^\\s+", "");
+        result = result.replaceAll("\\s+$", "");
+        result = result.replaceAll("\\s{2,}", " ");
+        result = result.replaceAll("\\.", "");
+        return result;
+    }
 
+    @Override
+    public String toString() {
+        return authorName;
+    }
 }
