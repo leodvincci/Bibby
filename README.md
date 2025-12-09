@@ -1,4 +1,5 @@
-![Adobe Express - Terminal_AI_Librarian_Animation (1)](https://github.com/user-attachments/assets/7fb5a30e-bef4-4ae4-bb65-675b80ce7d8f)
+
+https://github.com/user-attachments/assets/0e50d227-056a-47e7-b62b-65f9c86aeaf6
 
 ![Java](https://img.shields.io/badge/Java-17-blue?style=for-the-badge&logo=openjdk)
 ![Spring Shell](https://img.shields.io/badge/Spring%20Shell-Interactive%20CLI-brightgreen?style=for-the-badge&logo=spring)
