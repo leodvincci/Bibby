@@ -2,7 +2,7 @@ package com.penrose.bibby.library.author.contracts;
 
 
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.book.AuthorRef;
+import com.penrose.bibby.library.book.core.domain.AuthorRef;
 
 import java.util.Optional;
 import java.util.Set;

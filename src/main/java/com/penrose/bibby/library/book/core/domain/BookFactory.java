@@ -1,8 +1,6 @@
 package com.penrose.bibby.library.book.core.domain;
 
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.book.AuthorName;
-import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import org.springframework.stereotype.Component;
 

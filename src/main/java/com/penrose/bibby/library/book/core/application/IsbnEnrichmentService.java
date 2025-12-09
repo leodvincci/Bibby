@@ -4,7 +4,7 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.core.domain.AuthorFactory;
-import com.penrose.bibby.library.book.AuthorRef;
+import com.penrose.bibby.library.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;

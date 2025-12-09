@@ -235,12 +235,12 @@ public class BookService implements BookFacade {
 ```java
 package com.penrose.bibby.library.book.core.application;
 
-import com.penrose.bibby.library.book.AuthorRef;                           // ✓ Book's own type
+import com.penrose.bibby.library.book.core.domain.AuthorRef;                           // ✓ Book's own type
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;  // ✓ Book's own port
 
 public class BookService implements BookFacade {
     private final AuthorAccessPort authorAccessPort;
-    
+
     public void createScannedBook(...) {
         AuthorRef author = authorAccessPort.findOrCreateAuthor(firstName, lastName);
         authorEntities.add(AuthorDTO.AuthorRefToEntity(author));

@@ -77,9 +77,10 @@ CLI and web are parallel—both are entry points that call into the domain, just
 Cleaned up the `Shelf` domain class to remove infrastructure leakage:
 
 **Removed imports:**
+
 ```java
-- import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-- import com.penrose.bibby.library.bookcase.domain.Bookcase;
+-
+- 
 ```
 
 **Simplified constructor:**
@@ -105,7 +106,7 @@ public Shelf(String shelfLabel, int shelfPosition, int bookCapacity)
 package com.penrose.bibby.library.shelf.domain;
 
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;  // ❌ Infrastructure leak
-import com.penrose.bibby.library.bookcase.domain.Bookcase;              // ❌ Cross-aggregate coupling
+import com.penrose.bibby.library.bookcase.core.domain.Bookcase;              // ❌ Cross-aggregate coupling
 
 public class Shelf {
     private Long id;

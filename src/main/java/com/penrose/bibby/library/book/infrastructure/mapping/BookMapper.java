@@ -4,7 +4,7 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
-import com.penrose.bibby.library.book.AuthorRef;
+import com.penrose.bibby.library.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;

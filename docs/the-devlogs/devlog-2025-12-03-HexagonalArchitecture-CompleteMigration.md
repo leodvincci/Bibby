@@ -191,10 +191,8 @@ Moving files between packages revealed some tight coupling. For example:
 // Instead of:
 
 // Should be:// Instead of:
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 
 // Should be:
-import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
 
 ```
 

@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.bookcase.contracts;
+package com.penrose.bibby.library.bookcase.contracts.ports.inbound;
 
-import org.springframework.stereotype.Component;
+import com.penrose.bibby.library.bookcase.contracts.dtos.BookcaseDTO;
 
 import java.util.List;
 import java.util.Optional;

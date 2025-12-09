@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.bookcase.application;
-import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
-import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
+package com.penrose.bibby.library.bookcase.core.application;
+import com.penrose.bibby.library.bookcase.contracts.dtos.BookcaseDTO;
+import com.penrose.bibby.library.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
 import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;

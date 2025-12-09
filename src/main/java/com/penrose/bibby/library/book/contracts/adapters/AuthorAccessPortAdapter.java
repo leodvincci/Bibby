@@ -2,9 +2,8 @@ package com.penrose.bibby.library.book.contracts.adapters;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
-import com.penrose.bibby.library.author.core.domain.Author;
-import com.penrose.bibby.library.book.AuthorName;
-import com.penrose.bibby.library.book.AuthorRef;
+import com.penrose.bibby.library.book.core.domain.AuthorName;
+import com.penrose.bibby.library.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
 import org.springframework.stereotype.Component;
 

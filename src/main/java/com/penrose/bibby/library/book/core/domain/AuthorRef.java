@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.book.core.domain;
 
 public class AuthorRef {
     private final Long authorId;

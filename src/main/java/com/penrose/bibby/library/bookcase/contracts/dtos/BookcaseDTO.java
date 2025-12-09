@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.bookcase.contracts;
+package com.penrose.bibby.library.bookcase.contracts.dtos;
 
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 

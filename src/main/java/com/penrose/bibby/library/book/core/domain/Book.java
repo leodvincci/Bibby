@@ -1,7 +1,5 @@
 package com.penrose.bibby.library.book.core.domain;
 
-import com.penrose.bibby.library.book.AuthorRef;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

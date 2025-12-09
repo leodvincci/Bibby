@@ -1,6 +1,6 @@
 package com.penrose.bibby.cli.commands;
 
-import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
+import com.penrose.bibby.library.bookcase.contracts.ports.inbound.BookcaseFacade;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -10,7 +10,7 @@ import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.contracts.dtos.BookDetailView;
 import com.penrose.bibby.library.book.contracts.dtos.BookSummary;
-import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
+import com.penrose.bibby.library.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
