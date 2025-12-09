@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.shelf.contracts;
 
-import com.penrose.bibby.library.book.contracts.BookDTO;
-import com.penrose.bibby.library.shelf.domain.Shelf;
+import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 
 import java.util.List;
 import java.util.Optional;

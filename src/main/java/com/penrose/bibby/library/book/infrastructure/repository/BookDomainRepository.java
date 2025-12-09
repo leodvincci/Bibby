@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
-import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.core.domain.Book;
 
 import java.util.List;
 

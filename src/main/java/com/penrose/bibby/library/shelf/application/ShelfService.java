@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.shelf.application;
 
-import com.penrose.bibby.library.book.contracts.BookDTO;
+import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;

@@ -53,13 +53,9 @@ import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 ```
 
 **After (clean):**
+
 ```java
-import com.penrose.bibby.library.book.contracts.BookMetaDataResponse;
-import com.penrose.bibby.library.book.contracts.BookDTO;
-import com.penrose.bibby.library.book.contracts.BookFacade;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
-import com.penrose.bibby.library.author.contracts.AuthorFacade;
+
 ```
 
 Every import is now from a `contracts/` package—facades, DTOs, and request/response types.

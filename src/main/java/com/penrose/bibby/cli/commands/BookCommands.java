@@ -8,14 +8,14 @@ import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellOption;
 
 import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
-import com.penrose.bibby.library.book.contracts.BookMetaDataResponse;
-import com.penrose.bibby.library.book.contracts.BookDTO;
-import com.penrose.bibby.library.book.contracts.BookFacade;
-import com.penrose.bibby.library.book.contracts.BookRequestDTO;
+import com.penrose.bibby.library.book.contracts.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.book.contracts.dtos.BookRequestDTO;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.contracts.AuthorFacade;
+import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
 

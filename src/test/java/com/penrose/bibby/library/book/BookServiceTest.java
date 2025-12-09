@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
-import com.penrose.bibby.library.book.application.BookService;
+import com.penrose.bibby.library.book.core.application.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

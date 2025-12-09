@@ -1,16 +1,14 @@
 package com.penrose.bibby.library.book.infrastructure.mapping;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.domain.Author;
+import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
-import com.penrose.bibby.library.book.contracts.BookDTO;
-import com.penrose.bibby.library.book.domain.AvailabilityStatus;
-import com.penrose.bibby.library.book.domain.Book;
+import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
+import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.domain.Shelf;
-import com.penrose.bibby.library.shelf.domain.ShelfDomainRepositoryImpl;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.stereotype.Component;
