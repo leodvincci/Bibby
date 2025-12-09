@@ -1,15 +1,15 @@
-package com.penrose.bibby.library.shelf.application;
+package com.penrose.bibby.library.shelf.core.application;
 
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
-import com.penrose.bibby.library.shelf.domain.Shelf;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.shelf.core.domain.Shelf;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
-import com.penrose.bibby.library.shelf.contracts.ShelfOptionResponse;
-import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
 import org.springframework.stereotype.Service;
 
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
@@ -104,9 +104,9 @@ public class ShelfService implements ShelfFacade {
     }
 
     @Override
-    public List<com.penrose.bibby.library.shelf.contracts.ShelfDTO> getAllDTOShelves(Long bookcaseId) {
+    public List<ShelfDTO> getAllDTOShelves(Long bookcaseId) {
         return getAllShelves(bookcaseId).stream()
-                .map(com.penrose.bibby.library.shelf.contracts.ShelfDTO::fromEntity)
+                .map(ShelfDTO::fromEntity)
                 .toList();
     }
 }

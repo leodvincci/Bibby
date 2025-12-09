@@ -8,7 +8,7 @@ import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.stereotype.Component;

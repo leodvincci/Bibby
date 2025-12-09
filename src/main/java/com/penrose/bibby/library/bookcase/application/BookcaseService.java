@@ -1,10 +1,9 @@
 package com.penrose.bibby.library.bookcase.application;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
-import com.penrose.bibby.library.bookcase.domain.Bookcase;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
-import com.penrose.bibby.library.shelf.domain.ShelfFactory;
+import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

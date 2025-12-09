@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.shelf.contracts;
+package com.penrose.bibby.library.shelf.contracts.dtos;
 
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 

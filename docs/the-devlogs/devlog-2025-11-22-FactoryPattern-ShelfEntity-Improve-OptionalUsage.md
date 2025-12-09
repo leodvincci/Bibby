@@ -111,7 +111,7 @@ public class BookcaseService {
 
 ```java
 
-import com.penrose.bibby.library.shelf.domain.ShelfFactory;
+import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 
 public class BookcaseService {
@@ -215,7 +215,7 @@ package com.penrose.bibby.library.bookcase;
 
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
-import com.penrose.bibby.library.shelf.domain.ShelfFactory;
+import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -234,7 +234,7 @@ public class BookcaseService {
     public BookcaseService(
             BookcaseRepository bookcaseRepository,
             com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository shelfJpaRepository,
-            ShelfFactory shelfFactory
+            com.penrose.bibby.library.shelf.core.domain.ShelfFactory shelfFactory
     ) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;

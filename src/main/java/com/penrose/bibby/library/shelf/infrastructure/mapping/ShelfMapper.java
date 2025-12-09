@@ -1,8 +1,6 @@
 package com.penrose.bibby.library.shelf.infrastructure.mapping;
 
-import com.penrose.bibby.library.book.core.domain.BookId;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.domain.Shelf;
+import com.penrose.bibby.library.shelf.core.domain.Shelf;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import org.springframework.stereotype.Component;
 

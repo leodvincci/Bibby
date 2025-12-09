@@ -11,9 +11,9 @@ import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.contracts.dtos.BookDetailView;
 import com.penrose.bibby.library.book.contracts.dtos.BookSummary;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
-import com.penrose.bibby.library.shelf.contracts.ShelfSummary;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
 import java.util.*;
 
 @Component

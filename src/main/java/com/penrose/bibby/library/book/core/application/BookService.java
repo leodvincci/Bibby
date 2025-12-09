@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.book.core.application;
 
-import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
@@ -14,9 +13,9 @@ import com.penrose.bibby.library.book.core.domain.BookFactory;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 
-import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.shelf.core.application.ShelfService;
 
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;

@@ -6,7 +6,7 @@ import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

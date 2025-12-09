@@ -16,8 +16,8 @@ import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseFacade;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ShelfFacade;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 
