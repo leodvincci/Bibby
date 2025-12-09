@@ -137,6 +137,8 @@ public class CliPromptService implements PromptFacade {
         return Long.parseLong(result.getContext().get("bookcase",String.class));
     }
 
+
+
     public String promptForBookTitle(){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
@@ -147,6 +149,19 @@ public class CliPromptService implements PromptFacade {
 
         ComponentFlow.ComponentFlowResult result = flow.run();
         return result.getContext().get("title",String.class);
+    }
+
+
+    public String promptForBookIsbn(){
+        ComponentFlow flow;
+        flow = componentFlowBuilder.clone()
+                .withStringInput("isbn")
+                .name("ISBN:_")
+                .and()
+                .build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("isbn",String.class);
     }
 
     public int promptForBookAuthorCount(){

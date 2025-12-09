@@ -4,5 +4,5 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 
 import java.util.List;
 
-public record BookRequestDTO(String title, List<AuthorDTO> authors) {
+public record BookRequestDTO(String title, List<AuthorDTO> authors, String isbn) {
 }

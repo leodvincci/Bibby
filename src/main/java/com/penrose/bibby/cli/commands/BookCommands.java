@@ -88,7 +88,7 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
-    @Command(command = "add", description = "Add a new book to your library database")
+    @Command(command = "register", description = "register a new book to your library")
     public void registerBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
         if(scan == null && multi == null){
             scanBook("multi");
@@ -106,7 +106,9 @@ public class BookCommands extends AbstractShellComponent {
             authors.add(cliPrompt.promptForAuthor());
         }
 
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title, authors);
+        String isbn = cliPrompt.promptForBookIsbn();
+
+        BookRequestDTO bookRequestDTO = new BookRequestDTO(title, authors,isbn);
         bookFacade.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
