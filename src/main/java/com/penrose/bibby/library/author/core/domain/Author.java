@@ -1,27 +1,29 @@
 package com.penrose.bibby.library.author.core.domain;
 
 public class Author {
-    private Long authorId;
+    private AuthorId authorId;
+    private AuthorName authorName;
     private String firstName;
     private String lastName;
 
 
     public Author() {
     }
+
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    public Author(Long authorId, String firstName, String lastName) {
+    public Author(AuthorId authorId, String firstName, String lastName) {
         this.authorId = authorId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    public Long getAuthorId() {
+    public AuthorId getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(AuthorId authorId) {
         this.authorId = authorId;
     }
 

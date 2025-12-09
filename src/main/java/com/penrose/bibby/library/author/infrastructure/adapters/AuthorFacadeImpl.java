@@ -6,9 +6,10 @@ import com.penrose.bibby.library.author.core.application.AuthorService;
 import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
-
+@Component
 public class AuthorFacadeImpl implements AuthorFacade {
 
     final AuthorService authorService;

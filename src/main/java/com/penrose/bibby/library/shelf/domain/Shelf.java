@@ -24,6 +24,7 @@ public class Shelf {
     public List<Long> getBooks() {
         return bookIds;
     }
+
     public void setBooks(List<Long> books) {
         this.bookIds = books;
     }

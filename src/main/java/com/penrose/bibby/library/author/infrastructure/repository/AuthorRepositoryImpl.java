@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.author.infrastructure.repository;
 
 import com.penrose.bibby.library.author.core.domain.Author;
+import com.penrose.bibby.library.author.core.domain.AuthorId;
 import com.penrose.bibby.library.author.core.domain.AuthorRepository;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
@@ -89,7 +90,8 @@ public class AuthorRepositoryImpl implements AuthorRepository  {
     public Author createAuthor(String authorFirstName, String authorLastName) {
         AuthorEntity authorEntity = new AuthorEntity(authorFirstName,authorLastName);
         authorJpaRepository.save(authorEntity);
-        return new Author(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName());
+        AuthorId authorId = new AuthorId(authorEntity.getAuthorId());
+        return new Author(authorId, authorEntity.getFirstName(), authorEntity.getLastName());
     }
 
 

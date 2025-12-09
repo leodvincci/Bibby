@@ -4,6 +4,7 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.core.domain.AuthorFactory;
+import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
@@ -53,7 +54,7 @@ public class IsbnEnrichmentService {
                 book.getTitle(),
                 book.getAuthors()
                         .stream()
-                        .map(a -> a.split(" ")[0] + " " + a.split(" ")[1])
+                        .map(a -> a.getAuthorFirstName()+" " + a.getAuthorLastName())
                         .collect(Collectors.joining(", ")),
                 book.getPublisher(),
                 isbn,
@@ -62,8 +63,8 @@ public class IsbnEnrichmentService {
 
         log.info("\n{}", pretty);
         HashSet<AuthorEntity> authors = new HashSet<>();
-        for(String author : book.getAuthors()){
-            AuthorDTO authorDTO = new AuthorDTO(null, author.split(" ")[0], author.split(" ")[1]);
+        for(AuthorRef author : book.getAuthors()){
+            AuthorDTO authorDTO = new AuthorDTO(null, author.getAuthorFirstName(), author.getAuthorLastName());
             authorFacade.updateAuthor(authorDTO);
             authors.add(AuthorDTO.AuthorDTOtoEntity(authorDTO));
         }
@@ -73,7 +74,7 @@ public class IsbnEnrichmentService {
         bookEntity.setIsbn(isbn);
         bookEntity.setAvailabilityStatus(String.valueOf(AvailabilityStatus.AVAILABLE));
         bookEntity.setCreatedAt(LocalDate.now());
-        bookEntity.setTitle(book.getTitle());
+        bookEntity.setTitle(book.getTitle().title());
         bookEntity.setDescription(book.getDescription());
         bookEntity.setPublisher(book.getPublisher());
 //        bookEntity.setPublicationYear(Integer.parseInt(book.getPublishedDate().split("-")[0]));

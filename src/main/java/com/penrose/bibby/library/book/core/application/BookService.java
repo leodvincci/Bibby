@@ -59,10 +59,10 @@ import java.util.*;
      *                       book to be created, including its title and list of authors
      */
     @Transactional
-    public void createNewBook(Book book){
-        validateRequest(book);
-        validateBookDoesNotExist(book);
-        saveBook(BookFactory.createBookEntity(book.getTitle(), extractAuthorEntities(book.getAuthors())));
+    public void createNewBook(BookRequestDTO bookDTO){
+        validateRequest(bookDTO);
+        validateBookDoesNotExist(bookDTO);
+        saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
     }
 
 // I think I can get rid of this method

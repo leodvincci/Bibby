@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.book.core.domain;
 
+import com.penrose.bibby.library.book.AuthorRef;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -7,9 +9,9 @@ import java.util.Objects;
 public class Book {
     private BookId bookId;
     private int edition;
-    private String title;
-    private List<String> authors;
-    private String isbn;
+    private Title title;
+    private List<AuthorRef> authors;
+    private Isbn isbn;
     private String genre;
     private String publisher;
     private int publicationYear;
@@ -23,7 +25,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(BookId bookId, String title, List<String> authors) {
+    public Book(BookId bookId, Title title, List<AuthorRef> authors) {
         this.bookId = bookId;
         this.title = title;
         this.authors = authors;
@@ -78,27 +80,27 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(Title title) {
         this.title = title;
     }
 
-    public List<String> getAuthors() {
+    public List<AuthorRef> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(List<AuthorRef> authors) {
         this.authors = authors;
     }
 
-    public String getIsbn() {
+    public Isbn getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public void setIsbn(Isbn isbn) {
         this.isbn = isbn;
     }
 

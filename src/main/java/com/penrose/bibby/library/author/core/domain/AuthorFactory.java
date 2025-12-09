@@ -14,7 +14,7 @@ public class AuthorFactory {
         return new AuthorEntity(firstName, lastName);
     }
 
-    public Author createDomain(Long id, String firstName, String lastName){
+    public Author createDomain(AuthorId id, String firstName, String lastName){
         return new Author(id,firstName, lastName);
     }
 
