@@ -6,10 +6,10 @@ import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
 
-import com.penrose.bibby.library.book.contracts.BookFacade;
-import com.penrose.bibby.library.book.contracts.BookDTO;
-import com.penrose.bibby.library.book.contracts.BookDetailView;
-import com.penrose.bibby.library.book.contracts.BookSummary;
+import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.book.contracts.dtos.BookDetailView;
+import com.penrose.bibby.library.book.contracts.dtos.BookSummary;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ShelfFacade;

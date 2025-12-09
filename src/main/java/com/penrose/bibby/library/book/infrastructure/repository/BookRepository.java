@@ -1,9 +1,8 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
-import com.penrose.bibby.library.book.contracts.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.contracts.BookDetailView;
-import com.penrose.bibby.library.book.contracts.BookSummary;
+import com.penrose.bibby.library.book.contracts.dtos.BookDetailView;
+import com.penrose.bibby.library.book.contracts.dtos.BookSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

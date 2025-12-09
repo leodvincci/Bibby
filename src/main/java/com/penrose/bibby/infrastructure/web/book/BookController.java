@@ -1,19 +1,17 @@
 package com.penrose.bibby.infrastructure.web.book;
 
-import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
-import com.penrose.bibby.library.book.application.IsbnLookupService;
+import com.penrose.bibby.library.author.infrastructure.repository.AuthorJpaRepository;
+import com.penrose.bibby.library.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.contracts.BookPlacementResponse;
-import com.penrose.bibby.library.book.contracts.BookRequestDTO;
-import com.penrose.bibby.library.book.contracts.BookShelfAssignmentRequest;
-import com.penrose.bibby.library.book.application.IsbnEnrichmentService;
-import com.penrose.bibby.library.book.application.BookService;
+import com.penrose.bibby.library.book.contracts.dtos.BookPlacementResponse;
+import com.penrose.bibby.library.book.contracts.dtos.BookRequestDTO;
+import com.penrose.bibby.library.book.contracts.dtos.BookShelfAssignmentRequest;
+import com.penrose.bibby.library.book.core.application.IsbnEnrichmentService;
+import com.penrose.bibby.library.book.core.application.BookService;
 import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.application.BookcaseService;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.application.ShelfService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +23,15 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookController {
 
     final BookService bookService;
-    final AuthorRepository authorRepository;
+    final AuthorJpaRepository authorJpaRepository;
     final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
     private final ShelfService shelfService;
     private final BookcaseService bookcaseService;
 
-    public BookController(BookService bookService, AuthorRepository authorRepository, IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
+    public BookController(BookService bookService, AuthorJpaRepository authorJpaRepository, IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
         this.bookService = bookService;
-        this.authorRepository = authorRepository;
+        this.authorJpaRepository = authorJpaRepository;
         this.isbnLookupService = isbnLookupService;
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.shelfService = shelfService;
