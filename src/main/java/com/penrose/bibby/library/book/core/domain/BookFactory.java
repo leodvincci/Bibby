@@ -1,7 +1,9 @@
 package com.penrose.bibby.library.book.core.domain;
 
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.book.contracts.dtos.BookRequestDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

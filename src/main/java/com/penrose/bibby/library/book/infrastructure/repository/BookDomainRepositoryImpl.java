@@ -1,14 +1,16 @@
-package com.penrose.bibby.library.book.core.domain;
+package com.penrose.bibby.library.book.infrastructure.repository;
 
 import com.penrose.bibby.library.author.core.application.AuthorService;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.book.core.domain.Book;
+import com.penrose.bibby.library.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
-import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,5 +43,23 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
             books.add(book);
         }
         return books;
+    }
+
+    // todo: looks like isbn and title are different value types, need to fix
+    // todo(Leo): create a factory for BookEntity creation
+    @Override
+    public void registerBook(Book book) {
+        BookEntity bookEntity = new BookEntity();
+        bookEntity.setIsbn(book.getIsbn().isbn);
+        bookEntity.setTitle(book.getTitle().title());
+        bookEntity.setGenre(book.getGenre());
+        bookEntity.setDescription(book.getDescription());
+        bookEntity.setAvailabilityStatus("AVAILABLE");
+        Set<AuthorEntity> authorEntities = bookMapper.toEntitySetFromAuthorRefs(book.getAuthors());
+        bookEntity.setAuthors(authorEntities);
+        bookEntity.setPublicationYear(book.getPublicationYear());
+        bookEntity.setCreatedAt(LocalDate.now());
+        bookEntity.setUpdatedAt(LocalDate.now());
+        bookJpaRepository.save(bookEntity);
     }
 }

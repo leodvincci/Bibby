@@ -2,6 +2,7 @@ package com.penrose.bibby.library.shelf.core.application;
 
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.shelf.core.domain.Shelf;
@@ -12,7 +13,6 @@ import com.penrose.bibby.library.shelf.contracts.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
 import org.springframework.stereotype.Service;
 
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 public class ShelfService implements ShelfFacade {
 
     ShelfJpaRepository shelfJpaRepository;
-    BookRepository bookRepository;
+    BookJpaRepository bookJpaRepository;
     BookcaseRepository bookcaseRepository;
     ShelfMapper shelfMapper;
 
-    public ShelfService(ShelfMapper shelfMapper,ShelfJpaRepository shelfJpaRepository, BookRepository bookRepository, BookcaseRepository bookcaseRepository) {
+    public ShelfService(ShelfMapper shelfMapper, ShelfJpaRepository shelfJpaRepository, BookJpaRepository bookJpaRepository, BookcaseRepository bookcaseRepository) {
         this.shelfJpaRepository = shelfJpaRepository;
-        this.bookRepository = bookRepository;
+        this.bookJpaRepository = bookJpaRepository;
         this.bookcaseRepository = bookcaseRepository;
         this.shelfMapper = new ShelfMapper();
     }
@@ -55,7 +55,7 @@ public class ShelfService implements ShelfFacade {
     @Transactional
     @Override
     public List<BookDTO> findBooksByShelf(Long aLong) {
-        List<BookEntity> books = bookRepository.findByShelfId(aLong);
+        List<BookEntity> books = bookJpaRepository.findByShelfId(aLong);
         return books.stream()
                 .map(BookDTO::fromEntity)
                 .collect(Collectors.toList());
@@ -89,7 +89,7 @@ public class ShelfService implements ShelfFacade {
 
 
     private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
-        long bookCount = bookRepository.countByShelfId(shelf.getShelfId());
+        long bookCount = bookJpaRepository.countByShelfId(shelf.getShelfId());
         BookcaseEntity bookcase = bookcaseRepository.findById(shelf.getBookcaseId()).orElse(null);
         String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLabel() : "Unknown Case";
         boolean hasSpace = bookCount < shelf.getBookCapacity();

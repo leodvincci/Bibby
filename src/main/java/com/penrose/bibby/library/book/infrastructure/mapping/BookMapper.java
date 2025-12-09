@@ -233,4 +233,17 @@ public class BookMapper {
         return book;
 
     }
+
+    public Set<AuthorEntity> toEntitySetFromAuthorRefs(List<AuthorRef> authors) {
+        Set<AuthorEntity> authorEntities = new HashSet<>();
+        if (authors != null) {
+            for (AuthorRef author : authors) {
+                AuthorEntity authorEntity = new AuthorEntity();
+                authorEntity.setFirstName(author.getAuthorFirstName());
+                authorEntity.setLastName(author.getAuthorLastName());
+                authorEntities.add(authorEntity);
+            }
+        }
+        return authorEntities;
+    }
 }
