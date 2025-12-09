@@ -1,14 +1,14 @@
 package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.author.domain.Author;
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.author.domain.AuthorFactory;
-import com.penrose.bibby.library.author.application.AuthorService;
-import com.penrose.bibby.library.book.domain.*;
+import com.penrose.bibby.library.author.core.domain.AuthorFactory;
+import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
+import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,16 +21,14 @@ import java.util.stream.Collectors;
 public class IsbnEnrichmentService {
 
     private static final Logger log = LoggerFactory.getLogger(IsbnEnrichmentService.class);
-    private final BookRepository bookRepository;
     AuthorFactory authorFactory;
     BookMapperTwo bookMapper;
-    AuthorService authorService;
+    AuthorFacade authorFacade;
 
-    public IsbnEnrichmentService(AuthorService authorService, AuthorFactory authorFactory, BookMapperTwo bookMapper, BookRepository bookRepository) {
+    public IsbnEnrichmentService(AuthorFactory authorFactory, BookMapperTwo bookMapper, AuthorFacade authorFacade) {
         this.authorFactory = authorFactory;
         this.bookMapper = bookMapper;
-        this.authorService = authorService;
-        this.bookRepository = bookRepository;
+        this.authorFacade = authorFacade;
     }
 
     public BookEntity enrichIsbn(GoogleBooksResponse googleBooksResponse, String isbn){
@@ -65,9 +63,9 @@ public class IsbnEnrichmentService {
         log.info("\n{}", pretty);
         HashSet<AuthorEntity> authors = new HashSet<>();
         for(String author : book.getAuthors()){
-            AuthorEntity authorEntity = authorFactory.createEntity(author.split(" ")[0], author.contains(" ") ? author.substring(author.indexOf(" ") +1) : "");
-            authorService.saveAuthor(authorEntity);
-            authors.add(authorEntity);
+            AuthorDTO authorDTO = new AuthorDTO(null, author.split(" ")[0], author.split(" ")[1]);
+            authorFacade.updateAuthor(authorDTO);
+            authors.add(AuthorDTO.AuthorDTOtoEntity(authorDTO));
         }
 
         BookEntity bookEntity = new BookEntity();

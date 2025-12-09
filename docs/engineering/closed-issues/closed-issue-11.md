@@ -36,7 +36,7 @@ The fix was implemented across **four architectural layers** to ensure the invar
 
 ### 1. Domain Layer: `AvailabilityStatus` Enum
 
-**File:** [`src/main/java/com/penrose/bibby/library/book/domain/AvailabilityStatus.java`](../../src/main/java/com/penrose/bibby/library/book/domain/AvailabilityStatus.java)
+**File:** [`src/main/java/com/penrose/bibby/library/book/domain/AvailabilityStatus.java`](../../../src/main/java/com/penrose/bibby/library/book/core/AvailabilityStatus.java)
 
 ```java
 public enum AvailabilityStatus {
@@ -54,7 +54,7 @@ The enum defines all valid book statuses, with `AVAILABLE` as the designated ini
 
 ### 2. Entity Layer: `BookEntity` Constructor
 
-**File:** [`src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java`](../../src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java)
+**File:** [`src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java`](../../../src/main/java/com/penrose/bibby/library/book/infrastructure/entity/BookEntity.java)
 
 **Lines 33-38:**
 ```java
@@ -72,7 +72,7 @@ public BookEntity(String title, HashSet<AuthorEntity> authors) {
 
 ### 3. Factory Layer: `BookFactory` Methods
 
-**File:** [`src/main/java/com/penrose/bibby/library/book/domain/BookFactory.java`](../../src/main/java/com/penrose/bibby/library/book/domain/BookFactory.java)
+**File:** [`src/main/java/com/penrose/bibby/library/book/domain/BookFactory.java`](../../../src/main/java/com/penrose/bibby/library/book/core/BookFactory.java)
 
 #### 3.1 Entity Creation (CLI Interactive Flow)
 
@@ -114,7 +114,7 @@ public Book createBookDomainFromJSON(String title, String publisher,
 
 ### 4. Service Layer: `BookService.createScannedBook`
 
-**File:** [`src/main/java/com/penrose/bibby/library/book/application/BookService.java`](../../src/main/java/com/penrose/bibby/library/book/application/BookService.java)
+**File:** [`src/main/java/com/penrose/bibby/library/book/application/BookService.java`](../../../src/main/java/com/penrose/bibby/library/book/core/application/BookService.java)
 
 **Lines 61-80:**
 ```java
@@ -143,7 +143,7 @@ public BookEntity createScannedBook(GoogleBooksResponse googleBooksResponse, Str
 
 ### 5. Mapper Layer: Status Preservation
 
-**File:** [`src/main/java/com/penrose/bibby/library/book/infrastructure/mapping/BookMapper.java`](../../src/main/java/com/penrose/bibby/library/book/infrastructure/mapping/BookMapper.java)
+**File:** [`src/main/java/com/penrose/bibby/library/book/infrastructure/mapping/BookMapper.java`](../../../src/main/java/com/penrose/bibby/library/book/infrastructure/mapping/BookMapper.java)
 
 **Line 54:**
 ```java
@@ -206,9 +206,9 @@ The factory pattern is used to centralize creation logic and enforce invariants 
 
 ### Related Documentation
 
-- [Devlog: Book Status & Checkout](../the-devlogs/devlog-2025-11-12-bibby-book-status-checkout.md) — Original feature implementation
-- [Spec: Move CheckOut Logic to Domain Model](../the-specs/000-Move-CheckOut-Logic-to-DomainModel.md) — DDD refactoring context
-- [Devlog: BookFactory into Spring Component](../the-devlogs/devlog-2025-11-20-BookFactory-into-Spring-ManagedComponent.md) — Factory pattern evolution
+- [Devlog: Book Status & Checkout](../../the-devlogs/devlog-2025-11-12-bibby-book-status-checkout.md) — Original feature implementation
+- [Spec: Move CheckOut Logic to Domain Model](../../systems/spec-sheets/000-Move-CheckOut-Logic-to-DomainModel.md) — DDD refactoring context
+- [Devlog: BookFactory into Spring Component](../../the-devlogs/devlog-2025-11-20-BookFactory-into-Spring-ManagedComponent.md) — Factory pattern evolution
 
 ---
 

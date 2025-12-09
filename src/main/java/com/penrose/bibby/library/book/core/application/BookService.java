@@ -1,41 +1,43 @@
 package com.penrose.bibby.library.book.application;
 
-import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.contracts.AuthorFacade;
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.author.application.AuthorService;
-import com.penrose.bibby.library.book.contracts.*;
-import com.penrose.bibby.library.book.domain.AvailabilityStatus;
-import com.penrose.bibby.library.book.domain.Book;
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.book.domain.BookFactory;
-import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
-import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
-import com.penrose.bibby.library.shelf.application.ShelfService;
+import com.penrose.bibby.library.book.contracts.dtos.*;
+import com.penrose.bibby.library.book.contracts.ports.BookFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
+import com.penrose.bibby.library.book.core.domain.Book;
+import com.penrose.bibby.library.book.core.domain.BookFactory;
+
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
+
+import com.penrose.bibby.library.shelf.application.ShelfService;
+
+import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
+import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
     public class BookService implements BookFacade {
-    private final IsbnEnrichmentService isbnEnrichmentService;
-    private final BookRepository bookRepository;
-    private final AuthorService authorService;
-    private final BookFactory BookFactory;
     private final ShelfService shelfService;
+    private final AuthorFacade authorFacade;
+    private final BookRepository bookRepository;
+
+    private final BookFactory BookFactory;
     private final BookMapper bookMapper;
     private final IsbnLookupService isbnLookupService;
-    private final AuthorFacade authorFacade;
+    private final IsbnEnrichmentService isbnEnrichmentService;
 
-    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, AuthorService authorService, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorFacade authorFacade){
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookRepository bookRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorFacade authorFacade){
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.bookRepository = bookRepository;
-        this.authorService = authorService;
         this.BookFactory = bookFactory;
         this.shelfService = shelfService;
         this.bookMapper = bookMapper;
@@ -67,9 +69,9 @@ import java.util.*;
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
             String [] nameParts = authorName.split(" ", 2);
-            AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
+            AuthorDTO authorDTO = authorFacade.findOrCreateAuthor(nameParts[0],nameParts[1]);
             authors.add(nameParts[0] + " " + nameParts[1]);
-            authorEntities.add(authorEntity);
+            authorEntities.add(AuthorDTO.AuthorDTOtoEntity(authorDTO));
         }
 
         BookDTO bookDTO = new BookDTO(null,
@@ -96,7 +98,7 @@ import java.util.*;
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(AuthorDTO author : bookRequestDTO.authors()){
-            authorEntities.add(authorService.findOrCreateAuthor(author.firstName(),author.lastName()));
+            authorEntities.add(AuthorDTO.AuthorDTOtoEntity(authorFacade.findOrCreateAuthor(author.firstName(),author.lastName())));
         }
         return authorEntities;
     }
@@ -195,7 +197,7 @@ import java.util.*;
         Set<AuthorEntity> authorEntities = new HashSet<>();
         for(String authorName : bookMetaDataResponse.authors()) {
             String [] nameParts = authorName.split(" ", 2);
-            AuthorEntity authorEntity = authorService.findOrCreateAuthor(nameParts[0],nameParts[1]);
+            AuthorEntity authorEntity = AuthorDTO.AuthorDTOtoEntity(authorFacade.findOrCreateAuthor(nameParts[0],nameParts[1]));
             authorIds.add(authorEntity.getAuthorId());
             authorEntities.add(authorEntity);
         }

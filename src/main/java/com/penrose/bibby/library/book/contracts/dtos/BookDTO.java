@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.book.contracts;
 
-import com.penrose.bibby.library.author.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.book.domain.AvailabilityStatus;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;

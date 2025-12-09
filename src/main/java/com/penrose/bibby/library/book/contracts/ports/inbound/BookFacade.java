@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.book.contracts;
+package com.penrose.bibby.library.book.contracts.ports;
 
-import com.penrose.bibby.library.bookcase.contracts.BookcaseDTO;
+import com.penrose.bibby.library.book.contracts.dtos.*;
 
 import java.util.List;
 import java.util.Optional;

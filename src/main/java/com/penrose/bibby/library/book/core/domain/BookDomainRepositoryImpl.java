@@ -1,12 +1,11 @@
-package com.penrose.bibby.library.book.infrastructure.repository;
+package com.penrose.bibby.library.book.core.domain;
 
-import com.penrose.bibby.library.author.application.AuthorService;
+import com.penrose.bibby.library.author.core.application.AuthorService;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.infrastructure.repository.AuthorRepository;
-import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.book.infrastructure.mapping.BookMapperTwo;
+import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
+import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class BookDomainRepositoryImpl implements BookDomainRepository{
+public class BookDomainRepositoryImpl implements BookDomainRepository {
     private final BookMapper  bookMapper;
     private final BookRepository bookRepository;
 

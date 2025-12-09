@@ -100,27 +100,27 @@ public Shelf(String shelfLabel, int shelfPosition, int bookCapacity)
 ### Before vs After
 
 **Before:**
+
 ```java
 package com.penrose.bibby.library.shelf.domain;
 
-import com.penrose.bibby.library.book.domain.Book;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;  // ❌ Infrastructure leak
 import com.penrose.bibby.library.bookcase.domain.Bookcase;              // ❌ Cross-aggregate coupling
 
 public class Shelf {
     private Long id;
-//    private Bookcase bookCase;  // Commented but still imported
+    //    private Bookcase bookCase;  // Commented but still imported
     private String shelfLabel;
     // ...
-    
+
     public Shelf(Bookcase bookCase, String shelfLabel, int shelfPosition, int bookCapacity) {
         // ...
     }
-    
-    public void addToShelf(BookEntity book){  // ❌ Infrastructure type in domain
+
+    public void addToShelf(BookEntity book) {  // ❌ Infrastructure type in domain
         // Empty method
     }
-    
+
 //    public void addBook(Book book){  // Dead code
 //        ...
 //    }
@@ -128,10 +128,12 @@ public class Shelf {
 ```
 
 **After:**
+
 ```java
 package com.penrose.bibby.library.shelf.domain;
 
-import com.penrose.bibby.library.book.domain.Book;  // ✓ Domain-to-domain only
+import com.penrose.bibby.library.book.core.domain.Book;  // ✓ Domain-to-domain only
+
 import java.util.List;
 
 public class Shelf {
@@ -148,10 +150,10 @@ public class Shelf {
         this.bookCapacity = bookCapacity;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return books.size() >= bookCapacity;
     }
-    
+
     // ... clean getters/setters
 }
 ```

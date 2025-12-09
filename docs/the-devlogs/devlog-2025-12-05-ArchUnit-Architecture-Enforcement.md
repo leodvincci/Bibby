@@ -71,7 +71,8 @@ return shelfMapper.toDomain(entity, bookIds);
 
 ```java
 // BookCommandLine.java
-- import com.penrose.bibby.library.author.domain.Author;
+
+-
 ```
 
 ---

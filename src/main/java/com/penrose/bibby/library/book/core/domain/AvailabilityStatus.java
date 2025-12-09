@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.book.domain;
+package com.penrose.bibby.library.book.core.domain;
 
 public enum AvailabilityStatus {
     AVAILABLE,

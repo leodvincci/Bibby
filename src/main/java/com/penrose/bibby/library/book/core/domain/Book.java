@@ -1,12 +1,8 @@
-package com.penrose.bibby.library.book.domain;
+package com.penrose.bibby.library.book.core.domain;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-
-import com.penrose.bibby.library.author.domain.Author;
-import com.penrose.bibby.library.shelf.domain.Shelf;
 
 public class Book {
     private Long id;
