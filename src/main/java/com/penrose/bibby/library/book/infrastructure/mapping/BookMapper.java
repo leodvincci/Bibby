@@ -4,9 +4,9 @@ import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
+import com.penrose.bibby.library.book.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.book.core.domain.AvailabilityStatus;
-import com.penrose.bibby.library.book.core.domain.Book;
+import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
@@ -41,11 +41,11 @@ public class BookMapper {
         }
 
         Book book = new Book();
-        book.setBookId(bookDTO.id());
+        book.setBookId(new BookId(bookDTO.id()));
         book.setEdition(bookDTO.edition());
-        book.setTitle(bookDTO.title());
+        book.setTitle(new Title(bookDTO.title()));
 //        book.setAuthors(authors);
-        book.setIsbn(bookDTO.isbn());
+        book.setIsbn(new Isbn(bookDTO.isbn()));
         book.setPublisher(bookDTO.publisher());
         book.setPublicationYear(bookDTO.publicationYear());
 //        book.setGenre(genre);
@@ -59,26 +59,23 @@ public class BookMapper {
 
 
     public Book toDomain(BookEntity e,
-                         Set<AuthorDTO> authorDTOs,
+                         Set<AuthorRef> authorRefs,
                          ShelfEntity shelfDTO){
 
-        List<String> authors = new ArrayList<>();
-//        Shelf shelf = shelfMapper.toDomain(shelfEntity);
+        //        Shelf shelf = shelfMapper.toDomain(shelfEntity);
 
-        for (AuthorDTO authorDTO : authorDTOs) {
-            authors.add(authorDTO.firstName() + " " + authorDTO.lastName());
-        }
+        List<AuthorRef> authors = new ArrayList<>(authorRefs);
 
         if (e == null){
             return null;
         }
 
         Book book = new Book();
-        book.setBookId(e.getBookId());
+        book.setBookId(new BookId(e.getBookId()));
         book.setEdition(e.getEdition());
-        book.setTitle(e.getTitle());
+        book.setTitle(new Title(e.getTitle()));
         book.setAuthors(authors);
-        book.setIsbn(e.getIsbn());
+        book.setIsbn(new Isbn(e.getIsbn()));
         book.setPublisher(e.getPublisher());
         book.setPublicationYear(e.getPublicationYear());
 //        book.setGenre(genre);
@@ -131,18 +128,17 @@ public class BookMapper {
             return null;
         }
         BookEntity bookEntity = new BookEntity();
-        bookEntity.setBookId(book.getBookId());
-        bookEntity.setTitle(book.getTitle());
-        bookEntity.setIsbn(book.getIsbn());
+        bookEntity.setBookId(book.getBookId().getId());
+        bookEntity.setTitle(book.getTitle().title());
+        bookEntity.setIsbn(book.getIsbn().isbn);
 
         // Convert authors back to entities
         if (book.getAuthors() != null) {
             HashSet<AuthorEntity> authorEntities = new HashSet<>();
-            for (String author : book.getAuthors()) {
+            for (AuthorRef author : book.getAuthors()) {
                 // Assuming author string is in "First Last" format
-                String[] names = author.split(" ");
-                String firstName = names[0];
-                String lastName = names.length > 1 ? names[1] : "";
+                String firstName = author.getAuthorFirstName();
+                String lastName = author.getAuthorLastName();
                 authorEntities.add(new AuthorEntity(firstName, lastName));
             }
             bookEntity.setAuthors(authorEntities);
@@ -223,10 +219,10 @@ public class BookMapper {
             return null;
         }
         Book book = new Book();
-        book.setBookId(bookEntity.getBookId());
+        book.setBookId(new BookId(bookEntity.getBookId()));
         book.setEdition(bookEntity.getEdition());
-        book.setTitle(bookEntity.getTitle());
-        book.setIsbn(bookEntity.getIsbn());
+        book.setTitle(new Title(bookEntity.getTitle()));
+        book.setIsbn(new Isbn(bookEntity.getIsbn()));
         book.setPublisher(bookEntity.getPublisher());
         book.setPublicationYear(bookEntity.getPublicationYear());
         book.setShelfId(bookEntity.getShelfId());

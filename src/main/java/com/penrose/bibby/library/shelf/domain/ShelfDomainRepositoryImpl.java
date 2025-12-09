@@ -1,12 +1,14 @@
 package com.penrose.bibby.library.shelf.domain;
 
 import com.penrose.bibby.library.book.core.domain.Book;
+import com.penrose.bibby.library.book.core.domain.BookId;
 import com.penrose.bibby.library.book.infrastructure.repository.BookDomainRepository;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,7 +30,10 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     public Shelf getById(Long id) {
         ShelfEntity entity = jpaRepository.findById(id).orElse(null);
         List<Book> books = bookDomainRepository.getBooksByShelfId(id);
-        List<Long> bookIds = books.stream().map(Book::getBookId).toList();
+        List<Long> bookIds = new ArrayList<>();
+        for(Book book : books){
+            bookIds.add(book.getBookId().getId());
+        }
         return shelfMapper.toDomainFromDTO(entity,bookIds);
     }
 

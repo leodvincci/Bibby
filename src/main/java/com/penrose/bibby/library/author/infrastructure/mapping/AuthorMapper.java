@@ -2,6 +2,7 @@ package com.penrose.bibby.library.author.infrastructure.mapping;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.core.domain.Author;
+import com.penrose.bibby.library.author.core.domain.AuthorId;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
 import java.util.Set;
@@ -19,7 +20,8 @@ public class AuthorMapper {
     }
 
     public static Author toDomain(Long id, String firstName, String lastName){
-        return new Author(id,firstName,lastName);
+        AuthorId authorId = new AuthorId(id);
+        return new Author(authorId,firstName,lastName);
     }
 
     public static Set<Author> toDomainSet(Set<AuthorEntity> authorEntities){
@@ -34,7 +36,7 @@ public class AuthorMapper {
         Set<AuthorDTO> authorDTOs = new java.util.HashSet<>();
         for (Author author : authors) {
             AuthorDTO authorDTO = new AuthorDTO(
-                    author.getAuthorId(),
+                    author.getAuthorId().id(),
                     author.getFirstName(),
                     author.getLastName()
             );
@@ -45,7 +47,7 @@ public class AuthorMapper {
 
     public static AuthorDTO toDTO(Author author) {
         return new AuthorDTO(
-                author.getAuthorId(),
+                author.getAuthorId().id(),
                 author.getFirstName(),
                 author.getLastName()
         );
