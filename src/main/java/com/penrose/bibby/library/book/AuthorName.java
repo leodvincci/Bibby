@@ -1,13 +1,7 @@
 package com.penrose.bibby.library.book;
 
-public class AuthorName {
-    private final String firstName;
-    private final String lastName;
+public record AuthorName (String firstName, String lastName) {
 
-    public AuthorName(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     @Override
     public String toString() {

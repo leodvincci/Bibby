@@ -41,7 +41,7 @@ public class BookMapper {
         }
 
         Book book = new Book();
-        book.setId(bookDTO.id());
+        book.setBookId(bookDTO.id());
         book.setEdition(bookDTO.edition());
         book.setTitle(bookDTO.title());
 //        book.setAuthors(authors);
@@ -74,7 +74,7 @@ public class BookMapper {
         }
 
         Book book = new Book();
-        book.setId(e.getBookId());
+        book.setBookId(e.getBookId());
         book.setEdition(e.getEdition());
         book.setTitle(e.getTitle());
         book.setAuthors(authors);
@@ -131,7 +131,7 @@ public class BookMapper {
             return null;
         }
         BookEntity bookEntity = new BookEntity();
-        bookEntity.setBookId(book.getId());
+        bookEntity.setBookId(book.getBookId());
         bookEntity.setTitle(book.getTitle());
         bookEntity.setIsbn(book.getIsbn());
 
@@ -223,7 +223,7 @@ public class BookMapper {
             return null;
         }
         Book book = new Book();
-        book.setId(bookEntity.getBookId());
+        book.setBookId(bookEntity.getBookId());
         book.setEdition(bookEntity.getEdition());
         book.setTitle(bookEntity.getTitle());
         book.setIsbn(bookEntity.getIsbn());
