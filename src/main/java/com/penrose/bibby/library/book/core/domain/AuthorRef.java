@@ -18,11 +18,11 @@ public class AuthorRef {
     }
 
     public String getAuthorFirstName() {
-        return authorName.getFirstName();
+        return authorName.firstName();
     }
 
     public String getAuthorLastName() {
-        return authorName.getLastName();
+        return authorName.lastName();
     }
 
 }
