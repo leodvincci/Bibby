@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Book {
-    private Long id;
+    private BookId bookId;
     private int edition;
     private String title;
     private List<String> authors;
@@ -23,8 +23,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, List<String> authors) {
-        this.id = id;
+    public Book(BookId bookId, String title, List<String> authors) {
+        this.bookId = bookId;
         this.title = title;
         this.authors = authors;
     }
@@ -70,12 +70,12 @@ public class Book {
     }
 
 
-    public Long getId() {
-        return id;
+    public BookId getBookId() {
+        return bookId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBookId(BookId bookId) {
+        this.bookId = bookId;
     }
 
     public String getTitle() {
@@ -159,7 +159,7 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
+                "id=" + bookId +
                 ", edition=" + edition +
                 ", title='" + title + '\'' +
                 ", authors=" + authors +
@@ -181,12 +181,12 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        return Objects.equals(bookId, book.bookId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(bookId);
     }
 }
 

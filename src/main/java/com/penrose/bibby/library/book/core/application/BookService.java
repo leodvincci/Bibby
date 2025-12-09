@@ -12,6 +12,8 @@ import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.core.domain.BookFactory;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+
 import com.penrose.bibby.library.shelf.contracts.ShelfDTO;
 
 import com.penrose.bibby.library.shelf.application.ShelfService;
@@ -20,7 +22,6 @@ import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.book.infrastructure.repository.BookRepository;
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -58,43 +59,45 @@ import java.util.*;
      *                       book to be created, including its title and list of authors
      */
     @Transactional
-    public void createNewBook(BookRequestDTO bookDTO){
-        validateRequest(bookDTO);
-        validateBookDoesNotExist(bookDTO);
-        saveBook(BookFactory.createBookEntity(bookDTO.title(), extractAuthorEntities(bookDTO)));
+    public void createNewBook(Book book){
+        validateRequest(book);
+        validateBookDoesNotExist(book);
+        saveBook(BookFactory.createBookEntity(book.getTitle(), extractAuthorEntities(book.getAuthors())));
     }
 
-    public BookDTO createScannedBook(GoogleBooksResponse googleBooksResponse, String isbn, Long shelfId){
-        BookEntity bookEntity = new BookEntity();
-        List<String> authors = new ArrayList<>();
-        Set<AuthorEntity> authorEntities = new HashSet<>();
-        for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
-            String [] nameParts = authorName.split(" ", 2);
-            AuthorRef author = authorAccessPort.findOrCreateAuthor(nameParts[0],nameParts[1]);
-            authors.add(nameParts[0] + " " + nameParts[1]);
-            authorEntities.add(AuthorDTO.AuthorRefToEntity(author));
-        }
+// I think I can get rid of this method
 
-        BookDTO bookDTO = new BookDTO(null,
-                0,
-                googleBooksResponse.items().get(0).volumeInfo().title(),
-                authors,
-                isbn,
-                null,
-                googleBooksResponse.items().get(0).volumeInfo().publisher(),
-                Integer.parseInt(googleBooksResponse.items().get(0).volumeInfo().publishedDate().split("-")[0]),
-                shelfId,
-                googleBooksResponse.items().get(0).volumeInfo().description(),
-                AvailabilityStatus.AVAILABLE,
-                LocalDate.now(),
-                LocalDate.now(),
-                null
-        );
-
-        bookEntity = bookMapper.toEntityFromDTO(bookDTO,authorEntities);
-        saveBook(bookEntity);
-        return bookDTO;
-    }
+//    public BookDTO createBookFromScan(GoogleBooksResponse googleBooksResponse, String isbn, Long shelfId){
+//        BookEntity bookEntity = new BookEntity();
+//        List<String> authors = new ArrayList<>();
+//        Set<AuthorEntity> authorEntities = new HashSet<>();
+//        for(String authorName : googleBooksResponse.items().get(0).volumeInfo().authors()) {
+//            String [] nameParts = authorName.split(" ", 2);
+//            AuthorRef author = authorAccessPort.findOrCreateAuthor(nameParts[0],nameParts[1]);
+//            authors.add(nameParts[0] + " " + nameParts[1]);
+//            authorEntities.add(AuthorDTO.AuthorRefToEntity(author));
+//        }
+//
+//        BookDTO bookDTO = new BookDTO(null,
+//                0,
+//                googleBooksResponse.items().get(0).volumeInfo().title(),
+//                authors,
+//                isbn,
+//                null,
+//                googleBooksResponse.items().get(0).volumeInfo().publisher(),
+//                Integer.parseInt(googleBooksResponse.items().get(0).volumeInfo().publishedDate().split("-")[0]),
+//                shelfId,
+//                googleBooksResponse.items().get(0).volumeInfo().description(),
+//                AvailabilityStatus.AVAILABLE,
+//                LocalDate.now(),
+//                LocalDate.now(),
+//                null
+//        );
+//
+//        bookEntity = bookMapper.toEntityFromDTO(bookDTO,authorEntities);
+//        saveBook(bookEntity);
+//        return bookDTO;
+//    }
 
     private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
         Set<AuthorEntity> authorEntities = new HashSet<>();

@@ -21,7 +21,7 @@ public class BookFactory {
 
     public Book createBookDomain(BookEntity bookEntity, List<String> authors){
         Book book = new Book();
-        book.setId(bookEntity.getBookId());
+        book.setBookId(bookEntity.getBookId());
         book.setTitle(bookEntity.getTitle());
         book.setAuthors(authors);
         book.setAvailabilityStatus(AvailabilityStatus.valueOf(bookEntity.getAvailabilityStatus()));
