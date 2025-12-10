@@ -33,16 +33,23 @@ public class ShelfService implements ShelfFacade {
         this.shelfJpaRepository = shelfJpaRepository;
         this.bookJpaRepository = bookJpaRepository;
         this.bookcaseRepository = bookcaseRepository;
-        this.shelfMapper = new ShelfMapper();
+        this.shelfMapper = shelfMapper;
     }
 
     public List<ShelfEntity> getAllShelves(Long bookCaseId){
         return shelfJpaRepository.findByBookcaseId(bookCaseId);
     }
 
+    @Transactional
     public Optional<ShelfDTO> findShelfById(Long shelfId) {
         ShelfEntity shelfEntity = shelfJpaRepository.findById(shelfId).orElse(null);
-        return Optional.of(ShelfDTO.fromEntity(shelfEntity));
+
+        List<BookEntity> bookEntities = bookJpaRepository.findByShelfId(shelfId);
+        List<Long> bookIds = bookEntities.stream()
+                .map(BookEntity::getBookId)
+                .toList();
+
+        return Optional.of(ShelfDTO.fromEntityWithBookId(shelfEntity, bookIds));
     }
 
     public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
@@ -75,10 +82,10 @@ public class ShelfService implements ShelfFacade {
 
     @Override
     public Boolean isFull(ShelfDTO shelfDTO) {
-        Optional<ShelfEntity> shelfEntity = shelfJpaRepository.findById(shelfDTO.shelfId());
-        Shelf shelf = shelfEntity.map(shelfMapper::toDomain).orElse(null);
-        assert shelf != null;
-        return shelf.isFull();
+        return shelfJpaRepository.findById(shelfDTO.shelfId())
+                .map(shelfMapper::toDomain)
+                .map(Shelf::isFull)
+                .orElseThrow(() -> new RuntimeException("Shelf not found with ID: " + shelfDTO.shelfId()));
     }
 
     public List<ShelfOptionResponse> getShelfOptions() {

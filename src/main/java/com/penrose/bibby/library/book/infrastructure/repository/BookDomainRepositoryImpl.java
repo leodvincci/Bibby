@@ -62,4 +62,25 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
         bookEntity.setUpdatedAt(LocalDate.now());
         bookJpaRepository.save(bookEntity);
     }
+
+    @Override
+    public void updateBook(Book book) {
+        BookEntity bookEntity = bookJpaRepository.findById(book.getBookId().getId()).get();
+        bookEntity.setIsbn(book.getIsbn().isbn);
+        bookEntity.setTitle(book.getTitle().title());
+        bookEntity.setShelfId(book.getShelfId());
+        bookEntity.setGenre(book.getGenre());
+        bookEntity.setDescription(book.getDescription());
+        bookEntity.setAvailabilityStatus(book.getAvailabilityStatus().toString());
+        Set<AuthorEntity> authorEntities = bookMapper.toEntitySetFromAuthorRefs(book.getAuthors());
+        bookEntity.setAuthors(authorEntities);
+        bookEntity.setPublicationYear(book.getPublicationYear());
+        bookEntity.setUpdatedAt(LocalDate.now());
+        bookJpaRepository.save(bookEntity);
+    }
+
+    @Override
+    public BookEntity findBookEntityByTitle(String bookTitle) {
+        return bookJpaRepository.findByTitle(bookTitle);
+    }
 }

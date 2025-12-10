@@ -27,4 +27,5 @@ public interface BookFacade {
     BookDetailView getBookDetails(Long bookId);
 
     Optional<BookDTO> findBookById(Long bookId);
+
 }

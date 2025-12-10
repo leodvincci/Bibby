@@ -126,9 +126,11 @@ public class BookCommands extends AbstractShellComponent {
         }else {
             Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
             Long shelfId = cliPrompt.promptForShelf(bookCaseId);
+
+            //Checks if shelf is full/capacity reached
             Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(shelfId);
-            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
-            if(isFull){
+//            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
+            if(shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()){
                 throw new IllegalStateException("Shelf is full");
             }else{
 
@@ -170,8 +172,8 @@ public class BookCommands extends AbstractShellComponent {
     //
     // ───────────────────────────────────────────────────────────────────
 
-    @Command(command = "search", description = "Search for books by title, author, genre, or location using an interactive prompt.")
-    public void searchBook() throws InterruptedException {
+    @Command(command = "find", description = "Find a book by title, author, genre, or location using an interactive prompt.")
+    public void findBook() throws InterruptedException {
         String searchType = cliPrompt.promptForSearchType();
         if (searchType.equalsIgnoreCase("author")){
             searchByAuthor();
@@ -236,7 +238,7 @@ public class BookCommands extends AbstractShellComponent {
             System.out.println("\nBook Was Found \nBookcase: " + bookcaseDTO.get().bookcaseLabel() + "\n" + shelfDTO.get().shelfLabel() + "\n");
         }
         if (cliPrompt.promptSearchAgain()){
-            searchBook();
+            findBook();
         }
     }
 //

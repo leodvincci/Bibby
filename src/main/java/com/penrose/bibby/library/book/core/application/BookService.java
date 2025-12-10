@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.book.core.application;
 
+import com.penrose.bibby.library.book.contracts.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
@@ -13,7 +14,6 @@ import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 
-import com.penrose.bibby.library.shelf.core.application.ShelfService;
 
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
@@ -25,7 +25,6 @@ import java.util.*;
 
 @Service
     public class BookService implements BookFacade {
-    private final ShelfService shelfService;
     private final BookJpaRepository bookJpaRepository;
     private final AuthorAccessPort authorAccessPort;
 
@@ -34,18 +33,22 @@ import java.util.*;
     private final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
     private final BookDomainRepository bookDomainRepository;
+    private final ShelfAccessPort shelfAccessPort;
     Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
 
-    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookJpaRepository bookJpaRepository, BookFactory bookFactory, ShelfService shelfService, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorAccessPort authorAccessPort, BookDomainRepository bookDomainRepository){
+    public BookService(IsbnEnrichmentService isbnEnrichmentService, BookJpaRepository bookJpaRepository, BookFactory bookFactory, BookMapper bookMapper, IsbnLookupService isbnLookupService, AuthorAccessPort authorAccessPort, BookDomainRepository bookDomainRepository, ShelfAccessPort shelfAccessPort){
         this.isbnEnrichmentService = isbnEnrichmentService;
         this.bookJpaRepository = bookJpaRepository;
         this.BookFactory = bookFactory;
-        this.shelfService = shelfService;
         this.bookMapper = bookMapper;
         this.isbnLookupService = isbnLookupService;
         this.authorAccessPort = authorAccessPort;
         this.bookDomainRepository = bookDomainRepository;
+        this.shelfAccessPort = shelfAccessPort;
+
+
+
     }
 
     // ============================================================
@@ -161,6 +164,9 @@ import java.util.*;
         return Optional.of(BookDTO.fromEntity(bookEntity));
     }
 
+
+
+
     public List<BookEntity> findBooksByShelf(Long id){
         return bookJpaRepository.findByShelfId(id);
     }
@@ -264,7 +270,7 @@ import java.util.*;
     public BookEntity assignBookToShelf(Long bookId, Long shelfId) {
         BookEntity bookEntity = bookJpaRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
-        ShelfDTO shelf = shelfService.findShelfById(shelfId)
+        ShelfDTO shelf = shelfAccessPort.findShelfById(shelfId)
                 .orElseThrow(() -> new IllegalArgumentException("Shelf not found: " + shelfId));
 
         long bookCount = bookJpaRepository.countByShelfId(shelfId);
@@ -274,7 +280,7 @@ import java.util.*;
 
         bookEntity.setShelfId(shelfId);
         Book book = bookMapper.toDomainFromEntity(bookEntity);
-        registerBook(book);
+        bookDomainRepository.updateBook(book);
         return bookEntity;
     }
 
@@ -294,14 +300,13 @@ import java.util.*;
 
 
     public Book bookMapper(BookDTO bookDTO, Set<AuthorDTO> authorDTOs){
-        Optional<ShelfDTO> shelfEntity = shelfService.findShelfById(bookDTO.shelfId());
+        Optional<ShelfDTO> shelfEntity = shelfAccessPort.findShelfById(bookDTO.shelfId());
         return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
     }
 
 
-    // todo: use bookDomainRepository instead of bookJpaRepository directly
     public void checkInBook(String bookTitle){
-        BookEntity bookEntity = bookJpaRepository.findBookEntityByTitle(bookTitle);
+        BookEntity bookEntity = bookDomainRepository.findBookEntityByTitle(bookTitle);
         bookEntity.checkIn();
         Book book = bookMapper.toDomainFromEntity(bookEntity);
         registerBook(book);
@@ -322,7 +327,7 @@ import java.util.*;
                 .orElseThrow(() -> new IllegalArgumentException("Book not found: " + id));
         bookEntity.setShelfId(shelfId);
         Book book = bookMapper.toDomainFromEntity(bookEntity);
-        registerBook(book);
+        bookDomainRepository.updateBook(book);
     }
 }
 

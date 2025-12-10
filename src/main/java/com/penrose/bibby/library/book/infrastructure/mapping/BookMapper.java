@@ -10,7 +10,6 @@ import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,10 +18,9 @@ import java.util.List;
 import java.util.Set;
 @Component
 public class BookMapper {
-    ShelfMapper shelfMapper;
 
-    private BookMapper(ShelfMapper shelfMapper){
-        this.shelfMapper = shelfMapper;
+    private BookMapper(){
+
     }
 
     public Book toDomain(BookDTO bookDTO,
@@ -30,7 +28,6 @@ public class BookMapper {
                          ShelfDTO shelfDTO){
 
         HashSet<Author> authors = new HashSet<>();
-//        Shelf shelf = shelfMapper.toDomain(shelfEntity);
 
         for (AuthorDTO authorDTO : authorDTOs) {
             authors.add(AuthorMapper.toDomain(authorDTO.id(), authorDTO.firstName(), authorDTO.lastName()));
@@ -62,7 +59,6 @@ public class BookMapper {
                          Set<AuthorRef> authorRefs,
                          ShelfEntity shelfDTO){
 
-        //        Shelf shelf = shelfMapper.toDomain(shelfEntity);
 
         List<AuthorRef> authors = new ArrayList<>(authorRefs);
 
@@ -93,7 +89,6 @@ public class BookMapper {
 //                         ShelfEntity shelfDTO){
 //
 //        HashSet<Author> authors = new HashSet<>();
-////        Shelf shelf = shelfMapper.toDomain(shelfEntity);
 //        Shelf shelf = shelfDomainRepositoryImpl.getById(shelfDTO.getShelfId());
 //
 //        for (AuthorEntity authorEntity : authorEntities) {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Component
 public class AuthorAccessPortAdapter implements AuthorAccessPort {
-    AuthorFacade authorFacade;
+    private final AuthorFacade authorFacade;
 
     public AuthorAccessPortAdapter(AuthorFacade authorFacade) {
         this.authorFacade = authorFacade;

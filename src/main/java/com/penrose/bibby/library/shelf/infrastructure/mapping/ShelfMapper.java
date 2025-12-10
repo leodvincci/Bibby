@@ -10,6 +10,10 @@ import java.util.List;
 public class ShelfMapper {
 
 
+
+    public ShelfMapper() {
+    }
+
     public Shelf toDomain(ShelfEntity shelfEntity){
         Shelf shelf = new Shelf();
         shelf.setId(shelfEntity.getShelfId());
@@ -17,7 +21,6 @@ public class ShelfMapper {
         shelf.setLabel(shelfEntity.getShelfLabel());
         shelf.setShelfPosition(shelfEntity.getShelfPosition());
         shelf.setShelfDescription(shelfEntity.getShelfDescription());
-
         return shelf;
     }
 
