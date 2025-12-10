@@ -1,6 +1,7 @@
 package com.penrose.bibby.infrastructure.web.book;
 
 import com.penrose.bibby.library.author.infrastructure.repository.AuthorJpaRepository;
+import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
@@ -23,14 +24,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookController {
 
     final BookService bookService;
+    final BookFacade bookFacade;
     final AuthorJpaRepository authorJpaRepository;
     final IsbnLookupService isbnLookupService;
     private final IsbnEnrichmentService isbnEnrichmentService;
     private final ShelfService shelfService;
     private final BookcaseService bookcaseService;
 
-    public BookController(BookService bookService, AuthorJpaRepository authorJpaRepository, IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
+    public BookController(BookService bookService, BookFacade bookFacade, AuthorJpaRepository authorJpaRepository, IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService, ShelfService shelfService, BookcaseService bookcaseService){
         this.bookService = bookService;
+        this.bookFacade = bookFacade;
         this.authorJpaRepository = authorJpaRepository;
         this.isbnLookupService = isbnLookupService;
         this.isbnEnrichmentService = isbnEnrichmentService;
@@ -38,9 +41,10 @@ public class BookController {
         this.bookcaseService = bookcaseService;
     }
 
+    //todo: remove commented code after testing
     @PostMapping("api/v1/books")
     public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-        bookService.createNewBook(requestDTO);
+        bookFacade.createNewBook(requestDTO);
         return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
     }
 
