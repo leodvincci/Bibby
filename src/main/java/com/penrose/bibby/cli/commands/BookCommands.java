@@ -1,6 +1,8 @@
 package com.penrose.bibby.cli.commands;
 
 import com.penrose.bibby.cli.ConsoleColors;
+import org.jline.utils.Log;
+import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -8,7 +10,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellOption;
 
-import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
 import com.penrose.bibby.library.book.contracts.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
@@ -32,25 +33,23 @@ public class BookCommands extends AbstractShellComponent {
     private final AuthorFacade authorFacade;
     private final BookFacade bookFacade;
     private final BookcaseFacade bookcaseFacade;
-    private final PromptFacade promptFacade;
     private final ShelfFacade shelfFacade;
     private final CliPromptService cliPrompt;
     private final ComponentFlow.Builder componentFlowBuilder;
-
+    Logger log = org.slf4j.LoggerFactory.getLogger(BookCommands.class);
 
     public BookCommands(ComponentFlow.Builder componentFlowBuilder,
                         AuthorFacade authorFacade,
                         ShelfFacade shelfFacade,
                         CliPromptService cliPrompt,
                         BookFacade bookFacade,
-                        BookcaseFacade bookcaseFacade, PromptFacade promptFacade) {
+                        BookcaseFacade bookcaseFacade) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.authorFacade = authorFacade;
         this.shelfFacade = shelfFacade;
         this.cliPrompt = cliPrompt;
         this.bookFacade = bookFacade;
         this.bookcaseFacade = bookcaseFacade;
-        this.promptFacade = promptFacade;
     }
 
     // ───────────────────────────────────────────────────────────────────
@@ -89,7 +88,7 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
-    @Command(command = "register", description = "register a new book to your library")
+    @Command(command = "new", description = "register a new book to your library")
     public void registerBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
         if(scan == null && multi == null){
             scanBook("multi");
@@ -97,19 +96,22 @@ public class BookCommands extends AbstractShellComponent {
         }else if(multi != null){
             multiBookScan();
             return;
-
         }
         String title = cliPrompt.promptForBookTitle();
         int authorCount = cliPrompt.promptForBookAuthorCount();
         List<AuthorDTO> authors = new ArrayList<>();
 
         for (int i = 0; i < authorCount; i++) {
-            authors.add(cliPrompt.promptForAuthor());
+            authors.add(authorFacade.saveAuthor(cliPrompt.promptForAuthor()));
+            log.info("Author added: {}", authors.get(i));
         }
 
         String isbn = cliPrompt.promptForBookIsbn();
-
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title, authors,isbn);
+//        authorFacade.saveAllAuthors(authors);
+        log.info("Authors saved: {}", authors);
+        log.info("Registering new book with title: {} and ISBN: {}", title, isbn);
+        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,isbn,authors);
+        log.info("BookRequestDTO created: {}", bookRequestDTO);
         bookFacade.createNewBook(bookRequestDTO);
 
         System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
@@ -120,22 +122,25 @@ public class BookCommands extends AbstractShellComponent {
 
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
+        // What if the library has multiple copies of the same book title?
+        // For now, we will assume titles are unique
+        // todo(priority 2): prompt user to select from multiple copies if found
         String title = cliPrompt.promptForBookTitle();
         BookDTO bookDTO = bookFacade.findBookByTitle(title);
         if(bookDTO == null){
             System.out.println("Book Not Found In Library");
         }else {
             Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
-            Long shelfId = cliPrompt.promptForShelf(bookCaseId);
+            Long newShelfId = cliPrompt.promptForShelf(bookCaseId);
 
             //Checks if shelf is full/capacity reached
-            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(shelfId);
+            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(newShelfId);
 //            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
             if(shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()){
                 throw new IllegalStateException("Shelf is full");
             }else{
 
-                bookFacade.setShelfForBook(bookDTO.id(), shelfId);
+                bookFacade.updateTheBooksShelf(bookDTO, newShelfId);
 
                 System.out.println("Added Book To the Shelf!");
             }
@@ -279,6 +284,8 @@ public class BookCommands extends AbstractShellComponent {
     public void searchByTitle() throws InterruptedException {
         System.out.println("\n\u001B[95mSearch by Title");
         String title = cliPrompt.promptForBookTitle();
+
+        log.info("Searching for book with title: {}", title);
         BookDTO bookDTO = bookFacade.findBookByTitle(title);
 
         if (bookDTO == null) {
