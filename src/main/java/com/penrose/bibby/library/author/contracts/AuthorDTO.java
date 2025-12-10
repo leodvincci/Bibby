@@ -43,4 +43,9 @@ public record AuthorDTO (Long id, String firstName, String lastName) {
         authorEntity.setLastName(authorRef.getAuthorLastName());
         return authorEntity;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
