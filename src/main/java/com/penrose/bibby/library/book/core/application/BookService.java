@@ -2,15 +2,12 @@ package com.penrose.bibby.library.book.core.application;
 
 import com.penrose.bibby.library.book.contracts.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.book.contracts.dtos.*;
-import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.book.contracts.ports.outbound.AuthorAccessPort;
 import com.penrose.bibby.library.book.core.domain.*;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 
@@ -24,7 +21,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-    public class BookService implements BookFacade {
+    public class BookService {
     private final BookJpaRepository bookJpaRepository;
     private final AuthorAccessPort authorAccessPort;
 
@@ -54,30 +51,19 @@ import java.util.*;
     // ============================================================
     //      CREATE Operations
     // ============================================================
-
-    /**
-     * Creates a new book entry in the system. Validates that the book does not already
-     * exist, extracts associated author entities, and persists the book to storage.
-     *
-     * @param bookDTO the data transfer object containing information about the
-     *                       book to be created, including its title and list of authors
-     */
-    @Transactional
-    public void createNewBook(BookRequestDTO bookDTO){
-//        validateRequest(bookDTO);
-//        validateBookDoesNotExist(bookDTO);
-
-        Book book = new Book();
-        book.setTitle(new Title(bookDTO.title()));
-        List<AuthorRef> authorRefs = new ArrayList<>();
-        for(AuthorDTO authorDTO : bookDTO.authors()){
-            AuthorRef authorRef = new AuthorRef(null, new AuthorName(authorDTO.firstName(), authorDTO.lastName()));
-            authorRefs.add(authorRef);
-        }
-        book.setIsbn(new Isbn(bookDTO.isbn()));
-        registerBook(book);
-        logger.info("Created new book: {}", bookDTO.title());
-    }
+//
+//    /**
+//     * Creates a new book entry in the system. Validates that the book does not already
+//     * exist, extracts associated author entities, and persists the book to storage.
+//     *
+//     * @param bookDTO the data transfer object containing information about the
+//     *                       book to be created, including its title and list of authors
+//     */
+//    @Transactional
+//    public void createNewBook(BookRequestDTO bookDTO){
+//        bookDomainRepository.registerBook(bookDTO);
+//        logger.info("Created new book: {}", bookDTO.title());
+//    }
 
 // I think I can get rid of this method
 
@@ -113,13 +99,13 @@ import java.util.*;
 //        return bookDTO;
 //    }
 
-    private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
-        Set<AuthorEntity> authorEntities = new HashSet<>();
-        for(AuthorDTO author : bookRequestDTO.authors()){
-            authorEntities.add(AuthorDTO.AuthorRefToEntity(authorAccessPort.findOrCreateAuthor(author.firstName(),author.lastName())));
-        }
-        return authorEntities;
-    }
+//    private Set<AuthorEntity> extractAuthorEntities(BookRequestDTO bookRequestDTO){
+//        Set<AuthorEntity> authorEntities = new HashSet<>();
+//        for(AuthorDTO author : bookRequestDTO.authors()){
+//            authorEntities.add(AuthorDTO.AuthorRefToEntity(authorAccessPort.findOrCreateAuthor(author.firstName(),author.lastName())));
+//        }
+//        return authorEntities;
+//    }
 
 
     private void validateBookDoesNotExist(BookRequestDTO bookDTO){
@@ -130,30 +116,30 @@ import java.util.*;
 
     }
 
-    private void validateRequest(BookRequestDTO bookDTO) {
-        if (bookDTO == null) {
-            throw new IllegalArgumentException("Book request cannot be null");
-        }
-        if (bookDTO.title() == null || bookDTO.title().isBlank()) {
-            throw new IllegalArgumentException("Book title cannot be blank");
-        }
-        if (bookDTO.authors() == null || bookDTO.authors().isEmpty()) {
-            throw new IllegalArgumentException("Book must have at least one author");
-        }
-
-        // Validate each author
-        for (AuthorDTO author : bookDTO.authors()) {
-            if (author == null) {
-                throw new IllegalArgumentException("Author cannot be null");
-            }
-            if (author.firstName() == null || author.firstName().isBlank()) {
-                throw new IllegalArgumentException("Author first name cannot be blank");
-            }
-            if (author.lastName() == null || author.lastName().isBlank()) {
-                throw new IllegalArgumentException("Author last name cannot be blank");
-            }
-        }
-    }
+//    private void validateRequest(BookRequestDTO bookDTO) {
+//        if (bookDTO == null) {
+//            throw new IllegalArgumentException("Book request cannot be null");
+//        }
+//        if (bookDTO.title() == null || bookDTO.title().isBlank()) {
+//            throw new IllegalArgumentException("Book title cannot be blank");
+//        }
+//        if (bookDTO.authors() == null || bookDTO.authors().isEmpty()) {
+//            throw new IllegalArgumentException("Book must have at least one author");
+//        }
+//
+//        // Validate each author
+//        for (AuthorDTO author : bookDTO.authors()) {
+//            if (author == null) {
+//                throw new IllegalArgumentException("Author cannot be null");
+//            }
+//            if (author.firstName() == null || author.firstName().isBlank()) {
+//                throw new IllegalArgumentException("Author first name cannot be blank");
+//            }
+//            if (author.lastName() == null || author.lastName().isBlank()) {
+//                throw new IllegalArgumentException("Author last name cannot be blank");
+//            }
+//        }
+//    }
 
 
     // ============================================================
@@ -192,54 +178,47 @@ import java.util.*;
 
     }
 
-    @Override
-    public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
-        GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
-        if (googleBooksResponse == null || googleBooksResponse.items() == null || googleBooksResponse.items().isEmpty()) {
-            throw new IllegalArgumentException("No book data found for ISBN: " + isbn);
-        }
-        BookEntity bookEntity = isbnEnrichmentService.enrichIsbn(googleBooksResponse, isbn);
+//    @Override
+//    public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
+//        GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
+//        if (googleBooksResponse == null || googleBooksResponse.items() == null || googleBooksResponse.items().isEmpty()) {
+//            throw new IllegalArgumentException("No book data found for ISBN: " + isbn);
+//        }
+//        BookEntity bookEntity = isbnEnrichmentService.enrichIsbn(googleBooksResponse, isbn);
+//
+//        List<String> authors = bookEntity.getAuthors().stream()
+//                .map(author -> author.getFirstName() + " " + author.getLastName())
+//                .toList();
+//
+//        return new BookMetaDataResponse(
+//                bookEntity.getBookId(),
+//                bookEntity.getTitle(),
+//                bookEntity.getIsbn(),
+//                authors,
+//                bookEntity.getPublisher(),
+//                bookEntity.getDescription()
+//        );
+//    }
 
-        List<String> authors = bookEntity.getAuthors().stream()
-                .map(author -> author.getFirstName() + " " + author.getLastName())
-                .toList();
-
-        return new BookMetaDataResponse(
-                bookEntity.getBookId(),
-                bookEntity.getTitle(),
-                bookEntity.getIsbn(),
-                authors,
-                bookEntity.getPublisher(),
-                bookEntity.getDescription()
-        );
-    }
-
-    @Override
-    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
-        BookEntity bookEntity = new BookEntity();
-        Set<Long> authorIds = new HashSet<>();
-        Set<AuthorEntity> authorEntities = new HashSet<>();
-        for(String authorName : bookMetaDataResponse.authors()) {
-            String [] nameParts = authorName.split(" ", 2);
-            AuthorEntity authorEntity = AuthorDTO.AuthorRefToEntity(authorAccessPort.findOrCreateAuthor(nameParts[0],nameParts[1]));
-            authorIds.add(authorEntity.getAuthorId());
-            authorEntities.add(authorEntity);
-        }
-
-
-        bookEntity.setTitle(bookMetaDataResponse.title());
-        bookEntity.setIsbn(isbn);
-        bookEntity.setPublisher(bookMetaDataResponse.publisher());
-        bookEntity.setDescription(bookMetaDataResponse.description());
-        bookEntity.setShelfId(shelfId);
-        bookEntity.setAuthors(authorEntities);
-        bookEntity.setCreatedAt(LocalDate.now());
-        bookEntity.setUpdatedAt(LocalDate.now());
-        bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.toString());
-        Book book = bookMapper.toDomainFromEntity(bookEntity);
-        registerBook(book);
-
-    }
+//    @Override
+//    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
+//
+////        Book book = bookMapper.toDomainFromMetaData(bookMetaDataResponse, isbn, shelfId);
+////
+////        bookEntity.setTitle(bookMetaDataResponse.title());
+////        bookEntity.setIsbn(isbn);
+////        bookEntity.setPublisher(bookMetaDataResponse.publisher());
+////        bookEntity.setDescription(bookMetaDataResponse.description());
+////        bookEntity.setShelfId(shelfId);
+////        bookEntity.setAuthors(authorEntities);
+////        bookEntity.setCreatedAt(LocalDate.now());
+////        bookEntity.setUpdatedAt(LocalDate.now());
+////        bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.toString());
+////        Book book = bookMapper.toDomainFromEntity(bookEntity);
+////        registerBook(book);
+//        bookDomainRepository.registerBookFromMetaData(bookMetaDataResponse, isbn, shelfId);;
+//
+//    }
 
     public List<BookEntity> findBookByKeyword(String keyword){
         List<BookEntity> bookEntities = bookJpaRepository.findByTitleContaining(keyword);
@@ -253,20 +232,15 @@ import java.util.*;
         return bookJpaRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
     }
 
-    public BookDetailView getBookDetails(Long bookId){
-        return bookJpaRepository.getBookDetailView(bookId);
-    }
+//    public BookDetailView getBookDetails(Long bookId){
+//        return bookJpaRepository.getBookDetailView(bookId);
+//    }
 
 
     // ============================================================
     // UPDATE Operations
     // ============================================================
 
-
-
-    public void registerBook(Book book){
-        bookDomainRepository.registerBook(book);
-    }
 
 
 
@@ -289,16 +263,17 @@ import java.util.*;
 
 
     public void checkOutBook(BookDTO bookDTO){
-        Set<AuthorDTO> authorEntities = authorAccessPort.findByBookId(bookDTO.id());
-
-        // Create domain object for business logic validation
-        Book book = bookMapper(bookDTO, new HashSet<>(authorEntities));
-        book.checkout(); // This validates and updates the domain object status
-
-        // Update the entity directly instead of converting back
-        book.setAvailabilityStatus(book.getAvailabilityStatus());
-        BookEntity bookEntity = bookMapper.toEntity(book);
-        registerBook(book);
+//        Set<AuthorDTO> authorEntities = authorAccessPort.findByBookId(bookDTO.id());
+//
+//        // Create domain object for business logic validation
+//        Book book = bookMapper(bookDTO, new HashSet<>(authorEntities));
+//        book.checkout(); // This validates and updates the domain object status
+//
+//        // Update the entity directly instead of converting back
+//        book.setAvailabilityStatus(book.getAvailabilityStatus());
+//        BookEntity bookEntity = bookMapper.toEntity(book);
+//        registerBook(book);
+        bookDomainRepository.updateAvailabilityStatus(bookDTO.title());
     }
 
 
@@ -309,10 +284,11 @@ import java.util.*;
 
 
     public void checkInBook(String bookTitle){
-        BookEntity bookEntity = bookDomainRepository.findBookEntityByTitle(bookTitle);
-        bookEntity.checkIn();
-        Book book = bookMapper.toDomainFromEntity(bookEntity);
-        registerBook(book);
+        bookDomainRepository.updateAvailabilityStatus(bookTitle);
+//        BookEntity bookEntity = bookDomainRepository.findBookEntityByTitle(bookTitle);
+//        bookEntity.checkIn();
+//        Book book = bookMapper.toDomainFromEntity(bookEntity);
+//        registerBook(book);
     }
 
     public BookDTO findBookByIsbn(String isbn) {
@@ -323,14 +299,7 @@ import java.util.*;
         return bookMapper.toDTOfromEntity(bookEntity);
     }
 
-    @Override
-    public void setShelfForBook(Long id, Long shelfId) {
-        BookEntity bookEntity = bookJpaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found: " + id));
-        bookEntity.setShelfId(shelfId);
-        Book book = bookMapper.toDomainFromEntity(bookEntity);
-        bookDomainRepository.updateBook(book);
-    }
+
 }
 
 

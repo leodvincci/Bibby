@@ -1,15 +1,19 @@
 package com.penrose.bibby.library.book.infrastructure.mapping;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
+import com.penrose.bibby.library.book.contracts.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.book.contracts.dtos.BookRequestDTO;
 import com.penrose.bibby.library.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,9 +22,11 @@ import java.util.List;
 import java.util.Set;
 @Component
 public class BookMapper {
+    private final AuthorFacade authorFacade;
+    Logger log = org.slf4j.LoggerFactory.getLogger(BookMapper.class);
 
-    private BookMapper(){
-
+    private BookMapper(AuthorFacade authorFacade){
+        this.authorFacade = authorFacade;
     }
 
     public Book toDomain(BookDTO bookDTO,
@@ -233,12 +239,57 @@ public class BookMapper {
         Set<AuthorEntity> authorEntities = new HashSet<>();
         if (authors != null) {
             for (AuthorRef author : authors) {
+
                 AuthorEntity authorEntity = new AuthorEntity();
-                authorEntity.setFirstName(author.getAuthorFirstName());
-                authorEntity.setLastName(author.getAuthorLastName());
+                authorEntity.setAuthorId(author.getAuthorId());
+
+                log.info("Looking up AuthorEntity for AuthorRef ID: " + author.getAuthorId());
+                log.info("Fetched AuthorEntity from AuthorFacade: " + authorEntity.getFirstName() + " " + authorEntity.getLastName());
+//                authorEntity.setFirstName(author.getAuthorFirstName());
+//                authorEntity.setLastName(author.getAuthorLastName());
+                log.info("Mapping AuthorRef to AuthorEntity: " + author.getAuthorFirstName() + " " + author.getAuthorLastName());
                 authorEntities.add(authorEntity);
             }
         }
         return authorEntities;
+    }
+
+    public Book toDomainFromDTO(BookDTO bookDTO) {
+        if (bookDTO == null){
+            return null;
+        }
+        Book book = new Book();
+        book.setBookId(new BookId(bookDTO.id()));
+        book.setEdition(bookDTO.edition());
+        book.setTitle(new Title(bookDTO.title()));
+        book.setIsbn(new Isbn(bookDTO.isbn()));
+        book.setPublisher(bookDTO.publisher());
+        book.setPublicationYear(bookDTO.publicationYear());
+        book.setShelfId(bookDTO.shelfId());
+        book.setDescription(bookDTO.description());
+        book.setAvailabilityStatus(bookDTO.availabilityStatus());
+        book.setCreatedAt(bookDTO.createdAt());
+        book.setUpdatedAt(bookDTO.updatedAt());
+        return book;
+    }
+
+    public Book toDomainFromBookRequestDTO(BookRequestDTO bookRequestDTO) {
+        if (bookRequestDTO == null){
+            return null;
+        }
+        List<AuthorRef> authors = new ArrayList<>();
+        for(AuthorDTO author : bookRequestDTO.authors()){
+            String firstName = author.firstName();
+            String lastName = author.lastName();
+            Long id = author.id();
+            authors.add(new AuthorRef(id,new AuthorName(firstName, lastName)));
+        }
+        Book book = new Book();
+        book.setTitle(new Title(bookRequestDTO.title()));
+        book.setIsbn(new Isbn(bookRequestDTO.isbn()));
+        book.setAvailabilityStatus(AvailabilityStatus.AVAILABLE);
+        book.setAuthors(authors);
+        log.info("Mapped BookRequestDTO to Book domain with title: " + book.getTitle().title());
+        return book;
     }
 }

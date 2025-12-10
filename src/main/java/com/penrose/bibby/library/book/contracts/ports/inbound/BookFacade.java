@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookFacade {
-    void setShelfForBook(Long id, Long shelfId);
+    void updateTheBooksShelf(BookDTO bookDTO, Long newShelfId);
 
     BookDTO findBookByIsbn(String isbn);
 
