@@ -1,19 +1,22 @@
 package com.penrose.bibby.library.author.infrastructure.repository;
 
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.core.domain.Author;
-import com.penrose.bibby.library.author.core.domain.AuthorId;
 import com.penrose.bibby.library.author.core.domain.AuthorRepository;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.author.infrastructure.mapping.AuthorMapper;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public class AuthorRepositoryImpl implements AuthorRepository  {
+public class AuthorRepositoryImpl implements AuthorRepository {
 
     private final AuthorJpaRepository authorJpaRepository;
+    Logger logger = org.slf4j.LoggerFactory.getLogger(AuthorRepositoryImpl.class);
 
     public AuthorRepositoryImpl(AuthorJpaRepository authorJpaRepository) {
         this.authorJpaRepository = authorJpaRepository;
@@ -86,12 +89,16 @@ public class AuthorRepositoryImpl implements AuthorRepository  {
      * @param authorLastName the author's family name
      * @return the newly created Author domain object, including its generated ID
      */
+
     @Override
-    public Author createAuthor(String authorFirstName, String authorLastName) {
-        AuthorEntity authorEntity = new AuthorEntity(authorFirstName,authorLastName);
+    public Optional<Author> createAuthor(String authorFirstName, String authorLastName) {
+        AuthorEntity authorEntity = new AuthorEntity(authorFirstName, authorLastName);
+        System.out.println("Creating author: " + authorFirstName + " " + authorLastName);
         authorJpaRepository.save(authorEntity);
-        AuthorId authorId = new AuthorId(authorEntity.getAuthorId());
-        return new Author(authorId, authorEntity.getFirstName(), authorEntity.getLastName());
+        logger.info("Created author with ID: {}", authorEntity.getAuthorId());
+//        AuthorId authorId = new AuthorId(authorEntity.getAuthorId());
+        Optional<AuthorEntity> newAuthorEntity = authorJpaRepository.findByFirstNameAndLastName(authorFirstName, authorLastName);
+        return Optional.of(AuthorMapper.toDomain(newAuthorEntity.get().getAuthorId(), newAuthorEntity.get().getFirstName(), newAuthorEntity.get().getLastName()));
     }
 
 
@@ -108,5 +115,22 @@ public class AuthorRepositoryImpl implements AuthorRepository  {
             return Optional.of(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void saveAll(List<AuthorDTO> authors) {
+        List<AuthorEntity> authorEntities = AuthorMapper.toEntityList(authors);
+        authorJpaRepository.saveAll(authorEntities);
+
+    }
+
+    @Override
+    public AuthorDTO saveAuthor(Author author) {
+        AuthorEntity authorEntity = new AuthorEntity();
+        authorEntity.setFirstName(author.getFirstName());
+        authorEntity.setLastName(author.getLastName());
+        authorJpaRepository.save(authorEntity);
+        logger.info("Saved author with ID: {}", authorEntity.getAuthorId());
+        return AuthorMapper.toDTO(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
     }
 }

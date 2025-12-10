@@ -1,7 +1,9 @@
 package com.penrose.bibby.library.author.core.domain;
 
+import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,9 +40,13 @@ public interface AuthorRepository {
      * @param authorLastName the author's family name
      * @return the newly created Author domain object, including its generated ID
      */
-    Author createAuthor(String authorFirstName, String authorLastName);
+    Optional<Author> createAuthor(String authorFirstName, String authorLastName);
 
     void updateAuthor(Author author);
 
     Optional<Author> findByFirstNameAndLastName(String firstName, String lastName);
+
+    void saveAll(List<AuthorDTO> authors);
+
+    AuthorDTO saveAuthor(Author author);
 }

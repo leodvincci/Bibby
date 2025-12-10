@@ -64,8 +64,8 @@ public class AuthorService {
     /**
      Creates a new Author using the provided first and last name, persists it, and returns the resulting domain Author.
      */
-   public Author createAuthor(String authorFirstName, String authorLastName){
-        return authorRepository.createAuthor(authorFirstName,authorLastName);
+   public void createAuthor(String authorFirstName, String authorLastName){
+         authorRepository.createAuthor(authorFirstName,authorLastName);
    }
 
 
@@ -89,17 +89,17 @@ public class AuthorService {
         authorRepository.updateAuthor(author);
    }
 
-   /**
-    * Finds an existing Author by first and last name, or creates a new one if none exists.
-    *
-    * @param authorFirstName the author's given name
-    * @param authorLastName the author's family name
-    * @return the existing or newly created Author domain object
-    */
-   public Author findOrCreateAuthor(String authorFirstName, String authorLastName){
-        Optional<Author> existingAuthor = findAuthorByName(authorFirstName,authorLastName);
-        return existingAuthor.orElseGet(()-> createAuthor(authorFirstName,authorLastName));
-   }
+//   /**
+//    * Finds an existing Author by first and last name, or creates a new one if none exists.
+//    *
+//    * @param authorFirstName the author's given name
+//    * @param authorLastName the author's family name
+//    * @return the existing or newly created Author domain object
+//    */
+//   public Author findOrCreateAuthor(String authorFirstName, String authorLastName){
+//        Optional<Author> existingAuthor = findAuthorByName(authorFirstName,authorLastName);
+//        return existingAuthor.orElseGet(()-> createAuthor(authorFirstName,authorLastName));
+//   }
 
     public Optional<Author> findAuthorByName(String firstName, String lastName){
         return authorRepository.findByFirstNameAndLastName(firstName, lastName);

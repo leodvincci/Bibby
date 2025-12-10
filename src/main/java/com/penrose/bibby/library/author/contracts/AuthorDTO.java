@@ -10,6 +10,7 @@ import java.util.Set;
 public record AuthorDTO (Long id, String firstName, String lastName) {
 
 
+
     public static Set<AuthorDTO> toDTOSet(Set<AuthorEntity> authorEntities) {
         return authorEntities.stream()
                 .map(authorEntity -> new AuthorDTO(

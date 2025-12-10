@@ -5,6 +5,7 @@ import com.penrose.bibby.library.author.core.domain.Author;
 import com.penrose.bibby.library.author.core.domain.AuthorId;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 
+import java.util.List;
 import java.util.Set;
 
 public class AuthorMapper {
@@ -51,5 +52,16 @@ public class AuthorMapper {
                 author.getFirstName(),
                 author.getLastName()
         );
+    }
+
+    public static List<AuthorEntity> toEntityList(List<AuthorDTO> authors) {
+        List<AuthorEntity> authorEntities = new java.util.ArrayList<>();
+        for (AuthorDTO authorDTO : authors) {
+            AuthorEntity authorEntity = new AuthorEntity();
+            authorEntity.setFirstName(authorDTO.firstName());
+            authorEntity.setLastName(authorDTO.lastName());
+            authorEntities.add(authorEntity);
+        }
+        return authorEntities;
     }
 }
