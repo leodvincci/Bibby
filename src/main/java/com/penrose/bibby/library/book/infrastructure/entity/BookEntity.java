@@ -37,6 +37,22 @@ public class BookEntity {
         this.availabilityStatus = AvailabilityStatus.AVAILABLE.toString();
     }
 
+    public BookEntity(Long bookId, String title, String isbn, String publisher, int publicationYear, String genre, int edition, String description, Long shelfId, String availabilityStatus, LocalDate createdAt, LocalDate updatedAt, Set<AuthorEntity> authors) {
+        this.bookId = bookId;
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.publicationYear = publicationYear;
+        this.genre = genre;
+        this.edition = edition;
+        this.description = description;
+        this.shelfId = shelfId;
+        this.availabilityStatus = availabilityStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.authors = authors;
+    }
+
     @ManyToMany
     @JoinTable(
             name = "book_authors", // the middle box

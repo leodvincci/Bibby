@@ -29,6 +29,23 @@ public class Book {
         this.authors = authors;
     }
 
+    public Book(BookId bookId, int edition, Title title, List<AuthorRef> authors, Isbn isbn, String genre, String publisher, int publicationYear, Long shelfId, String description, AvailabilityStatus availabilityStatus, LocalDate createdAt, LocalDate updatedAt, String publishedDate) {
+        this.bookId = bookId;
+        this.edition = edition;
+        this.title = title;
+        this.authors = authors;
+        this.isbn = isbn;
+        this.genre = genre;
+        this.publisher = publisher;
+        this.publicationYear = publicationYear;
+        this.shelfId = shelfId;
+        this.description = description;
+        this.availabilityStatus = availabilityStatus;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.publishedDate = publishedDate;
+    }
+
     public String getGenre() {
         return genre;
     }
