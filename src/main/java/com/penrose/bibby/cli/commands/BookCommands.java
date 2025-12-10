@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli.commands;
 
+import com.penrose.bibby.cli.ConsoleColors;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -162,20 +163,24 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public String createBookCard(String title, String id, String author, String location) {
+    public String createBookCard(String title, String isbn, String author, String bookcase, String shelf) {
 
         // %-42s ensures the text is left-aligned and padded to 42 characters
         // The emojis take up extra visual space, so adjusted padding slightly
         return """
+                
                 ╭──────────────────────────────────────────────────────────────────────────────╮
-                │  📖 %-73s│
+                │  📖 \033[38;5;63m%-73s\033[0m│
                 ├──────────────────────────────────────────────────────────────────────────────┤
-                │  ID: %-31s                                         │
-                │  Author: %-31s                                     │
+                │  \033[38;5;42mISBN\033[0m: %-31s                                       │
+                │  \033[38;5;42mAuthor\033[0m: %-31s                                     │
                 │                                                                              │
-                │📍Location: %-35s                               │
+                │  \033[38;5;42mBookcase\033[0m: %-35s                               │
+                │  \033[38;5;42mShelf\033[0m: %-35s                                  │
                 ╰──────────────────────────────────────────────────────────────────────────────╯
-        """.formatted(title, id, author, location);
+                
+                
+        """.formatted(title, isbn, author, bookcase,shelf);
     }
 
 // Usage:
@@ -189,8 +194,8 @@ public class BookCommands extends AbstractShellComponent {
     //
     // ───────────────────────────────────────────────────────────────────
 
-    @Command(command = "find", description = "Find a book by title, author, genre, or location using an interactive prompt.")
-    public void findBook() throws InterruptedException {
+    @Command(command = "search", description = "Find a book by title, author, genre, or location using an interactive prompt.")
+    public void searchForBook() throws InterruptedException {
         String searchType = cliPrompt.promptForSearchType();
         if (searchType.equalsIgnoreCase("author")){
             searchByAuthor();
@@ -201,7 +206,10 @@ public class BookCommands extends AbstractShellComponent {
         }
     }
 
+
     private void searchByIsbn() {
+        String shelfLocation = "";
+        String bookcaseLocation = "";
         System.out.println("\n\u001B[95mSearch by ISBN");
         String isbn = cliPrompt.promptForIsbnScan();
         if(isbn == null){
@@ -214,60 +222,95 @@ public class BookCommands extends AbstractShellComponent {
         if (bookDTO == null) {
             System.out.println("\n\u001B[36m</>\u001B[0m: No book found with ISBN: " + isbn + "\n");
         } else {
-            System.out.println("\n\u001B[36m</>\u001B[0m: Book found: \n");
-            System.out.println("Book Details:");
-            System.out.println("Title: " + bookDTO.title());
-            Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
-            System.out.println("Author(s): " + authors);
-            System.out.println("ISBN: " + bookDTO.isbn());
-            if (bookDTO.shelfId() != null) {
-                Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
 
-                Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
+                System.out.println("\n\u001B[36m</>\u001B[0m: Book found: \n");
+                if(bookDTO.shelfId() == null){
+                    shelfLocation = "PENDING / NOT SET";
+                    bookcaseLocation = "PENDING / NOT SET";
+                }else{
+                    Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
+                    Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
+                    bookcaseLocation = bookcaseDTO.get().bookcaseLabel();
+                    shelfLocation = shelfDTO.get().shelfLabel();
+                }
+                Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
 
-                System.out.println("Location: Bookcase " + bookcaseDTO.get().bookcaseLabel() + ", Shelf " + shelfDTO.get().shelfLabel());
-            } else {
-                System.out.println("Location: Not Shelved");
-            }
+                String bookCard = createBookCard(
+                        bookDTO.title(),
+                        bookDTO.isbn(),
+                        authors.toString(),
+                        bookcaseLocation,
+                        shelfLocation
+                );
+                System.out.println(bookCard);
+
         }
     }
+
+
 
     public void searchByAuthor() throws InterruptedException {
         System.out.println("\n\u001B[95mSearch by Author");
         askBookCheckOut();
     }
 
+    public void printNotFound(String title) {
+        String msg = """
+                
+                
+                ╭──────────────────────────────────────────────╮
+                │  🚫 No Results Found                         │
+                ├──────────────────────────────────────────────┤
+           \033[0m     │  \033[0mQuery:\033[0m  %-34s  │
+                │                                              │
+                │  Status: Not in library.                     │
+                │  Action: Check spelling or add new book.     │
+                ╰──────────────────────────────────────────────╯
+                
+                
+        """.formatted(
+                title.length() > 34 ? title.substring(0, 31) + "..." : title
+        ); // Truncates title if it's too long to fit the box
+
+        System.out.println(ConsoleColors.RED + msg + ConsoleColors.RESET);
+    }
+
+
     public void searchByTitle() throws InterruptedException {
-
-
-
         System.out.println("\n\u001B[95mSearch by Title");
         String title = cliPrompt.promptForBookTitle();
         BookDTO bookDTO = bookFacade.findBookByTitle(title);
 
         if (bookDTO == null) {
-            System.out.println("\n\u001B[36m</>\u001B[0m:I just flipped through every shelf — no luck this time.\n");
+
+            printNotFound(title);
+            return;
         }else if(bookDTO.shelfId() == null){
             String bookCard = createBookCard(
                     bookDTO.title(),
-                    bookDTO.id().toString(),
+                    bookDTO.isbn(),
                     authorFacade.findByBookId(bookDTO.id()).toString(),
+                    "PENDING / NOT SET",
                     "PENDING / NOT SET"
+
             );
+            System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");
             System.out.println(bookCard);
         }else{
             Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
             Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
             String bookCard = createBookCard(
                     bookDTO.title(),
-                    bookDTO.id().toString(),
+                    bookDTO.isbn(),
                     authorFacade.findByBookId(bookDTO.id()).toString(),
-                    "Bookcase " + bookcaseDTO.get().bookcaseLabel() + ", Shelf " + shelfDTO.get().shelfLabel()
+                    bookcaseDTO.get().bookcaseLabel(),
+                    shelfDTO.get().shelfLabel()
             );
+            System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");
             System.out.println(bookCard);
         }
         if (cliPrompt.promptSearchAgain()){
-            findBook();
+            searchForBook();
         }
     }
 //

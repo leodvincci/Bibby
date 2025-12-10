@@ -185,6 +185,9 @@ import java.util.*;
      */
     public BookDTO findBookByTitle(String title){
         Optional<BookEntity> bookEntity = bookJpaRepository.findByTitleIgnoreCase(title);
+        if(bookEntity.isEmpty()){
+            return null;
+        }
         return bookMapper.toDTOfromEntity(bookEntity.orElse(null));
 
     }
@@ -313,7 +316,6 @@ import java.util.*;
     }
 
     public BookDTO findBookByIsbn(String isbn) {
-        System.out.println("isbn in service: " + isbn);
         BookEntity bookEntity = bookJpaRepository.findByIsbn(isbn);
         if(bookEntity == null){
             throw new IllegalArgumentException("Book not found with ISBN: " + isbn);
