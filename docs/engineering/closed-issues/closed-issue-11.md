@@ -207,7 +207,7 @@ The factory pattern is used to centralize creation logic and enforce invariants 
 ### Related Documentation
 
 - [Devlog: Book Status & Checkout](../../the-devlogs/devlog-2025-11-12-bibby-book-status-checkout.md) — Original feature implementation
-- [Spec: Move CheckOut Logic to Domain Model](../../systems/spec-sheets/000-Move-CheckOut-Logic-to-DomainModel.md) — DDD refactoring context
+- [Spec: Move CheckOut Logic to Domain Model](../../systems/specs/000-Move-CheckOut-Logic-to-DomainModel.md) — DDD refactoring context
 - [Devlog: BookFactory into Spring Component](../../the-devlogs/devlog-2025-11-20-BookFactory-into-Spring-ManagedComponent.md) — Factory pattern evolution
 
 ---
