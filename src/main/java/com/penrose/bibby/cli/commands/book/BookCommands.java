@@ -87,36 +87,54 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
+
+
+
     @Command(command = "new", description = "Create a new book entry")
-    public void registerBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
-        if(scan == null && multi == null){
-            scanBook("multi");
-            return;
-        }else if(multi != null){
+    public void registerBook(
+            @ShellOption(defaultValue = "false") boolean scan,
+            @ShellOption(defaultValue = "false") boolean multi
+    ) throws InterruptedException {
+
+        log.info("Starting new book registration process.");
+        log.info(scan + " " + multi);
+
+        if (scan && multi) {
+            log.info("Both scan and multi options provided. Defaulting to multiBookScan.");
+            System.out.println("\n\u001B[95mMulti-Book Scan");
             multiBookScan();
-            return;
+        } else if (scan) {
+            scanBook("single");
+            log.info("Initiating scanBook for Single Scan.");
+        }else{
+            log.info("Proceeding with manual book registration.");
+            System.out.println("\n\u001B[95mCreate New Book");
+
+            //todo(priority 3): Move manual registration logic into a helper method for clarity
+            String title = cliPrompt.promptForBookTitle();
+            int authorCount = cliPrompt.promptForBookAuthorCount();
+            List<AuthorDTO> authors = new ArrayList<>();
+
+            for (int i = 0; i < authorCount; i++) {
+                authors.add(authorFacade.saveAuthor(cliPrompt.promptForAuthor()));
+                log.info("Author added: {}", authors.get(i));
+            }
+
+            String isbn = cliPrompt.promptForBookIsbn();
+            log.info("Authors saved: {}", authors);
+            log.info("Registering new book with title: {} and ISBN: {}", title, isbn);
+            BookRequestDTO bookRequestDTO = new BookRequestDTO(title,isbn,authors);
+            log.info("BookRequestDTO created: {}", bookRequestDTO);
+            bookFacade.createNewBook(bookRequestDTO);
+
+            System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
+            System.out.printf("\u001B[36m</>\033[0m:'%s', right?", title);
+            System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
         }
-        String title = cliPrompt.promptForBookTitle();
-        int authorCount = cliPrompt.promptForBookAuthorCount();
-        List<AuthorDTO> authors = new ArrayList<>();
-
-        for (int i = 0; i < authorCount; i++) {
-            authors.add(authorFacade.saveAuthor(cliPrompt.promptForAuthor()));
-            log.info("Author added: {}", authors.get(i));
-        }
-
-        String isbn = cliPrompt.promptForBookIsbn();
-//        authorFacade.saveAllAuthors(authors);
-        log.info("Authors saved: {}", authors);
-        log.info("Registering new book with title: {} and ISBN: {}", title, isbn);
-        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,isbn,authors);
-        log.info("BookRequestDTO created: {}", bookRequestDTO);
-        bookFacade.createNewBook(bookRequestDTO);
-
-        System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
-        System.out.printf("\u001B[36m</>\033[0m:'%s', right?", title);
-        System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
     }
+
+
+
 
 
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
@@ -151,7 +169,7 @@ public class BookCommands extends AbstractShellComponent {
     private void multiBookScan() {
         Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
         Long shelfId = cliPrompt.promptForShelf(bookcaseId);
-        System.out.println("Scanning multiple books...");
+        System.out.println("\n\u001B[95mMulti-Book Scan");
         List<String> scans = cliPrompt.promptMultiScan();
 
         for (String isbn : scans) {
