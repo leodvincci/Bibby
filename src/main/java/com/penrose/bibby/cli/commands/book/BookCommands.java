@@ -100,6 +100,7 @@ public class BookCommands extends AbstractShellComponent {
                 System.out.println("Multiple Authors with this name.\n");
                 Long authorId = cliPrompt.promptMultipleAuthorConfirmation(authorDTO);
                 log.info("Existing author selected with ID: {}", authorId);
+                //todo: 0 is a magic number here, refactor needed
                 if(authorId == 0){
                     log.info("Creating new author as per user request: {} {}", authorDTO.firstName(), authorDTO.lastName());
                     authors.add(authorFacade.saveAuthor(authorDTO));
