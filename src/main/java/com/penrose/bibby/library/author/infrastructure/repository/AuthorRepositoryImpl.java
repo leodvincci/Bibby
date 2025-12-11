@@ -90,14 +90,15 @@ public class AuthorRepositoryImpl implements AuthorRepository {
      * @return the newly created Author domain object, including its generated ID
      */
 
+
     @Override
     public Optional<Author> createAuthor(String authorFirstName, String authorLastName) {
         AuthorEntity authorEntity = new AuthorEntity(authorFirstName, authorLastName);
-        System.out.println("Creating author: " + authorFirstName + " " + authorLastName);
+        logger.info("Creating author: {} {}", authorFirstName, authorLastName);
         authorJpaRepository.save(authorEntity);
         logger.info("Created author with ID: {}", authorEntity.getAuthorId());
-//        AuthorId authorId = new AuthorId(authorEntity.getAuthorId());
-        Optional<AuthorEntity> newAuthorEntity = authorJpaRepository.findByFirstNameAndLastName(authorFirstName, authorLastName);
+        //todo remove mapper and return entity letting client map to domain
+        Optional<AuthorEntity> newAuthorEntity = authorJpaRepository.getByFirstNameAndLastName(authorFirstName, authorLastName);
         return Optional.of(AuthorMapper.toDomain(newAuthorEntity.get().getAuthorId(), newAuthorEntity.get().getFirstName(), newAuthorEntity.get().getLastName()));
     }
 
@@ -109,8 +110,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Optional<Author> findByFirstNameAndLastName(String firstName, String lastName) {
-        AuthorEntity authorEntity = authorJpaRepository.findByFirstNameAndLastName(firstName, lastName).orElse(null);
+    public Optional<Author> getByFirstNameAndLastName(String firstName, String lastName) {
+        AuthorEntity authorEntity = authorJpaRepository.getByFirstNameAndLastName(firstName, lastName).orElse(null);
         if (authorEntity != null) {
             return Optional.of(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
         }
@@ -132,5 +133,29 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         authorJpaRepository.save(authorEntity);
         logger.info("Saved author with ID: {}", authorEntity.getAuthorId());
         return AuthorMapper.toDTO(AuthorMapper.toDomain(authorEntity.getAuthorId(), authorEntity.getFirstName(), authorEntity.getLastName()));
+    }
+
+    @Override
+    public Set<AuthorEntity> getAuthorsById(List<String> authors) {
+        Set<AuthorEntity> authorEntities = new java.util.HashSet<>();
+        for(String authorIdStr : authors){
+            Long authorId = Long.parseLong(authorIdStr);
+            authorEntities.add(authorJpaRepository.findById(authorId).get());
+        }
+        return authorEntities;
+    }
+
+    @Override
+    public List<AuthorDTO> findAllByFirstNameLastName(String firstName, String lastName) {
+        List<AuthorEntity> authorEntities = authorJpaRepository.getAllByFirstNameAndLastName(firstName, lastName);
+        return authorEntities.stream()
+                .map(entity -> AuthorMapper.toDTO(AuthorMapper.toDomain(entity.getAuthorId(), entity.getFirstName(), entity.getLastName())))
+                .toList();
+    }
+
+    @Override
+    public boolean authorExistFirstNameLastName(String firstName, String lastName) {
+        logger.info("RepoImpl: Checking existence of author: {} {}", firstName, lastName);
+        return !authorJpaRepository.findByFirstNameAndLastName(firstName, lastName).isEmpty();
     }
 }

@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.author.core.domain;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -44,9 +45,15 @@ public interface AuthorRepository {
 
     void updateAuthor(Author author);
 
-    Optional<Author> findByFirstNameAndLastName(String firstName, String lastName);
+    Optional<Author> getByFirstNameAndLastName(String firstName, String lastName);
 
     void saveAll(List<AuthorDTO> authors);
 
     AuthorDTO saveAuthor(Author author);
+
+    Set<AuthorEntity> getAuthorsById(List<String> authors);
+
+    List<AuthorDTO> findAllByFirstNameLastName(String firstName, String lastName);
+
+    boolean authorExistFirstNameLastName(String firstName, String lastName);
 }

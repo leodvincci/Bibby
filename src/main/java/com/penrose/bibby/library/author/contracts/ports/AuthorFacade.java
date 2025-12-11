@@ -2,7 +2,6 @@ package com.penrose.bibby.library.author.contracts.ports;
 
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
@@ -19,11 +18,28 @@ public interface AuthorFacade {
      */
     AuthorDTO findOrCreateAuthor(String namePart, String namePart1);
 
+    void registerAuthor(AuthorDTO authorDTO);
+
     void updateAuthor(AuthorDTO authorDTO);
 
     void saveAllAuthors(List<AuthorDTO> authors);
 
     AuthorDTO saveAuthor(AuthorDTO authorDTO);
 
-    AuthorEntity findById(Long authorId);
+    AuthorDTO findById(Long authorId);
+
+    void createAuthorsIfNotExist(List<String> authors);
+
+    Set<AuthorEntity> getAuthorsById(List<String> authors);
+
+    /**
+     * Checks if an Author exists with the given first and last name.
+     *
+     * @param firstName the author's first name
+     * @param lastName the author's last name
+     * @return true if an Author with the given names exists, false otherwise
+     */
+    boolean authorExistFirstNameLastName(String firstName, String lastName);
+
+    List<AuthorDTO> getAllAuthorsByName(String firstName, String lastName);
 }
