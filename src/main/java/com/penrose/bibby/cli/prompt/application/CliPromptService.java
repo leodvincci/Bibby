@@ -2,9 +2,12 @@ package com.penrose.bibby.cli.prompt.application;
 
 import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
 import com.penrose.bibby.library.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
 import org.springframework.shell.component.flow.ComponentFlow;
+import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,12 +18,16 @@ import java.util.Map;
 @Component
 public class CliPromptService implements PromptFacade {
     private final ComponentFlow.Builder componentFlowBuilder;
+    private final AuthorFacade authorFacade;
+    private final BookFacade bookFacade;
     List<String> scans = new ArrayList<>();
     private final ShelfFacade shelfFacade;
 
-    public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, ShelfFacade shelfFacade) {
+    public CliPromptService(ComponentFlow.Builder componentFlowBuilder, ComponentFlow.Builder componentFlowBuilder1, ShelfFacade shelfFacade, AuthorFacade authorFacade, BookFacade bookFacade) {
         this.componentFlowBuilder = componentFlowBuilder1;
         this.shelfFacade = shelfFacade;
+        this.authorFacade = authorFacade;
+        this.bookFacade = bookFacade;
     }
 
     public boolean promptSearchAgain(){
@@ -48,7 +55,7 @@ public class CliPromptService implements PromptFacade {
     public List<String> promptMultiScan(){
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withStringInput("multiScan")
-                .name("multi scan >:_")
+                .name("Multi-Scan >:_")
                 .and().build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
@@ -88,6 +95,30 @@ public class CliPromptService implements PromptFacade {
                 .and().build();
         ComponentFlow.ComponentFlowResult result = flow.run();
         return Long.parseLong(result.getContext().get("bookshelf",String.class));
+    }
+
+
+    public Long  promptMultipleAuthorConfirmation(AuthorDTO author){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("chooseAuthor")
+                .name("Author Selection")
+                .selectItems(buildAuthorOptions(author))
+                .and().build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return Long.parseLong(result.getContext().get("chooseAuthor",String.class));
+    }
+
+    private List<SelectItem> buildAuthorOptions(AuthorDTO author) {
+        List<SelectItem> options = new ArrayList<>();
+
+        options.add(SelectItem.of("\u001B[38;5;42mCreate New Author\u001B[0m", "0"));
+        //get each author name and id from the list and add to options
+        //return all author by first and last name
+        List<AuthorDTO> authors = authorFacade.getAllAuthorsByName(author.firstName(), author.lastName());
+        for(AuthorDTO a : authors){
+            options.add(SelectItem.of("\u001B[38;5;63m"+a.firstName() + " " + a.lastName() + "\u001B[0m" + " (ID: " + a.id() + ")" + " : " +  "\u001B[38;5;146m" + bookFacade.getBooksByAuthorId(a.id())+"\u001B[0m", String.valueOf(a.id())));
+        }
+        return options;
     }
 
     public String promptForIsbnScan(){
@@ -164,6 +195,11 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("isbn",String.class);
     }
 
+    /**
+     * Prompt the user for the number of authors for a book.
+     *
+     * @return The number of authors as an integer.
+     */
     public int promptForBookAuthorCount(){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
@@ -217,7 +253,6 @@ public class CliPromptService implements PromptFacade {
         Map<String, String> options = new LinkedHashMap<>();
         List<ShelfDTO> shelfDTOS = shelfFacade.getAllDTOShelves(bookcaseId);
         for(ShelfDTO s : shelfDTOS){
-            System.out.println(s.bookcaseId());
             options.put(s.shelfLabel(), String.valueOf(s.shelfId()));
         }
 
