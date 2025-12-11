@@ -3,13 +3,14 @@ package com.penrose.bibby.library.book.contracts.adapters;
 import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.book.core.domain.Book;
 import com.penrose.bibby.library.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.book.core.domain.Isbn;
 import com.penrose.bibby.library.book.core.domain.Title;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.book.infrastructure.repository.BookJpaRepository;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +24,13 @@ public class BookFacadeAdapter implements BookFacade {
     Logger log = org.slf4j.LoggerFactory.getLogger(BookFacadeAdapter.class);
     BookDomainRepository bookDomainRepository;
     BookMapper bookMapper;
+    IsbnLookupService isbnLookupService;
 
-    public BookFacadeAdapter(BookDomainRepository bookDomainRepository, AuthorFacade authorFacade, BookMapper bookMapper) {
+    public BookFacadeAdapter(BookDomainRepository bookDomainRepository, AuthorFacade authorFacade, BookMapper bookMapper, IsbnLookupService isbnLookupService) {
         this.bookDomainRepository = bookDomainRepository;
         this.authorFacade = authorFacade;
         this.bookMapper = bookMapper;
+        this.isbnLookupService = isbnLookupService;
     }
 
     @Override
@@ -52,12 +55,14 @@ public class BookFacadeAdapter implements BookFacade {
 
     @Override
     public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
-        return null;
+        GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
+        log.info("Fetched book metadata for ISBN: {}", isbn);
+        return bookMapper.toBookMetaDataResponseFromGoogleBooksResponse(googleBooksResponse,isbn);
     }
 
     @Override
     public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
-
+        bookDomainRepository.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
     }
 
     @Override
@@ -94,5 +99,14 @@ public class BookFacadeAdapter implements BookFacade {
     @Override
     public Optional<BookDTO> findBookById(Long bookId) {
     return Optional.of(bookMapper.toDTOfromEntity(bookDomainRepository.getBookById(bookId)));
+    }
+
+    @Override
+    public List<String> getBooksByAuthorId(Long id) {
+        List<BookEntity> bookEntities = bookDomainRepository.getThreeBooksByAuthorId(id);
+        log.info(bookEntities .size() + " books found for author id: " + id);
+        List<String> bookTitles = bookEntities.stream().limit(3).map(BookEntity::getTitle).toList();
+        log.info("Book titles: " + bookTitles);
+        return bookTitles;
     }
 }

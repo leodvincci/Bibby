@@ -44,4 +44,5 @@ public interface BookJpaRepository extends JpaRepository <BookEntity, Long> {
 
     BookEntity findByIsbn(String isbn);
 
+    List<BookEntity> findByAuthorsAuthorId(Long id);
 }

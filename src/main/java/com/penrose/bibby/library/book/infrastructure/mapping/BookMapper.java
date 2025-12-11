@@ -11,10 +11,12 @@ import com.penrose.bibby.library.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -291,5 +293,63 @@ public class BookMapper {
         book.setAuthors(authors);
         log.info("Mapped BookRequestDTO to Book domain with title: " + book.getTitle().title());
         return book;
+    }
+
+    public BookMetaDataResponse toBookMetaDataResponseFromGoogleBooksResponse(GoogleBooksResponse googleBooksResponse, String isbn) {
+       if(googleBooksResponse == null || googleBooksResponse.items() == null || googleBooksResponse.items().isEmpty()){
+           throw new RuntimeException("No book found for ISBN: " + isbn);
+       }
+
+        List<String> authors = new ArrayList<>(googleBooksResponse.items().get(0).volumeInfo().authors());
+        log.info("""
+                
+                Mapped GoogleBooksResponse to BookMetaDataResponse for ISBN: {}
+                Book Title: {}
+                Authors: {}
+               
+                """,
+                isbn,
+                googleBooksResponse.items().get(0).volumeInfo().title(),
+                String.join(", ", authors)
+        );
+
+        return new BookMetaDataResponse(
+                null,
+                googleBooksResponse.items().get(0).volumeInfo().title(),
+                isbn,
+                authors,
+                googleBooksResponse.items().get(0).volumeInfo().publisher(),
+                googleBooksResponse.items().get(0).volumeInfo().description()
+        );
+    }
+
+    public BookEntity toEntityFromBookMetaDataResponse(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
+        if (bookMetaDataResponse == null){
+            return null;
+        }
+
+        authorFacade.createAuthorsIfNotExist(bookMetaDataResponse.authors());
+
+        BookEntity bookEntity = new BookEntity();
+        bookEntity.setTitle(bookMetaDataResponse.title());
+        bookEntity.setIsbn(isbn);
+        log.info("Fetching AuthorEntities for authors: " + String.join(", ", bookMetaDataResponse.authors()));
+        bookEntity.setAuthors(authorFacade.getAuthorsById(bookMetaDataResponse.authors()));
+        bookEntity.setPublisher(bookMetaDataResponse.publisher());
+        bookEntity.setDescription(bookMetaDataResponse.description());
+        bookEntity.setShelfId(shelfId);
+        log.info("Setting availability status to AVAILABLE for book: " + bookMetaDataResponse.title());
+        bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.name());
+        bookEntity.setCreatedAt(java.time.LocalDate.now());
+        bookEntity.setUpdatedAt(java.time.LocalDate.now());
+        return bookEntity;
+    }
+
+    public List<BookDTO> toDTOListFromEntityList(List<BookEntity> bookEntities) {
+        List<BookDTO> bookDTOs = new ArrayList<>();
+        for (BookEntity bookEntity : bookEntities) {
+            bookDTOs.add(toDTOfromEntity(bookEntity));
+        }
+        return bookDTOs;
     }
 }

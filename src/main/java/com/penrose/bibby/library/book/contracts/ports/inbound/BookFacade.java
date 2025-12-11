@@ -28,4 +28,5 @@ public interface BookFacade {
 
     Optional<BookDTO> findBookById(Long bookId);
 
+    List<String> getBooksByAuthorId(Long id);
 }

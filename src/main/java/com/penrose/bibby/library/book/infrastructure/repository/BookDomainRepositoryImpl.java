@@ -137,4 +137,22 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     public BookDetailView getBookDetailView(Long bookId) {
         return bookJpaRepository.getBookDetailView(bookId);
     }
+
+    @Override
+    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
+        BookEntity bookEntity = bookMapper.toEntityFromBookMetaDataResponse(bookMetaDataResponse, isbn, shelfId);
+        bookJpaRepository.save(bookEntity);
+        System.out.println("\n\u001B[32mBook Successfully Imported\u001B[0m");
+        System.out.println("--------------------------------");
+        System.out.printf(" Title  : %s%n", bookEntity.getTitle());
+        System.out.printf(" Author : %s%n", bookMetaDataResponse.authors());
+        System.out.printf(" ISBN   : %s%n", isbn);
+        System.out.println("--------------------------------");
+        log.info("Created book from metadata with title: {} and ISBN: {}", bookEntity.getTitle(), isbn);
+    }
+
+    @Override
+    public List<BookEntity> getThreeBooksByAuthorId(Long id) {
+        return bookJpaRepository.findByAuthorsAuthorId(id);
+    }
 }

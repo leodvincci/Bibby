@@ -29,4 +29,8 @@ public interface BookDomainRepository {
     BookEntity findBookByIsbn(String isbn);
 
     BookDetailView getBookDetailView(Long bookId);
+
+    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
+
+    List<BookEntity> getThreeBooksByAuthorId(Long id);
 }
