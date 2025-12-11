@@ -102,6 +102,6 @@ public class AuthorService {
 //   }
 
     public Optional<Author> findAuthorByName(String firstName, String lastName){
-        return authorRepository.findByFirstNameAndLastName(firstName, lastName);
+        return authorRepository.getByFirstNameAndLastName(firstName, lastName);
     }
 }
