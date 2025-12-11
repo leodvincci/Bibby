@@ -3,7 +3,6 @@ package com.penrose.bibby.cli.commands.book;
 import com.penrose.bibby.cli.ConsoleColors;
 import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -59,83 +58,85 @@ public class BookCommands extends AbstractShellComponent {
     // ───────────────────────────────────────────────────────────────────
 
     @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
-    public void scanBook(@Option(required = false, defaultValue = "single", description = "scan multiple books") @ShellOption (value = {"--type"}) String multi) {
+    public void scanBook(
+            @ShellOption (defaultValue = "single") boolean multi) {
 
-        multi = multi == null ? "multi" : multi;
+        if (multi) multiBookScan();
+        log.info("Initiating scanBook for Single Scan.");
+        System.out.println("\n\u001B[95mSingle Book Scan");
+        String isbn = cliPrompt.promptForIsbnScan();
+        if (!cliPrompt.isbnValidator(isbn)) return;
+        BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+        if (cliPrompt.promptBookConfirmation()) bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, null);
 
-        if(multi.equalsIgnoreCase("multi")){
-            multiBookScan();
-        }
-
-        if(multi.equalsIgnoreCase("single")) {
-            System.out.println("\n\u001B[95mSingle Book Scan");
-            String isbn = cliPrompt.promptForIsbnScan();
-            if(!cliPrompt.isbnValidator(isbn)){
-                return;
-            }
-
-            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-            if(bookMetaDataResponse == null){
-                System.out.println("\n\u001B[36m</>\033[0m: No book found with ISBN: " + isbn + "\n");
-            }else if (cliPrompt.promptBookConfirmation()) {
-
-                bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, null);
-
-                System.out.println("\n\u001B[36m</>\033[0m: Book added to the library database successfully!");
-            }
-        }
     }
-
-
-
 
 
     @Command(command = "new", description = "Create a new book entry")
     public void registerBook(
             @ShellOption(defaultValue = "false") boolean scan,
-            @ShellOption(defaultValue = "false") boolean multi
-    ) throws InterruptedException {
+            @ShellOption(defaultValue = "false") boolean multi) {
 
         log.info("Starting new book registration process.");
-        log.info(scan + " " + multi);
+        log.debug("{} {}", scan, multi);
 
-        if (scan && multi) {
-            log.info("Both scan and multi options provided. Defaulting to multiBookScan.");
-            System.out.println("\n\u001B[95mMulti-Book Scan");
-            multiBookScan();
-        } else if (scan) {
-            scanBook("single");
-            log.info("Initiating scanBook for Single Scan.");
-        }else{
-            log.info("Proceeding with manual book registration.");
-            System.out.println("\n\u001B[95mCreate New Book");
+        ScanMode mode = ScanMode.from(scan, multi);
+        switch(mode){
+            case SINGLE -> scanBook(false);
+            case MULTI -> multiBookScan();
+            case NONE -> createBookManually();
+        }
+    }
 
-            //todo(priority 3): Move manual registration logic into a helper method for clarity
-            String title = cliPrompt.promptForBookTitle();
-            int authorCount = cliPrompt.promptForBookAuthorCount();
-            List<AuthorDTO> authors = new ArrayList<>();
+    public List<AuthorDTO> createAuthors(){
+        int numberOfAuthors = cliPrompt.promptForBookAuthorCount();
+        List<AuthorDTO> authors = new ArrayList<>();
+        for (int i = 0; i < numberOfAuthors; i++) {
+            AuthorDTO authorDTO = cliPrompt.promptForAuthor();
+            log.info("Collected Author Details: {}", authorDTO);
 
-            for (int i = 0; i < authorCount; i++) {
-                authors.add(authorFacade.saveAuthor(cliPrompt.promptForAuthor()));
-                log.info("Author added: {}", authors.get(i));
+            if(authorFacade.authorExistFirstNameLastName(authorDTO.firstName(),authorDTO.lastName())){
+                log.info("Author already exists: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                System.out.println("Multiple Authors with this name.\n");
+                Long authorId = cliPrompt.promptMultipleAuthorConfirmation(authorDTO);
+                log.info("Existing author selected with ID: {}", authorId);
+                if(authorId == 0){
+                    log.info("Creating new author as per user request: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                    authors.add(authorFacade.saveAuthor(authorDTO));
+                    log.info("Author saved: {}", authors.get(i));
+                }else{
+                    log.info("Fetching existing author with ID: {}", authorId);
+
+                    AuthorDTO existingAuthor = authorFacade.findById(authorId);
+                    authors.add(existingAuthor);
+                    log.info("Existing author added to list: {}", existingAuthor);
+                }
+            }else{
+                log.info("Creating new author: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                authors.add(authorFacade.saveAuthor(authorDTO));
+                log.info("Author saved: {}", authors.get(i));
             }
 
-            String isbn = cliPrompt.promptForBookIsbn();
-            log.info("Authors saved: {}", authors);
-            log.info("Registering new book with title: {} and ISBN: {}", title, isbn);
-            BookRequestDTO bookRequestDTO = new BookRequestDTO(title,isbn,authors);
-            log.info("BookRequestDTO created: {}", bookRequestDTO);
-            bookFacade.createNewBook(bookRequestDTO);
-
-            System.out.println("\n\u001B[36m</>\033[0m: Ah, a brand-new book...");
-            System.out.printf("\u001B[36m</>\033[0m:'%s', right?", title);
-            System.out.println("\n\u001B[36m</>\033[0m: I’ll handle adding it to the database and prepare it for the library.");
         }
+        log.info("Authors Created and Returned: {}", authors);
+        return authors;
     }
 
 
 
+    public void createBookManually() {
+        System.out.println("\n\u001B[95mCreate New Book");
 
+        String title = cliPrompt.promptForBookTitle();
+        List<AuthorDTO> authors = createAuthors();
+        String isbn = cliPrompt.promptForBookIsbn();
+        log.info("Collected Book Details - Title: {}, ISBN: {}, Authors: {}", title, isbn, authors);
+
+        BookRequestDTO bookRequestDTO = new BookRequestDTO(title,isbn,authors);
+        log.info("BookRequestDTO created: {}", bookRequestDTO);
+
+        bookFacade.createNewBook(bookRequestDTO);
+    }
 
     @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
     public void addToShelf(){
@@ -167,6 +168,7 @@ public class BookCommands extends AbstractShellComponent {
 
 
     private void multiBookScan() {
+        log.info("Initiating multiBookScan for Multi Scan.");
         Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
         Long shelfId = cliPrompt.promptForShelf(bookcaseId);
         System.out.println("\n\u001B[95mMulti-Book Scan");
