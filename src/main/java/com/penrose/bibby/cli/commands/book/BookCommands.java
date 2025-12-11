@@ -1,7 +1,6 @@
-package com.penrose.bibby.cli.commands;
+package com.penrose.bibby.cli.commands.book;
 
 import com.penrose.bibby.cli.ConsoleColors;
-import org.jline.utils.Log;
 import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
@@ -88,7 +87,7 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
-    @Command(command = "new", description = "register a new book to your library")
+    @Command(command = "new", description = "Create a new book entry")
     public void registerBook(@Option(required = false, defaultValue = "scan") @ShellOption(value = {"--type"}) String scan, @Option(required = false) @ShellOption(value = "-type") String multi) throws InterruptedException {
         if(scan == null && multi == null){
             scanBook("multi");

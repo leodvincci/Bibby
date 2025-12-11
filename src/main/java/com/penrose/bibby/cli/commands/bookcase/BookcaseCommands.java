@@ -1,5 +1,6 @@
-package com.penrose.bibby.cli.commands;
+package com.penrose.bibby.cli.commands.bookcase;
 
+import com.penrose.bibby.cli.commands.book.BookCommands;
 import com.penrose.bibby.library.bookcase.contracts.ports.inbound.BookcaseFacade;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
