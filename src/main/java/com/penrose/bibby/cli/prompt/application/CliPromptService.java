@@ -116,7 +116,7 @@ public class CliPromptService implements PromptFacade {
         //return all author by first and last name
         List<AuthorDTO> authors = authorFacade.getAllAuthorsByName(author.firstName(), author.lastName());
         for(AuthorDTO a : authors){
-            options.add(SelectItem.of("\u001B[38;5;63m"+a.firstName() + " " + a.lastName() + "\u001B[0m" + " (ID: " + a.id() + ")" + " : " +  "\u001B[38;5;146m" + bookFacade.getBooksByAuthorId(a.id())+"\u001B[0m", String.valueOf(a.id())));
+            options.add(SelectItem.of("\u001B[38;5;63m"+a.firstName() + " " + a.lastName() + "\u001B[0m" + " ID: " + a.id() +  "\u001B[38;5;146m" + bookFacade.getBooksByAuthorId(a.id())+"\u001B[0m", String.valueOf(a.id())));
         }
         return options;
     }
