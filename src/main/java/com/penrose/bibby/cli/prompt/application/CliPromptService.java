@@ -1,11 +1,11 @@
 package com.penrose.bibby.cli.prompt.application;
 
 import com.penrose.bibby.cli.prompt.contracts.PromptFacade;
-import com.penrose.bibby.library.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.author.contracts.ports.AuthorFacade;
-import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.catalog.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.catalog.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.catalog.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.placement.shelf.contracts.ports.inbound.ShelfFacade;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;

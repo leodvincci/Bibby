@@ -45,11 +45,9 @@ No CLI class imports from `infrastructure/` or `external/` packages. The build w
 ### Imports Removed from BookCommandLine
 
 **Before (violations):**
+
 ```java
-import com.penrose.bibby.library.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
+
 ```
 
 **After (clean):**
@@ -177,7 +175,8 @@ If a developer (including future me) tries to add an infrastructure import to CL
 
 ```java
 // Someone tries to add this
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+
+
 ```
 
 The build fails:

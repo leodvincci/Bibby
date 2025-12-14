@@ -1,20 +1,20 @@
 package com.penrose.bibby.cli.commands.bookcase;
 
 import com.penrose.bibby.cli.commands.book.BookCommands;
-import com.penrose.bibby.library.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.placement.bookcase.contracts.ports.inbound.BookcaseFacade;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
 import org.springframework.stereotype.Component;
 
-import com.penrose.bibby.library.book.contracts.ports.inbound.BookFacade;
-import com.penrose.bibby.library.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.book.contracts.dtos.BookDetailView;
-import com.penrose.bibby.library.book.contracts.dtos.BookSummary;
-import com.penrose.bibby.library.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
+import com.penrose.bibby.library.catalog.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.catalog.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.catalog.book.contracts.dtos.BookDetailView;
+import com.penrose.bibby.library.catalog.book.contracts.dtos.BookSummary;
+import com.penrose.bibby.library.placement.bookcase.contracts.dtos.BookcaseDTO;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.placement.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfSummary;
 import java.util.*;
 
 @Component
