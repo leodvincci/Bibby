@@ -1,7 +1,7 @@
 package com.penrose.bibby.infrastructure.web.shelf;
 
-import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.placement.shelf.core.application.ShelfService;
+import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 

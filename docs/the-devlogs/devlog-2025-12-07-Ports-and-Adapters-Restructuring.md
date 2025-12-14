@@ -218,7 +218,7 @@ The interface that Book defines for accessing author data. The Author module pro
 package com.penrose.bibby.library.book.application;
 
 import com.penrose.bibby.library.author.contracts.AuthorFacade;  // ❌ Depends on Author
-import com.penrose.bibby.library.catalog.author.contracts.AuthorDTO;    // ❌ Depends on Author
+import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;    // ❌ Depends on Author
 
 public class BookService implements BookFacade {
     private final AuthorFacade authorFacade;
@@ -235,8 +235,8 @@ public class BookService implements BookFacade {
 ```java
 package com.penrose.bibby.library.book.core.application;
 
-import com.penrose.bibby.library.catalog.book.core.domain.AuthorRef;                           // ✓ Book's own type
-import com.penrose.bibby.library.catalog.book.contracts.ports.outbound.AuthorAccessPort;  // ✓ Book's own port
+import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;                           // ✓ Book's own type
+import com.penrose.bibby.library.cataloging.book.contracts.ports.outbound.AuthorAccessPort;  // ✓ Book's own port
 
 public class BookService implements BookFacade {
     private final AuthorAccessPort authorAccessPort;

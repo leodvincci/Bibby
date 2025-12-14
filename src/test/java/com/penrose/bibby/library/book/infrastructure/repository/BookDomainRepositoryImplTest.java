@@ -1,10 +1,10 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
-import com.penrose.bibby.library.catalog.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.catalog.book.core.domain.*;
-import com.penrose.bibby.library.catalog.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.catalog.book.infrastructure.repository.BookDomainRepositoryImpl;
-import com.penrose.bibby.library.catalog.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.cataloging.book.core.domain.*;
+import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookDomainRepositoryImpl;
+import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
