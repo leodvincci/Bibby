@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.shelf.infrastructure.entity;
+package com.penrose.bibby.library.placement.shelf.infrastructure.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

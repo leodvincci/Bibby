@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.shelf.contracts.dtos;
+package com.penrose.bibby.library.placement.shelf.contracts.dtos;
 
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.placement.shelf.infrastructure.entity.ShelfEntity;
 
 import java.util.List;
 

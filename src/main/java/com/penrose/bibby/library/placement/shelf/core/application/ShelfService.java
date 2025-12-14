@@ -1,20 +1,20 @@
-package com.penrose.bibby.library.shelf.core.application;
+package com.penrose.bibby.library.placement.shelf.core.application;
 
 import com.penrose.bibby.library.catalog.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.catalog.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.catalog.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.ports.inbound.ShelfFacade;
-import com.penrose.bibby.library.shelf.core.domain.Shelf;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.placement.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.placement.shelf.core.domain.Shelf;
+import com.penrose.bibby.library.placement.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.placement.shelf.infrastructure.mapping.ShelfMapper;
+import com.penrose.bibby.library.placement.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfSummary;
 import org.springframework.stereotype.Service;
 
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

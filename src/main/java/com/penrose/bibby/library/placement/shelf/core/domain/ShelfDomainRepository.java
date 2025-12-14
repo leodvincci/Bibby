@@ -1,6 +1,4 @@
-package com.penrose.bibby.library.shelf.core.domain;
-
-import java.util.List;
+package com.penrose.bibby.library.placement.shelf.core.domain;
 
 public interface ShelfDomainRepository {
 

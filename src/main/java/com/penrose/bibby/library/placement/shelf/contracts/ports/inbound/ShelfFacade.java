@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.shelf.contracts.ports.inbound;
+package com.penrose.bibby.library.placement.shelf.contracts.ports.inbound;
 
 import com.penrose.bibby.library.catalog.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfSummary;
 
 import java.util.List;
 import java.util.Optional;

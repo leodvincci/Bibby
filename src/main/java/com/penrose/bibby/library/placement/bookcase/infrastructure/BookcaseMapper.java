@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.bookcase.infrastructure;
+package com.penrose.bibby.library.placement.bookcase.infrastructure;
 
-import com.penrose.bibby.library.bookcase.core.domain.Bookcase;
+import com.penrose.bibby.library.placement.bookcase.core.domain.Bookcase;
 
 public class BookcaseMapper {
 

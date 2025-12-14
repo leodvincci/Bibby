@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.shelf.core.domain;
+package com.penrose.bibby.library.placement.shelf.core.domain;
 
 import java.util.List;
 

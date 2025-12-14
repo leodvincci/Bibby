@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.shelf.core.domain;
+package com.penrose.bibby.library.placement.shelf.core.domain;
 
 import com.penrose.bibby.library.catalog.book.core.domain.Book;
 import com.penrose.bibby.library.catalog.book.core.domain.BookDomainRepository;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
-import com.penrose.bibby.library.shelf.infrastructure.mapping.ShelfMapper;
+import com.penrose.bibby.library.placement.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.placement.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.placement.shelf.infrastructure.mapping.ShelfMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

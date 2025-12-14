@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.bookcase.infrastructure;
+package com.penrose.bibby.library.placement.bookcase.infrastructure;
 
 import jakarta.persistence.*;
 

@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.bookcase.core.application;
-import com.penrose.bibby.library.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.bookcase.contracts.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
-import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
-import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
+package com.penrose.bibby.library.placement.bookcase.core.application;
+import com.penrose.bibby.library.placement.bookcase.contracts.dtos.BookcaseDTO;
+import com.penrose.bibby.library.placement.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseRepository;
+import com.penrose.bibby.library.placement.shelf.core.domain.ShelfFactory;
+import com.penrose.bibby.library.placement.shelf.infrastructure.repository.ShelfJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

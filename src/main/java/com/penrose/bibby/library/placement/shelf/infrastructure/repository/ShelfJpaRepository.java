@@ -1,7 +1,7 @@
-package com.penrose.bibby.library.shelf.infrastructure.repository;
+package com.penrose.bibby.library.placement.shelf.infrastructure.repository;
 
-import com.penrose.bibby.library.shelf.contracts.dtos.ShelfSummary;
-import com.penrose.bibby.library.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfSummary;
+import com.penrose.bibby.library.placement.shelf.infrastructure.entity.ShelfEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
