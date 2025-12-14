@@ -187,7 +187,8 @@ The test currently exposes a violation:
 
 ```java
 // BookCommandLine.java still imports:
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
+
+
 ```
 
 This needs to be replaced with `AuthorDTO` or `AuthorFacade` usage. The test is doing its job—it found a boundary violation I need to fix.

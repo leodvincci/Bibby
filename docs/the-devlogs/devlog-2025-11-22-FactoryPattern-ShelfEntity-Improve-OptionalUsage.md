@@ -111,8 +111,8 @@ public class BookcaseService {
 
 ```java
 
-import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
-import com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.placement.shelf.core.domain.ShelfFactory;
+import com.penrose.bibby.library.placement.shelf.infrastructure.repository.ShelfJpaRepository;
 
 public class BookcaseService {
     private final ShelfFactory shelfFactory;
@@ -213,9 +213,10 @@ private final ShelfFactory shelfFactory;
 ```java
 package com.penrose.bibby.library.bookcase;
 
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseEntity;
-import com.penrose.bibby.library.bookcase.infrastructure.BookcaseRepository;
-import com.penrose.bibby.library.shelf.core.domain.ShelfFactory;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.placement.bookcase.infrastructure.BookcaseRepository;
+import com.penrose.bibby.library.placement.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.placement.shelf.core.domain.ShelfFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -226,15 +227,15 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookcaseService {
     private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
     private final BookcaseRepository bookcaseRepository;
-    private final com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository shelfRepository;
+    private final ShelfJpaRepository shelfRepository;
     private final ShelfFactory shelfFactory;
     private final ResponseStatusException existingRecordError =
             new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
 
     public BookcaseService(
             BookcaseRepository bookcaseRepository,
-            com.penrose.bibby.library.shelf.infrastructure.repository.ShelfJpaRepository shelfJpaRepository,
-            com.penrose.bibby.library.shelf.core.domain.ShelfFactory shelfFactory
+            ShelfJpaRepository shelfJpaRepository,
+            ShelfFactory shelfFactory
     ) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;
