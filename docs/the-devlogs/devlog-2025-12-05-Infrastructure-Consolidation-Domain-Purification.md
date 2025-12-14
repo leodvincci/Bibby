@@ -105,8 +105,8 @@ public Shelf(String shelfLabel, int shelfPosition, int bookCapacity)
 ```java
 package com.penrose.bibby.library.shelf.domain;
 
-import com.penrose.bibby.library.catalog.book.infrastructure.entity.BookEntity;  // ❌ Infrastructure leak
-import com.penrose.bibby.library.placement.bookcase.core.domain.Bookcase;              // ❌ Cross-aggregate coupling
+import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;  // ❌ Infrastructure leak
+import com.penrose.bibby.library.stacks.bookcase.core.domain.Bookcase;              // ❌ Cross-aggregate coupling
 
 public class Shelf {
     private Long id;
@@ -133,7 +133,7 @@ public class Shelf {
 ```java
 package com.penrose.bibby.library.shelf.domain;
 
-import com.penrose.bibby.library.catalog.book.core.domain.Book;  // ✓ Domain-to-domain only
+import com.penrose.bibby.library.cataloging.book.core.domain.Book;  // ✓ Domain-to-domain only
 
 import java.util.List;
 

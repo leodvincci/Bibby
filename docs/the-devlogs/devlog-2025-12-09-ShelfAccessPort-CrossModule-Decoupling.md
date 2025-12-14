@@ -22,7 +22,7 @@ Also expanded `BookDomainRepository` with update and lookup methods, fixed depen
 `BookService` directly imported `ShelfService`:
 
 ```java
-import com.penrose.bibby.library.placement.shelf.core.application.ShelfService;
+import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 
 public class BookService implements BookFacade {
     private final ShelfService shelfService;  // Direct coupling

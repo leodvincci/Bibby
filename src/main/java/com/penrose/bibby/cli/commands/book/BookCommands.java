@@ -8,16 +8,16 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.ShellOption;
 
-import com.penrose.bibby.library.catalog.book.contracts.dtos.BookMetaDataResponse;
-import com.penrose.bibby.library.catalog.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.catalog.book.contracts.ports.inbound.BookFacade;
-import com.penrose.bibby.library.catalog.book.contracts.dtos.BookRequestDTO;
-import com.penrose.bibby.library.placement.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.placement.bookcase.contracts.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.catalog.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.catalog.author.contracts.ports.AuthorFacade;
-import com.penrose.bibby.library.placement.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.placement.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookRequestDTO;
+import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 
