@@ -1,15 +1,16 @@
 package com.penrose.bibby.library.book.infrastructure.repository;
 
-import com.penrose.bibby.library.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.book.core.domain.*;
-import com.penrose.bibby.library.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.catalog.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.catalog.book.core.domain.*;
+import com.penrose.bibby.library.catalog.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.catalog.book.infrastructure.repository.BookDomainRepositoryImpl;
+import com.penrose.bibby.library.catalog.book.infrastructure.repository.BookJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
