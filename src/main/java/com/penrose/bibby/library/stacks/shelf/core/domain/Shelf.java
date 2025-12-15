@@ -13,10 +13,11 @@ public class Shelf {
     private List<Long> bookIds;
 
 
-    public Shelf(String shelfLabel, int shelfPosition, int bookCapacity) {
+    public Shelf(String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId) {
         this.shelfLabel = shelfLabel;
         this.shelfPosition = shelfPosition;
         this.bookCapacity = bookCapacity;
+        this.shelfId = shelfId;
     }
 
     public boolean isFull(){
