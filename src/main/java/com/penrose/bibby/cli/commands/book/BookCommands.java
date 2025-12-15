@@ -130,45 +130,57 @@ public class BookCommands extends AbstractShellComponent {
         return authors;
     }
 
+    public boolean authorExists(String firstName, String lastName){
+        return authorFacade.authorExistFirstNameLastName(firstName,lastName);
+    }
+
+    public Long createNewAuthorOrAddExisting(AuthorDTO authorDTO){
+        String firstName = authorDTO.firstName();
+        String lastName = authorDTO.lastName();
+
+        if(authorExists(firstName,lastName)) {
+            log.info("Author already exists: {} {}", authorDTO.firstName(), authorDTO.lastName());
+            System.out.println("Multiple Authors with this name.\n");
+            Long authorId = cliPrompt.promptMultipleAuthorConfirmation(authorDTO);
+            log.info("Existing author selected with ID: {}", authorId);
+            //todo: 0 is a magic number here, refactor needed
+            if (authorId == 0) {
+                log.info("Creating new author as per user request: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                return (authorFacade.saveAuthor(authorDTO).id());
+//                log.info("Author saved: {}", firstName + " " + lastName);
+            } else {
+                log.info("Fetching existing author with ID: {}", authorId);
+
+                AuthorDTO existingAuthor = authorFacade.findById(authorId);
+                return (existingAuthor.id());
+//                log.info("Existing author added to list: {}", existingAuthor);
+            }
+        }
+        return null;
+    }
+
+    public AuthorDTO saveNewAuthor(AuthorDTO authorDTO){
+        return authorFacade.saveAuthor(authorDTO);
+    }
+
+    public AuthorDTO mapperAuthorStringToDTO(String authorName){
+        String[] nameParts = authorName.trim().split(" ");
+        String firstName = nameParts[0];
+        String lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+        return new AuthorDTO(null, firstName, lastName);
+    }
+
     public List<Long> createAuthorsFromMetaData(List<String> authorNames){
         List<Long> authors = new ArrayList<>();
 
-        for (int i = 0; i < authorNames.size(); i++) {
-            String[] nameParts = authorNames.get(i).trim().split(" ");
-            String firstName = nameParts[0];
-            String lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
-            AuthorDTO authorDTO = new AuthorDTO(null, firstName, lastName);
-            log.info("Collected Author Details: {}", authorDTO);
-
-            if(authorFacade.authorExistFirstNameLastName(authorDTO.firstName(),authorDTO.lastName())){
-                log.info("Author already exists: {} {}", authorDTO.firstName(), authorDTO.lastName());
-                System.out.println("Multiple Authors with this name.\n");
-                Long authorId = cliPrompt.promptMultipleAuthorConfirmation(authorDTO);
-                log.info("Existing author selected with ID: {}", authorId);
-                //todo: 0 is a magic number here, refactor needed
-                if(authorId == 0){
-                    log.info("Creating new author as per user request: {} {}", authorDTO.firstName(), authorDTO.lastName());
-                    authors.add(authorFacade.saveAuthor(authorDTO).id());
-                    log.info("Author saved: {}", authors.get(i));
-                }else{
-                    log.info("Fetching existing author with ID: {}", authorId);
-
-                    AuthorDTO existingAuthor = authorFacade.findById(authorId);
-                    authors.add(existingAuthor.id());
-                    log.info("Existing author added to list: {}", existingAuthor);
-                }
-            }else{
-                log.info("Creating new author: {} {}", authorDTO.firstName(), authorDTO.lastName());
-                authors.add(authorFacade.saveAuthor(authorDTO).id());
-                log.info("Author saved: {}", authors.get(i));
-            }
-
+        for (String authorName : authorNames) {
+            AuthorDTO authorDTO = mapperAuthorStringToDTO(authorName);
+            boolean exists = authorExists(authorDTO.firstName(), authorDTO.lastName());
+            authors.add(exists ? createNewAuthorOrAddExisting(authorDTO)
+                    : saveNewAuthor(authorDTO).id());
         }
-        log.info("Authors Created and Returned: {}", authors);
         return authors;
     }
-
-
 
     public void createBookManually() {
         System.out.println("\n\u001B[95mCreate New Book");
