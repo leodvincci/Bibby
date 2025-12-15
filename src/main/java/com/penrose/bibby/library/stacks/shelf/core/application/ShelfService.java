@@ -6,6 +6,7 @@ import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJ
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -76,7 +77,8 @@ public class ShelfService implements ShelfFacade {
         return new Shelf(
                 shelfDTO.shelfLabel(),
                 shelfDTO.shelfPosition(),
-                shelfDTO.bookCapacity()
+                shelfDTO.bookCapacity(),
+                new ShelfId(shelfDTO.shelfId())
         );
     }
 
