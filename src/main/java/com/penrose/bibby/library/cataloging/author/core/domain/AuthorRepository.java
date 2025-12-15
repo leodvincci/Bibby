@@ -56,4 +56,8 @@ public interface AuthorRepository {
     List<AuthorDTO> findAllByFirstNameLastName(String firstName, String lastName);
 
     boolean authorExistFirstNameLastName(String firstName, String lastName);
+
+    Optional<AuthorDTO> getByFirstNameAndLastNameDTO(String firstName, String lastName);
+
+    AuthorEntity getAuthorById(Long authId);
 }

@@ -28,7 +28,7 @@ public interface AuthorFacade {
 
     AuthorDTO findById(Long authorId);
 
-    void createAuthorsIfNotExist(List<String> authors);
+//    List<AuthorDTO> createAuthorsIfNotExist(List<String> authors);
 
     Set<AuthorEntity> getAuthorsById(List<String> authors);
 
@@ -42,4 +42,6 @@ public interface AuthorFacade {
     boolean authorExistFirstNameLastName(String firstName, String lastName);
 
     List<AuthorDTO> getAllAuthorsByName(String firstName, String lastName);
+
+    AuthorDTO getAuthorById(Long authId);
 }

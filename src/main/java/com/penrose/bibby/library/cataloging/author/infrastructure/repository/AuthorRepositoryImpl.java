@@ -137,9 +137,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Set<AuthorEntity> getAuthorsById(List<String> authors) {
+        logger.info("Fetching authors by IDs: {}", authors);
         Set<AuthorEntity> authorEntities = new java.util.HashSet<>();
         for(String authorIdStr : authors){
             Long authorId = Long.parseLong(authorIdStr);
+            logger.info("Fetching author with ID: {}", authorId);
             authorEntities.add(authorJpaRepository.findById(authorId).get());
         }
         return authorEntities;
@@ -157,5 +159,16 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public boolean authorExistFirstNameLastName(String firstName, String lastName) {
         logger.info("RepoImpl: Checking existence of author: {} {}", firstName, lastName);
         return !authorJpaRepository.findByFirstNameAndLastName(firstName, lastName).isEmpty();
+    }
+
+    @Override
+    public Optional<AuthorDTO> getByFirstNameAndLastNameDTO(String firstName, String lastName) {
+
+        return Optional.empty();
+    }
+
+    @Override
+    public AuthorEntity getAuthorById(Long authId) {
+        return authorJpaRepository.findById(authId).get();
     }
 }

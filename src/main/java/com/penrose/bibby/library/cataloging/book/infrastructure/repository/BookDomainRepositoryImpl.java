@@ -137,8 +137,8 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     }
 
     @Override
-    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
-        BookEntity bookEntity = bookMapper.toEntityFromBookMetaDataResponse(bookMetaDataResponse, isbn, shelfId);
+    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
+        BookEntity bookEntity = bookMapper.toEntityFromBookMetaDataResponse(bookMetaDataResponse,authorIds, isbn, shelfId);
         bookJpaRepository.save(bookEntity);
         System.out.println("\n\u001B[32mBook Successfully Imported\u001B[0m");
         System.out.println("--------------------------------");

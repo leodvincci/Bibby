@@ -1,4 +1,5 @@
 package com.penrose.bibby.library.cataloging.book.contracts.ports.inbound;
+import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.*;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 
@@ -16,7 +17,7 @@ public interface BookFacade {
 
     BookMetaDataResponse findBookMetaDataByIsbn(String isbn);
 
-    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
+    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse,List<Long> authorIds, String isbn, Long shelfId);
 
     void createNewBook(BookRequestDTO bookRequestDTO);
 

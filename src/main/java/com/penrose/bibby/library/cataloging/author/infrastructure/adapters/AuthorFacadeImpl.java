@@ -6,9 +6,11 @@ import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.core.domain.AuthorRepository;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapper;
+import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapperTwo;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,11 +19,13 @@ public class AuthorFacadeImpl implements AuthorFacade {
 
 //    final AuthorService authorService;
     private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
     Logger log = org.slf4j.LoggerFactory.getLogger(AuthorFacadeImpl.class);
 
-    public AuthorFacadeImpl(AuthorRepository authorRepository) {
+    public AuthorFacadeImpl(AuthorRepository authorRepository, AuthorMapperTwo authorMapperTwo, AuthorMapper authorMapper) {
 //        this.authorService = authorService;
         this.authorRepository = authorRepository;
+        this.authorMapper = authorMapper;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class AuthorFacadeImpl implements AuthorFacade {
 
     public AuthorDTO saveAuthor(AuthorDTO authorDTO) {
         Author author = AuthorMapper.toDomain(authorDTO.id(), authorDTO.firstName(), authorDTO.lastName());
+        log.info("Saving author: {} {}", authorDTO.firstName(), authorDTO.lastName());
         return authorRepository.saveAuthor(author);
 
     }
@@ -58,18 +63,20 @@ public class AuthorFacadeImpl implements AuthorFacade {
         return authorRepository.findAuthorById(authorId).map(AuthorMapper::toDTO).orElse(null);
     }
 
-    @Override
-    public void createAuthorsIfNotExist(List<String> authors) {
-        for(String author : authors){
-            String[] nameParts = author.split(" ");
-            String firstName = nameParts[0];
-            String lastName = nameParts.length > 1 ? nameParts[1] : "";
-            Optional<Author> existingAuthor = authorRepository.getByFirstNameAndLastName(firstName, lastName);
-            if(existingAuthor.isEmpty()){
-                authorRepository.createAuthor(firstName, lastName);
-            }
-        }
-    }
+//    @Override
+//    public List<AuthorDTO> createAuthorsIfNotExist(List<String> authors) {
+//        List<AuthorDTO> createdAuthors = new ArrayList<>();
+//        for(String author : authors){
+//            String[] nameParts = author.split(" ");
+//            String firstName = nameParts[0];
+//            String lastName = nameParts.length > 1 ? nameParts[1] : "";
+//            Optional<AuthorDTO> existingAuthor = authorRepository.getByFirstNameAndLastNameDTO(firstName, lastName);
+//            createdAuthors.add(existingAuthor.get());
+//            if(existingAuthor.isEmpty()){
+//                authorRepository.createAuthor(firstName, lastName);
+//            }
+//        }
+//    }
 
     @Override
     public AuthorDTO findOrCreateAuthor(String namePart, String namePart1) {
@@ -108,5 +115,12 @@ public class AuthorFacadeImpl implements AuthorFacade {
     @Override
     public List<AuthorDTO> getAllAuthorsByName(String firstName, String lastName) {
         return authorRepository.findAllByFirstNameLastName(firstName, lastName);
+    }
+
+    @Override
+    public AuthorDTO getAuthorById(Long authId) {
+        AuthorEntity authorEntity = authorRepository.getAuthorById(authId);
+        return AuthorMapper.toDTOFromEntity(authorEntity);
+
     }
 }

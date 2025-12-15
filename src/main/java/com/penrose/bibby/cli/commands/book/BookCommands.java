@@ -61,13 +61,19 @@ public class BookCommands extends AbstractShellComponent {
     public void scanBook(
             @ShellOption (defaultValue = "single") boolean multi) {
 
-        if (multi) multiBookScan();
+//        if (multi) multiBookScan();
         log.info("Initiating scanBook for Single Scan.");
         System.out.println("\n\u001B[95mSingle Book Scan");
         String isbn = cliPrompt.promptForIsbnScan();
         if (!cliPrompt.isbnValidator(isbn)) return;
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-        if (cliPrompt.promptBookConfirmation()) bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, null);
+        log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
+
+        List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
+
+        log.debug("Authors verified/created for book.");
+        log.info(bookMetaDataResponse.toString());
+        if (cliPrompt.promptBookConfirmation()) bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, null);
 
     }
 
@@ -83,10 +89,11 @@ public class BookCommands extends AbstractShellComponent {
         ScanMode mode = ScanMode.from(scan, multi);
         switch(mode){
             case SINGLE -> scanBook(false);
-            case MULTI -> multiBookScan();
+//            case MULTI -> multiBookScan();
             case NONE -> createBookManually();
         }
     }
+
 
     public List<AuthorDTO> createAuthors(){
         int numberOfAuthors = cliPrompt.promptForBookAuthorCount();
@@ -115,6 +122,44 @@ public class BookCommands extends AbstractShellComponent {
             }else{
                 log.info("Creating new author: {} {}", authorDTO.firstName(), authorDTO.lastName());
                 authors.add(authorFacade.saveAuthor(authorDTO));
+                log.info("Author saved: {}", authors.get(i));
+            }
+
+        }
+        log.info("Authors Created and Returned: {}", authors);
+        return authors;
+    }
+
+    public List<Long> createAuthorsFromMetaData(List<String> authorNames){
+        List<Long> authors = new ArrayList<>();
+
+        for (int i = 0; i < authorNames.size(); i++) {
+            String[] nameParts = authorNames.get(i).trim().split(" ");
+            String firstName = nameParts[0];
+            String lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+            AuthorDTO authorDTO = new AuthorDTO(null, firstName, lastName);
+            log.info("Collected Author Details: {}", authorDTO);
+
+            if(authorFacade.authorExistFirstNameLastName(authorDTO.firstName(),authorDTO.lastName())){
+                log.info("Author already exists: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                System.out.println("Multiple Authors with this name.\n");
+                Long authorId = cliPrompt.promptMultipleAuthorConfirmation(authorDTO);
+                log.info("Existing author selected with ID: {}", authorId);
+                //todo: 0 is a magic number here, refactor needed
+                if(authorId == 0){
+                    log.info("Creating new author as per user request: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                    authors.add(authorFacade.saveAuthor(authorDTO).id());
+                    log.info("Author saved: {}", authors.get(i));
+                }else{
+                    log.info("Fetching existing author with ID: {}", authorId);
+
+                    AuthorDTO existingAuthor = authorFacade.findById(authorId);
+                    authors.add(existingAuthor.id());
+                    log.info("Existing author added to list: {}", existingAuthor);
+                }
+            }else{
+                log.info("Creating new author: {} {}", authorDTO.firstName(), authorDTO.lastName());
+                authors.add(authorFacade.saveAuthor(authorDTO).id());
                 log.info("Author saved: {}", authors.get(i));
             }
 
@@ -167,23 +212,23 @@ public class BookCommands extends AbstractShellComponent {
     }
 
 
-
-    private void multiBookScan() {
-        log.info("Initiating multiBookScan for Multi Scan.");
-        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
-        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
-        System.out.println("\n\u001B[95mMulti-Book Scan");
-        List<String> scans = cliPrompt.promptMultiScan();
-
-        for (String isbn : scans) {
-            System.out.println("Scanned ISBN: " + isbn);
-
-            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
-            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
-            System.out.println(scans.size() + " books were added to the library.");
-        }
-    }
+//
+//    private void multiBookScan() {
+//        log.info("Initiating multiBookScan for Multi Scan.");
+//        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+//        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+//        System.out.println("\n\u001B[95mMulti-Book Scan");
+//        List<String> scans = cliPrompt.promptMultiScan();
+//
+//        for (String isbn : scans) {
+//            System.out.println("Scanned ISBN: " + isbn);
+//
+//            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+//            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
+//            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
+//            System.out.println(scans.size() + " books were added to the library.");
+//        }
+//    }
 
 
 

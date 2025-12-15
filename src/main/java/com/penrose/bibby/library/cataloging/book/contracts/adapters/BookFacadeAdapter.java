@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.contracts.adapters;
 
+import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.*;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
@@ -67,8 +68,8 @@ public class BookFacadeAdapter implements BookFacade {
     }
 
     @Override
-    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
-        bookDomainRepository.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
+    public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
+        bookDomainRepository.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
     }
 
     @Override
