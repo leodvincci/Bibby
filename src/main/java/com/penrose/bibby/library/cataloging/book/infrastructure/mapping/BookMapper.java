@@ -322,27 +322,42 @@ public class BookMapper {
         );
     }
 
-    public BookEntity toEntityFromBookMetaDataResponse(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId) {
+    public BookEntity toEntityFromBookMetaDataResponse(BookMetaDataResponse bookMetaDataResponse,List<Long> authorIds, String isbn, Long shelfId) {
         if (bookMetaDataResponse == null){
             return null;
         }
 
-        authorFacade.createAuthorsIfNotExist(bookMetaDataResponse.authors());
-
+//        authorFacade.createAuthorsIfNotExist(bookMetaDataResponse.authors());
+//        log.info("Authors " + String.join(", ", authorDTOS.toString()) + " ensured to exist in the system.");
         BookEntity bookEntity = new BookEntity();
         bookEntity.setTitle(bookMetaDataResponse.title());
         bookEntity.setIsbn(isbn);
-        log.info("Fetching AuthorEntities for authors: " + String.join(", ", bookMetaDataResponse.authors()));
-        bookEntity.setAuthors(authorFacade.getAuthorsById(bookMetaDataResponse.authors()));
+//        log.info("Fetching AuthorEntities for authors: " + String.join(", ", authorDTOS.toString()));
+
+        Set<AuthorEntity> authorEntities = new HashSet<>();
+
+        for (Long authId : authorIds) {
+            AuthorDTO authorDTO = authorFacade.getAuthorById(authId);
+            log.info(authorDTO + " fetched for author ID: " + authId);
+            AuthorEntity authorEntity = new AuthorEntity();
+            authorEntity.setAuthorId(authorDTO.id());
+            authorEntity.setFirstName(authorDTO.firstName());
+            authorEntity.setLastName(authorDTO.lastName());
+            authorEntities.add(authorEntity);
+        }
+
         bookEntity.setPublisher(bookMetaDataResponse.publisher());
         bookEntity.setDescription(bookMetaDataResponse.description());
         bookEntity.setShelfId(shelfId);
+        log.info("Attempting to set authors for book: " + bookMetaDataResponse.title());
+        bookEntity.setAuthors(authorEntities);
         log.info("Setting availability status to AVAILABLE for book: " + bookMetaDataResponse.title());
         bookEntity.setAvailabilityStatus(AvailabilityStatus.AVAILABLE.name());
         bookEntity.setCreatedAt(java.time.LocalDate.now());
         bookEntity.setUpdatedAt(java.time.LocalDate.now());
         return bookEntity;
     }
+
 
     public List<BookDTO> toDTOListFromEntityList(List<BookEntity> bookEntities) {
         List<BookDTO> bookDTOs = new ArrayList<>();

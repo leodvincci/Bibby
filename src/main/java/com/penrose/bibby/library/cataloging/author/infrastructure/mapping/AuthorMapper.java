@@ -4,10 +4,11 @@ import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.core.domain.AuthorId;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
-
+@Component
 public class AuthorMapper {
 
 
@@ -63,5 +64,13 @@ public class AuthorMapper {
             authorEntities.add(authorEntity);
         }
         return authorEntities;
+    }
+
+    public static AuthorDTO toDTOFromEntity(AuthorEntity authorEntity) {
+        return new AuthorDTO(
+                authorEntity.getAuthorId(),
+                authorEntity.getFirstName(),
+                authorEntity.getLastName()
+        );
     }
 }

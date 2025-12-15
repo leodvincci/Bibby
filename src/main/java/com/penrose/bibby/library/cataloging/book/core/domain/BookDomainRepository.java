@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.core.domain;
 
+import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
@@ -29,7 +30,7 @@ public interface BookDomainRepository {
 
     BookDetailView getBookDetailView(Long bookId);
 
-    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, String isbn, Long shelfId);
+    void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId);
 
     List<BookEntity> getThreeBooksByAuthorId(Long id);
 }
