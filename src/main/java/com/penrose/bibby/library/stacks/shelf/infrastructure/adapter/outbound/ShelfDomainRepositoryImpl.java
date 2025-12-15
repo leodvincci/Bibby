@@ -1,5 +1,7 @@
 package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BriefBibliographicRecord;
+import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.domain.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
@@ -20,12 +22,15 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     private final ShelfMapper shelfMapper;
     private final BookDomainRepository bookDomainRepository;
     private final ShelfJpaRepository shelfJpaRepository;
+    private final BookFacade bookFacade;
+
     public ShelfDomainRepositoryImpl(ShelfJpaRepository jpaRepository,
-                                     ShelfMapper shelfMapper, BookDomainRepository bookDomainRepository, ShelfJpaRepository shelfJpaRepository) {
+                                     ShelfMapper shelfMapper, BookDomainRepository bookDomainRepository, ShelfJpaRepository shelfJpaRepository, BookFacade bookFacade) {
         this.jpaRepository = jpaRepository;
         this.shelfMapper = shelfMapper;
         this.bookDomainRepository = bookDomainRepository;
         this.shelfJpaRepository = shelfJpaRepository;
+        this.bookFacade = bookFacade;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.contracts.adapters;
 
 import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
-import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.*;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
@@ -12,6 +11,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +46,11 @@ public class BookFacadeAdapter implements BookFacade {
     public BookDTO findBookByIsbn(String isbn) {
         return BookDTO.fromEntity(bookDomainRepository.findBookByIsbn(isbn));
 
+    }
+
+    @Override
+    public BriefBibliographicRecord findBookBriefByShelfId(Long bookId) {
+        return bookMapper.toBookBriefFromEntity(bookDomainRepository.getBookById(bookId));
     }
 
     @Override
@@ -109,5 +114,13 @@ public class BookFacadeAdapter implements BookFacade {
         List<String> bookTitles = bookEntities.stream().limit(3).map(BookEntity::getTitle).toList();
         log.info("Book titles: " + bookTitles);
         return bookTitles;
+    }
+
+
+    @Override
+    public List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId) {
+        return bookMapper.toBookBriefListFromEntities(
+                bookDomainRepository.getBooksByShelfId(shelfId)
+        );
     }
 }

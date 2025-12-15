@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.contracts.ports.inbound;
-
-import com.penrose.bibby.library.book.contracts.dtos.*;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.*;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +9,8 @@ public interface BookFacade {
     void updateTheBooksShelf(BookDTO bookDTO, Long newShelfId);
 
     BookDTO findBookByIsbn(String isbn);
+
+    BriefBibliographicRecord findBookBriefByShelfId(Long bookId);
 
     BookDTO findBookByTitle(String title);
 
@@ -30,4 +31,6 @@ public interface BookFacade {
     Optional<BookDTO> findBookById(Long bookId);
 
     List<String> getBooksByAuthorId(Long id);
+
+    List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId);
 }

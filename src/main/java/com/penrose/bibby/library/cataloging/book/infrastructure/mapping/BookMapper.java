@@ -5,11 +5,11 @@ import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapper;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BriefBibliographicRecord;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookRequestDTO;
 import com.penrose.bibby.library.cataloging.book.core.domain.*;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.book.core.domain.*;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
@@ -350,5 +350,38 @@ public class BookMapper {
             bookDTOs.add(toDTOfromEntity(bookEntity));
         }
         return bookDTOs;
+    }
+
+    public BriefBibliographicRecord toBookBriefFromEntity(BookEntity bookById) {
+        return new BriefBibliographicRecord(
+                bookById.getBookId(),
+                bookById.getTitle(),
+                null,
+                bookById.getEdition(),
+                bookById.getPublisher(),
+                bookById.getPublicationYear(),
+                bookById.getIsbn(),
+                bookById.getDescription()
+        );
+    }
+
+
+    public List<BriefBibliographicRecord> toBookBriefListFromEntities(List<Book> booksByShelfId) {
+        List<BriefBibliographicRecord> briefBibliographicRecords = new ArrayList<>();
+        for (Book book : booksByShelfId) {
+            BriefBibliographicRecord briefBibliographicRecord = new BriefBibliographicRecord(
+                    book.getBookId().getId(),
+                    book.getTitle().title(),
+                    book.getAuthors().stream().map(AuthorRef::getAuthorName)
+                            .map(AuthorName::getFullName).toList(),
+                    book.getEdition(),
+                    book.getPublisher(),
+                    book.getPublicationYear(),
+                    book.getIsbn().isbn,
+                    book.getDescription()
+            );
+            briefBibliographicRecords.add(briefBibliographicRecord);
+        }
+        return briefBibliographicRecords;
     }
 }
