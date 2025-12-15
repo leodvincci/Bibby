@@ -170,6 +170,15 @@ public class BookCommands extends AbstractShellComponent {
         return new AuthorDTO(null, firstName, lastName);
     }
 
+    /**
+     * Creates a list of author IDs by processing a list of author names.
+     * Each name is converted into an AuthorDTO, checked for existence,
+     * and either added as a new author or matched to an existing author.
+     *
+     * @param authorNames a list of strings representing author names, where each name
+     *                    is expected to be in a "FirstName LastName" format
+     * @return a list of author IDs corresponding to the processed authors
+     */
     public List<Long> createAuthorsFromMetaData(List<String> authorNames){
         List<Long> authors = new ArrayList<>();
 
