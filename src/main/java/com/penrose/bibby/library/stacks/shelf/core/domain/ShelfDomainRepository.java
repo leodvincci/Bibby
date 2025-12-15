@@ -1,8 +1,10 @@
 package com.penrose.bibby.library.stacks.shelf.core.domain;
 
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+
 public interface ShelfDomainRepository {
 
-    Shelf getById(Long id);
+    Shelf getById(ShelfId id);
 
     void save(Shelf shelf);
 

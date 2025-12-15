@@ -1,9 +1,11 @@
 package com.penrose.bibby.library.stacks.shelf.core.domain;
 
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+
 import java.util.List;
 
 public class Shelf {
-    private Long id;
+    private ShelfId shelfId;
     private String shelfLabel;
     private String shelfDescription;
     private int shelfPosition;
@@ -66,10 +68,7 @@ public class Shelf {
     }
 
     public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
+        return this.shelfId.shelfId();
     }
 
     public String getShelfDescription() {
@@ -87,7 +86,7 @@ public class Shelf {
     @Override
     public String toString() {
         return "Shelf{" +
-                "id=" + id +
+                "shelf=" + shelfId +
                 ", shelfLabel='" + shelfLabel + '\'' +
                 ", shelfDescription='" + shelfDescription + '\'' +
                 ", shelfPosition=" + shelfPosition +
