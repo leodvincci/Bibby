@@ -6,12 +6,29 @@ import java.util.List;
 
 public class Shelf {
     private ShelfId shelfId;
+    //todo: remove shelfLabel
     private String shelfLabel;
+    //todo: remove shelfDescription
     private String shelfDescription;
     private int shelfPosition;
     private int bookCapacity;
     private List<Long> bookIds;
 
+    public ShelfId getShelfId() {
+        return shelfId;
+    }
+
+    public void setShelfId(ShelfId shelfId) {
+        this.shelfId = shelfId;
+    }
+
+    public List<Long> getBookIds() {
+        return bookIds;
+    }
+
+    public void setBookIds(List<Long> bookIds) {
+        this.bookIds = bookIds;
+    }
 
     public Shelf(String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId) {
         this.shelfLabel = shelfLabel;
