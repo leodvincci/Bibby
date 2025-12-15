@@ -130,10 +130,24 @@ public class BookCommands extends AbstractShellComponent {
         return authors;
     }
 
+    /**
+     * Checks if an author exists in the system with the given first and last name.
+     *
+     * @param firstName the first name of the author
+     * @param lastName the last name of the author
+     * @return true if an author with the specified first and last name exists, false otherwise
+     */
     public boolean authorExists(String firstName, String lastName){
         return authorFacade.authorExistFirstNameLastName(firstName,lastName);
     }
 
+    /**
+     * Creates a new author if the given author does not exist in the system,
+     * or associates an existing author based on user input when multiple matches are found.
+     *
+     * @param authorDTO the data transfer object containing the first name and last name of the author
+     * @return the ID of the newly created or existing author, or null if no valid selection is made
+     */
     public Long createNewAuthorOrAddExisting(AuthorDTO authorDTO){
         String firstName = authorDTO.firstName();
         String lastName = authorDTO.lastName();
@@ -159,11 +173,25 @@ public class BookCommands extends AbstractShellComponent {
         return null;
     }
 
+    /**
+     * Saves a new author to the system database.
+     *
+     * @param authorDTO the data transfer object containing the author's details to be saved
+     * @return the AuthorDTO object corresponding to the newly saved author
+     */
     public AuthorDTO saveNewAuthor(AuthorDTO authorDTO){
         return authorFacade.saveAuthor(authorDTO);
     }
 
-    public AuthorDTO mapperAuthorStringToDTO(String authorName){
+    /**
+     * Converts a given author name string into an AuthorDTO object.
+     * The full name is split into first and last name based on spaces.
+     * If the name contains only one word, it is treated as the first name, and the last name is left empty.
+     *
+     * @param authorName the string representing the author's name, expected in "FirstName LastName" format
+     * @return an AuthorDTO object with firstName and lastName extracted from the input string
+     */
+    public AuthorDTO mapAuthorStringToDTO(String authorName){
         String[] nameParts = authorName.trim().split(" ");
         String firstName = nameParts[0];
         String lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
@@ -183,7 +211,7 @@ public class BookCommands extends AbstractShellComponent {
         List<Long> authors = new ArrayList<>();
 
         for (String authorName : authorNames) {
-            AuthorDTO authorDTO = mapperAuthorStringToDTO(authorName);
+            AuthorDTO authorDTO = mapAuthorStringToDTO(authorName);
             boolean exists = authorExists(authorDTO.firstName(), authorDTO.lastName());
             authors.add(exists ? createNewAuthorOrAddExisting(authorDTO)
                     : saveNewAuthor(authorDTO).id());
