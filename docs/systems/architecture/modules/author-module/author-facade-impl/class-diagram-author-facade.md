@@ -8,7 +8,7 @@ classDiagram
 
     direction BT
 
-%% Facade as inbound port
+%% Facade as inbound adapter
     class AuthorFacade {
 <<interface>>   
         + Set~AuthorDTO~      findByBookId(Long bookId)

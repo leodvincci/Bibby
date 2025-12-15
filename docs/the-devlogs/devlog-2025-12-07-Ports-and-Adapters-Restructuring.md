@@ -236,7 +236,7 @@ public class BookService implements BookFacade {
 package com.penrose.bibby.library.book.core.application;
 
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;                           // ✓ Book's own type
-import com.penrose.bibby.library.cataloging.book.contracts.ports.outbound.AuthorAccessPort;  // ✓ Book's own port
+import com.penrose.bibby.library.cataloging.book.contracts.ports.outbound.AuthorAccessPort;  // ✓ Book's own adapter
 
 public class BookService implements BookFacade {
     private final AuthorAccessPort authorAccessPort;

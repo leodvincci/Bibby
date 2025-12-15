@@ -1,7 +1,10 @@
-package com.penrose.bibby.library.stacks.shelf.core.domain;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 
 import com.penrose.bibby.library.cataloging.book.core.domain.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
@@ -26,9 +29,9 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     }
 
     @Override
-    public Shelf getById(Long id) {
-        ShelfEntity entity = jpaRepository.findById(id).orElse(null);
-        List<Book> books = bookDomainRepository.getBooksByShelfId(id);
+    public Shelf getById(ShelfId id) {
+        ShelfEntity entity = jpaRepository.findById(id.shelfId()).orElse(null);
+        List<Book> books = bookDomainRepository.getBooksByShelfId(id.shelfId());
         List<Long> bookIds = new ArrayList<>();
         for(Book book : books){
             bookIds.add(book.getBookId().getId());

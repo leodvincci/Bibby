@@ -7,7 +7,7 @@ sequenceDiagram
     participant AuthorService as Service (Use Case Logic)
     participant AuthorMapper as Mapper (Domain → DTO)
 
-%% Caller invokes the inbound port
+%% Caller invokes the inbound adapter
     Caller->>AuthorFacadeImpl: findOrCreateAuthor(firstName, lastName)
 
 %% Facade delegates to Application layer

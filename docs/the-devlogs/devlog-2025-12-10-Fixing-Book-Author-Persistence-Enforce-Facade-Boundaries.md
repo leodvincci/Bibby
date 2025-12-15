@@ -118,7 +118,7 @@ public BookController(BookService bookService, BookFacade bookFacade, ...) {
 
 @PostMapping("api/v1/books")
 public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-    bookFacade.createNewBook(requestDTO);  // Through the port
+    bookFacade.createNewBook(requestDTO);  // Through the adapter
 }
 ```
 
@@ -407,7 +407,7 @@ public void registerBook(Book book) {
 ```java
 @PostMapping("api/v1/books")
 public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-    bookService.createNewBook(requestDTO);  // Bypasses port
+    bookService.createNewBook(requestDTO);  // Bypasses adapter
     return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
 }
 ```
@@ -416,7 +416,7 @@ public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
 ```java
 @PostMapping("api/v1/books")
 public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-    bookFacade.createNewBook(requestDTO);  // Through inbound port
+    bookFacade.createNewBook(requestDTO);  // Through inbound adapter
     return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
 }
 ```
