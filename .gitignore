@@ -35,3 +35,7 @@ build/
 ./Bibby.log
 /Bibby.log
 Bibby.log
+
+
+qodana.yaml
+
