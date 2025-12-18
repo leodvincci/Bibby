@@ -301,7 +301,7 @@ public class BookCommands extends AbstractShellComponent {
                 ├──────────────────────────────────────────────────────────────────────────────┤
                 │  \033[38;5;42mISBN\033[0m: %-31s                                       │
                 │  \033[38;5;42mAuthor\033[0m: %-31s                                     │
-                │  \033[38;5;42mPublisher\033[0m: %-31s                                    │
+                │  \033[38;5;42mPublisher\033[0m: %-31s                                  │
                 │                                                                              │
                 │  \033[38;5;42mBookcase\033[0m: %-35s                               │
                 │  \033[38;5;42mShelf\033[0m: %-35s                                  │
