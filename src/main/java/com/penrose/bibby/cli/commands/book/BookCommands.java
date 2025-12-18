@@ -81,7 +81,11 @@ public class BookCommands extends AbstractShellComponent {
                 "PENDING / NOT SET");
         System.out.println(bookcard);
 
-        if (cliPrompt.promptBookConfirmation()) bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, null);
+        if (cliPrompt.promptBookConfirmation()) {
+            Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+            Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+            bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+        }
 
     }
 
