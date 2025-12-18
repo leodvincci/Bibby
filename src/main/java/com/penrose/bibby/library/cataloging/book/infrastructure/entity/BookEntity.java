@@ -21,6 +21,7 @@ public class BookEntity {
     private int publicationYear;
     private String genre;
     private int edition;
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     private Long shelfId;
     private String availabilityStatus;
