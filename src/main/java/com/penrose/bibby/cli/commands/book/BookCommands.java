@@ -92,6 +92,14 @@ public class BookCommands extends AbstractShellComponent {
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+            String updatedBookCard = createBookCard(bookMetaDataResponse.title(),
+                    bookMetaDataResponse.isbn(),
+                    bookMetaDataResponse.authors().toString(),
+                    bookMetaDataResponse.publisher(),
+                    bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
+                    shelfFacade.findShelfById(shelfId).get().shelfLabel()
+            );
+            System.out.println(updatedBookCard);
         }
 
     }
