@@ -49,6 +49,10 @@ public class CliPromptService implements PromptFacade {
                 .and().build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("confirmation",String.class).equalsIgnoreCase("No")){
+            System.out.println("\u001B[38:5:190mCanceled. Book was not added.\n\u001B[0m");
+            return false;
+        }
         return result.getContext().get("confirmation",String.class).equalsIgnoreCase("Yes");
     }
 
@@ -165,6 +169,10 @@ public class CliPromptService implements PromptFacade {
                 .selectItems(bookCaseOptions)
                 .and().build();
         ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("bookcase",String.class).equals("cancel")){
+            System.out.println("\u001B[38:5:190mCanceled. No changes were made.\u001B[0m");
+            return null;
+        }
         return Long.parseLong(result.getContext().get("bookcase",String.class));
     }
 
