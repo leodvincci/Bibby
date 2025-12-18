@@ -86,6 +86,9 @@ public class BookCommands extends AbstractShellComponent {
                 return;
             }
             Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+            if(shelfId == null){
+                return;
+            }
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
