@@ -7,6 +7,8 @@
 ![Platform](https://img.shields.io/badge/Platform-CLI%20%2B%20Web-yellow?style=for-the-badge)
 
 ---
+## Building Bibby Blog
+https://buildingbibby.hashnode.dev/
 
 # **Bibby — Personal Library CLI**
 **A Spring Shell–powered command-line library management system for organizing physical books.**
