@@ -50,7 +50,7 @@ public class CliPromptService implements PromptFacade {
 
         ComponentFlow.ComponentFlowResult result = flow.run();
         if(result.getContext().get("confirmation",String.class).equalsIgnoreCase("No")){
-            System.out.println("\u001B[38:5:190mCanceled. Book was not added.\n\u001B[0m");
+            System.out.println("\u001B[38:5:190mCanceled. Book was not added.\u001B[0m");
             return false;
         }
         return result.getContext().get("confirmation",String.class).equalsIgnoreCase("Yes");
@@ -98,6 +98,10 @@ public class CliPromptService implements PromptFacade {
                 .selectItems(bookShelfOptions(bookCaseId))
                 .and().build();
         ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("bookshelf",String.class).equals("cancel")){
+            System.out.println("\u001B[38:5:190mCanceled. No changes were made.\u001B[0m");
+            return null;
+        }
         return Long.parseLong(result.getContext().get("bookshelf",String.class));
     }
 
@@ -259,6 +263,7 @@ public class CliPromptService implements PromptFacade {
     private Map<String, String> bookShelfOptions(Long bookcaseId) {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m[Cancel]\033[36m","cancel");
         List<ShelfDTO> shelfDTOS = shelfFacade.getAllDTOShelves(bookcaseId);
         for(ShelfDTO s : shelfDTOS){
             options.put(s.shelfLabel(), String.valueOf(s.shelfId()));
