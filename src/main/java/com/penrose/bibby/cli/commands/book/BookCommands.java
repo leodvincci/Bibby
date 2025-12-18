@@ -73,6 +73,14 @@ public class BookCommands extends AbstractShellComponent {
 
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
+        String bookcard = createBookCard(bookMetaDataResponse.title(),
+                bookMetaDataResponse.isbn(),
+                bookMetaDataResponse.authors().toString(),
+                bookMetaDataResponse.publisher(),
+                "PENDING / NOT SET",
+                "PENDING / NOT SET");
+        System.out.println(bookcard);
+
         if (cliPrompt.promptBookConfirmation()) bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, null);
 
     }
@@ -282,7 +290,7 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public String createBookCard(String title, String isbn, String author, String bookcase, String shelf) {
+    public String createBookCard(String title, String isbn, String author, String publisher, String bookcase, String shelf) {
 
         // %-42s ensures the text is left-aligned and padded to 42 characters
         // The emojis take up extra visual space, so adjusted padding slightly
@@ -293,13 +301,14 @@ public class BookCommands extends AbstractShellComponent {
                 ├──────────────────────────────────────────────────────────────────────────────┤
                 │  \033[38;5;42mISBN\033[0m: %-31s                                       │
                 │  \033[38;5;42mAuthor\033[0m: %-31s                                     │
+                │  \033[38;5;42mPublisher\033[0m: %-31s                                     │
                 │                                                                              │
                 │  \033[38;5;42mBookcase\033[0m: %-35s                               │
                 │  \033[38;5;42mShelf\033[0m: %-35s                                  │
                 ╰──────────────────────────────────────────────────────────────────────────────╯
                 
                 
-        """.formatted(title, isbn, author, bookcase,shelf);
+        """.formatted(title, isbn, author, publisher, bookcase,shelf);
     }
 
 // Usage:
@@ -358,6 +367,7 @@ public class BookCommands extends AbstractShellComponent {
                         bookDTO.title(),
                         bookDTO.isbn(),
                         authors.toString(),
+                        bookDTO.publisher(),
                         bookcaseLocation,
                         shelfLocation
                 );
@@ -411,6 +421,7 @@ public class BookCommands extends AbstractShellComponent {
                     bookDTO.title(),
                     bookDTO.isbn(),
                     authorFacade.findByBookId(bookDTO.id()).toString(),
+                    bookDTO.publisher(),
                     "PENDING / NOT SET",
                     "PENDING / NOT SET"
 
@@ -424,6 +435,7 @@ public class BookCommands extends AbstractShellComponent {
                     bookDTO.title(),
                     bookDTO.isbn(),
                     authorFacade.findByBookId(bookDTO.id()).toString(),
+                    "PENDING / NOT SET",
                     bookcaseDTO.get().bookcaseLabel(),
                     shelfDTO.get().shelfLabel()
             );
