@@ -69,7 +69,6 @@ public class BookCommands extends AbstractShellComponent {
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
 
-        List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
@@ -83,7 +82,12 @@ public class BookCommands extends AbstractShellComponent {
 
         if (cliPrompt.promptBookConfirmation()) {
             Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+            if(bookcaseId == null){
+                return;
+            }
             Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+            List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
+
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
         }
 
@@ -619,6 +623,7 @@ public class BookCommands extends AbstractShellComponent {
     private Map<String, String> bookCaseOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m[Cancel]\033[36m","cancel");
         List<BookcaseDTO> bookcaseDTOs  = bookcaseFacade.getAllBookcases();
         for(BookcaseDTO b : bookcaseDTOs){
             options.put(b.bookcaseLabel(), b.bookcaseId().toString());
