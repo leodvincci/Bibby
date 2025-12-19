@@ -64,7 +64,6 @@ public class BookCommands extends AbstractShellComponent {
     public void scanBook(
             @ShellOption (defaultValue = "single") boolean multi) {
 
-//        if (multi) multiBookScan();
         log.info("Initiating scanBook for Single Scan.");
         System.out.println("\n\u001B[95mSingle Book Scan");
         String isbn = cliPrompt.promptForIsbnScan();
