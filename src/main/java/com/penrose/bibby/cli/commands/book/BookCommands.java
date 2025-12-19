@@ -1,6 +1,7 @@
 package com.penrose.bibby.cli.commands.book;
 
 import com.penrose.bibby.cli.ConsoleColors;
+import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -34,6 +35,7 @@ public class BookCommands extends AbstractShellComponent {
     private final ShelfFacade shelfFacade;
     private final CliPromptService cliPrompt;
     private final ComponentFlow.Builder componentFlowBuilder;
+    private final PromptOptions promptOptions;
     Logger log = org.slf4j.LoggerFactory.getLogger(BookCommands.class);
 
     public BookCommands(ComponentFlow.Builder componentFlowBuilder,
@@ -41,13 +43,14 @@ public class BookCommands extends AbstractShellComponent {
                         ShelfFacade shelfFacade,
                         CliPromptService cliPrompt,
                         BookFacade bookFacade,
-                        BookcaseFacade bookcaseFacade) {
+                        BookcaseFacade bookcaseFacade, PromptOptions promptOptions) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.authorFacade = authorFacade;
         this.shelfFacade = shelfFacade;
         this.cliPrompt = cliPrompt;
         this.bookFacade = bookFacade;
         this.bookcaseFacade = bookcaseFacade;
+        this.promptOptions = promptOptions;
     }
 
     // ───────────────────────────────────────────────────────────────────
@@ -81,7 +84,7 @@ public class BookCommands extends AbstractShellComponent {
         System.out.println(bookcard);
 
         if (cliPrompt.promptBookConfirmation()) {
-            Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+            Long bookcaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
             if(bookcaseId == null){
                 return;
             }
@@ -270,7 +273,7 @@ public class BookCommands extends AbstractShellComponent {
         if(bookDTO == null){
             System.out.println("Book Not Found In Library");
         }else {
-            Long bookCaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+            Long bookCaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
             Long newShelfId = cliPrompt.promptForShelf(bookCaseId);
 
             //Checks if shelf is full/capacity reached
@@ -606,7 +609,7 @@ public class BookCommands extends AbstractShellComponent {
         flow = componentFlowBuilder.clone()
                         .withSingleItemSelector("checkOutDecision")
                                 .name("Want to check one out, or just window-shopping the shelves again?")
-                .selectItems(yesNoOptions())
+                .selectItems(promptOptions.yesNoOptions())
                 .and().build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
@@ -618,30 +621,12 @@ public class BookCommands extends AbstractShellComponent {
         }
     }
 
-    private Map<String, String> yesNoOptions() {
-        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
-        Map<String, String> options = new LinkedHashMap<>();
-        options.put("Yes  — \u001B[32mLet's Do It\n\u001B[0m", "Yes");
-        options.put("No  —  \u001B[32mNot this time\n\u001B[0m", "No");
-        return options;
-    }
-
     @Command(command = "suggest-shelf", description = "Use AI to recommend optimal shelf placement for a book.")
     public void suggestBookShelf(){
         System.out.println("Book should be placed on Shelf: G-16");
     }
 
-    private Map<String, String> bookCaseOptions() {
-        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
-        Map<String, String> options = new LinkedHashMap<>();
-        options.put("\u001B[38;5;202m[Cancel]\033[36m","cancel");
-        List<BookcaseDTO> bookcaseDTOs  = bookcaseFacade.getAllBookcases();
-        for(BookcaseDTO b : bookcaseDTOs){
-            options.put(b.bookcaseLabel(), b.bookcaseId().toString());
-        }
 
-        return options;
-    }
 
     public boolean addScanResultCommand(BookMetaDataResponse bookMetaData,String isbn) {
         String title = bookMetaData.title();
