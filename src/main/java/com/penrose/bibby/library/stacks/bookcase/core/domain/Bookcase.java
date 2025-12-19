@@ -4,7 +4,6 @@ public class Bookcase {
     private Long bookcaseId;
     private String bookcaseLabel;
     private int shelfCapacity;
-    private String bookcaseDescription;
 
     public int getShelfCapacity() {
         return shelfCapacity;
@@ -40,11 +39,4 @@ public class Bookcase {
         this.bookcaseLabel = bookcaseLabel;
     }
 
-    public String getBookcaseDescription() {
-        return bookcaseDescription;
-    }
-
-    public void setBookcaseDescription(String bookcaseDescription) {
-        this.bookcaseDescription = bookcaseDescription;
-    }
 }
