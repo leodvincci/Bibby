@@ -3,6 +3,7 @@ package com.penrose.bibby.library.stacks.shelf.core.application;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
@@ -15,7 +16,6 @@ import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary;
 import org.springframework.stereotype.Service;
 
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 @Service
 public class ShelfService implements ShelfFacade {
 
+    private final BookcaseFacade bookcaseFacade;
     ShelfJpaRepository shelfJpaRepository;
     BookJpaRepository bookJpaRepository;
-    BookcaseRepository bookcaseRepository;
     ShelfMapper shelfMapper;
 
-    public ShelfService(ShelfMapper shelfMapper, ShelfJpaRepository shelfJpaRepository, BookJpaRepository bookJpaRepository, BookcaseRepository bookcaseRepository) {
+    public ShelfService(ShelfMapper shelfMapper, ShelfJpaRepository shelfJpaRepository, BookJpaRepository bookJpaRepository, BookcaseFacade bookcaseFacade) {
         this.shelfJpaRepository = shelfJpaRepository;
         this.bookJpaRepository = bookJpaRepository;
-        this.bookcaseRepository = bookcaseRepository;
         this.shelfMapper = shelfMapper;
+        this.bookcaseFacade = bookcaseFacade;
     }
 
     public List<ShelfEntity> getAllShelves(Long bookCaseId){
@@ -99,7 +99,7 @@ public class ShelfService implements ShelfFacade {
 
     private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
         long bookCount = bookJpaRepository.countByShelfId(shelf.getShelfId());
-        BookcaseEntity bookcase = bookcaseRepository.findById(shelf.getBookcaseId()).orElse(null);
+        BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
         String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLabel() : "Unknown Case";
         boolean hasSpace = bookCount < shelf.getBookCapacity();
         return new ShelfOptionResponse(

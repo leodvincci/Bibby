@@ -28,13 +28,13 @@ public class BookcaseService implements BookcaseFacade {
         this.shelfFactory = shelfFactory;
     }
 
-    public String createNewBookCase(String label, int shelfCapacity, int bookCapacity) {
+    public String createNewBookCase(String label, String bookcaseZone ,String bookcaseZoneIndex, int shelfCapacity, int bookCapacity, String location) {
         BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLabel(label);
         if (bookcaseEntity != null) {
             log.error("Failed to save Record - Record already exist", existingRecordError);
             throw existingRecordError;
         } else {
-            bookcaseEntity = new BookcaseEntity(label, shelfCapacity, bookCapacity * shelfCapacity);
+            bookcaseEntity = new BookcaseEntity(location,bookcaseZone,bookcaseZoneIndex,shelfCapacity, bookCapacity * shelfCapacity);
             bookcaseRepository.save(bookcaseEntity);
 
             for (int i = 0; i < bookcaseEntity.getShelfCapacity(); i++) {
@@ -43,6 +43,29 @@ public class BookcaseService implements BookcaseFacade {
             log.info("Created new bookcase: {}", bookcaseEntity.getBookcaseLabel());
             return "Created New Bookcase " + label + " with shelf shelfCapacity of " + shelfCapacity;
         }
+    }
+
+    @Override
+    public List<String> getAllBookcaseLocations() {
+        return bookcaseRepository.getAllBookCaseLocations();
+    }
+
+    @Override
+    public Optional<BookcaseEntity> findById(Long bookcaseId) {
+        return bookcaseRepository.findById(bookcaseId);
+    }
+
+    @Override
+    public List<BookcaseDTO> getAllBookcasesByLocation(String location) {
+        return bookcaseRepository.findByLocation(location).stream()
+                .map(entity -> new BookcaseDTO(
+                        entity.getBookcaseId(),
+                        entity.getBookcaseLabel(),
+                        entity.getShelfCapacity(),
+                        entity.getBookCapacity(),
+                        entity.getBookcaseLocation()
+                ))
+                .toList();
     }
 
     public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
@@ -56,7 +79,8 @@ public class BookcaseService implements BookcaseFacade {
                         entity.getBookcaseId(),
                         entity.getBookcaseLabel(),
                         entity.getShelfCapacity(),
-                        entity.getBookCapacity()
+                        entity.getBookCapacity(),
+                        entity.getBookcaseLocation()
                 ))
                 .toList();
     }
