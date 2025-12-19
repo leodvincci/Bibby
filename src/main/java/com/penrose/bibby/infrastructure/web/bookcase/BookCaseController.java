@@ -19,7 +19,7 @@ public class BookCaseController {
 
     @PostMapping("/create/bookcase")
     public ResponseEntity<String> createBookCase(@RequestBody BookcaseDTO bookcaseDTO){
-        String message = bookCaseService.createNewBookCase(bookcaseDTO.bookcaseLabel(), bookcaseDTO.shelfCapacity(), bookcaseDTO.bookCapacity());
+        String message = bookCaseService.createNewBookCase(bookcaseDTO.bookcaseLabel(), "", "", bookcaseDTO.shelfCapacity(), bookcaseDTO.bookCapacity(),"");
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 

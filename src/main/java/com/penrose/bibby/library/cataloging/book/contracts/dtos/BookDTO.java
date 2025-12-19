@@ -26,7 +26,6 @@ public record BookDTO(Long id,
     public static BookDTO fromEntity(BookEntity bookEntity) {
 
         List<String> authors = new ArrayList<>();
-
             for (AuthorEntity author : bookEntity.getAuthors()) {
                 authors.add(author.getFirstName() + " " + author.getLastName());
             }
