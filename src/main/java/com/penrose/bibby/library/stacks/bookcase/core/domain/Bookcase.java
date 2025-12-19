@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.bookcase.core.domain;
 
 public class Bookcase {
     private Long bookcaseId;
+    private String bookcaseLocation;
     private String bookcaseLabel;
     private int shelfCapacity;
 
@@ -37,6 +38,14 @@ public class Bookcase {
 
     public void setBookcaseLabel(String bookcaseLabel) {
         this.bookcaseLabel = bookcaseLabel;
+    }
+
+    public void setBookcaseLocation(String bookcaseLocation) {
+        this.bookcaseLocation = bookcaseLocation;
+    }
+
+    public String getBookcaseLocation() {
+        return bookcaseLocation;
     }
 
 }

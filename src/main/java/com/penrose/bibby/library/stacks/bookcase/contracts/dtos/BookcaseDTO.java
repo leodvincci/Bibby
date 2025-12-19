@@ -4,7 +4,7 @@ import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
 
 import java.util.Optional;
 
-public record BookcaseDTO(Long bookcaseId, String bookcaseLabel, int shelfCapacity, int bookCapacity) {
+public record BookcaseDTO(Long bookcaseId, String bookcaseLabel, int shelfCapacity, int bookCapacity, String location) {
 
     public static Optional<BookcaseDTO> fromEntity(Optional<BookcaseEntity> bookcaseEntity) {
 
@@ -12,7 +12,8 @@ public record BookcaseDTO(Long bookcaseId, String bookcaseLabel, int shelfCapaci
                 entity.getBookcaseId(),
                 entity.getBookcaseLabel(),
                 entity.getShelfCapacity(),
-                entity.getBookCapacity()
+                entity.getBookCapacity(),
+                entity.getBookcaseLocation()
         ));
     }
 }
