@@ -187,12 +187,12 @@ CliPromptService   BookInfoService    →   [Google Books API]
 
 ### Key Technical Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Block on reactive call (`.block()`) | Spring Shell is synchronous; blocking is appropriate for CLI context |
-| Author creation as discrete step | Ensures authors exist before book persistence; cleaner transaction boundaries |
-| Derived placement labels | Final book card fetches labels via facades rather than storing denormalized data |
-| Cancel = first-class outcome | Prevents orphan records; treats user exit as valid path, not error |
+| Decision                            | Rationale                                                                        |
+|-------------------------------------|----------------------------------------------------------------------------------|
+| Block on reactive call (`.block()`) | Spring Shell is synchronous; blocking is appropriate for CLI context             |
+| Author creation as discrete step    | Ensures authors exist before book persistence; cleaner transaction boundaries    |
+| Derived placement labels            | Final book card fetches labels via facades rather than storing denormalized data |
+| Cancel = first-class outcome        | Prevents orphan records; treats user exit as valid path, not error               |
 
 ---
 
