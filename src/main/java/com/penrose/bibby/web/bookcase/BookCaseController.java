@@ -1,4 +1,4 @@
-package com.penrose.bibby.infrastructure.web.bookcase;
+package com.penrose.bibby.web.bookcase;
 
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;

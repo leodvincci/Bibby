@@ -1,4 +1,4 @@
-package com.penrose.bibby.infrastructure.web.book;
+package com.penrose.bibby.web.book;
 
 import com.penrose.bibby.library.cataloging.author.infrastructure.repository.AuthorJpaRepository;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;

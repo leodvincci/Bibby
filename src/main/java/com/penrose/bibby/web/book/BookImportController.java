@@ -1,4 +1,4 @@
-package com.penrose.bibby.infrastructure.web.book;
+package com.penrose.bibby.web.book;
 
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
