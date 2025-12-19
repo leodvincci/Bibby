@@ -60,7 +60,16 @@ public class BookCommands extends AbstractShellComponent {
     //
     // ───────────────────────────────────────────────────────────────────
 
-    @Command(command = "scan", description = "Scan a book's ISBN to add it to your library database",group = "Book Commands")
+
+    /**
+     * Scans a book's ISBN and facilitates its addition to the library database. This method
+     * allows users to interactively scan a book, validate its ISBN, retrieve metadata,
+     * and confirm or modify its placement in the library shelving system.
+     *
+     * @param multi if true, enables multiple book scanning functionality (currently unused);
+     *              if false, initiates a single book scanning process.
+     */
+    @Command(command = "scan", description = "Scan a book's ISBN to facilitate its addition to the library database.",group = "Book Commands")
     public void scanBook(
             @ShellOption (defaultValue = "single") boolean multi) {
 
