@@ -334,17 +334,36 @@ public class BookCommands extends AbstractShellComponent {
                 ╭──────────────────────────────────────────────────────────────────────────────────────╮
                 │  📖 \033[38;5;63m%-73s\033[0m        │     
                 ├──────────────────────────────────────────────────────────────────────────────────────┤
-                │  \033[38;5;42mISBN\033[0m: %-31s                                               │
-                │  \033[38;5;42mAuthor\033[0m: %-31s                                             │
+                │  \033[38;5;42mISBN\033[0m:      %-31s                                          │
+                │  \033[38;5;42mAuthor\033[0m:    %-31.31s%-3.3s                                       │                                                              
                 │  \033[38;5;42mPublisher\033[0m: %-31s                                          │
                 │                                                                                      │
-                │  \033[38;5;42mLocation\033[0m: %-35s                                       │
-                │  \033[38;5;42mBookcase\033[0m: %-35s                                       │
-                │  \033[38;5;42mShelf\033[0m: %-35s                                          │
+                │  \033[38;5;42mLocation\033[0m:  %-35s                                      │
+                │  \033[38;5;42mBookcase\033[0m:  %-35s                                      │
+                │  \033[38;5;42mShelf\033[0m:     %-35s                                      │
                 ╰──────────────────────────────────────────────────────────────────────────────────────╯
                 
                 
-        """.formatted(title, isbn, author, publisher,location, bookcase,shelf);
+        """.formatted(
+                title,
+                isbn,
+                formater(author),
+                author.length() > 42 ? "..." : " ",
+                publisher,
+                location,
+                bookcase,
+                shelf
+        );
+    }
+    public String formater(String authors){
+        String normalizedAuthors = authors.replaceAll("[\\[\\]]", ""); // Remove brackets
+        authors = normalizedAuthors.replaceAll(",\\s*", ","); // Ensure single space after commas
+        return authors;
+    }
+
+    public int countAuthors(String authors) {
+        String[] authorArray = authors.split(",");
+        return authorArray.length;
     }
 
 // Usage:
@@ -407,7 +426,6 @@ public class BookCommands extends AbstractShellComponent {
                         bookcaseLocation,
                         shelfLocation,
                         "PENDING / NOT SET"
-
                         );
                 System.out.println(bookCard);
 
@@ -470,6 +488,7 @@ public class BookCommands extends AbstractShellComponent {
         }else{
             Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
             Optional<BookcaseDTO> bookcaseDTO = bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
+            System.out.println(authorFacade.findByBookId(bookDTO.id()).toString());
             String bookCard = createBookCard(
                     bookDTO.title(),
                     bookDTO.isbn(),
