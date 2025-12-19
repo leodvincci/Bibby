@@ -83,9 +83,6 @@ Scan a book's ISBN barcode → fetch metadata automatically → confirm → plac
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-![Book ISBN Scan to Shelf-2025-12-19-223420](/home/leodpenrose/Downloads/Book ISBN Scan to Shelf-2025-12-19-223420.png)
-
-
 
 
 
