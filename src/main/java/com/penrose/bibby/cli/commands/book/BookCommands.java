@@ -80,11 +80,14 @@ public class BookCommands extends AbstractShellComponent {
                 bookMetaDataResponse.authors().toString(),
                 bookMetaDataResponse.publisher(),
                 "PENDING / NOT SET",
+                "PENDING / NOT SET",
                 "PENDING / NOT SET");
         System.out.println(bookcard);
 
         if (cliPrompt.promptBookConfirmation()) {
-            Long bookcaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
+            String location = cliPrompt.promptForBookcaseLocation();
+            System.out.println("Selected Location: " + location);
+            Long bookcaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptionsByLocation(location));
             if(bookcaseId == null){
                 return;
             }
@@ -100,13 +103,14 @@ public class BookCommands extends AbstractShellComponent {
                     bookMetaDataResponse.authors().toString(),
                     bookMetaDataResponse.publisher(),
                     bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
-                    shelfFacade.findShelfById(shelfId).get().shelfLabel()
-            );
+                    shelfFacade.findShelfById(shelfId).get().shelfLabel(),
+                    bookcaseFacade.findBookCaseById(bookcaseId).get().location()
+
+                    );
             System.out.println(updatedBookCard);
         }
 
     }
-
 
     @Command(command = "new", description = "Create a new book entry")
     public void registerBook(
@@ -312,7 +316,7 @@ public class BookCommands extends AbstractShellComponent {
 
 
 
-    public String createBookCard(String title, String isbn, String author, String publisher, String bookcase, String shelf) {
+    public String createBookCard(String title, String isbn, String author, String publisher, String bookcase, String shelf, String location) {
 
         // %-42s ensures the text is left-aligned and padded to 42 characters
         // The emojis take up extra visual space, so adjusted padding slightly
@@ -325,12 +329,13 @@ public class BookCommands extends AbstractShellComponent {
                 │  \033[38;5;42mAuthor\033[0m: %-31s                                     │
                 │  \033[38;5;42mPublisher\033[0m: %-31s                                  │
                 │                                                                              │
+                │  \033[38;5;42mLocation\033[0m: %-35s                               │
                 │  \033[38;5;42mBookcase\033[0m: %-35s                               │
                 │  \033[38;5;42mShelf\033[0m: %-35s                                  │
                 ╰──────────────────────────────────────────────────────────────────────────────╯
                 
                 
-        """.formatted(title, isbn, author, publisher, bookcase,shelf);
+        """.formatted(title, isbn, author, publisher,location, bookcase,shelf);
     }
 
 // Usage:
@@ -391,8 +396,10 @@ public class BookCommands extends AbstractShellComponent {
                         authors.toString(),
                         bookDTO.publisher(),
                         bookcaseLocation,
-                        shelfLocation
-                );
+                        shelfLocation,
+                        "PENDING / NOT SET"
+
+                        );
                 System.out.println(bookCard);
 
         }
@@ -445,6 +452,7 @@ public class BookCommands extends AbstractShellComponent {
                     authorFacade.findByBookId(bookDTO.id()).toString(),
                     bookDTO.publisher(),
                     "PENDING / NOT SET",
+                    "PENDING / NOT SET",
                     "PENDING / NOT SET"
 
             );
@@ -457,9 +465,10 @@ public class BookCommands extends AbstractShellComponent {
                     bookDTO.title(),
                     bookDTO.isbn(),
                     authorFacade.findByBookId(bookDTO.id()).toString(),
-                    "PENDING / NOT SET",
+                    bookDTO.publisher(),
                     bookcaseDTO.get().bookcaseLabel(),
-                    shelfDTO.get().shelfLabel()
+                    shelfDTO.get().shelfLabel(),
+                    bookcaseDTO.get().location()
             );
             System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");
             System.out.println(bookCard);

@@ -151,6 +151,14 @@ public class CliPromptService implements PromptFacade {
         }
     }
 
+    /**
+     * Prompts the user to select a bookcase from a list of options and returns the selected bookcase ID.
+     * If the user chooses to cancel, no changes are made, and the method returns null.
+     *
+     * @param bookCaseOptions A map of bookcase IDs (as strings) to their corresponding labels
+     *                        representing the available bookcase options.
+     * @return The selected bookcase ID as a Long, or null if the selection was canceled by the user.
+     */
     public Long promptForBookCase(Map<String, String> bookCaseOptions){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
@@ -220,6 +228,38 @@ public class CliPromptService implements PromptFacade {
                 .build();
         ComponentFlow.ComponentFlowResult result = flow.run();
         return result.getContext().get("searchType",String.class);
+    }
+
+    public String promptForBookcaseLocation(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("bookcaseLocation")
+                .name("Select a location:")
+                .selectItems(promptOptions.bookcaseLocationOptions())
+                .max(5)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+        if(result.getContext().get("bookcaseLocation",String.class).equals("new")){
+            return promptNewBookcaseLocation();
+        }
+        if(result.getContext().get("bookcaseLocation").equals("cancel")){
+            System.out.println("\u001B[38:5:190mCanceled. Bookcase was not created.\u001B[0m");
+            return null;
+        }
+
+        return result.getContext().get("bookcaseLocation",String.class);
+    }
+
+
+    public String promptNewBookcaseLocation(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withStringInput("newLocation")
+                .name("Location (e.g., Office, Bedroom, Basement):_")
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("newLocation",String.class);
     }
 
 }

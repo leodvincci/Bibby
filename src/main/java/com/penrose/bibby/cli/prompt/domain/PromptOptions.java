@@ -2,6 +2,7 @@ package com.penrose.bibby.cli.prompt.domain;
 
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
@@ -10,10 +11,7 @@ import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacad
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class PromptOptions {
@@ -74,7 +72,18 @@ public class PromptOptions {
         return options;
     }
 
-    public Map<String, String> bookCaseOptions() {
+    public Map<String, String> bookCaseOptionsByLocation(String location) {
+        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
+        Map<String, String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m[Cancel]\033[36m","cancel");
+        List<BookcaseDTO> bookcaseDTOs  = bookcaseFacade.getAllBookcasesByLocation(location);
+        for(BookcaseDTO b : bookcaseDTOs){
+            options.put(b.bookcaseLabel(), b.bookcaseId().toString());
+        }
+        return options;
+    }
+
+    public Map<String, String> BookCaseOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
         options.put("\u001B[38;5;202m[Cancel]\033[36m","cancel");
@@ -86,5 +95,46 @@ public class PromptOptions {
     }
 
 
+    public Map<String,String> bookcaseLocationOptions() {
+        Map<String,String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m[CANCEL]\033[36m","cancel");
+        options.put("\u001B[38;5;42m[CREATE NEW LOCATION]\u001B[0m", "new");
+        List<String> bookcaseLocations  = bookcaseFacade.getAllBookcaseLocations();
+        for(String bookcase : bookcaseLocations){
+            options.put("\u001B[38;5;63m"+ bookcase +"\u001B[0m", bookcase);
+        }
+        return options;
+    }
 
+    public Map<String,String> bookcaseLocationOptionsBrowse() {
+        Map<String,String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m[CANCEL]\033[36m","cancel");
+        List<String> bookcaseLocations  = bookcaseFacade.getAllBookcaseLocations();
+        for(String bookcase : bookcaseLocations){
+            options.put("\u001B[38;5;63m"+ bookcase +"\u001B[0m", bookcase);
+        }
+        return options;
+    }
+
+    public Map<String, String> bookCaseOptions() {
+        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
+        Map<String, String> options = new LinkedHashMap<>();
+        options.put("\u001B[38;5;202m [CANCEL]\033[36m","cancel");
+        List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
+        for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
+            int shelfBookCount = 0;
+            List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId());
+
+            for(ShelfDTO s : shelves){
+                List<BookDTO> bookList = shelfFacade.findBooksByShelf(s.shelfId());
+                shelfBookCount += bookList.size();
+            }
+            options.put(bookcaseRowFormater(bookcaseDTO,shelfBookCount), bookcaseDTO.bookcaseId().toString());
+        }
+        return  options;
+    }
+
+    public String bookcaseRowFormater(BookcaseDTO bookcaseDTO, int bookCount){
+        return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks",bookcaseDTO.bookcaseLabel().toUpperCase(),bookcaseDTO.shelfCapacity(),bookCount);
+    }
 }

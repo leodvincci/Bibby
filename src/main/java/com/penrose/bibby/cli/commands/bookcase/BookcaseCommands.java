@@ -1,7 +1,10 @@
 package com.penrose.bibby.cli.commands.bookcase;
 
 import com.penrose.bibby.cli.commands.book.BookCommands;
+import com.penrose.bibby.cli.prompt.application.CliPromptService;
+import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
 import org.springframework.shell.standard.AbstractShellComponent;
@@ -26,39 +29,49 @@ public class BookcaseCommands extends AbstractShellComponent {
     private final ShelfFacade shelfFacade;
     private final BookFacade bookFacade;
     private final BookcaseFacade bookcaseFacade;
-
+    private final CliPromptService cliPromptService;
+    private final PromptOptions promptOptions;
+    Logger log = org.slf4j.LoggerFactory.getLogger(BookcaseCommands.class);
 
     public BookcaseCommands(ComponentFlow.Builder componentFlowBuilder,
-                            ShelfFacade shelfFacade, BookFacade bookFacade, BookcaseFacade bookcaseFacade) {
+                            ShelfFacade shelfFacade, BookFacade bookFacade, BookcaseFacade bookcaseFacade, CliPromptService cliPromptService, PromptOptions promptOptions) {
         this.componentFlowBuilder = componentFlowBuilder;
         this.shelfFacade = shelfFacade;
         this.bookFacade = bookFacade;
         this.bookcaseFacade = bookcaseFacade;
+        this.cliPromptService = cliPromptService;
+        this.promptOptions = promptOptions;
     }
 
-    public String bookcaseRowFormater(BookcaseDTO bookcaseDTO, int bookCount){
-        return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks", bookcaseDTO.bookcaseLabel().toUpperCase(),bookcaseDTO.shelfCapacity(),bookCount);
-    }
 
     @Command(command = "create", description = "Create a new bookcase in the library.")
     public void createBookcase() throws InterruptedException {
 
-
         ComponentFlow flow = componentFlowBuilder.clone()
-                .withStringInput("bookcaseLabel")
-                .name("What should we call this new bookcase?:_")
+                .withStringInput("bookcaseZone")
+                .name("Bookcase Zone (e.g. NorthWall,Desk,Corner,BackWall,CouchSide,Main,WindowSide):_")
+                .and()
+                .withStringInput("zoneIndex")
+                .name("Zone Index (e.g. A, B, C):_")
                 .and()
                 .withStringInput("shelfCount")
-                .name("How many shelves does it have?:_")
+                .name("Shelf Count:_")
                 .and()
                 .withStringInput("bookCapacity")
-                .name("And how many books fit on a single shelf?:_")
+                .name("Books per Shelf:_")
                 .and()
                 .build();
 
+        String bookcaseLocation = cliPromptService.promptForBookcaseLocation();
+        if(bookcaseLocation == null){
+            return;
+        }
+
+        log.info("Selected Bookcase Location: {}", bookcaseLocation);
         ComponentFlow.ComponentFlowResult result = flow.run();
 
-        String bookcaseLabel = result.getContext().get("bookcaseLabel");
+        String bookcaseZone = result.getContext().get("bookcaseZone");
+        String zoneIndex = result.getContext().get("zoneIndex");
         int shelfCount = Integer.parseInt(result.getContext().get("shelfCount"));
         int bookCapacity = Integer.parseInt(result.getContext().get("bookCapacity"));
 
@@ -67,7 +80,9 @@ public class BookcaseCommands extends AbstractShellComponent {
             -----------------------------------
                     NEW BOOKCASE SUMMARY
             -----------------------------------
-            Label:          %s
+            Bookcase Location:       %s
+            Bookcase Zone:          %s
+            Bookcase Zone Index:    %s
             Shelf Count:    %s
             Capacity/Shelf: %s
             
@@ -75,7 +90,9 @@ public class BookcaseCommands extends AbstractShellComponent {
             -----------------------------------
 
     """.formatted(
-                bookcaseLabel,
+                bookcaseLocation,
+                bookcaseZone,
+                zoneIndex,
                 shelfCount,
                 bookCapacity,
                 (shelfCount * bookCapacity)
@@ -92,7 +109,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
       ComponentFlow.ComponentFlowResult res =  flow.run();
       if(res.getContext().get("confirmation").equals("Y") | res.getContext().get("confirmation").equals("y")) {
-          bookcaseFacade.createNewBookCase(bookcaseLabel,shelfCount,bookCapacity);
+          bookcaseFacade.createNewBookCase(bookcaseZone,bookcaseZone,zoneIndex,shelfCount,bookCapacity,bookcaseLocation);
           System.out.println("Created");
       }else{
           System.out.println("Not Created");
@@ -102,40 +119,26 @@ public class BookcaseCommands extends AbstractShellComponent {
 
     }
 
-    private Map<String, String> bookCaseOptions() {
-        // LinkedHashMap keeps insertion order so the menu shows in the order you add them
-        Map<String, String> options = new LinkedHashMap<>();
-        List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
-        for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
-            int shelfBookCount = 0;
-            List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId());
 
-            for(ShelfDTO s : shelves){
-                List<BookDTO> bookList = shelfFacade.findBooksByShelf(s.shelfId());
-                shelfBookCount += bookList.size();
-            }
-            options.put(bookcaseRowFormater(bookcaseDTO,shelfBookCount), bookcaseDTO.bookcaseId().toString());
-        }
-        return  options;
-    }
 
 
 
     @Command(command = "browse" , description = "Display all bookcases currently in the library, along with their labels, total shelves")
-    public void listAllBookcases(){
+    public void listBookcaseByLocation(){
         BookCommands bookCommands;
+
+        String location = cliPromptService.promptForBookcaseLocation();
+
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookcaseSelected")
                 .name("Select a Bookcase")
-                .selectItems(bookCaseOptions())
+                .selectItems(promptOptions.bookCaseOptionsByLocation(location))
                 .and()
                 .build();
 
         ComponentFlow.ComponentFlowResult result = flow.run();
 
         selectShelf(Long.parseLong(result.getContext().get("bookcaseSelected")));
-
-
 
         }
 
