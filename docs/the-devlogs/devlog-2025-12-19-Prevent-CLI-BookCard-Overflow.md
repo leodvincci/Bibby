@@ -62,3 +62,10 @@ In list/search mode, this is especially painful: I’m scanning quickly and the 
 ## 7) The Lesson
 
 `String.format("%-31s")` creates alignment only when data is “well-behaved.” The moment real-world strings get long, you need a layout rule that enforces a *maximum* (truncate) or a multi-line strategy (wrap). For a CLI list view, truncation is the right trade: stable layout beats completeness—*as long as detail view exists for the full truth.*
+<img width="1578" height="461" alt="image" src="https://github.com/user-attachments/assets/c5e42a9e-dda4-4fba-abd0-0a2cd9832c00" />
+
+<img width="1442" height="629" alt="image" src="https://github.com/user-attachments/assets/f2db83ac-923b-40df-9117-5e5e5ffc5170" />
+<img width="873" height="257" alt="image" src="https://github.com/user-attachments/assets/8a15f893-05a8-471d-9f87-6a9be60bf844" />
+<img width="873" height="257" alt="image" src="https://github.com/user-attachments/assets/0d4fdb11-133f-43f0-b252-2ad7c7d52952" />
+
+
