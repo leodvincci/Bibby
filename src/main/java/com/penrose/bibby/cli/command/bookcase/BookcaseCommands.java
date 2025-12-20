@@ -1,6 +1,6 @@
 package com.penrose.bibby.cli.command.bookcase;
 
-import com.penrose.bibby.cli.command.book.BookCommands;
+import com.penrose.bibby.cli.command.book.BookCirculationCommands;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
@@ -123,7 +123,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
     @Command(command = "browse" , description = "Display all bookcases currently in the library, along with their labels, total shelves")
     public void listBookcaseByLocation(){
-        BookCommands bookCommands;
+        BookCirculationCommands bookCirculationCommands;
 
         String location = cliPromptService.promptForBookcaseLocation();
 

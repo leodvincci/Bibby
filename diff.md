@@ -217,7 +217,7 @@ index d8dbacb..66c15c2 100644
 +package com.penrose.bibby.cli.command.bookcase;
  
 -import com.penrose.bibby.cli.commands.book.BookCommands;
-+import com.penrose.bibby.cli.command.book.BookCommands;
++import com.penrose.bibby.cli.command.book.BookCirculationCommands;
  import com.penrose.bibby.cli.prompt.application.CliPromptService;
  import com.penrose.bibby.cli.prompt.domain.PromptOptions;
  import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
