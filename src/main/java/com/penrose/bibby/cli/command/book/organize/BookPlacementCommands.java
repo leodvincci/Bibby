@@ -1,0 +1,64 @@
+package com.penrose.bibby.cli.command.book.organize;
+
+import com.penrose.bibby.cli.prompt.application.CliPromptService;
+import com.penrose.bibby.cli.prompt.domain.PromptOptions;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
+import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
+import org.springframework.shell.command.annotation.Command;
+import org.springframework.shell.standard.ShellComponent;
+
+import java.util.Optional;
+
+@ShellComponent
+@Command(command = "book", group = "Book Placement Commands")
+public class BookPlacementCommands {
+    private final BookFacade bookFacade;
+    private final ShelfFacade shelfFacade;
+    private final CliPromptService cliPrompt;
+    private final PromptOptions promptOptions;
+
+
+
+
+    public BookPlacementCommands(BookFacade bookFacade, ShelfFacade shelfFacade, CliPromptService cliPrompt, PromptOptions promptOptions) {
+        this.bookFacade = bookFacade;
+        this.shelfFacade = shelfFacade;
+        this.cliPrompt = cliPrompt;
+        this.promptOptions = promptOptions;
+    }
+
+
+
+    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
+    public void addToShelf(){
+        // What if the library has multiple copies of the same book title?
+        // For now, we will assume titles are unique
+        // todo(priority 2): prompt user to select from multiple copies if found
+        String title = cliPrompt.promptForBookTitle();
+        BookDTO bookDTO = bookFacade.findBookByTitle(title);
+        if(bookDTO == null){
+            System.out.println("Book Not Found In Library");
+        }else {
+            Long bookCaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
+            Long newShelfId = cliPrompt.promptForShelf(bookCaseId);
+
+            //Checks if shelf is full/capacity reached
+            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(newShelfId);
+//            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
+            if(shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()){
+                throw new IllegalStateException("Shelf is full");
+            }else{
+
+                bookFacade.updateTheBooksShelf(bookDTO, newShelfId);
+
+                System.out.println("Added Book To the Shelf!");
+            }
+        }
+    }
+
+
+
+}
