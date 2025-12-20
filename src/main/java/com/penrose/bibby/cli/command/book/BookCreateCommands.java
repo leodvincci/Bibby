@@ -121,10 +121,6 @@ public class BookCreateCommands {
         log.info("Initiating scanBook for Single Scan.");
         System.out.println("\n\u001B[95mSingle Book Scan");
         String isbn = cliPrompt.promptForIsbn();
-        //todo: extract isbn validation to a separate method / service
-        if (!cliPrompt.isbnValidator(isbn)) {
-            return null;
-        }
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
 
