@@ -18,6 +18,22 @@ import org.springframework.shell.standard.ShellOption;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the command group dedicated to creating and managing books
+ * within the library system. Provides methods for registering new books,
+ * managing authors, and handling interactive prompts for metadata and
+ * author information.
+ *
+ * Fields:
+ * - log: Logger instance for capturing debug and operation details.
+ * - cliPrompt: Command Line Interface prompt service for user interaction.
+ * - bookcardRenderer: Service for rendering book information cards.
+ * - bookFacade: Facade for managing book-related operations.
+ * - bookcaseFacade: Facade for handling bookcase-related operations.
+ * - shelfFacade: Facade for managing shelf functionalities.
+ * - authorFacade: Facade for handling author-related operations.
+ * - promptOptions: Options to customize command-line prompts during interactions.
+ */
 @ShellComponent
 @Command(command = "book", group = "Book Create Commands")
 public class BookCreateCommands {
@@ -129,6 +145,21 @@ public class BookCreateCommands {
         }
     }
 
+    /**
+     * Manually creates a new book entry by prompting the user for input.
+     * This method facilitates the interactive addition of a book, including its title, authors,
+     * and ISBN, by collecting details directly from the user and validating the information.
+     * The collected data is then used to create a BookRequestDTO, which is passed to the
+     * book facade for further processing and storage.
+     *
+     * The following steps are performed:
+     * 1. Prompts the user to input the book title.
+     * 2. Invokes the createAuthors method to gather and process author details.
+     * 3. Prompts the user to input the book's ISBN.
+     * 4. Logs the collected details (title, authors, and ISBN).
+     * 5. Constructs a BookRequestDTO object encapsulating these details.
+     * 6. Uses the book facade to create a new book entry in the system.
+     */
     public void createBookManually() {
         System.out.println("\n\u001B[95mCreate New Book");
 
