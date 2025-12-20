@@ -41,8 +41,8 @@ public class BookPlacementCommands {
         if(bookDTO == null){
             System.out.println("Book Not Found In Library");
         }else {
-            Long bookCaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
-            Long newShelfId = cliPrompt.promptForShelf(bookCaseId);
+            Long bookCaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptions());
+            Long newShelfId = cliPrompt.promptForShelfSelection(bookCaseId);
 
             //Checks if shelf is full/capacity reached
             Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(newShelfId);

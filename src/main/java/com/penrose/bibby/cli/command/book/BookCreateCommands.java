@@ -67,13 +67,64 @@ public class BookCreateCommands {
      *              if false, initiates a single book scanning process.
      */
     @Command(command = "scan", description = "Scan a book's ISBN barcode to retrieve metadata and add it to the library. Use --multi for batch scanning", group = "Book Create Commands")
-    public void scanBook(@ShellOption(defaultValue = "single") boolean multi) {
+    public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
+        BookMetaDataResponse bookMetaDataResponse = scanBook();
+
+        if (cliPrompt.promptToConfirmBookAddition()) {
+
+            String location = cliPrompt.promptForBookcaseLocation();
+            System.out.println("Selected Location: " + location);
+
+
+            Long bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
+            if(bookcaseId == null){
+                return;
+            }
+
+
+            Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
+            if(shelfId == null){
+                return;
+            }
+
+
+            List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
+
+            bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+
+            String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                    bookMetaDataResponse.isbn(),
+                    bookMetaDataResponse.authors().toString(),
+                    bookMetaDataResponse.publisher(),
+                    bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
+                    shelfFacade.findShelfById(shelfId).get().shelfLabel(),
+                    bookcaseFacade.findBookCaseById(bookcaseId).get().location()
+            );
+
+            System.out.println(updatedBookCard);
+        }
+
+    }
+
+    /**
+     * Scans a book by prompting the user to enter its ISBN and retrieves metadata associated
+     * with the ISBN from the system. The retrieved metadata includes details like title,
+     * authors, publisher, and description of the book. The method also validates the entered
+     * ISBN and displays a formatted "book card" with the book's metadata to the user.
+     *
+     * @return a {@code BookMetaDataResponse} object containing the metadata for the scanned
+     *         book, or {@code null} if the ISBN is invalid or the process is aborted.
+     */
+    public BookMetaDataResponse scanBook(){
         log.info("Initiating scanBook for Single Scan.");
         System.out.println("\n\u001B[95mSingle Book Scan");
-        String isbn = cliPrompt.promptForIsbnScan();
-        if (!cliPrompt.isbnValidator(isbn)) return;
+        String isbn = cliPrompt.promptForIsbn();
+        //todo: extract isbn validation to a separate method / service
+        if (!cliPrompt.isbnValidator(isbn)) {
+            return null;
+        }
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
 
@@ -90,34 +141,11 @@ public class BookCreateCommands {
                         "PENDING / NOT SET")
         );
 
-        if (cliPrompt.promptBookConfirmation()) {   
-            String location = cliPrompt.promptForBookcaseLocation();
-            System.out.println("Selected Location: " + location);
-            Long bookcaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptionsByLocation(location));
-            if(bookcaseId == null){
-                return;
-            }
-            Long shelfId = cliPrompt.promptForShelf(bookcaseId);
-            if(shelfId == null){
-                return;
-            }
-            List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
-
-            bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
-
-            String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
-                    bookMetaDataResponse.isbn(),
-                    bookMetaDataResponse.authors().toString(),
-                    bookMetaDataResponse.publisher(),
-                    bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
-                    shelfFacade.findShelfById(shelfId).get().shelfLabel(),
-                    bookcaseFacade.findBookCaseById(bookcaseId).get().location()
-
-            );
-            System.out.println(updatedBookCard);
-        }
-
+        return bookMetaDataResponse;
     }
+
+
+
 
 
     /**
@@ -141,7 +169,7 @@ public class BookCreateCommands {
 
         ScanMode mode = ScanMode.from(scan, multi);
         switch(mode){
-            case SINGLE -> scanBook(false);
+            case SINGLE -> createBookScan(false);
 //            case MULTI -> multiBookScan();
             case NONE -> createBookManually();
         }
@@ -181,7 +209,7 @@ public class BookCreateCommands {
         int numberOfAuthors = cliPrompt.promptForBookAuthorCount();
         List<AuthorDTO> authors = new ArrayList<>();
         for (int i = 0; i < numberOfAuthors; i++) {
-            AuthorDTO authorDTO = cliPrompt.promptForAuthor();
+            AuthorDTO authorDTO = cliPrompt.promptForAuthorDetails();
             log.info("Collected Author Details: {}", authorDTO);
 
             if(authorFacade.authorExistFirstNameLastName(authorDTO.firstName(),authorDTO.lastName())){

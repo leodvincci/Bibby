@@ -57,7 +57,7 @@ public class BookSearchCommands {
         String shelfLocation = "";
         String bookcaseLocation = "";
         System.out.println("\n\u001B[95mSearch by ISBN");
-        String isbn = cliPrompt.promptForIsbnScan();
+        String isbn = cliPrompt.promptForIsbn();
         if(isbn == null){
             System.out.println("NULL ISBN RETURNED");
             return;

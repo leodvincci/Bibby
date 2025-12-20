@@ -38,7 +38,14 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("searchDecision",String.class).equalsIgnoreCase("Yes");
     }
 
-    public boolean promptBookConfirmation(){
+    /**
+     * Prompts the user with a confirmation dialog to decide whether to add a book
+     * to the library. The method displays a Yes/No choice to the user and processes
+     * the response accordingly.
+     *
+     * @return true if the user confirms to add the book, false otherwise.
+     */
+    public boolean promptToConfirmBookAddition(){
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("confirmation")
                 .name("Would you like to add this book to the library?")
@@ -69,7 +76,7 @@ public class CliPromptService implements PromptFacade {
         return scans;
     }
 
-    public AuthorDTO promptForAuthor(){
+    public AuthorDTO promptForAuthorDetails() {
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("authorFirstName")
@@ -88,7 +95,7 @@ public class CliPromptService implements PromptFacade {
 
     }
 
-    public Long promptForShelf(Long bookCaseId){
+    public Long promptForShelfSelection(Long bookCaseId) {
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookshelf")
                 .name("Chose a shelf position")
@@ -114,8 +121,17 @@ public class CliPromptService implements PromptFacade {
     }
 
 
-
-    public String promptForIsbnScan(){
+    /**
+     * Prompts the user to enter an ISBN value through a console interface.
+     * The method validates the input and ensures it meets the expected format
+     * of a 13-digit ISBN starting with "978". The user can abort the input by
+     * entering ":q". Invalid inputs are flagged, and the prompt is repeated until
+     * a valid value or exit signal is provided.
+     *
+     * @return The valid ISBN entered by the user as a String,
+     *         or null if the input process is canceled.
+     */
+    public String promptForIsbn() {
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("isbn")
@@ -147,7 +163,7 @@ public class CliPromptService implements PromptFacade {
             return false;
         }else {
             System.out.println("\u001B[31mInvalid ISBN. Please enter a valid 13-digit ISBN starting with '978'.\u001B[0m");
-            return false;
+            throw new IllegalArgumentException("Invalid ISBN");
         }
     }
 
@@ -159,7 +175,7 @@ public class CliPromptService implements PromptFacade {
      *                        representing the available bookcase options.
      * @return The selected bookcase ID as a Long, or null if the selection was canceled by the user.
      */
-    public Long promptForBookCase(Map<String, String> bookCaseOptions){
+    public Long promptForBookcaseSelection(Map<String, String> bookCaseOptions){
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookcase")
