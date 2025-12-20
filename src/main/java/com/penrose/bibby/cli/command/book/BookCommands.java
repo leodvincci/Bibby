@@ -64,52 +64,7 @@ public class BookCommands extends AbstractShellComponent {
         this.bookcardRenderer = bookcardRenderer;
     }
 
-    // ───────────────────────────────────────────────────────────────────
-    //
-    //                        Book Create Commands
-    //
-    //
-    // ───────────────────────────────────────────────────────────────────
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Command(command = "shelf", description = "Place a book on a shelf or move it to a new location.")
-    public void addToShelf(){
-        // What if the library has multiple copies of the same book title?
-        // For now, we will assume titles are unique
-        // todo(priority 2): prompt user to select from multiple copies if found
-        String title = cliPrompt.promptForBookTitle();
-        BookDTO bookDTO = bookFacade.findBookByTitle(title);
-        if(bookDTO == null){
-            System.out.println("Book Not Found In Library");
-        }else {
-            Long bookCaseId = cliPrompt.promptForBookCase(promptOptions.bookCaseOptions());
-            Long newShelfId = cliPrompt.promptForShelf(bookCaseId);
-
-            //Checks if shelf is full/capacity reached
-            Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(newShelfId);
-//            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
-            if(shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()){
-                throw new IllegalStateException("Shelf is full");
-            }else{
-
-                bookFacade.updateTheBooksShelf(bookDTO, newShelfId);
-
-                System.out.println("Added Book To the Shelf!");
-            }
-        }
-    }
 
 
 //
