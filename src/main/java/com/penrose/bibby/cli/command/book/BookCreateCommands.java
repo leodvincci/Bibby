@@ -1,6 +1,5 @@
-package com.penrose.bibby.cli.command.book.intake;
+package com.penrose.bibby.cli.command.book;
 
-import com.penrose.bibby.cli.command.book.ScanMode;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
@@ -268,6 +267,25 @@ public class BookCreateCommands {
     public boolean authorExists(String firstName, String lastName){
         return authorFacade.authorExistFirstNameLastName(firstName,lastName);
     }
+
+
+    //
+//    private void multiBookScan() {
+//        log.info("Initiating multiBookScan for Multi Scan.");
+//        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+//        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+//        System.out.println("\n\u001B[95mMulti-Book Scan");
+//        List<String> scans = cliPrompt.promptMultiScan();
+//
+//        for (String isbn : scans) {
+//            System.out.println("Scanned ISBN: " + isbn);
+//
+//            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+//            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
+//            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
+//            System.out.println(scans.size() + " books were added to the library.");
+//        }
+//    }
 
 
 
