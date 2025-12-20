@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli.commands.library;
+package com.penrose.bibby.cli.command.library;
 
 import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;

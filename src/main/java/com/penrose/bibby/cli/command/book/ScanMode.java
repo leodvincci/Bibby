@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli.commands.book;
+package com.penrose.bibby.cli.command.book;
 
 public enum ScanMode {
     NONE,

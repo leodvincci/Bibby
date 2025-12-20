@@ -1,6 +1,6 @@
-package com.penrose.bibby.cli.commands.bookcase;
+package com.penrose.bibby.cli.command.bookcase;
 
-import com.penrose.bibby.cli.commands.book.BookCommands;
+import com.penrose.bibby.cli.command.book.BookCommands;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
@@ -14,8 +14,6 @@ import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFac
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookSummary;
-import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary;
 import java.util.*;
