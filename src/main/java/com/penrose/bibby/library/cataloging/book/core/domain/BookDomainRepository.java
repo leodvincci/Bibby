@@ -30,6 +30,14 @@ public interface BookDomainRepository {
 
     BookDetailView getBookDetailView(Long bookId);
 
+    /**
+     * Creates a new book record using the given metadata, author IDs, ISBN, and shelf ID.
+     *
+     * @param bookMetaDataResponse Contains metadata information of the book such as title, description, publisher, and authors.
+     * @param authorIds List of IDs corresponding to the authors of the book.
+     * @param isbn The ISBN of the book, used as a unique identifier.
+     * @param shelfId The ID of the shelf where the book is to be placed.
+     */
     void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId);
 
     List<BookEntity> getThreeBooksByAuthorId(Long id);

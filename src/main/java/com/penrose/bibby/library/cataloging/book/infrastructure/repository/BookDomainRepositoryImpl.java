@@ -136,6 +136,15 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
         return bookJpaRepository.getBookDetailView(bookId);
     }
 
+    /**
+     * Creates a new book entity using metadata from an external source, author IDs, ISBN, and shelf ID,
+     * then persists the entity in the storage repository.
+     *
+     * @param bookMetaDataResponse the metadata information of the book including title, authors, publisher, and description
+     * @param authorIds the list of author IDs associated with the book
+     * @param isbn the International Standard Book Number (ISBN) of the book
+     * @param shelfId the ID of the shelf where the book will be located
+     */
     @Override
     public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
         BookEntity bookEntity = bookMapper.toEntityFromBookMetaDataResponse(bookMetaDataResponse,authorIds, isbn, shelfId);

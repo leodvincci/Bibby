@@ -17,6 +17,17 @@ public interface BookFacade {
 
     BookMetaDataResponse findBookMetaDataByIsbn(String isbn);
 
+    /**
+     * Creates a new book in the system using metadata, author details, and additional information
+     * such as ISBN and shelf ID. This method facilitates the process of registering a book
+     * in the library database with its corresponding metadata and location.
+     *
+     * @param bookMetaDataResponse the metadata response containing book details such as title, authors,
+     *                             publisher, and description
+     * @param authorIds            the list of IDs of the authors associated with the book
+     * @param isbn                 the ISBN of the book being created
+     * @param shelfId              the ID of the shelf where the book will be placed
+     */
     void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse,List<Long> authorIds, String isbn, Long shelfId);
 
     void createNewBook(BookRequestDTO bookRequestDTO);

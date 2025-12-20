@@ -80,14 +80,15 @@ public class BookCreateCommands {
 
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
-        String bookcard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
-                bookMetaDataResponse.isbn(),
-                bookMetaDataResponse.authors().toString(),
-                bookMetaDataResponse.publisher(),
-                "PENDING / NOT SET",
-                "PENDING / NOT SET",
-                "PENDING / NOT SET");
-        System.out.println(bookcard);
+        System.out.println(
+                bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                        bookMetaDataResponse.isbn(),
+                        bookMetaDataResponse.authors().toString(),
+                        bookMetaDataResponse.publisher(),
+                        "PENDING / NOT SET",
+                        "PENDING / NOT SET",
+                        "PENDING / NOT SET")
+        );
 
         if (cliPrompt.promptBookConfirmation()) {   
             String location = cliPrompt.promptForBookcaseLocation();
@@ -103,6 +104,7 @@ public class BookCreateCommands {
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+
             String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
                     bookMetaDataResponse.isbn(),
                     bookMetaDataResponse.authors().toString(),

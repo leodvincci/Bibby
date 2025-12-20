@@ -67,6 +67,14 @@ public class BookFacadeAdapter implements BookFacade {
         return bookMapper.toBookMetaDataResponseFromGoogleBooksResponse(googleBooksResponse,isbn);
     }
 
+    /**
+     * Creates a new book record using metadata, author IDs, ISBN, and shelf ID.
+     *
+     * @param bookMetaDataResponse Contains metadata information of the book such as title, description, publisher, and authors.
+     * @param authorIds List of IDs representing the authors of the book.
+     * @param isbn The ISBN of the book, serving as a unique identifier.
+     * @param shelfId The ID of the shelf where the book should be stored.
+     */
     @Override
     public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
         bookDomainRepository.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
