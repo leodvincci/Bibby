@@ -1,6 +1,5 @@
 package com.penrose.bibby.cli.command.book;
 
-import com.penrose.bibby.cli.ConsoleColors;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import org.slf4j.Logger;

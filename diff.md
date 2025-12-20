@@ -6,7 +6,7 @@ index ec22bba..2cc2a1a 100644
 -package com.penrose.bibby.cli.commands.book;
 +package com.penrose.bibby.cli.command.book;
  
- import com.penrose.bibby.cli.ConsoleColors;
+ import com.penrose.bibby.cli.ui.ConsoleColors;
  import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 +import com.penrose.bibby.cli.ui.BookcardRenderer;
  import org.slf4j.Logger;

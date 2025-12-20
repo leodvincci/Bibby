@@ -1,4 +1,4 @@
-package com.penrose.bibby.cli;
+package com.penrose.bibby.cli.ui;
 
 public class ConsoleColors {
     // Reset

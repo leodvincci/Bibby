@@ -1,8 +1,20 @@
 package com.penrose.bibby.cli.ui;
 
-import com.penrose.bibby.cli.ConsoleColors;
 import org.springframework.stereotype.Component;
 
+/**
+ * Renders book-related information into formatted visual outputs for the console,
+ * including book cards, error messages, and other data presentations.
+ *
+ * This class is primarily responsible for creating formatted console output
+ * using colors, alignment, and other visual aspects to enhance readability and usability.
+ * Methods in this class handle formatting of book data, counting authors,
+ * and providing fallback messaging when no results are found.
+ *
+ * Dependencies:
+ *  - `ConsoleColors` class for defining text colors.
+ *  - Method utilities for string formatting and operations.
+ */
 @Component
 public class BookcardRenderer {
 
@@ -41,6 +53,7 @@ public class BookcardRenderer {
                 shelf
         );
     }
+
     public String formater(String authors){
         String normalizedAuthors = authors.replaceAll("[\\[\\]]", ""); // Remove brackets
         authors = normalizedAuthors.replaceAll(",\\s*", ","); // Ensure single space after commas
