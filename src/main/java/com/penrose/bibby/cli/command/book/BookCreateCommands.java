@@ -70,25 +70,22 @@ public class BookCreateCommands {
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
+
         BookMetaDataResponse bookMetaDataResponse = scanBook();
+        String isbn = bookMetaDataResponse.isbn();
 
         if (cliPrompt.promptToConfirmBookAddition()) {
-
             String location = cliPrompt.promptForBookcaseLocation();
-            System.out.println("Selected Location: " + location);
-
 
             Long bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
             if(bookcaseId == null){
                 return;
             }
 
-
             Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
             if(shelfId == null){
                 return;
             }
-
 
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
@@ -123,8 +120,6 @@ public class BookCreateCommands {
         String isbn = cliPrompt.promptForIsbn();
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
-
-
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
         System.out.println(
