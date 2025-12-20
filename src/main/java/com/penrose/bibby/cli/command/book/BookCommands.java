@@ -25,6 +25,15 @@ import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import java.util.*;
 
 
+/**
+ * The BookCommands class provides a set of commands for managing books in a library
+ * system. These commands allow users to interact with the book inventory, add new
+ * books, place books on shelves, search for books, and check books in and out.
+ *
+ * This class integrates with various facades and services, such as AuthorFacade,
+ * BookFacade, BookcaseFacade, ShelfFacade, and CliPromptService, to perform its operations.
+ * It uses a component-based UI flow builder and rendering tools to enhance interactivity.
+ */
 @ShellComponent
 @Command(command = "book", group = "Book Commands")
 public class BookCommands extends AbstractShellComponent {
