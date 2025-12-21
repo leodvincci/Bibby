@@ -75,6 +75,7 @@ public class BookCreateScanCommands {
      *              to handle multiple book scans (currently unused). If false, processes a
      *              single book scan and addition to the library.
      */
+    @Command(command = "add")
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
