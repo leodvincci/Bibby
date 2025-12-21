@@ -30,8 +30,8 @@ public class PromptOptions {
     public Map<String, String> yesNoOptions() {
         // LinkedHashMap keeps insertion order so the menu shows in the order you add them
         Map<String, String> options = new LinkedHashMap<>();
-        options.put("Yes  — \u001B[32mLet's Do It\u001B[0m", "Yes");
-        options.put("No  —  \u001B[32mNot this time\u001B[0m", "No");
+        options.put("Yes", "Yes");
+        options.put("No", "No");
         return options;
     }
 

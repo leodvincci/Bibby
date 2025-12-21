@@ -278,4 +278,15 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("newLocation",String.class);
     }
 
+    public boolean promptForPlacementDecision(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("placementDecision")
+                .name("Assign a shelf now?")
+                .selectItems(promptOptions.yesNoOptions())
+                .and().build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("placementDecision",String.class).equalsIgnoreCase("Yes");
+    }
+
 }
