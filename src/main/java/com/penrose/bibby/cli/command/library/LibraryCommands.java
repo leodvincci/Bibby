@@ -70,7 +70,7 @@ public class LibraryCommands {
 
     }
 
-    @Command(command = "scan", description = "Scan a book's ISBN barcode to retrieve metadata and add it to the library. Use --multi for batch scanning", group = "Book Create Commands")
+//    @Command(command = "library", description = "Scan a book's ISBN barcode to retrieve metadata and add it to the library. Use --multi for batch scanning", group = "Book Create Commands")
     public void createBookScan(BookMetaDataResponse bookMetaDataResponse) {
 
 //        if (multi) multiBookScan();
