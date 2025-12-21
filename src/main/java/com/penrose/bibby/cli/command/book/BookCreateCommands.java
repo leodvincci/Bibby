@@ -58,13 +58,23 @@ public class BookCreateCommands {
     }
 
 
+
+
+    /*
+    ============================
+        CLI Command Endpoints (Spring Shell entry points)
+    ============================
+     */
+
     /**
-     * Scans a book's ISBN and facilitates its addition to the library database. This method
-     * allows users to interactively scan a book, validate its ISBN, retrieve metadata,
-     * and confirm or modify its placement in the library shelving system.
+     * Scans a book's ISBN barcode to retrieve metadata and adds the book to the library system.
+     * Prompts the user to confirm the addition of the book, select a location in the library,
+     * and specify the appropriate bookcase and shelf. Optionally supports batch scanning if
+     * the multi option is enabled.
      *
-     * @param multi if true, enables multiple book scanning functionality (currently unused);
-     *              if false, initiates a single book scanning process.
+     * @param multi whether to enable batch scanning. If true, the method is configured
+     *              to handle multiple book scans (currently unused). If false, processes a
+     *              single book scan and addition to the library.
      */
     @Command(command = "scan", description = "Scan a book's ISBN barcode to retrieve metadata and add it to the library. Use --multi for batch scanning", group = "Book Create Commands")
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
@@ -78,14 +88,10 @@ public class BookCreateCommands {
             String location = cliPrompt.promptForBookcaseLocation();
 
             Long bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
-            if(bookcaseId == null){
-                return;
-            }
+            if(bookcaseId == null) return;
 
             Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
-            if(shelfId == null){
-                return;
-            }
+            if(shelfId == null) return;
 
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
@@ -99,11 +105,61 @@ public class BookCreateCommands {
                     shelfFacade.findShelfById(shelfId).get().shelfLabel(),
                     bookcaseFacade.findBookCaseById(bookcaseId).get().location()
             );
-
             System.out.println(updatedBookCard);
         }
-
     }
+
+    //
+//    private void multiBookScan() {
+//        log.info("Initiating multiBookScan for Multi Scan.");
+//        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
+//        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+//        System.out.println("\n\u001B[95mMulti-Book Scan");
+//        List<String> scans = cliPrompt.promptMultiScan();
+//
+//        for (String isbn : scans) {
+//            System.out.println("Scanned ISBN: " + isbn);
+//
+//            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+//            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
+//            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
+//            System.out.println(scans.size() + " books were added to the library.");
+//        }
+//    }
+
+    /**
+     * Registers a new book entry in the library system. Depending on the provided options,
+     * this method can either scan a book's ISBN for metadata retrieval or allow manual entry
+     * of book details.
+     *
+     * @param scan  if true, initiates a scanning process to retrieve book metadata;
+     *              if false, allows manual entry of book details.
+     * @param multi if true, enables multiple book scanning functionality (currently unused);
+     *              if false, processes a single book entry.
+     */
+    @Command(command = "new", description = "Register a new book in the library system by manual entry" , group = "Book Create Commands")
+    public void registerBook(
+            @ShellOption(defaultValue = "false") boolean scan,
+            @ShellOption(defaultValue = "false") boolean multi) {
+
+        log.info("Starting new book registration process.");
+        log.debug("{} {}", scan, multi);
+
+        ScanMode mode = ScanMode.from(scan, multi);
+        switch(mode){
+            case SINGLE -> createBookScan(false);
+//            case MULTI -> multiBookScan();
+            case NONE -> createBookManually();
+        }
+    }
+
+
+
+
+    /*  ============================
+        Scan flow helpers
+        ============================
+     */
 
     /**
      * Scans a book by prompting the user to enter its ISBN and retrieves metadata associated
@@ -131,40 +187,16 @@ public class BookCreateCommands {
                         "PENDING / NOT SET",
                         "PENDING / NOT SET")
         );
-
         return bookMetaDataResponse;
     }
 
 
 
 
-
-    /**
-     * Registers a new book entry in the library system. Depending on the provided options,
-     * this method can either scan a book's ISBN for metadata retrieval or allow manual entry
-     * of book details.
-     *
-     * @param scan  if true, initiates a scanning process to retrieve book metadata;
-     *              if false, allows manual entry of book details.
-     * @param multi if true, enables multiple book scanning functionality (currently unused);
-     *              if false, processes a single book entry.
+    /* ============================
+        Manual flow helpers
+        ============================
      */
-
-    @Command(command = "new", description = "Register a new book in the library system by manual entry" , group = "Book Create Commands")
-    public void registerBook(
-            @ShellOption(defaultValue = "false") boolean scan,
-            @ShellOption(defaultValue = "false") boolean multi) {
-
-        log.info("Starting new book registration process.");
-        log.debug("{} {}", scan, multi);
-
-        ScanMode mode = ScanMode.from(scan, multi);
-        switch(mode){
-            case SINGLE -> createBookScan(false);
-//            case MULTI -> multiBookScan();
-            case NONE -> createBookManually();
-        }
-    }
 
     /**
      * Manually creates a new book entry by prompting the user for input.
@@ -195,6 +227,13 @@ public class BookCreateCommands {
         bookFacade.createNewBook(bookRequestDTO);
     }
 
+
+
+
+    /* ============================
+        Author (manual)
+       ============================
+    */
 
     public List<AuthorDTO> createAuthors(){
         int numberOfAuthors = cliPrompt.promptForBookAuthorCount();
@@ -231,6 +270,14 @@ public class BookCreateCommands {
         return authors;
     }
 
+
+
+
+    /* ============================
+        Author (metadata)
+       ============================
+    */
+
     /**
      * Creates a list of author IDs by processing a list of author names.
      * Each name is converted into an AuthorDTO, checked for existence,
@@ -251,6 +298,14 @@ public class BookCreateCommands {
         }
         return authors;
     }
+
+
+
+
+    /* ============================
+        Mapping + facade wrappers
+       ============================
+    */
 
     /**
      * Saves a new author to the system database.
@@ -319,26 +374,4 @@ public class BookCreateCommands {
     public boolean authorExists(String firstName, String lastName){
         return authorFacade.authorExistFirstNameLastName(firstName,lastName);
     }
-
-
-    //
-//    private void multiBookScan() {
-//        log.info("Initiating multiBookScan for Multi Scan.");
-//        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
-//        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
-//        System.out.println("\n\u001B[95mMulti-Book Scan");
-//        List<String> scans = cliPrompt.promptMultiScan();
-//
-//        for (String isbn : scans) {
-//            System.out.println("Scanned ISBN: " + isbn);
-//
-//            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-//            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
-//            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
-//            System.out.println(scans.size() + " books were added to the library.");
-//        }
-//    }
-
-
-
 }

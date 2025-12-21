@@ -23,6 +23,18 @@ public class BookcardRenderer {
     }
 
 
+    /**
+     * Creates a formatted book card with the specified metadata.
+     *
+     * @param title     the title of the book
+     * @param isbn      the International Standard Book Number (ISBN) of the book
+     * @param author    the author(s) of the book
+     * @param publisher the publisher of the book
+     * @param bookcase  the label or identifier of the bookcase where the book is stored
+     * @param shelf     the label or identifier of the shelf where the book is stored
+     * @param location  the location (e.g., library branch or area) where the book is stored
+     * @return a formatted string representing the book card, including styled details such as title, ISBN, author, publisher, location, bookcase, and shelf
+     */
     public String createBookCard(String title, String isbn, String author, String publisher, String bookcase, String shelf, String location) {
 
         // %-42s ensures the text is left-aligned and padded to 42 characters
