@@ -149,7 +149,7 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     public void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
         BookEntity bookEntity = bookMapper.toEntityFromBookMetaDataResponse(bookMetaDataResponse,authorIds, isbn, shelfId);
         bookJpaRepository.save(bookEntity);
-        System.out.println("\u001B[32mBook Successfully Added\u001B[0m\n");
+        System.out.println("\u001B[32mSaved\u001B[0m\n");
         log.info("--------------------------------");
         log.info(" Title  : {}}%n", bookEntity.getTitle());
         log.info(" Author : {}%n", bookMetaDataResponse.authors());

@@ -117,20 +117,17 @@ public class BookCreateImportCommands {
      */
     public BookMetaDataResponse scanBook(){
         log.info("Initiating scanBook for Single Scan.");
-        System.out.println("\n\u001B[95mSingle Book Scan");
+        System.out.println("\n\u001B[95mAdd Book (ISBN)");
         String isbn = cliPrompt.promptForIsbn();
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
         System.out.println(
-                bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                bookcardRenderer.bookImportCard(bookMetaDataResponse.title(),
                         bookMetaDataResponse.isbn(),
                         bookMetaDataResponse.authors().toString(),
-                        bookMetaDataResponse.publisher(),
-                        "PENDING / NOT SET",
-                        "PENDING / NOT SET",
-                        "PENDING / NOT SET")
+                        bookMetaDataResponse.publisher())
         );
         return bookMetaDataResponse;
     }
