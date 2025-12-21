@@ -82,29 +82,33 @@ public class BookCreateScanCommands {
 
         BookMetaDataResponse bookMetaDataResponse = scanBook();
         String isbn = bookMetaDataResponse.isbn();
+        Long shelfId = null;
+        Long bookcaseId = null;
 
         if (cliPrompt.promptToConfirmBookAddition()) {
-            String location = cliPrompt.promptForBookcaseLocation();
 
-            Long bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
-            if(bookcaseId == null) return;
+            if(cliPrompt.promptForPlacementDecision()){
+                String location = cliPrompt.promptForBookcaseLocation();
+                bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
+                if(bookcaseId == null) return;
 
-            Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
-            if(shelfId == null) return;
+                shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
+                if(shelfId == null) return;
+                String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                        bookMetaDataResponse.isbn(),
+                        bookMetaDataResponse.authors().toString(),
+                        bookMetaDataResponse.publisher(),
+                        bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
+                        shelfFacade.findShelfById(shelfId).get().shelfLabel(),
+                        bookcaseFacade.findBookCaseById(bookcaseId).get().location()
+                );
+                System.out.println(updatedBookCard);
+            }
 
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
 
-            String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
-                    bookMetaDataResponse.isbn(),
-                    bookMetaDataResponse.authors().toString(),
-                    bookMetaDataResponse.publisher(),
-                    bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
-                    shelfFacade.findShelfById(shelfId).get().shelfLabel(),
-                    bookcaseFacade.findBookCaseById(bookcaseId).get().location()
-            );
-            System.out.println(updatedBookCard);
         }
     }
 
