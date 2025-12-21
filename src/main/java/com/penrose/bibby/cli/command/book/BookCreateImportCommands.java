@@ -65,7 +65,6 @@ public class BookCreateImportCommands {
     ============================
      */
 
-    @Command(command = "import", description = "import ISBN barcode to retrieve metadata and add it to the library.", group = "Library Commands")
     public void createBookImport(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
