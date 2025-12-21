@@ -22,7 +22,7 @@ import java.util.*;
 
 
 @ShellComponent
-@Command(command = "book", group = "Book Commands")
+@Command(command = "book", group = "Book Circulation Commands")
 public class BookCirculationCommands extends AbstractShellComponent {
 
     private final AuthorFacade authorFacade;

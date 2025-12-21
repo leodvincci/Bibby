@@ -108,11 +108,11 @@ public class BookCreateScanCommands {
         }
     }
 
-    //
-//    private void multiBookScan() {
+
+//    private BookMetaDataResponse multiBookScan() {
 //        log.info("Initiating multiBookScan for Multi Scan.");
-//        Long bookcaseId = cliPrompt.promptForBookCase(bookCaseOptions());
-//        Long shelfId = cliPrompt.promptForShelf(bookcaseId);
+//        Long bookcaseId = cliPrompt.promptForBookcaseSelection(bookCaseOptions());
+//        Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
 //        System.out.println("\n\u001B[95mMulti-Book Scan");
 //        List<String> scans = cliPrompt.promptMultiScan();
 //
@@ -120,10 +120,12 @@ public class BookCreateScanCommands {
 //            System.out.println("Scanned ISBN: " + isbn);
 //
 //            BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
-//            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
-//            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
-//            System.out.println(scans.size() + " books were added to the library.");
+////            bookFacade.createBookFromMetaData(bookMetaDataResponse, isbn, shelfId);
+////            System.out.println("\n\u001B[36m</>\033[0m:" + bookMetaDataResponse.title() + " added to Library!");
+////            System.out.println(scans.size() + " books were added to the library.");
+//            return bookMetaDataResponse;
 //        }
+//        return null;
 //    }
 
 
