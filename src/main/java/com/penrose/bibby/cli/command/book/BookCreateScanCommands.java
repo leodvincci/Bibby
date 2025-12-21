@@ -224,11 +224,12 @@ public class BookCreateScanCommands {
     }
 
     /**
-     * Creates a new author if the given author does not exist in the system,
-     * or associates an existing author based on user input when multiple matches are found.
+     * Creates a new author or retrieves an existing one based on the provided author details.
+     * If an author with the same first and last name exists, the method either prompts the user
+     * to select an existing author or creates a new one depending on the user's decision.
      *
-     * @param authorDTO the data transfer object containing the first name and last name of the author
-     * @return the ID of the newly created or existing author, or null if no valid selection is made
+     * @param authorDTO the data transfer object containing the author's first name and last name
+     * @return the ID of the existing or newly created author, or null if the operation is aborted
      */
     public Long createNewAuthorOrAddExisting(AuthorDTO authorDTO){
         String firstName = authorDTO.firstName();
