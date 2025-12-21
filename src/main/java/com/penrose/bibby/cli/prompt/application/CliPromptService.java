@@ -281,7 +281,7 @@ public class CliPromptService implements PromptFacade {
     public boolean promptForPlacementDecision(){
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("placementDecision")
-                .name("Would you like to place the book on a shelf now?")
+                .name("Assign a shelf now?")
                 .selectItems(promptOptions.yesNoOptions())
                 .and().build();
 

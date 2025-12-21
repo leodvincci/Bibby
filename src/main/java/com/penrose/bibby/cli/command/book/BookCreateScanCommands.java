@@ -73,7 +73,7 @@ public class BookCreateScanCommands {
      *
      * @param multi whether to enable batch scanning. If true, the method is configured
      *              to handle multiple book scans (currently unused). If false, processes a
-     *              single book scan and addition to the library.
+     *              Add Book (ISBN) and addition to the library.
      */
     @Command(command = "add")
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
@@ -90,24 +90,38 @@ public class BookCreateScanCommands {
             if(cliPrompt.promptForPlacementDecision()){
                 String location = cliPrompt.promptForBookcaseLocation();
                 bookcaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptionsByLocation(location));
-                if(bookcaseId == null) return;
+                if(bookcaseId != null){
+                    shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
+                    if(shelfId == null) return;
 
-                shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
-                if(shelfId == null) return;
-                String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
-                        bookMetaDataResponse.isbn(),
-                        bookMetaDataResponse.authors().toString(),
-                        bookMetaDataResponse.publisher(),
-                        bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
-                        shelfFacade.findShelfById(shelfId).get().shelfLabel(),
-                        bookcaseFacade.findBookCaseById(bookcaseId).get().location()
-                );
-                System.out.println(updatedBookCard);
+                    String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                            bookMetaDataResponse.isbn(),
+                            bookMetaDataResponse.authors().toString(),
+                            bookMetaDataResponse.publisher(),
+                            bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
+                            shelfFacade.findShelfById(shelfId).get().shelfLabel(),
+                            bookcaseFacade.findBookCaseById(bookcaseId).get().location()
+                    );
+                    System.out.println(updatedBookCard);
+
+                }
+
+
+
             }
 
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+            String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                    bookMetaDataResponse.isbn(),
+                    bookMetaDataResponse.authors().toString(),
+                    bookMetaDataResponse.publisher(),
+                    "Not Set",
+                    "Not Set",
+                    "Not Set"
+            );
+            System.out.println(updatedBookCard);
 
         }
     }
@@ -151,29 +165,26 @@ public class BookCreateScanCommands {
      *         book, or {@code null} if the ISBN is invalid or the process is aborted.
      */
     public BookMetaDataResponse scanBook(){
-        log.info("Initiating scanBook for Single Scan.");
-        System.out.println("\n\u001B[95mSingle Book Scan");
+        log.info("Initiating scanBook for Add Book (ISBN)");
+        System.out.println("\n\u001B[95mAdd Book (ISBN)");
         String isbn = cliPrompt.promptForIsbn();
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
         System.out.println(
-                bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                bookcardRenderer.bookImportCard(bookMetaDataResponse.title(),
                         bookMetaDataResponse.isbn(),
                         bookMetaDataResponse.authors().toString(),
-                        bookMetaDataResponse.publisher(),
-                        "PENDING / NOT SET",
-                        "PENDING / NOT SET",
-                        "PENDING / NOT SET")
-        );
+                        bookMetaDataResponse.publisher()
+        ));
         return bookMetaDataResponse;
     }
 
 
     public BookMetaDataResponse importBook(String isbn){
         log.info("Initiating scanBook for Import.");
-//        System.out.println("\n\u001B[95mSingle Book Scan");
+//        System.out.println("\n\u001B[95mAdd Book (ISBN)");
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
         log.debug("Authors verified/created for book.");
