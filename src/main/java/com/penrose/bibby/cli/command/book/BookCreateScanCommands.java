@@ -75,7 +75,6 @@ public class BookCreateScanCommands {
      *              to handle multiple book scans (currently unused). If false, processes a
      *              single book scan and addition to the library.
      */
-    @Command(command = "scan", description = "Scan a book's ISBN barcode to retrieve metadata and add it to the library. Use --multi for batch scanning", group = "Book Create Commands")
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
