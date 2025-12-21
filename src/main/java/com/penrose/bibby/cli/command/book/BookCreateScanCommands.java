@@ -75,7 +75,11 @@ public class BookCreateScanCommands {
      *              to handle multiple book scans (currently unused). If false, processes a
      *              Add Book (ISBN) and addition to the library.
      */
-    @Command(command = "add")
+    @Command(command = "add" , description =
+                """
+                Add books to your library by ISBN (scan/type/paste) or manual entry.
+                If an ISBN is provided, Bibby fetches metadata and creates a new book record. Supports single entry, batch entry, or file import.
+                """)
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {
 
 //        if (multi) multiBookScan();
