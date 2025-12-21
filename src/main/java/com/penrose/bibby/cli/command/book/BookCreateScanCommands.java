@@ -164,6 +164,23 @@ public class BookCreateScanCommands {
         return bookMetaDataResponse;
     }
 
+
+    public BookMetaDataResponse importBook(String isbn){
+        log.info("Initiating scanBook for Import.");
+//        System.out.println("\n\u001B[95mSingle Book Scan");
+        BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+        log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
+        log.debug("Authors verified/created for book.");
+        log.info(bookMetaDataResponse.toString());
+        System.out.println(
+                bookcardRenderer.bookImportCard(bookMetaDataResponse.title(),
+                        bookMetaDataResponse.isbn(),
+                        bookMetaDataResponse.authors().toString(),
+                        bookMetaDataResponse.publisher())
+        );
+        return bookMetaDataResponse;
+    }
+
     /* ============================
         Author (metadata)
        ============================

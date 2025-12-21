@@ -66,6 +66,34 @@ public class BookcardRenderer {
         );
     }
 
+    public String bookImportCard(String title, String isbn, String author, String publisher) {
+
+        // %-42s ensures the text is left-aligned and padded to 42 characters
+        // The emojis take up extra visual space, so adjusted padding slightly
+        return """
+                
+                ╭──────────────────────────────────────────────────────────────────────────────────────╮
+                │  📖 \033[38;5;63m%-73s\033[0m        │     
+                ├──────────────────────────────────────────────────────────────────────────────────────┤
+                │  \033[38;5;42mISBN\033[0m:      %-31s                                          │
+                │  \033[38;5;42mAuthor\033[0m:    %-31.31s%-3.3s                                       │                                                              
+                │  \033[38;5;42mPublisher\033[0m: %-31.31s                                          │
+                ╰──────────────────────────────────────────────────────────────────────────────────────╯
+                
+                
+        """.formatted(
+                title,
+                isbn,
+                formater(author),
+                author.length() > 42 ? "..." : " ",
+                publisher,
+                publisher.length() > 32 ? "..." : " "
+
+                );
+    }
+
+
+
     public String formater(String authors){
         String normalizedAuthors = authors.replaceAll("[\\[\\]]", ""); // Remove brackets
         authors = normalizedAuthors.replaceAll(",\\s*", ","); // Ensure single space after commas
