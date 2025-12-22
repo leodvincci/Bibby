@@ -59,7 +59,7 @@ public class BookcardRenderer {
                 isbn,
                 formater(author),
                 author.length() > 42 ? "..." : " ",
-                publisher,
+                publisher != null ? publisher : "Unknown",
                 location,
                 bookcase,
                 shelf
@@ -86,8 +86,8 @@ public class BookcardRenderer {
                 isbn,
                 formater(author),
                 author.length() > 42 ? "..." : " ",
-                publisher,
-                publisher.length() > 32 ? "..." : " "
+                publisher != null ? publisher : "Unknown",
+                publisher != null && publisher.length() > 32 ? "..." : " "
 
                 );
     }
