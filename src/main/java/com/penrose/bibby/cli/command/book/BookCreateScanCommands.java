@@ -94,6 +94,7 @@ public class BookCreateScanCommands {
         Long bookcaseId = null;
 
         if (cliPrompt.promptToConfirmBookAddition()) {
+            List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             if(cliPrompt.promptForPlacementDecision()){
                 String location = cliPrompt.promptForBookcaseLocation();
@@ -102,6 +103,7 @@ public class BookCreateScanCommands {
                     shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
                     if(shelfId == null) return;
 
+                    bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
                     String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
                             bookMetaDataResponse.isbn(),
                             bookMetaDataResponse.authors().toString(),
@@ -115,21 +117,22 @@ public class BookCreateScanCommands {
                 }
 
 
+            }else{
+                bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+                String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
+                        bookMetaDataResponse.isbn(),
+                        bookMetaDataResponse.authors().toString(),
+                        bookMetaDataResponse.publisher(),
+                        "Not Set",
+                        "Not Set",
+                        "Not Set"
+                );
+                System.out.println(updatedBookCard);
 
             }
 
-            List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
-            bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
-            String updatedBookCard = bookcardRenderer.createBookCard(bookMetaDataResponse.title(),
-                    bookMetaDataResponse.isbn(),
-                    bookMetaDataResponse.authors().toString(),
-                    bookMetaDataResponse.publisher(),
-                    "Not Set",
-                    "Not Set",
-                    "Not Set"
-            );
-            System.out.println(updatedBookCard);
+
 
         }
     }
