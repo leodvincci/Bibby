@@ -73,6 +73,16 @@ public class BookPlacementCommands {
         System.out.println("Book placement command executed.");
     }
 
+    @Command(command = "cart"
+            , description = """
+              \u001B[38;5;185mShow books waiting to be shelved (unplaced books). Place books from the    cart to their designated shelves.
+              \u001B[0m"""
+            , group = "Book Placement Commands")
+    public void bookCartPlacement(){
+        System.out.println("Book cart placement command executed.");
+    }
+
+
 
 
 }
