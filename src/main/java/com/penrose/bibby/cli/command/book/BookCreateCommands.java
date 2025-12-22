@@ -54,13 +54,13 @@ public class BookCreateCommands {
      * @param multi if true, enables multiple book scanning functionality (currently unused);
      *              if false, processes a single book entry.
      */
-    @Command(command = "register"
-            , description = """
-                            \u001B[38;5;185mAdd books to your library by ISBN (scan/type/paste) or manual entry. If an ISBN is provided, Bibby fetches metadata and creates a new book record.
-                            Supports single entry, batch entry, or file import.
-                            \u001B[0m
-                            """
-            , group = "Book Create Commands")
+//    @Command(command = "register"
+//            , description = """
+//                            \u001B[38;5;185mAdd books to your library by ISBN (scan/type/paste) or manual entry. If an ISBN is provided, Bibby fetches metadata and creates a new book record.
+//                            Supports single entry, batch entry, or file import.
+//                            \u001B[0m
+//                            """
+//            , group = "Book Create Commands")
     public void registerBook(
             @ShellOption(defaultValue = "false") boolean scan,
             @ShellOption(defaultValue = "false") boolean multi) {
