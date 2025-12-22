@@ -92,9 +92,14 @@ public class BookCreateCommands {
      * 6. Uses the book facade to create a new book entry in the system.
      */
     public void createBookManually() {
-        System.out.println("\n\u001B[95mCreate New Book");
+        System.out.println("\n\u001B[95mCreate New Book\u001B[0m (':q' to quit)");
 
         String title = cliPrompt.promptForBookTitle();
+        if(title.equals(":q")){
+            log.info("Book creation process aborted by user.");
+            System.out.println("Book creation aborted.\n");
+            return;
+        }
         List<AuthorDTO> authors = createAuthors();
         String isbn = cliPrompt.promptForBookIsbn();
         log.info("Collected Book Details - Title: {}, ISBN: {}, Authors: {}", title, isbn, authors);
