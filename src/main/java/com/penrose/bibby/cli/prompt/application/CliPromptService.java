@@ -135,18 +135,28 @@ public class CliPromptService implements PromptFacade {
         ComponentFlow flow;
         flow = componentFlowBuilder.clone()
                 .withStringInput("isbn")
-                .name("ISBN Number:_")
+                .name("ISBN Number (or 'm' for manual ':q' to abort):_")
+                .defaultValue("m")
                 .next( ctx -> {
                     String value = ctx.getResultValue();
-                    if(value.equalsIgnoreCase(":q")){
-                        return null;
-                    }else if(isbnValidator(value)){
-                        return null;
+                    if(value.equalsIgnoreCase("m")){
+                        System.out.println("\u001B[33mManual ISBN entry selected.\u001B[0m");
+                        ctx.setResultValue("m");
+                        ctx.setInput("m");
+                        ctx.setDefaultValue("m");
+                        return "m";
                     }
-                    ctx.setResultValue(null);
-                    ctx.setInput("");
-                    ctx.setDefaultValue("");
-                    return "isbn";
+                    else if(value.equalsIgnoreCase(":q")){
+                        System.out.println("\u001B[31mISBN entry cancelled by user.\u001B[0m");
+                        return ":q";
+                    }else if(!isbnValidator(value)){
+                        ctx.setResultValue(null);
+                        ctx.setInput("");
+                        ctx.setDefaultValue("m");
+                        return "isbn";
+                    }
+                    return null;
+
                  })
                 .and()
                 .build();
@@ -163,7 +173,8 @@ public class CliPromptService implements PromptFacade {
             return false;
         }else {
             System.out.println("\u001B[31mInvalid ISBN. Please enter a valid 13-digit ISBN starting with '978'.\u001B[0m");
-            throw new IllegalArgumentException("Invalid ISBN");
+//            throw new IllegalArgumentException("Invalid ISBN");
+            return false;
         }
     }
 
