@@ -44,8 +44,9 @@ public class BookCreateImportCommands {
     private final ShelfFacade shelfFacade;
     private final AuthorFacade authorFacade;
     private final PromptOptions promptOptions;
+    private final BookCreateCommands bookCreateCommands;
 
-    public BookCreateImportCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions){
+    public BookCreateImportCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions, BookCreateCommands bookCreateCommands){
 
         this.cliPrompt = cliPrompt;
         this.bookcardRenderer = bookcardRenderer;
@@ -54,6 +55,7 @@ public class BookCreateImportCommands {
         this.shelfFacade = shelfFacade;
         this.authorFacade = authorFacade;
         this.promptOptions = promptOptions;
+        this.bookCreateCommands = bookCreateCommands;
     }
 
 
@@ -117,7 +119,7 @@ public class BookCreateImportCommands {
      */
     public BookMetaDataResponse scanBook(){
         log.info("Initiating scanBook for Single Scan.");
-        System.out.println("\n\u001B[95mAdd Book (ISBN)");
+        System.out.println("\n\u001B[95mAdd Book");
         String isbn = cliPrompt.promptForIsbn();
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);

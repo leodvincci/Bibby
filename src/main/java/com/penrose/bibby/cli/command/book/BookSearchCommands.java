@@ -27,8 +27,9 @@ public class BookSearchCommands {
     private final BookcaseFacade bookcaseFacade;
     private final ShelfFacade shelfFacade;
     private final AuthorFacade authorFacade;
+    private final BookCreateCommands bookCreateCommands;
     Logger log = org.slf4j.LoggerFactory.getLogger(BookCreateCommands.class);
-    public BookSearchCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade){
+    public BookSearchCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, BookCreateCommands bookCreateCommands){
 
         this.cliPrompt = cliPrompt;
         this.bookcardRenderer = bookcardRenderer;
@@ -36,6 +37,7 @@ public class BookSearchCommands {
         this.bookcaseFacade = bookcaseFacade;
         this.shelfFacade = shelfFacade;
         this.authorFacade = authorFacade;
+        this.bookCreateCommands = bookCreateCommands;
     }
 
 

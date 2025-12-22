@@ -36,6 +36,7 @@ import java.util.List;
 @ShellComponent
 @Command(command = "book", group = "Book Create Commands")
 public class BookCreateScanCommands {
+    private final BookCreateCommands bookCreateCommands;
     Logger log = org.slf4j.LoggerFactory.getLogger(BookCreateScanCommands.class);
     private final CliPromptService cliPrompt;
     private final BookcardRenderer bookcardRenderer;
@@ -45,7 +46,7 @@ public class BookCreateScanCommands {
     private final AuthorFacade authorFacade;
     private final PromptOptions promptOptions;
 
-    public BookCreateScanCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions){
+    public BookCreateScanCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions, BookCreateCommands bookCreateCommands){
 
         this.cliPrompt = cliPrompt;
         this.bookcardRenderer = bookcardRenderer;
@@ -54,6 +55,7 @@ public class BookCreateScanCommands {
         this.shelfFacade = shelfFacade;
         this.authorFacade = authorFacade;
         this.promptOptions = promptOptions;
+        this.bookCreateCommands = bookCreateCommands;
     }
 
 
@@ -86,6 +88,7 @@ public class BookCreateScanCommands {
 //        if (multi) multiBookScan();
 
         BookMetaDataResponse bookMetaDataResponse = scanBook();
+        if(bookMetaDataResponse == null) return;
         String isbn = bookMetaDataResponse.isbn();
         Long shelfId = null;
         Long bookcaseId = null;
@@ -173,6 +176,13 @@ public class BookCreateScanCommands {
         log.info("Initiating scanBook for Add Book (ISBN)");
         System.out.println("\n\u001B[95mAdd Book (ISBN)");
         String isbn = cliPrompt.promptForIsbn();
+        if(isbn.equals("m")){
+            bookCreateCommands.createBookManually();
+            return null;
+        }else if(isbn.equals(":q")){
+            System.out.println("Aborting book addition.");
+            return null;
+        }
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
         log.debug("Authors verified/created for book.");
