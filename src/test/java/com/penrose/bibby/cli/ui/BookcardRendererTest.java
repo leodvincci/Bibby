@@ -181,4 +181,29 @@ class BookcardRendererTest {
         assertTrue(result.contains(isbn), "ISBN should be included in the output");
     }
 
+    /**
+     * Tests the createBookCard method with partial data (only title and ISBN).
+     */
+    @Test
+    void testCreateBookCard_PartialData() {
+        // Arrange
+        BookcardRenderer renderer = new BookcardRenderer();
+        String title = "Partial Book Record";
+        String isbn = "978-9999999999";
+        String author = null;
+        String publisher = null;
+        String bookcase = null;
+        String shelf = null;
+        String location = null;
+
+        // Act
+        String result = renderer.createBookCard(title, isbn, author, publisher, bookcase, shelf, location);
+
+        // Assert
+        assertNotNull(result);
+        System.out.println(result);
+        assertTrue(result.contains(title), "Title should be included in the output");
+        assertTrue(result.contains(isbn), "ISBN should be included in the output");
+    }
+
 }
