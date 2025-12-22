@@ -17,10 +17,8 @@ import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 @Component
 public class BookMapper {
     private final AuthorFacade authorFacade;
@@ -318,7 +316,7 @@ public class BookMapper {
                 isbn,
                 authors,
                 googleBooksResponse.items().get(0).volumeInfo().publisher(),
-                googleBooksResponse.items().get(0).volumeInfo().description()
+                Optional.ofNullable(googleBooksResponse.items().get(0).volumeInfo().description())
         );
     }
 
@@ -347,7 +345,7 @@ public class BookMapper {
         }
 
         bookEntity.setPublisher(bookMetaDataResponse.publisher());
-        bookEntity.setDescription(bookMetaDataResponse.description());
+        bookEntity.setDescription(bookMetaDataResponse.description().orElse("No description available."));
         bookEntity.setShelfId(shelfId);
         log.info("Attempting to set authors for book: " + bookMetaDataResponse.title());
         bookEntity.setAuthors(authorEntities);

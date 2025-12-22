@@ -58,8 +58,8 @@ public class BookcardRenderer {
                 title,
                 isbn,
                 formater(author),
-                author.length() > 42 ? "..." : " ",
-                publisher,
+                author != null && author.length() > 42 ? "..." : " ",
+                publisher != null ? publisher : "Unknown",
                 location,
                 bookcase,
                 shelf
@@ -85,9 +85,9 @@ public class BookcardRenderer {
                 title,
                 isbn,
                 formater(author),
-                author.length() > 42 ? "..." : " ",
-                publisher,
-                publisher.length() > 32 ? "..." : " "
+                author != null && author.length() > 42 ? "..." : " ",
+                publisher != null ? publisher : "Unknown",
+                publisher != null && publisher.length() > 32 ? "..." : " "
 
                 );
     }
@@ -95,6 +95,9 @@ public class BookcardRenderer {
 
 
     public String formater(String authors){
+        if(authors == null || authors.isBlank()){
+            return "Unknown";
+        }
         String normalizedAuthors = authors.replaceAll("[\\[\\]]", ""); // Remove brackets
         authors = normalizedAuthors.replaceAll(",\\s*", ","); // Ensure single space after commas
         return authors;
