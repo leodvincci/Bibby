@@ -77,9 +77,8 @@ public class BookCreateScanCommands {
      */
     @Command(command = "add" , description =
                 """
-\u001B[38;5;185mAdd books to your library by ISBN (scan/type/paste) or manual entry.
-       If an ISBN is provided, Bibby fetches metadata and creates a new book record. Supports single entry, batch entry, or file import.
-       \u001B[0m""",
+\u001B[38;5;185mAdd a book to your library by ISBN or manual entry. (Placement optional.)
+ \u001B[0m""",
             group = "Book Create Commands"
     )
     public void createBookScan(@ShellOption(defaultValue = "single") boolean multi) {

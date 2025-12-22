@@ -47,7 +47,11 @@ public class LibraryCommands {
 
 
     //todo: implement csv import
-    @Command(command = "import", description = "Import CSV of ISBNs to add multiple books at once.")
+    @Command(command = "import"
+            ,description =
+                            """
+            \u001B[38;5;3mBulk import books from a file of ISBNs. (Creates books; no placement.)
+             \u001B[0m""")
     public void createBooksFromCsv(
             @ShellOption String filePath) throws IOException {
 

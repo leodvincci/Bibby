@@ -34,8 +34,7 @@ public class BookPlacementCommands {
 
     @Command(command = "shelve",
             description = """
-                    \u001B[38;5;3mAdd books to a specific shelf by ISBN (scan/type/paste). If the book already exists, Bibby will place it on the shelf.
-                    If it doesn’t exist, Bibby will fetch metadata, create the book, and then place it on the shelf (create-or-place).
+                    \u001B[38;5;3mPlace a book onto a shelf by ISBN; creates it first if missing. (Create-or-place.)
                     \u001B[0m
                     """
             , group = "Book Placement Commands")
@@ -67,9 +66,7 @@ public class BookPlacementCommands {
 
     @Command(command = "place"
             , description = """
-              \u001B[38;5;185mAssign an existing book in your library to a shelf (or move it to a new shelf). 
-              You can identify books by ISBN (single, batch entry, or file input) or select from your list of unplaced books.
-              Updates shelf location only—does not create new book records.
+              \u001B[38;5;185mAssign an existing book to a shelf (or move it). Choose by ISBN or from unplaced books. Updates shelf location only—does not create new book records.
               \u001B[0m"""
             , group = "Book Placement Commands")
     public void bookPlacement(){
