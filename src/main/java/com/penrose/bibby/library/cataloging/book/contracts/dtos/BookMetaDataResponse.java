@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.cataloging.book.contracts.dtos;
 
 import java.util.List;
+import java.util.Optional;
 
 public record BookMetaDataResponse(
         Long bookId,
@@ -8,6 +9,6 @@ public record BookMetaDataResponse(
         String isbn,
         List<String> authors,
         String publisher,
-        String description
+        Optional<String> description
 ) {
 }

@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,7 +54,7 @@ public class BookImportController {
                 savedBook.getIsbn(),
                 authors,
                 savedBook.getPublisher(),
-                savedBook.getDescription()
+                Optional.ofNullable(savedBook.getDescription())
         );
 
         return ResponseEntity.ok(response);
