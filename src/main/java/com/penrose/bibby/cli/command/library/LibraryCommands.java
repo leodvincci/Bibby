@@ -1,7 +1,6 @@
 package com.penrose.bibby.cli.command.library;
 
-import com.penrose.bibby.cli.command.book.BookCreateCommands;
-import com.penrose.bibby.cli.command.book.BookCreateScanCommands;
+import com.penrose.bibby.cli.command.book.BookCreateIsbnCommands;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
@@ -15,7 +14,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellOption;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,7 +23,7 @@ import java.util.List;
     @Command(command = "library", group = "Library Commands")
 public class LibraryCommands {
     Logger log = org.slf4j.LoggerFactory.getLogger(LibraryCommands.class);
-    BookCreateScanCommands bookCreateScanCommands;
+    BookCreateIsbnCommands bookCreateIsbnCommands;
     private final CliPromptService cliPrompt;
     private final PromptOptions promptOptions;
     private final BookFacade bookFacade;
@@ -33,8 +31,8 @@ public class LibraryCommands {
     private final ShelfFacade shelfFacade;
     private final BookcardRenderer bookcardRenderer;
 
-    public LibraryCommands(BookCreateScanCommands bookCreateScanCommands, CliPromptService cliPrompt, PromptOptions promptOptions, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, BookcardRenderer bookcardRenderer) {
-        this.bookCreateScanCommands = bookCreateScanCommands;
+    public LibraryCommands(BookCreateIsbnCommands bookCreateIsbnCommands, CliPromptService cliPrompt, PromptOptions promptOptions, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, BookcardRenderer bookcardRenderer) {
+        this.bookCreateIsbnCommands = bookCreateIsbnCommands;
         this.cliPrompt = cliPrompt;
         this.promptOptions = promptOptions;
         this.bookFacade = bookFacade;
@@ -61,7 +59,7 @@ public class LibraryCommands {
         try (BufferedReader reader = Files.newBufferedReader(Path.of(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                BookMetaDataResponse bookMetaDataResponse = bookCreateScanCommands.importBook(line);
+                BookMetaDataResponse bookMetaDataResponse = bookCreateIsbnCommands.importBook(line);
             }
         }catch (IOException exception) {
             log.error("Error reading CSV file: {}", exception.getMessage());
@@ -90,7 +88,7 @@ public class LibraryCommands {
             Long shelfId = cliPrompt.promptForShelfSelection(bookcaseId);
             if(shelfId == null) return;
 
-            List<Long> authorIds = bookCreateScanCommands.createAuthorsFromMetaData(bookMetaDataResponse.authors());
+            List<Long> authorIds = bookCreateIsbnCommands.createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             bookFacade.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
 

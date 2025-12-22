@@ -35,9 +35,9 @@ import java.util.List;
  */
 @ShellComponent
 @Command(command = "book", group = "Book Create Commands")
-public class BookCreateScanCommands {
+public class BookCreateIsbnCommands {
     private final BookCreateCommands bookCreateCommands;
-    Logger log = org.slf4j.LoggerFactory.getLogger(BookCreateScanCommands.class);
+    Logger log = org.slf4j.LoggerFactory.getLogger(BookCreateIsbnCommands.class);
     private final CliPromptService cliPrompt;
     private final BookcardRenderer bookcardRenderer;
     private final BookFacade bookFacade;
@@ -46,7 +46,7 @@ public class BookCreateScanCommands {
     private final AuthorFacade authorFacade;
     private final PromptOptions promptOptions;
 
-    public BookCreateScanCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions, BookCreateCommands bookCreateCommands){
+    public BookCreateIsbnCommands(CliPromptService cliPrompt, BookcardRenderer bookcardRenderer, BookFacade bookFacade, BookcaseFacade bookcaseFacade, ShelfFacade shelfFacade, AuthorFacade authorFacade, PromptOptions promptOptions, BookCreateCommands bookCreateCommands){
 
         this.cliPrompt = cliPrompt;
         this.bookcardRenderer = bookcardRenderer;
