@@ -314,4 +314,13 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("bookEditSelection",String.class);
     }
 
+    public String promptForEditPublisher() {
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withStringInput("newPublisher")
+                .name("New Publisher:_")
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("newPublisher",String.class);
+    }
 }
