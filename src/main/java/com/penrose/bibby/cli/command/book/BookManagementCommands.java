@@ -13,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookManagementCommands {
 
     private final CliPromptService cliPromptService;
-    private final BookCreateIsbnCommands bookCreateIsbnCommands;
     private final BookFacade bookFacade;
     private final BookcardRenderer bookcardRenderer = new BookcardRenderer();
-    public BookManagementCommands(CliPromptService cliPromptService, BookCreateIsbnCommands bookCreateIsbnCommands, BookFacade bookFacade){
+    public BookManagementCommands(CliPromptService cliPromptService, BookFacade bookFacade){
         this.cliPromptService = cliPromptService;
-        this.bookCreateIsbnCommands = bookCreateIsbnCommands;
         this.bookFacade = bookFacade;
     }
 
@@ -52,13 +50,7 @@ public class BookManagementCommands {
 
     public BookDTO bookLookup(){
         String isbn = cliPromptService.promptForIsbn();
-//        if(isbn.equals("m")){
-//            bookCreateCommands.createBookManually();
-//            return null;
-//        }else if(isbn.equals(":q")){
-//            System.out.println("Aborting book addition.");
-//            return null;
-//        }
+
         BookDTO bookDTO = bookFacade.findBookByIsbn(isbn);
 
         System.out.println(
