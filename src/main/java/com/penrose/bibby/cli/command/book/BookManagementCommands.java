@@ -31,6 +31,10 @@ public class BookManagementCommands {
         System.out.println("\n\u001B[95mEdit Book\u001B[0m (':q' to quit)");
         BookDTO bookResult = bookLookup();
         String userSelection = cliPromptService.promptForBookEditSelection();
+        if (userSelection.equals("cancel")) {
+            System.out.println("\u001B[38;5;33mEdit cancelled.\u001B[0m");
+            return;
+        }
 
         if(userSelection.equals("publisher")) {
             String newPublisher = editPublisher();
