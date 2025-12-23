@@ -15,6 +15,18 @@ public interface BookFacade {
 
     BookDTO findBookByTitle(String title);
 
+    /**
+     * Retrieves metadata associated with a book identified by its ISBN.
+     * The metadata includes details such as the title, authors, publisher,
+     * and an optional description of the book. This method serves to fetch
+     * bibliographic information about a book from the system using its ISBN.
+     *
+     * @param isbn the International Standard Book Number (ISBN) of the book
+     *             for which metadata is being requested
+     * @return a {@code BookMetaDataResponse} object that contains the metadata
+     *         details of the book, including the title, authors, publisher, and
+     *         optional description
+     */
     BookMetaDataResponse findBookMetaDataByIsbn(String isbn);
 
     /**
@@ -45,4 +57,6 @@ public interface BookFacade {
     List<String> getBooksByAuthorId(Long id);
 
     List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId);
+
+    void updatePublisher(String isbn, String newPublisher);
 }
