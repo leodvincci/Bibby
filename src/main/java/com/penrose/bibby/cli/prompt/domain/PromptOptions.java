@@ -137,4 +137,14 @@ public class PromptOptions {
     public String bookcaseRowFormater(BookcaseDTO bookcaseDTO, int bookCount){
         return String.format(" %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks",bookcaseDTO.bookcaseLabel().toUpperCase(),bookcaseDTO.shelfCapacity(),bookCount);
     }
+
+    public List<SelectItem> metaDataSelection() {
+        List<SelectItem> options = new ArrayList<>();
+        options.add(SelectItem.of("Title", "title"));
+        options.add(SelectItem.of("Authors", "authors"));
+        options.add(SelectItem.of("Publisher", "publisher"));
+        options.add(SelectItem.of("Published Date", "publishedDate"));
+        options.add(SelectItem.of("Description", "description"));
+        return options;
+    }
 }
