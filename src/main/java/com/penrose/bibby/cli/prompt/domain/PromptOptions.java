@@ -143,8 +143,6 @@ public class PromptOptions {
         options.add(SelectItem.of("Title", "title"));
         options.add(SelectItem.of("Authors", "authors"));
         options.add(SelectItem.of("Publisher", "publisher"));
-        options.add(SelectItem.of("Published Date", "publishedDate"));
-        options.add(SelectItem.of("Description", "description"));
         return options;
     }
 }
