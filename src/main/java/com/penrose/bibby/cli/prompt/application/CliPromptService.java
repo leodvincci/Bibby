@@ -304,7 +304,7 @@ public class CliPromptService implements PromptFacade {
     public String promptForBookEditSelection(){
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withSingleItemSelector("bookEditSelection")
-                .name("Select metadata to edit:")
+                .name("Select metadata to edit: ")
                 .selectItems(promptOptions.metaDataSelection())
                 .max(8)
                 .and()
@@ -317,7 +317,7 @@ public class CliPromptService implements PromptFacade {
     public String promptForEditPublisher() {
         ComponentFlow flow = componentFlowBuilder.clone()
                 .withStringInput("newPublisher")
-                .name("New Publisher:_")
+                .name("Enter New Publisher (':q' to quit):_")
                 .and()
                 .build();
         ComponentFlow.ComponentFlowResult result = flow.run();
