@@ -162,4 +162,18 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     public List<BookEntity> getThreeBooksByAuthorId(Long id) {
         return bookJpaRepository.findByAuthorsAuthorId(id);
     }
+
+    @Override
+    public void updatePublisher(String isbn, String newPublisher) {
+        BookEntity bookEntity = bookJpaRepository.findByIsbn(isbn);
+        if(bookEntity != null){
+            bookEntity.setPublisher(newPublisher);
+            bookEntity.setUpdatedAt(LocalDate.now());
+            bookJpaRepository.save(bookEntity);
+            log.info("Updated publisher for book with ISBN: {} to {}", isbn, newPublisher);
+        } else {
+            log.error("Book with ISBN: {} not found", isbn);
+            throw new RuntimeException("Book not found with ISBN: " + isbn);
+        }
+    }
 }

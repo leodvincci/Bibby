@@ -88,6 +88,8 @@ public class BookCreateIsbnCommands {
 //        if (multi) multiBookScan();
 
         BookMetaDataResponse bookMetaDataResponse = scanBook();
+        System.out.println("\n\u001B[95mAdd Book (ISBN)");
+
         if(bookMetaDataResponse == null) return;
         String isbn = bookMetaDataResponse.isbn();
         Long shelfId = null;
@@ -176,8 +178,6 @@ public class BookCreateIsbnCommands {
      *         book, or {@code null} if the ISBN is invalid or the process is aborted.
      */
     public BookMetaDataResponse scanBook(){
-        log.info("Initiating scanBook for Add Book (ISBN)");
-        System.out.println("\n\u001B[95mAdd Book (ISBN)");
         String isbn = cliPrompt.promptForIsbn();
         if(isbn.equals("m")){
             bookCreateCommands.createBookManually();

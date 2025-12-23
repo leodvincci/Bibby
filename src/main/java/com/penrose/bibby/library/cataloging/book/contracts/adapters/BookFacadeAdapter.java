@@ -60,6 +60,15 @@ public class BookFacadeAdapter implements BookFacade {
         return BookDTO.fromEntity(bookDomainRepository.findBookEntityByTitle(title));
     }
 
+    /**
+     * Retrieves metadata for a book based on its ISBN.
+     * This method queries an external service to fetch the book details
+     * and maps the response to a {@link BookMetaDataResponse}.
+     *
+     * @param isbn the ISBN of the book for which metadata is to be retrieved
+     * @return a {@link BookMetaDataResponse} containing the metadata of the book,
+     *         including title, authors, publisher, and optional description
+     */
     @Override
     public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
         GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
@@ -131,5 +140,10 @@ public class BookFacadeAdapter implements BookFacade {
         return bookMapper.toBookBriefListFromEntities(
                 bookDomainRepository.getBooksByShelfId(shelfId)
         );
+    }
+
+    @Override
+    public void updatePublisher(String isbn , String newPublisher) {
+        bookDomainRepository.updatePublisher(isbn, newPublisher);
     }
 }

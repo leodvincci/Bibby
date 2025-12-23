@@ -41,4 +41,6 @@ public interface BookDomainRepository {
     void createBookFromMetaData(BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId);
 
     List<BookEntity> getThreeBooksByAuthorId(Long id);
+
+    void updatePublisher(String isbn, String newPublisher);
 }

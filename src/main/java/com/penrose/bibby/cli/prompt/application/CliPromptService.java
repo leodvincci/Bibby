@@ -300,4 +300,41 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("placementDecision",String.class).equalsIgnoreCase("Yes");
     }
 
+
+    public String promptForBookEditSelection(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("bookEditSelection")
+                .name("Select metadata to edit: ")
+                .selectItems(promptOptions.metaDataSelection())
+                .max(8)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+        return result.getContext().get("bookEditSelection",String.class);
+    }
+
+    public String promptForEditPublisher() {
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withStringInput("newPublisher")
+                .name("Enter New Publisher (':q' to quit):_")
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        return result.getContext().get("newPublisher",String.class);
+    }
+
+    public boolean promptToConfirmChange(String fieldName) {
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("chooseSelection")
+                .name("Confirm Publisher Changes: " + fieldName)
+                .selectItems(promptOptions.yesNoOptions())
+                .and().build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("chooseSelection",String.class).equalsIgnoreCase("No")){
+            System.out.println("\u001B[38:5:190mCanceled. No changes were made.\u001B[0m");
+            return false;
+        }
+        return true;
+    }
 }
