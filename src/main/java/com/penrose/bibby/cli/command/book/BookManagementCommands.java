@@ -48,6 +48,17 @@ public class BookManagementCommands {
     }
 
 
+    @Command(command = "alerts"
+            , description = """
+                            \u001B[38;5;185mView and manage book alerts in your library.
+                            \u001B[0m
+                            """
+            , group = "Book Management Commands")
+    public void bookIssues(){
+        System.out.println("\n\u001B[95mBook Alerts\u001B[0m (':q' to quit)");
+    }
+
+
     public String editPublisher(){
         return cliPromptService.promptForEditPublisher();
     }
