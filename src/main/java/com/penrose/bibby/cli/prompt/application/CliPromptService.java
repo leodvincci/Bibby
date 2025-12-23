@@ -323,4 +323,18 @@ public class CliPromptService implements PromptFacade {
         ComponentFlow.ComponentFlowResult result = flow.run();
         return result.getContext().get("newPublisher",String.class);
     }
+
+    public boolean promptToConfirmChange(String fieldName) {
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("chooseSelection")
+                .name("Confirm Publisher Changes: " + fieldName)
+                .selectItems(promptOptions.yesNoOptions())
+                .and().build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("chooseSelection",String.class).equalsIgnoreCase("No")){
+            System.out.println("\u001B[38:5:190mCanceled. No changes were made.\u001B[0m");
+            return false;
+        }
+        return true;
+    }
 }
