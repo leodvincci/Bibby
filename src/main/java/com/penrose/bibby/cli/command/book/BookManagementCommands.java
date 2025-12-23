@@ -1,6 +1,7 @@
 package com.penrose.bibby.cli.command.book;
 
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.ShellComponent;
 
@@ -9,9 +10,11 @@ import org.springframework.shell.standard.ShellComponent;
 public class BookManagementCommands {
 
     private final CliPromptService cliPromptService;
+    private final BookCreateIsbnCommands bookCreateIsbnCommands;
 
-    public BookManagementCommands(CliPromptService cliPromptService){
+    public BookManagementCommands(CliPromptService cliPromptService, BookCreateIsbnCommands bookCreateIsbnCommands){
         this.cliPromptService = cliPromptService;
+        this.bookCreateIsbnCommands = bookCreateIsbnCommands;
     }
 
     @Command(command = "edit"
@@ -22,8 +25,8 @@ public class BookManagementCommands {
             , group = "Book Management Commands")
     public void BookEditCommand(){
         System.out.println("\n\u001B[95mEdit Book\u001B[0m (':q' to quit)");
-        String isbn = cliPromptService.promptForIsbn();
-        System.out.println("Editing book with ISBN: " + isbn);
+        BookMetaDataResponse bookMetaDataResponse = bookCreateIsbnCommands.scanBook();
+
 
     }
 
