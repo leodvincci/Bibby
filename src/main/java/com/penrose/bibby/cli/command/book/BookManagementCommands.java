@@ -26,8 +26,7 @@ public class BookManagementCommands {
     public void BookEditCommand(){
         System.out.println("\n\u001B[95mEdit Book\u001B[0m (':q' to quit)");
         BookMetaDataResponse bookMetaDataResponse = bookCreateIsbnCommands.scanBook();
-
-
+        cliPromptService.promptForBookEditSelection();
     }
 
 }
