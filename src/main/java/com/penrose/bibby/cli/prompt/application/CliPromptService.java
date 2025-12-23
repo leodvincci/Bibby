@@ -300,4 +300,18 @@ public class CliPromptService implements PromptFacade {
         return result.getContext().get("placementDecision",String.class).equalsIgnoreCase("Yes");
     }
 
+
+    public String promptForBookEditSelection(){
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("bookEditSelection")
+                .name("Select metadata to edit:")
+                .selectItems(promptOptions.metaDataSelection())
+                .max(8)
+                .and()
+                .build();
+        ComponentFlow.ComponentFlowResult result = flow.run();
+
+        return result.getContext().get("bookEditSelection",String.class);
+    }
+
 }
