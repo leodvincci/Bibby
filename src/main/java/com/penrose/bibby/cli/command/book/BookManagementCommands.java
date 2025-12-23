@@ -1,5 +1,6 @@
 package com.penrose.bibby.cli.command.book;
 
+import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.ShellComponent;
 
@@ -7,8 +8,10 @@ import org.springframework.shell.standard.ShellComponent;
 @Command(command = "book" , group = "Book Management Commands")
 public class BookManagementCommands {
 
-    public BookManagementCommands(){
+    private final CliPromptService cliPromptService;
 
+    public BookManagementCommands(CliPromptService cliPromptService){
+        this.cliPromptService = cliPromptService;
     }
 
     @Command(command = "edit"
@@ -19,6 +22,8 @@ public class BookManagementCommands {
             , group = "Book Management Commands")
     public void BookEditCommand(){
         System.out.println("\n\u001B[95mEdit Book\u001B[0m (':q' to quit)");
+        String isbn = cliPromptService.promptForIsbn();
+        System.out.println("Editing book with ISBN: " + isbn);
 
     }
 
