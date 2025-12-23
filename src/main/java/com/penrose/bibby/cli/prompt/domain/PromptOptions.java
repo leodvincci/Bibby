@@ -140,6 +140,7 @@ public class PromptOptions {
 
     public List<SelectItem> metaDataSelection() {
         List<SelectItem> options = new ArrayList<>();
+        options.add(SelectItem.of("[CANCEL]", "cancel"));
         options.add(SelectItem.of("Title", "title"));
         options.add(SelectItem.of("Authors", "authors"));
         options.add(SelectItem.of("Publisher", "publisher"));
