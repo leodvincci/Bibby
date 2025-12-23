@@ -130,6 +130,9 @@ public class BookCreateIsbnCommands {
                         "Not Set"
                 );
                 System.out.println(updatedBookCard);
+                if(bookMetaDataResponse.publisher() == null || bookMetaDataResponse.publisher().isEmpty()){
+                    System.out.println("\t\u001B[33mAlert: Missing Publisher\u001B[0m\n");
+                }
 
             }
 
