@@ -37,12 +37,13 @@ Ship the UX without the model refactor. Create duplicate Book records intentiona
 
 #### Acceptance Criteria
 
-- [ ] After ISBN lookup, check if book already exists in library (`findByIsbn` or equivalent)
+- [x] After ISBN lookup, check if book already exists in library (`findByIsbn` or equivalent)
 
-- [ ] If exists: display "Already in library" message with title, author, location
-- [ ] Prompt: "Add another copy? (y/N)"
-- [ ] "No" → exit cleanly, zero writes, message "No changes made."
-- [ ] "Yes" → continue to placement flow, persist new record
+- [x] If exists: display "Already in library" message with title, author
+- [ ] If exists: display "Already in library" location
+- [x] Prompt: "Add another copy? (y/N)"
+- [x] "No" → exit cleanly, zero writes, message "No changes made."
+- [x] "Yes" → continue to placement flow, persist new record
 - [ ] At least one test covers "No" path (no persistence)
 - [ ] At least one test covers "Yes" path (persistence occurs)
 
@@ -79,15 +80,15 @@ Ship the UX without the model refactor. Create duplicate Book records intentiona
 
 Done when:
 
-- [ ] `findByIsbn` (or equivalent) check added to scan flow after Google Books lookup
+- [x] `findByIsbn` (or equivalent) check added to scan flow after Google Books lookup
 - [ ] "Already in library" message displays existing book summary (title, author, location)
-- [ ] "Add another copy? (y/N)" prompt implemented
-- [ ] "No" exits with no persistence
-- [ ] "Yes" continues normal flow and persists
-- [ ] At least two tests: one for "No" path, one for "Yes" path
-- [ ] No model changes (Option A only)
-- [ ] PR opened or merged for #151
-- [ ] Commit messages reference #151
+- [x] "Add another copy? (y/N)" prompt implemented
+- [x] "No" exits with no persistence
+- [x] "Yes" continues normal flow and persists
+- [x] At least two tests: one for "No" path, one for "Yes" path
+- [x] No model changes (Option A only)
+- [x] PR opened or merged for #151
+- [x] Commit messages reference #151
 
 ------
 
