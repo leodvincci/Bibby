@@ -59,4 +59,6 @@ public interface BookFacade {
     List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId);
 
     void updatePublisher(String isbn, String newPublisher);
+
+    boolean isDuplicate(String isbn);
 }

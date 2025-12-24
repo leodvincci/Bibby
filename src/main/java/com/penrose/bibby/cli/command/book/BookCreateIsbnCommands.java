@@ -96,6 +96,10 @@ public class BookCreateIsbnCommands {
         Long bookcaseId = null;
 
         if (cliPrompt.promptToConfirmBookAddition()) {
+            if(bookFacade.isDuplicate(isbn)){
+                System.out.println("\n\033[38;5;3m⚠\u001B[0m Book with ISBN " + isbn + " already exists in the library.\n");
+                if(!cliPrompt.promptForDuplicateConfirmation())return;
+            }
             List<Long> authorIds = createAuthorsFromMetaData(bookMetaDataResponse.authors());
 
             if(cliPrompt.promptForPlacementDecision()){
@@ -141,8 +145,6 @@ public class BookCreateIsbnCommands {
                     System.out.println("\n\033[38;5;3m⚠\u001B[0m Missing Publisher\n");
                 }
                 System.out.println("\u001B[33mItem in Bookcart. Ready to be shelved.\u001B[0m\n");
-
-
             }
 
 
@@ -198,7 +200,12 @@ public class BookCreateIsbnCommands {
             System.out.println("Aborting book addition.");
             return null;
         }
+
+
         BookMetaDataResponse bookMetaDataResponse = bookFacade.findBookMetaDataByIsbn(isbn);
+
+
+
         log.debug("BookMetaDataResponse received: {}", bookMetaDataResponse);
         log.debug("Authors verified/created for book.");
         log.info(bookMetaDataResponse.toString());
@@ -208,6 +215,7 @@ public class BookCreateIsbnCommands {
                         bookMetaDataResponse.authors().toString(),
                         bookMetaDataResponse.publisher()
         ));
+
         return bookMetaDataResponse;
     }
 

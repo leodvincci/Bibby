@@ -146,4 +146,9 @@ public class BookFacadeAdapter implements BookFacade {
     public void updatePublisher(String isbn , String newPublisher) {
         bookDomainRepository.updatePublisher(isbn, newPublisher);
     }
+
+    @Override
+    public boolean isDuplicate(String isbn) {
+        return bookDomainRepository.findBookByIsbn(isbn) != null;
+    }
 }

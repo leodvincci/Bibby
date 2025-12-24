@@ -337,4 +337,19 @@ public class CliPromptService implements PromptFacade {
         }
         return true;
     }
+
+    public boolean promptForDuplicateConfirmation() {
+        ComponentFlow flow = componentFlowBuilder.clone()
+                .withSingleItemSelector("duplicateConfirmation")
+                .name("A book with this ISBN already exists. Add another copy?")
+                .selectItems(promptOptions.yesNoOptions())
+                .and().build();
+
+        ComponentFlow.ComponentFlowResult result = flow.run();
+        if(result.getContext().get("duplicateConfirmation",String.class).equalsIgnoreCase("No")){
+            System.out.println("\u001B[38:5:190mCanceled. Book was not added.\u001B[0m");
+            return false;
+        }
+        return result.getContext().get("duplicateConfirmation",String.class).equalsIgnoreCase("Yes");
+    }
 }
