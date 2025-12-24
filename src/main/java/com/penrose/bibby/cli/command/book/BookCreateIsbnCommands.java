@@ -115,6 +115,11 @@ public class BookCreateIsbnCommands {
                             bookcaseFacade.findBookCaseById(bookcaseId).get().location()
                     );
                     System.out.println(updatedBookCard);
+                    System.out.println("\n\033[38;5;42mSuccessfully added to the library\u001B[0m");
+
+                    if(bookMetaDataResponse.publisher() == null || bookMetaDataResponse.publisher().isEmpty()){
+                        System.out.println("\n\033[38;5;3m⚠\u001B[0m Missing Publisher\n");
+                    }
 
                 }
 
@@ -130,9 +135,13 @@ public class BookCreateIsbnCommands {
                         "Not Set"
                 );
                 System.out.println(updatedBookCard);
+                System.out.println("\n\033[38;5;42mSuccessfully added to the library\u001B[0m");
+
                 if(bookMetaDataResponse.publisher() == null || bookMetaDataResponse.publisher().isEmpty()){
-                    System.out.println("\t\u001B[33mAlert: Missing Publisher\u001B[0m\n");
+                    System.out.println("\n\033[38;5;3m⚠\u001B[0m Missing Publisher\n");
                 }
+                System.out.println("\u001B[33mItem in Bookcart. Ready to be shelved.\u001B[0m\n");
+
 
             }
 
