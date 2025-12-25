@@ -199,7 +199,7 @@ public class BookMapper {
                 bookEntity.getBookId(),
                 bookEntity.getEdition(),
                 bookEntity.getTitle(),
-                null,
+                List.of(bookEntity.getAuthors().toString()),
                 bookEntity.getIsbn(),
                 null,
                 bookEntity.getPublisher(),
