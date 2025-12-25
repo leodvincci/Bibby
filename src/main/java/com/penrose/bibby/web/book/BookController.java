@@ -68,12 +68,14 @@ public class BookController {
     }
 
     @GetMapping("api/v1/books/search/{isbn}")
-    public void findBookByIsbn(@PathVariable String isbn){
+    public ResponseEntity<BookDTO> findBookByIsbn(@PathVariable String isbn){
         System.out.println("Controller Search For " + isbn);
+        System.out.println("Now searching for ISBN in database...");
         BookDTO bookDTO = bookService.findBookByIsbn(isbn);
         System.out.println(bookDTO);
         BookcardRenderer bookcardRenderer = new BookcardRenderer();
         System.out.println(bookcardRenderer.bookImportCard(bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(),bookDTO.publisher()));
+        return ResponseEntity.ok(bookDTO);
     }
 
     @PostMapping("api/v1/books/{bookId}/shelf")
