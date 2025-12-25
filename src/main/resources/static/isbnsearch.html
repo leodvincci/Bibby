@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>ISBN Search</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="isbnSearch/styles.css">
 </head>
 <body>
 
-<img id="logo" src="./bibbylogo2.png" width="33%">
+<img id="logo" src="isbnSearch/bibbylogo2.png" width="33%">
 <!--<h1>Bibby ISBN Search</h1>-->
 <!--<p>Search library by ISBN</p>-->
 
 <form id="the-form" method="get">
 
-    <input class="input-box" type="text" name="isbn" placeholder="Enter ISBN (e.g. 9784156541456)">
+    <input class="input-box" id="isbn-input" type="text" name="isbn" placeholder="Enter ISBN (e.g. 9784156541456)">
   <div id="button-div">
     <input class="my-btn" type="submit" value="Search">
 <!--    <input class="my-btn2" type="submit" value="Clear">-->
@@ -21,6 +21,6 @@
 
 </form>
 
-
+<script src="searchByIsbn.js"></script>
 </body>
 </html>
