@@ -6,7 +6,12 @@ document.getElementById("the-form").addEventListener(
         const isbn = document.getElementById("isbn-input").value.trim();
         if (!isbn) return;
         // e.target.reset();
-        await searchByIsbn(isbn);
+        await searchByIsbn(isbn).then(
+            (book) => {
+                const resultDiv = document.getElementById("result-content");
+                resultDiv.innerHTML = ""; // Clear previous results
+                resultDiv.innerText = book ? JSON.stringify(book, null, 2) : "Book not found.";
+            });
     }
 )
 
@@ -22,6 +27,7 @@ async function searchByIsbn(isbn) {
 
         const book = await res.json();
         console.log("Found:", book);
+
         return book;
     } catch (err) {
         console.error("Search failed:", err);
