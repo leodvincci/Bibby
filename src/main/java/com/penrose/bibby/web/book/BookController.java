@@ -1,6 +1,8 @@
 package com.penrose.bibby.web.book;
 
+import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.author.infrastructure.repository.AuthorJpaRepository;
+import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
@@ -59,7 +61,19 @@ public class BookController {
     @GetMapping("api/v1/books")
     public void findBookByTitle(@RequestBody BookRequestDTO requestDTO){
         System.out.println("Controller Search For " + requestDTO.title());
-        bookService.findBookByTitle(requestDTO.title());
+        BookDTO bookDTO = bookService.findBookByTitle(requestDTO.title());
+        System.out.println(bookDTO);
+        BookcardRenderer bookcardRenderer = new BookcardRenderer();
+        System.out.println(bookcardRenderer.bookImportCard(bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(),bookDTO.publisher()));
+    }
+
+    @GetMapping("api/v1/books/search/{isbn}")
+    public void findBookByIsbn(@PathVariable String isbn){
+        System.out.println("Controller Search For " + isbn);
+        BookDTO bookDTO = bookService.findBookByIsbn(isbn);
+        System.out.println(bookDTO);
+        BookcardRenderer bookcardRenderer = new BookcardRenderer();
+        System.out.println(bookcardRenderer.bookImportCard(bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(),bookDTO.publisher()));
     }
 
     @PostMapping("api/v1/books/{bookId}/shelf")
