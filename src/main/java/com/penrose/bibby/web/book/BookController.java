@@ -67,14 +67,21 @@ public class BookController {
         System.out.println(bookcardRenderer.bookImportCard(bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(),bookDTO.publisher()));
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("api/v1/books/search/{isbn}")
     public ResponseEntity<BookDTO> findBookByIsbn(@PathVariable String isbn){
         System.out.println("Controller Search For " + isbn);
         System.out.println("Now searching for ISBN in database...");
         BookDTO bookDTO = bookService.findBookByIsbn(isbn);
         System.out.println(bookDTO);
+        if(bookDTO == null){
+            System.out.println("Book not found in database. Returning 404 response.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         BookcardRenderer bookcardRenderer = new BookcardRenderer();
         System.out.println(bookcardRenderer.bookImportCard(bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(),bookDTO.publisher()));
+        System.out.println("Returning book data as response...");
+        System.out.println();
         return ResponseEntity.ok(bookDTO);
     }
 

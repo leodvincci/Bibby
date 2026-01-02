@@ -9,6 +9,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookFactory;
 import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
@@ -19,6 +20,7 @@ import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -296,8 +298,10 @@ import java.util.*;
     public BookDTO findBookByIsbn(String isbn) {
         BookEntity bookEntity = bookJpaRepository.findByIsbn(isbn);
         if(bookEntity == null){
-            throw new IllegalArgumentException("Book not found with ISBN: " + isbn);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Book not found with ISBN: " + isbn);
         }
+
         return bookMapper.toDTOfromEntity(bookEntity);
     }
 
