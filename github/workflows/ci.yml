@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+# Least-privilege: this workflow only needs to read the repo
+permissions:
+  contents: read
+
+# Avoid wasting minutes: if you push new commits to a PR, cancel the old run
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: build-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21 (Temurin) + cache Maven deps
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build + test (clean verify)
+        run: mvn -B -ntp clean verify
+
+      # Upload the built artifact so the workflow produces a tangible output
+      - name: Upload JAR artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar-${{ github.sha }}
+          path: target/*.jar
+          if-no-files-found: error
+
+      # When CI fails, uploading reports makes debugging way easier
+      - name: Upload test reports (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ github.sha }}
+          path: |
+            target/surefire-reports/**
+            target/failsafe-reports/**
+          retention-days: 7
