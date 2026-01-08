@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for accurate Maven version resolution
 
       - name: Set up Java 21 (Temurin) + cache Maven deps
         uses: actions/setup-java@v4
@@ -32,6 +34,11 @@ jobs:
 
       - name: Build + test (clean verify)
         run: mvn -B -ntp clean verify
+
+      - name: Run Spotless Check
+        run: mvn spotless:check
+
+
 
       # Upload the built artifact so the workflow produces a tangible output
       - name: Upload JAR artifact
