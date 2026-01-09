@@ -1,5 +1,5 @@
 #Build Image
-FROM maven:3-openjdk-21 AS stage
+FROM maven:3-openjdk-21 AS build
 
 WORKDIR /app
 COPY pom.xml .
