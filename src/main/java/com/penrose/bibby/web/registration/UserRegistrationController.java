@@ -2,6 +2,7 @@ package com.penrose.bibby.web.registration;
 import com.penrose.bibby.library.registration.UserRegistrationService;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationResponseDTO;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UserRegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegistrationResponseDTO> registerUser(@RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
+    public ResponseEntity<UserRegistrationResponseDTO> registerUser(@Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
 
         userRegistrationService.registerUser(userRegistrationRequestDTO);
 
