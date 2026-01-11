@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.registration;
+package com.penrose.bibby.library.registration.contracts.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class UserRegistrationRequest {
+public class UserRegistrationRequestDTO {
     @NotBlank
     private String username;
     private String password;
