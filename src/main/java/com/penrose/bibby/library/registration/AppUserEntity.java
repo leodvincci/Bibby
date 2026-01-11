@@ -17,8 +17,7 @@ public class AppUserEntity {
   private String firstName;
   private String lastName;
 
-  public AppUserEntity(
-      Long id, String password, String email, String firstName, String lastName) {
+  public AppUserEntity(Long id, String password, String email, String firstName, String lastName) {
     this.id = id;
     this.password = password;
     this.email = email;

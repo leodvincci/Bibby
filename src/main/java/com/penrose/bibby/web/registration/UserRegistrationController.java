@@ -1,4 +1,5 @@
 package com.penrose.bibby.web.registration;
+
 import com.penrose.bibby.library.registration.UserRegistrationService;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationResponseDTO;
@@ -15,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user/registration")
 public class UserRegistrationController {
 
-    Logger logger = org.slf4j.LoggerFactory.getLogger(UserRegistrationController.class);
-    UserRegistrationService userRegistrationService;
+  Logger logger = org.slf4j.LoggerFactory.getLogger(UserRegistrationController.class);
+  UserRegistrationService userRegistrationService;
 
-    public UserRegistrationController(UserRegistrationService userRegistrationService) {
-        this.userRegistrationService = userRegistrationService;
-    }
+  public UserRegistrationController(UserRegistrationService userRegistrationService) {
+    this.userRegistrationService = userRegistrationService;
+  }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserRegistrationResponseDTO> registerUser(@Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
+  @PostMapping("/register")
+  public ResponseEntity<UserRegistrationResponseDTO> registerUser(
+      @Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
 
-        userRegistrationService.registerUser(userRegistrationRequestDTO);
+    userRegistrationService.registerUser(userRegistrationRequestDTO);
 
-        UserRegistrationResponseDTO userRegistrationResponseDTO =
-                new UserRegistrationResponseDTO(
-                        userRegistrationRequestDTO.getEmail(),
-                        userRegistrationRequestDTO.getFirstName(),
-                        userRegistrationRequestDTO.getLastName()
-                );
+    UserRegistrationResponseDTO userRegistrationResponseDTO =
+        new UserRegistrationResponseDTO(
+            userRegistrationRequestDTO.getEmail(),
+            userRegistrationRequestDTO.getFirstName(),
+            userRegistrationRequestDTO.getLastName());
 
-        logger.info("Registering user: {}", userRegistrationResponseDTO.email());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationResponseDTO);
-    }
+    logger.info("Registering user: {}", userRegistrationResponseDTO.email());
+    return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationResponseDTO);
+  }
 }

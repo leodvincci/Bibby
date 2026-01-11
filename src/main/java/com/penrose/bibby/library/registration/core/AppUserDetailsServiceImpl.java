@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppUserDetailsServiceImpl implements UserDetailsService {
-    UserRegistrationJpaRepository userRegistrationJpaRepository;
+  UserRegistrationJpaRepository userRegistrationJpaRepository;
 
-    public AppUserDetailsServiceImpl(UserRegistrationJpaRepository userRegistrationJpaRepository) {
-        this.userRegistrationJpaRepository = userRegistrationJpaRepository;
-    }
+  public AppUserDetailsServiceImpl(UserRegistrationJpaRepository userRegistrationJpaRepository) {
+    this.userRegistrationJpaRepository = userRegistrationJpaRepository;
+  }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUserEntity appUser = userRegistrationJpaRepository.findByEmail(username);
-        if (appUser == null) {
-            throw new UsernameNotFoundException("User not found with email: " + username);
-        }
-        return new AppUserImpl(appUser);
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    AppUserEntity appUser = userRegistrationJpaRepository.findByEmail(username);
+    if (appUser == null) {
+      throw new UsernameNotFoundException("User not found with email: " + username);
     }
+    return new AppUserImpl(appUser);
+  }
 }
