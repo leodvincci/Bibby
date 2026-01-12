@@ -1,9 +1,10 @@
 package com.penrose.bibby.library.registration.contracts.dtos;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 public class UserRegistrationRequestDTO {
-  private String password;
+  @NotBlank private String password;
 
   @Email private String email;
 
