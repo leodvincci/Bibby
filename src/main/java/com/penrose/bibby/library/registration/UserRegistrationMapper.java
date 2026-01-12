@@ -8,8 +8,7 @@ public class UserRegistrationMapper {
     AppUserEntity entity = new AppUserEntity();
     entity.setPassword(dto.getPassword());
     entity.setEmail(dto.getEmail());
-    entity.setFirstName(dto.getFirstName());
-    entity.setLastName(dto.getLastName());
+
     return entity;
   }
 }

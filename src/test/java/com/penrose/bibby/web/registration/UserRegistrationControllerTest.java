@@ -32,10 +32,8 @@ class UserRegistrationControllerTest {
     String payload =
         """
             {
-              "username": "ldpenrose",
               "email": "ldpenrose@gmail.com",
-              "firstName": "Leo",
-              "lastName": "Penrose"
+                "password": "SecureP@"
             }
             """;
 
@@ -45,8 +43,6 @@ class UserRegistrationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.email").value("ldpenrose@gmail.com"))
-        .andExpect(jsonPath("$.firstName").value("Leo"))
-        .andExpect(jsonPath("$.lastName").value("Penrose"));
+        .andExpect(jsonPath("$.email").value("ldpenrose@gmail.com"));
   }
 }

@@ -30,10 +30,7 @@ public class UserRegistrationController {
     userRegistrationService.registerUser(userRegistrationRequestDTO);
 
     UserRegistrationResponseDTO userRegistrationResponseDTO =
-        new UserRegistrationResponseDTO(
-            userRegistrationRequestDTO.getEmail(),
-            userRegistrationRequestDTO.getFirstName(),
-            userRegistrationRequestDTO.getLastName());
+        new UserRegistrationResponseDTO(userRegistrationRequestDTO.getEmail());
 
     logger.info("Registering user: {}", userRegistrationResponseDTO.email());
     return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationResponseDTO);
