@@ -15,12 +15,10 @@ public class AppUserEntity {
   private String password;
   private String email;
 
-
   public AppUserEntity(Long id, String password, String email, String firstName, String lastName) {
     this.id = id;
     this.password = password;
     this.email = email;
-
   }
 
   public AppUserEntity() {}
@@ -32,7 +30,6 @@ public class AppUserEntity {
   public void setEmail(String email) {
     this.email = email;
   }
-
 
   public Long getId() {
     return id;
