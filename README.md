@@ -2,90 +2,431 @@
 
 # Bibby
 
-**A Spring Shell-powered personal library management system for organizing physical books with barcode scanning, hierarchical storage, and clean architecture.**
+**A Spring Shell-powered personal library management system with barcode scanning, hierarchical storage organization, and clean hexagonal architecture.**
 
-![Java](https://img.shields.io/badge/Java-17-blue?style=flat-square&logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen?style=flat-square&logo=spring)
-![Spring Shell](https://img.shields.io/badge/Spring%20Shell-3.4.1-green?style=flat-square)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat-square&logo=postgresql)
-![Maven](https://img.shields.io/badge/Maven-Build-red?style=flat-square&logo=apache-maven)
-![Platform](https://img.shields.io/badge/Platform-CLI%20%2B%20Web-yellow?style=for-the-badge)
-![Spring Shell](https://img.shields.io/badge/Spring%20Shell-Interactive%20CLI-brightgreen?style=for-the-badge&logo=spring)
+[![Java](https://img.shields.io/badge/Java-17-blue?style=flat-square&logo=openjdk)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen?style=flat-square&logo=spring)](https://spring.io/projects/spring-boot)
+[![Spring Shell](https://img.shields.io/badge/Spring%20Shell-3.4.1-green?style=flat-square)](https://spring.io/projects/spring-shell)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
+[![Maven](https://img.shields.io/badge/Maven-Build-red?style=flat-square&logo=apache-maven)](https://maven.apache.org/)
+[![CI](https://github.com/leodvincci/Bibby/actions/workflows/ci.yml/badge.svg)](https://github.com/leodvincci/Bibby/actions)
+
 ---
 
-## 📖 Overview
+## Table of Contents
 
-**Bibby** is an interactive command-line application for managing a personal library of physical books. It provides a dual interface—CLI and web—for cataloging books, organizing them on virtual bookshelves, tracking availability, and enriching metadata via the Google Books API.
+- [Overview](#overview)
+- [Features](#features)
+- [Quickstart](#quickstart)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [API Documentation](#api-documentation)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
+- [Development](#development)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
 
-Built as a learning project to practice **Hexagonal Architecture**, **Domain-Driven Design**, and enterprise Java patterns, Bibby demonstrates clean separation of concerns across domain, application, and infrastructure layers.
+---
+
+## Overview
+
+**Bibby** is an enterprise-grade personal library management system that combines an interactive command-line interface with a REST API backend. Built to demonstrate clean software engineering practices, Bibby helps you organize physical books using virtual bookcases and shelves while automatically enriching book metadata through the Google Books API.
 
 ### What It Does
 
-- **Scan ISBNs** via CLI or webcam to add books automatically
-- **Organize hierarchically**: Bookcase → Shelf → Book
-- **Track availability**: AVAILABLE, CHECKED_OUT, RESERVED, LOST, ARCHIVED
-- **Manage authors** with many-to-many relationships
-- **Search books** by title, author, or ISBN
-- **Browse interactively** through bookcases, shelves, and books
-- **Enforce shelf capacity** constraints
-- **Enrich metadata** automatically from Google Books API
+Bibby solves the problem of tracking physical book collections by providing:
+
+- **ISBN barcode scanning** - Scan barcodes via CLI or web UI to automatically fetch book metadata
+- **Hierarchical organization** - Organize books using Bookcase → Shelf → Book structure
+- **Availability tracking** - Track book status (AVAILABLE, CHECKED_OUT, RESERVED, LOST, ARCHIVED)
+- **Multi-author support** - Handle many-to-many book-author relationships
+- **Capacity management** - Enforce shelf capacity constraints
+- **Interactive CLI** - Spring Shell-powered commands with multi-step flows
+- **REST API** - HTTP endpoints for web and mobile integration
+
+### Who It's For
+
+- **Book collectors** managing personal libraries
+- **Home librarians** tracking lending and book locations
+- **Java developers** learning clean architecture patterns
+- **Students** studying Domain-Driven Design and Hexagonal Architecture
+
+### Key Capabilities
+
+✅ Scan ISBN barcodes (CLI and web) with automatic metadata enrichment
+✅ Browse library interactively through bookcases and shelves
+✅ Check books in/out with friendly status updates
+✅ Search by title, author, or ISBN
+✅ Assign books to specific shelf locations
+✅ Create and manage hierarchical storage (bookcases with multiple shelves)
+✅ RESTful API for external integrations
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description | Status |
 |---------|-------------|--------|
-| **ISBN Barcode Scanning** | Scan barcodes via CLI or web UI, auto-fetch metadata from Google Books API | ✅ Complete |
-| **Scan-to-Shelf Workflow** | Scan a book and place it on a shelf in one flow | ✅ Complete |
-| **Interactive CLI** | Spring Shell-powered commands with multi-step flows | ✅ Complete |
-| **Web Barcode Scanner** | Webcam-based ISBN scanning using ZXing.js | ✅ Complete |
-| **Hierarchical Organization** | Bookcase → Shelf → Book with cascading navigation | ✅ Complete |
-| **Shelf Capacity Management** | Track and enforce book limits per shelf | ✅ Complete |
+| **ISBN Barcode Scanning** | CLI and web-based scanning with Google Books API integration | ✅ Complete |
+| **Scan-to-Shelf Workflow** | Single flow to scan, add, and place books on shelves | ✅ Complete |
+| **Interactive CLI** | Spring Shell commands with multi-step interactive prompts | ✅ Complete |
+| **Hierarchical Organization** | Bookcase → Shelf → Book cascading navigation | ✅ Complete |
+| **Shelf Capacity Management** | Per-shelf book limits with overflow prevention | ✅ Complete |
 | **Multi-Author Support** | Many-to-many book-author relationships | ✅ Complete |
-| **Check-in/Check-out** | Track book availability with friendly responses | ✅ Complete |
-| **REST API** | HTTP endpoints for book, shelf, and bookcase operations | ✅ Complete |
-| **Hexagonal Architecture** | Clean ports & adapters separation across all modules | ✅ Complete |
+| **Availability Tracking** | AVAILABLE, CHECKED_OUT, RESERVED, LOST, ARCHIVED states | ✅ Complete |
+| **REST API** | HTTP endpoints for all core operations | ✅ Complete |
+| **Hexagonal Architecture** | Clean ports & adapters with ArchUnit enforcement | ✅ Complete |
+| **Google Books Integration** | Automatic metadata enrichment from external API | ✅ Complete |
 
 ---
 
-## 🚀 Getting Started
+## Quickstart
+
+Get Bibby running in 3 minutes:
+
+```bash
+# 1. Clone and navigate
+git clone https://github.com/leodvincci/Bibby.git
+cd Bibby
+
+# 2. Start PostgreSQL (Docker)
+docker run -d \
+  --name bibby-postgres \
+  -e POSTGRES_DB=amigos \
+  -e POSTGRES_USER=amigoscode \
+  -e POSTGRES_PASSWORD=password \
+  -p 5332:5432 \
+  postgres:latest
+
+# 3. Build and run
+./mvnw spring-boot:run
+
+# 4. Start using Bibby!
+Bibby:_ help
+```
+
+**Alternative:** Use the [Dockerfile](#docker-deployment) to run everything in containers.
+
+---
+
+## Tech Stack
+
+### Backend
+
+| Component | Technology | Version | Purpose |
+|-----------|-----------|---------|---------|
+| **Language** | Java | 17 | Core programming language |
+| **Framework** | Spring Boot | 3.5.7 | Application framework, dependency injection |
+| **CLI Framework** | Spring Shell | 3.4.1 | Interactive command-line interface |
+| **Web** | Spring Web | (via Boot) | REST API controllers |
+| **HTTP Client** | Spring WebFlux | (via Boot) | Reactive Google Books API calls |
+| **ORM** | Spring Data JPA | (via Boot) | Database persistence layer |
+| **Security** | Spring Security | (via Boot) | Web endpoint security |
+| **Build Tool** | Maven | 3.8+ | Dependency management, build automation |
+
+### Database
+
+- **PostgreSQL** (production, development)
+- **H2** (in-memory for testing)
+
+### Testing
+
+- **JUnit 5** - Unit testing framework
+- **Mockito 5.17.0** - Mocking framework
+- **ArchUnit 1.3.0** - Architecture rule enforcement
+- **Spring Security Test** - Security testing utilities
+- **Reactor Test** - Reactive stream testing
+
+### DevOps & CI
+
+- **Docker** - Multi-stage containerization
+- **GitHub Actions** - Continuous integration
+- **Spotless** - Code formatting (Google Java Format)
+- **Maven Surefire/Failsafe** - Test execution
+
+### Frontend Integration
+
+- **ZXing.js** - Web-based barcode scanning (served via separate frontend)
+- **SpringDoc OpenAPI 2.8.0** - API documentation and Swagger UI
+
+---
+
+## Architecture
+
+Bibby implements **Hexagonal Architecture** (Ports & Adapters) with **Domain-Driven Design** principles to maintain clean separation of concerns and testability.
+
+### High-Level Component Diagram
+
+```mermaid
+graph TB
+    subgraph "Driving Adapters (Inbound)"
+        CLI[CLI Commands<br/>Spring Shell]
+        REST[REST Controllers<br/>Web API]
+        WEB[Web UI<br/>Barcode Scanner]
+    end
+
+    subgraph "Application Core"
+        PORTS_IN[Inbound Ports<br/>Facades & DTOs]
+        APP[Application Layer<br/>Services & Use Cases]
+        DOMAIN[Domain Layer<br/>Entities & Business Logic]
+        PORTS_OUT[Outbound Ports<br/>Repository Interfaces]
+    end
+
+    subgraph "Driven Adapters (Outbound)"
+        JPA[JPA Repositories<br/>PostgreSQL]
+        GOOGLE[Google Books API<br/>WebClient]
+    end
+
+    CLI --> PORTS_IN
+    REST --> PORTS_IN
+    WEB --> REST
+    PORTS_IN --> APP
+    APP --> DOMAIN
+    APP --> PORTS_OUT
+    PORTS_OUT --> JPA
+    PORTS_OUT --> GOOGLE
+
+    style DOMAIN fill:#e1f5ff
+    style APP fill:#fff3cd
+    style CLI fill:#d4edda
+    style REST fill:#d4edda
+```
+
+### Module Structure
+
+Bibby is organized by **domain modules**, each following hexagonal architecture:
+
+```
+library/
+├── cataloging/              # Book cataloging domain
+│   ├── book/
+│   │   ├── contracts/       # Inbound ports, DTOs, facades
+│   │   │   ├── ports/
+│   │   │   │   ├── inbound/    # BookFacade
+│   │   │   │   └── outbound/   # Repository interfaces
+│   │   │   └── dtos/           # BookDTO, BookMetaDataResponse
+│   │   ├── core/
+│   │   │   ├── domain/         # Book, Title, Isbn (value objects)
+│   │   │   └── application/    # BookService, IsbnEnrichmentService
+│   │   └── infrastructure/
+│   │       ├── entity/         # BookEntity (JPA)
+│   │       ├── repository/     # JPA implementations
+│   │       └── external/       # GoogleBooksClient
+│   └── author/
+│       ├── contracts/          # AuthorFacade, AuthorDTO
+│       ├── core/
+│       │   ├── domain/         # Author, AuthorName
+│       │   └── application/    # AuthorService
+│       └── infrastructure/     # AuthorEntity, AuthorJpaRepository
+│
+├── stacks/                  # Physical storage domain
+│   ├── bookcase/
+│   │   ├── contracts/       # BookcaseFacade, BookcaseDTO
+│   │   ├── core/
+│   │   │   ├── domain/      # Bookcase
+│   │   │   └── application/ # BookcaseService
+│   │   └── infrastructure/  # BookcaseEntity, repositories
+│   └── shelf/
+│       ├── contracts/       # ShelfFacade, ShelfDTO
+│       ├── core/
+│       │   ├── domain/      # Shelf, Capacity (value object)
+│       │   └── application/ # ShelfService, BrowseShelfUseCase
+│       └── infrastructure/  # ShelfEntity, ShelfJpaRepository
+│
+├── discovery/               # Book search domain
+│   └── core/application/    # SearchBooksUseCase
+│
+└── registration/            # User registration domain
+    ├── contracts/dtos/      # UserRegistrationRequestDTO
+    └── core/                # UserRegistrationService
+```
+
+### Adapters
+
+**Driving Adapters (Inbound):**
+- `cli/command/` - Spring Shell command handlers for interactive CLI
+- `web/` - REST controllers exposing HTTP API
+
+**Driven Adapters (Outbound):**
+- `infrastructure/repository/` - JPA repository implementations
+- `infrastructure/external/` - Google Books API client (WebClient)
+
+### Domain Model
+
+```mermaid
+erDiagram
+    BOOKCASE ||--o{ SHELF : contains
+    SHELF ||--o{ BOOK : holds
+    BOOK }o--o{ AUTHOR : "written by"
+
+    BOOKCASE {
+        Long id PK
+        String bookcaseLabel
+        Integer shelfCapacity
+        Integer totalBookCapacity
+    }
+
+    SHELF {
+        Long id PK
+        String shelfLabel
+        Integer shelfPosition
+        Long bookcaseId FK
+        Integer bookCapacity
+    }
+
+    BOOK {
+        Long id PK
+        String title
+        String isbn
+        String publisher
+        Integer publicationYear
+        String genre
+        String description
+        AvailabilityStatus status
+        Long shelfId FK
+        Timestamp createdAt
+        Timestamp updatedAt
+    }
+
+    AUTHOR {
+        Long id PK
+        String firstName
+        String lastName
+    }
+```
+
+### Core Domain Entities
+
+| Entity | Key Attributes | Relationships |
+|--------|---------------|---------------|
+| **Book** | id, title, isbn, publisher, status, shelfId | Many-to-Many with Author<br/>Many-to-One with Shelf |
+| **Author** | id, firstName, lastName | Many-to-Many with Book |
+| **Shelf** | id, shelfLabel, bookCapacity, bookcaseId | One-to-Many with Book<br/>Many-to-One with Bookcase |
+| **Bookcase** | id, bookcaseLabel, shelfCapacity | One-to-Many with Shelf |
+
+### Availability Status Enum
+
+Books track their circulation state:
+
+- **AVAILABLE** - On shelf, ready to check out
+- **CHECKED_OUT** - Currently borrowed
+- **RESERVED** - Reserved for future pickup
+- **LOST** - Marked as missing
+- **ARCHIVED** - Removed from active circulation
+
+### Design Patterns
+
+- **Hexagonal Architecture** - Ports & adapters for testability
+- **Domain-Driven Design** - Rich domain models with business logic
+- **Repository Pattern** - Data persistence abstraction
+- **Factory Pattern** - Centralized object creation
+- **DTO Pattern** - Data transfer across boundaries
+- **Facade Pattern** - Simplified module interfaces
+- **Value Objects** - Immutable domain primitives (BookId, Title, Isbn)
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- **Java 17** or higher
-- **PostgreSQL** (running on port 5332 or configure your own)
-- **Maven 3.8+** (or use the included Maven Wrapper)
+- **Java 17+** (OpenJDK or Oracle JDK)
+- **PostgreSQL** (or Docker to run PostgreSQL)
+- **Maven 3.8+** (or use included Maven Wrapper)
 
-### Database Setup
+### Installation
 
-1. Install and start PostgreSQL
-2. Create a database named `amigos`:
-   ```bash
-   psql -U postgres
-   CREATE DATABASE amigos;
-   ```
-3. Update credentials in `src/main/resources/application.properties` if needed:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5332/amigos
-   spring.datasource.username=amigoscode
-   spring.datasource.password=password
-   ```
+1. **Clone the repository:**
 
-**Note:** The application uses `spring.jpa.hibernate.ddl-auto=create-drop`, which drops and recreates tables on every restart. This is intentional for development but **data will not persist** across runs.
+```bash
+git clone https://github.com/leodvincci/Bibby.git
+cd Bibby
+```
 
-### Build and Run
+2. **Start PostgreSQL:**
 
-**Using Maven Wrapper (recommended):**
+**Option A: Docker (Recommended)**
+```bash
+docker run -d \
+  --name bibby-postgres \
+  -e POSTGRES_DB=amigos \
+  -e POSTGRES_USER=amigoscode \
+  -e POSTGRES_PASSWORD=password \
+  -p 5332:5432 \
+  postgres:latest
+```
+
+**Option B: Native PostgreSQL**
+```bash
+# Start PostgreSQL service
+sudo systemctl start postgresql
+
+# Create database
+psql -U postgres
+CREATE DATABASE amigos;
+\q
+```
+
+3. **Configure database connection (optional):**
+
+If your PostgreSQL runs on different credentials, edit `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5332/amigos
+spring.datasource.username=amigoscode
+spring.datasource.password=password
+```
+
+4. **Build the project:**
+
 ```bash
 ./mvnw clean install
+```
+
+### Environment Variables
+
+Bibby uses `application.properties` for configuration. No separate `.env` file is required, but you can override properties via environment variables:
+
+| Property | Environment Variable | Default | Description |
+|----------|---------------------|---------|-------------|
+| `spring.datasource.url` | `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5332/amigos` | PostgreSQL connection URL |
+| `spring.datasource.username` | `SPRING_DATASOURCE_USERNAME` | `amigoscode` | Database username |
+| `spring.datasource.password` | `SPRING_DATASOURCE_PASSWORD` | `password` | Database password |
+| `spring.jpa.hibernate.ddl-auto` | `SPRING_JPA_HIBERNATE_DDL_AUTO` | `create-drop` | Schema management strategy |
+
+**Example:**
+```bash
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/mybibby
+export SPRING_DATASOURCE_USERNAME=myuser
+export SPRING_DATASOURCE_PASSWORD=mypass
 ./mvnw spring-boot:run
 ```
 
-**Using installed Maven:**
+---
+
+## Running the Application
+
+### Run Backend (CLI Mode)
+
+**Using Maven Wrapper (Recommended):**
 ```bash
-mvn clean install
+./mvnw spring-boot:run
+```
+
+**Using Installed Maven:**
+```bash
 mvn spring-boot:run
+```
+
+**Using JAR (after build):**
+```bash
+java -jar target/Bibby-0.0.1-SNAPSHOT.jar
 ```
 
 ### First Launch
@@ -103,594 +444,736 @@ On startup, you'll see the Bibby ASCII banner and drop into an interactive shell
 Bibby:_
 ```
 
-### Accessing the Web UI
+Type `help` to see all available commands.
 
-While the CLI is running, open your browser to:
-```
-http://localhost:8080
-```
+### Run Frontend (Optional)
 
-This loads the barcode scanner interface using your webcam.
-
----
-
-## 📚 Usage
-
-### Available Commands
-
-Type `help` in the CLI to see all commands. Below are the main workflows:
-
-#### Book Management
-
-**Scan a book (recommended):**
-```
-Bibby:_ book scan
-```
-This starts the scan flow:
-1. Enter or scan an ISBN barcode
-2. Bibby fetches metadata from Google Books API
-3. Review title, authors, description
-4. Confirm to add to your library
-5. Optionally assign to a shelf immediately
-
-**Manual book entry:**
-```
-Bibby:_ book new
-```
-Interactive prompts guide you through title, authors, and ISBN entry.
-
-**Search for a book:**
-```
-Bibby:_ book search
-```
-Choose search type (title, author, or ISBN) and enter your query.
-
-**Check out a book:**
-```
-Bibby:_ book check-out
-Book Title:_ Designing Data-Intensive Applications
-```
-Marks the book as CHECKED_OUT with a friendly confirmation message.
-
-**Check in a book:**
-```
-Bibby:_ book check-in
-Book Title:_ Designing Data-Intensive Applications
-```
-Returns the book to AVAILABLE status.
-
-**Assign a book to a shelf:**
-```
-Bibby:_ book shelf
-```
-Prompts for book title, bookcase, and shelf selection.
-
-#### Bookcase & Shelf Management
-
-**Browse your library:**
-```
-Bibby:_ bookcase browse
-```
-Navigate through:
-1. **Select a Bookcase** → displays all bookcases with book counts
-2. **Select a Shelf** → shows shelves within that bookcase
-3. **View Books** → lists all books on the selected shelf
-4. **Check out** directly from the browse view
-
-**Create a bookcase:**
-```
-Bibby:_ bookcase create
-```
-Interactive flow to define bookcase label and shelf configuration.
-
-### Example Session
-
+The web barcode scanner UI is in a separate repository:
 ```bash
-Bibby:_ book scan
-ISBN Number:_ 9781449373320
-
-========================================
-📚  Book Metadata
-========================================
-
-ISBN:              9781449373320
-Title:             Designing Data-Intensive Applications
-Authors:           [Martin Kleppmann]
-Published:         2017-03-16
-Categories:        [Computers]
-
-Description:
-Data is at the center of many challenges in system design today...
-
-========================================
-
-? Would you like to add this book to the library?
-> Yes  — Let's Do It
-
-Select Bookcase:
-> Main Library
-
-Select Shelf:
-> Shelf A-1 (2/10 books)
-
-</> Book added to the library database successfully!
+# Clone frontend (if available)
+git clone https://github.com/leodvincci/Bibby-Web.git
+cd Bibby-Web
+# Follow frontend setup instructions
 ```
 
----
+Access web interface at: `http://localhost:5173` (or configured port)
 
-## 🏛️ Architecture
+### Docker Deployment
 
-Bibby follows **Hexagonal Architecture** (Ports & Adapters) with **Domain-Driven Design** principles.
-
-### High-Level Structure
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Driving Adapters                         │
-│         (CLI Commands, REST Controllers, Web UI)            │
-├─────────────────────────────────────────────────────────────┤
-│                     Inbound Ports                           │
-│            (Facades, DTOs, API Contracts)                   │
-├─────────────────────────────────────────────────────────────┤
-│                   Application Layer                         │
-│            (Services, Use Case Orchestration)               │
-├─────────────────────────────────────────────────────────────┤
-│                     Domain Layer                            │
-│       (Entities, Value Objects, Business Rules)             │
-├─────────────────────────────────────────────────────────────┤
-│                    Outbound Ports                           │
-│            (Repository Interfaces, Gateways)                │
-├─────────────────────────────────────────────────────────────┤
-│                    Driven Adapters                          │
-│    (JPA Repositories, Google Books Client, PostgreSQL)      │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Package Structure
-
-The codebase is organized by **domain modules** under `com.penrose.bibby.library/`:
-
-```
-library/
-├── cataloging/
-│   ├── book/
-│   │   ├── contracts/         # Inbound ports (DTOs, Facades)
-│   │   │   ├── ports/inbound/ # BookFacade
-│   │   │   └── dtos/          # BookDTO, BookMetaDataResponse, etc.
-│   │   ├── core/
-│   │   │   ├── domain/        # Book, BookId, Title, Isbn, AvailabilityStatus
-│   │   │   └── application/   # BookService, IsbnEnrichmentService
-│   │   └── infrastructure/    # BookEntity, BookJpaRepository, GoogleBooksResponse
-│   └── author/
-│       ├── contracts/         # AuthorFacade, AuthorDTO
-│       ├── core/domain/       # Author, AuthorId, AuthorName
-│       ├── core/application/  # AuthorService
-│       └── infrastructure/    # AuthorEntity, AuthorJpaRepository
-├── stacks/
-│   ├── bookcase/
-│   │   ├── contracts/         # BookcaseFacade, BookcaseDTO
-│   │   ├── core/domain/       # Bookcase
-│   │   ├── core/application/  # BookcaseService
-│   │   └── infrastructure/    # BookcaseEntity, BookcaseRepository
-│   └── shelf/
-│       ├── contracts/         # ShelfFacade, ShelfDTO, ShelfSummary
-│       ├── core/domain/       # Shelf, ShelfId
-│       ├── core/application/  # ShelfService, BrowseShelfUseCase
-│       └── infrastructure/    # ShelfEntity, ShelfJpaRepository
-└── discovery/
-    └── core/application/      # SearchBooksUseCase
-```
-
-### Adapters
-
-**Driving Adapters (inbound):**
-- `cli/commands/` — Spring Shell command handlers
-- `infrastructure/web/` — REST controllers
-
-**Driven Adapters (outbound):**
-- `infrastructure/repository/` — JPA repository implementations
-- `infrastructure/external/` — Google Books API integration
-
-### Domain Models
-
-**Core Entities:**
-- `Book` — Aggregates title, ISBN, authors, availability status, shelf location
-- `Author` — Manages author identity with many-to-many book relationships
-- `Shelf` — Tracks books and enforces capacity constraints
-- `Bookcase` — Contains shelves with configurable capacity
-
-**Value Objects:**
-- `BookId`, `Title`, `Isbn`, `AuthorRef` (for Book)
-- `AuthorId`, `AuthorName` (for Author)
-- `ShelfId` (for Shelf)
-
-**Enums:**
-- `AvailabilityStatus` — AVAILABLE | CHECKED_OUT | RESERVED | LOST | ARCHIVED
-
-### Design Patterns
-
-- **Hexagonal Architecture** — Ports & Adapters for testability and flexibility
-- **Domain-Driven Design** — Rich domain models with business logic
-- **Repository Pattern** — Data access abstraction
-- **Factory Pattern** — Centralized object creation (BookFactory, AuthorFactory)
-- **DTO Pattern** — Data transfer across architectural boundaries
-- **Projection Pattern** — Lightweight read models (BookSummary, ShelfSummary)
-- **Facade Pattern** — Simplified cross-domain communication
-
-### Entity/Domain Separation
-
-Bibby maintains **strict separation** between persistence and domain layers:
-
-- **Domain Models** (`Book`, `Author`) contain business logic and invariants
-- **Entities** (`BookEntity`, `AuthorEntity`) are JPA-annotated persistence models
-- **Mappers** bridge between layers without leaking persistence concerns into the domain
-
----
-
-## 🗄️ Domain Model
-
-The domain captures a physical library with hierarchical organization:
-
-```
-Bookcase (1) ──────< Shelf (many)
-                        │
-                        │ has capacity limit
-                        ↓
-                    Book (many)
-                        │
-                   (many-to-many)
-                        ↓
-                   Author (many)
-```
-
-### Entities & Relationships
-
-| Entity | Attributes | Relationships |
-|--------|-----------|---------------|
-| **Book** | id, title, isbn, publisher, publicationYear, genre, description, availabilityStatus, shelfId, createdAt, updatedAt | Many-to-Many with Author, Many-to-One with Shelf |
-| **Author** | id, firstName, lastName | Many-to-Many with Book |
-| **Shelf** | id, shelfLabel, shelfPosition, bookcaseId, bookCapacity, bookIds | One-to-Many with Book, Many-to-One with Bookcase |
-| **Bookcase** | id, bookcaseLabel, shelfCapacity, totalBookCapacity | One-to-Many with Shelf |
-
-### Availability Status
-
-Books track their current state via `AvailabilityStatus`:
-- **AVAILABLE** — On shelf, ready to check out
-- **CHECKED_OUT** — Currently borrowed
-- **RESERVED** — Reserved for future pickup
-- **LOST** — Marked as lost
-- **ARCHIVED** — Removed from active circulation
-
----
-
-## 🔌 REST API
-
-The application exposes HTTP endpoints for programmatic access.
-
-**Base URL:** `http://localhost:8080/api/v1`
-
-### Book Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/books` | Add a new book manually |
-| GET | `/books` | Search for a book by title (request body) |
-| POST | `/books/{bookId}/shelf` | Assign a book to a shelf |
-| GET | `/lookup/{isbn}` | Fetch metadata from Google Books API |
-
-**Example: Add a book**
+**Build Docker image:**
 ```bash
-curl -X POST http://localhost:8080/api/v1/books \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Clean Architecture",
-    "isbn": "9780134494166",
-    "authors": [
-      {"firstName": "Robert", "lastName": "Martin"}
-    ]
-  }'
+docker build -t bibby:latest .
 ```
 
-**Example: Assign book to shelf**
+**Run with Docker:**
 ```bash
-curl -X POST http://localhost:8080/api/v1/books/1/shelf \
-  -H "Content-Type: application/json" \
-  -d '{"shelfId": 5}'
+# Run PostgreSQL
+docker run -d \
+  --name bibby-postgres \
+  -e POSTGRES_DB=amigos \
+  -e POSTGRES_USER=amigoscode \
+  -e POSTGRES_PASSWORD=password \
+  -p 5332:5432 \
+  postgres:latest
+
+# Run Bibby (update DB URL to Docker network)
+docker run -it \
+  --name bibby-app \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5332/amigos \
+  -p 8080:8080 \
+  bibby:latest
 ```
 
-### Shelf Endpoints
-
-Located in `ShelfController.java` (endpoints not fully documented in code).
-
-### Bookcase Endpoints
-
-Located in `BookCaseController.java` (endpoints not fully documented in code).
-
-### Author Endpoints
-
-Located in `AuthorController.java` (endpoints not fully documented in code).
-
-**Note:** Some REST endpoints are under active development and may not have complete request/response documentation. Refer to controller source files for details.
+**Note:** For production, use Docker Compose (not currently included in repo).
 
 ---
 
-## ⚙️ Configuration
+## Testing
 
-### Application Properties
+### Run All Tests
 
-Located at `src/main/resources/application.properties`:
-
-```properties
-# Application
-spring.application.name=Bibby
-spring.shell.interactive.enabled=true
-
-# Database
-spring.datasource.url=jdbc:postgresql://localhost:5332/amigos
-spring.datasource.username=amigoscode
-spring.datasource.password=password
-spring.jpa.hibernate.ddl-auto=create-drop
-
-# Logging (disabled for clean CLI experience)
-logging.level.org.springframework=OFF
-logging.level.org.hibernate=OFF
-logging.level.root=OFF
-
-# ANSI Colors
-spring.output.ansi.enabled=ALWAYS
-```
-
-### Key Settings
-
-| Setting | Value | Impact |
-|---------|-------|--------|
-| `spring.jpa.hibernate.ddl-auto` | `create-drop` | **Database schema is recreated on every restart. Data does not persist.** |
-| `logging.level.root` | `OFF` | Suppresses all Spring/Hibernate logs for a clean CLI experience |
-| `spring.output.ansi.enabled` | `ALWAYS` | Enables colored output in terminal |
-
-**⚠️ Important:** The `create-drop` setting means all data is lost when the application stops. This is intentional for development but should be changed to `update` or `validate` for production use.
-
----
-
-## 🧪 Testing
-
-Bibby includes unit tests using **JUnit 5**, **Mockito**, and **ArchUnit**.
-
-### Test Coverage
-
-- **7 test files** with **28+ test methods**
-- Located in `src/test/java/com/penrose/bibby/`
-
-**Test files:**
-```
-BibbyApplicationTests.java
-cli/BookCommandLineTest.java
-library/author/core/domain/AuthorNameTest.java
-library/author/core/domain/AuthorRepositoryTest.java
-library/book/BookServiceTest.java
-library/book/infrastructure/repository/BookDomainRepositoryImplTest.java
-library/stacks/shelf/core/application/BrowseShelfUseCaseTest.java
-```
-
-### Running Tests
-
-**Run all tests:**
 ```bash
 ./mvnw test
 ```
 
-**Run tests with coverage:**
-```bash
-./mvnw test jacoco:report
-```
+### Run Specific Test
 
-**Run specific test:**
 ```bash
 ./mvnw test -Dtest=BookServiceTest
 ```
 
+### Run Tests with Coverage
+
+```bash
+./mvnw test jacoco:report
+# View report: target/site/jacoco/index.html
+```
+
+### Run Full Verification (Tests + Code Quality)
+
+```bash
+./mvnw clean verify
+```
+
+### Test Structure
+
+Tests are organized by domain module:
+
+```
+src/test/java/com/penrose/bibby/
+├── BibbyApplicationTests.java          # Context load test
+├── cli/
+│   ├── BookCommandLineTest.java        # ArchUnit architecture tests
+│   ├── command/book/
+│   │   ├── BookCreateIsbnCommandsTest
+│   │   └── BookManagementCommandsTest
+│   └── ui/BookcardRendererTest
+├── library/
+│   ├── author/core/domain/
+│   │   ├── AuthorNameTest
+│   │   └── AuthorRepositoryTest
+│   ├── book/
+│   │   ├── BookServiceTest
+│   │   └── infrastructure/repository/
+│   │       └── BookDomainRepositoryImplTest
+│   ├── classification/core/domain/
+│   │   └── BooklistTest
+│   └── stacks/shelf/core/application/
+│       └── BrowseShelfUseCaseTest
+└── web/registration/
+    └── UserRegistrationControllerTest
+```
+
 ### Testing Strategy
 
-- **Unit Tests** — Domain logic validation, service layer orchestration
-- **Repository Tests** — Entity-domain mapping correctness
-- **Architectural Tests** — ArchUnit rules to enforce hexagonal boundaries (planned)
+- **Unit Tests** - Domain logic, value objects, services
+- **Integration Tests** - Repository layer with H2 in-memory DB
+- **Architecture Tests** - ArchUnit rules enforcing hexagonal boundaries
+- **Controller Tests** - REST API endpoints with MockMvc
 
-**Note:** Test coverage is growing. Current focus areas include domain models, services, and repository implementations. Integration tests and end-to-end CLI tests are planned.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Language** | Java | 17 | Core language |
-| **Framework** | Spring Boot | 3.5.7 | Application framework, DI, auto-configuration |
-| **CLI Framework** | Spring Shell | 3.4.1 | Interactive command-line interface |
-| **Web Framework** | Spring Web | (via Boot) | REST API controllers |
-| **HTTP Client** | Spring WebFlux | (via Boot) | Reactive HTTP calls to Google Books API |
-| **ORM** | Spring Data JPA | (via Boot) | Repository abstraction, domain persistence |
-| **Database** | PostgreSQL | Latest | Relational data storage |
-| **Build Tool** | Maven | 3.8+ | Dependency management, build automation |
-| **Testing** | JUnit 5 | 5.x | Unit testing framework |
-| **Mocking** | Mockito | 5.17.0 | Test doubles and mocking |
-| **Architecture Testing** | ArchUnit | 1.3.0 | Enforce architectural boundaries |
-| **Barcode Scanning** | ZXing | Latest (via CDN) | Web-based ISBN barcode scanning |
+**Current Coverage:** Tests cover core domain entities, services, and repositories. CLI command tests and end-to-end integration tests are planned.
 
 ---
 
-## 🧑‍💻 Development
+## API Documentation
 
-### Project Goals
+Bibby exposes a REST API for web and mobile integration.
 
-Bibby is explicitly designed as a **long-term practice arena** for software engineering fundamentals:
+**Base URL:** `http://localhost:8080`
 
-- Build expressive, stateful CLI flows with Spring Shell
-- Practice **Domain-Driven Design** with entity/domain separation
-- Implement **Hexagonal Architecture** (Ports & Adapters)
-- Design PostgreSQL-backed domain models
-- Integrate external APIs (Google Books) with reactive programming
-- Develop comprehensive unit tests with JUnit 5 and Mockito
-- Follow systematic refactoring and architectural evolution
+**Swagger UI:** `http://localhost:8080/swagger-ui.html` (SpringDoc OpenAPI)
 
-**The development rhythm:**
+### Book Endpoints
+
+#### Add Book Manually
+```http
+POST /api/v1/books
+Content-Type: application/json
+
+{
+  "title": "Clean Architecture",
+  "isbn": "9780134494166",
+  "publisher": "Prentice Hall",
+  "authors": [
+    {"firstName": "Robert", "lastName": "Martin"}
+  ]
+}
+```
+
+**Response:** `200 OK`
+```json
+"Book Added Successfully: Clean Architecture"
+```
+
+#### Search Book by Title
+```http
+GET /api/v1/books
+Content-Type: application/json
+
+{
+  "title": "Clean Architecture"
+}
+```
+
+#### Search Book by ISBN
+```http
+GET /api/v1/books/search/{isbn}
+```
+
+**Example:**
+```bash
+curl http://localhost:8080/api/v1/books/search/9780134494166
+```
+
+**Response:** `200 OK`
+```json
+{
+  "bookId": 1,
+  "title": "Clean Architecture",
+  "isbn": "9780134494166",
+  "authors": ["Robert Martin"],
+  "publisher": "Prentice Hall",
+  "description": "..."
+}
+```
+
+#### Assign Book to Shelf
+```http
+POST /api/v1/books/{bookId}/shelf
+Content-Type: application/json
+
+{
+  "shelfId": 5
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "bookId": 1,
+  "bookTitle": "Clean Architecture",
+  "shelfId": 5,
+  "shelfLabel": "Shelf A-1",
+  "bookcaseLabel": "Main Library"
+}
+```
+
+### Book Import Endpoints
+
+#### Import Book by ISBN (with Google Books enrichment)
+```http
+POST /import/books
+Content-Type: application/json
+
+{
+  "isbn": "9781449373320"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "bookId": 2,
+  "title": "Designing Data-Intensive Applications",
+  "isbn": "9781449373320",
+  "authors": ["Martin Kleppmann"],
+  "publisher": "O'Reilly Media",
+  "description": "Data is at the center of many challenges..."
+}
+```
+
+### Shelf Endpoints
+
+#### Get All Shelf Options
+```http
+GET /api/v1/shelves/options
+```
+
+**Response:** `200 OK`
+```json
+[
+  {
+    "shelfId": 1,
+    "shelfLabel": "Shelf A-1",
+    "bookcaseLabel": "Main Library",
+    "currentCapacity": 5,
+    "maxCapacity": 10
+  }
+]
+```
+
+### Bookcase Endpoints
+
+#### Create Bookcase
+```http
+POST /create/bookcase
+Content-Type: application/json
+
+{
+  "bookcaseLabel": "Main Library",
+  "shelfCapacity": 5,
+  "bookCapacity": 10
+}
+```
+
+**Response:** `201 CREATED`
+
+### User Registration Endpoints
+
+#### Register New User
+```http
+POST /api/v1/user/registration/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "SecurePassword123"
+}
+```
+
+**Response:** `201 CREATED`
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+### External Integration
+
+#### Lookup Book Metadata (Google Books)
+```http
+GET /lookup/{isbn}
+```
+
+**Example:**
+```bash
+curl http://localhost:8080/lookup/9780134494166
+```
+
+**Response:** `200 OK` (GoogleBooksResponse object with full metadata)
+
+---
+
+## Configuration
+
+### Application Profiles
+
+Bibby supports multiple Spring profiles:
+
+| Profile | File | Purpose |
+|---------|------|---------|
+| **default** | `application.properties` | Development (active by default) |
+| **dev** | `application-dev.properties` | Development overrides |
+| **staging** | `application-staging.properties` | Staging environment |
+| **prod** | `application-prod.properties` | Production environment |
+
+**Activate profile:**
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
+### Key Configuration Settings
+
+#### Database (application.properties)
+
+```properties
+# PostgreSQL connection
+spring.datasource.url=jdbc:postgresql://localhost:5332/amigos
+spring.datasource.username=amigoscode
+spring.datasource.password=password
+
+# Schema management (WARNING: create-drop deletes data on restart!)
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+
+⚠️ **IMPORTANT:** `create-drop` means **all data is lost on restart**. This is intentional for development. Change to `update` or `validate` for production.
+
+#### Logging
+
+```properties
+# Logging disabled by default for clean CLI experience
+logging.level.org.springframework=OFF
+logging.level.org.hibernate=OFF
+logging.level.root=OFF
+
+# Enable for debugging:
+# logging.level.root=INFO
+# logging.level.org.springframework=INFO
+```
+
+#### CLI & Display
+
+```properties
+# Enable interactive shell
+spring.shell.interactive.enabled=true
+
+# Enable ANSI colors in terminal
+spring.output.ansi.enabled=ALWAYS
+
+# Custom ASCII banner
+spring.main.banner-mode=console
+```
+
+#### Error Handling
+
+```properties
+# API error responses
+server.error.include-message=always
+server.error.include-binding-errors=never
+server.error.include-stacktrace=never
+```
+
+### Code Formatting
+
+Bibby uses **Spotless** with **Google Java Format**:
+
+```bash
+# Check formatting
+./mvnw spotless:check
+
+# Apply formatting
+./mvnw spotless:apply
+```
+
+Spotless runs automatically in CI/CD pipeline.
+
+---
+
+## Troubleshooting
+
+### Database Connection Issues
+
+**Problem:** `Connection refused` or `could not connect to server`
+
+**Solutions:**
+1. Verify PostgreSQL is running:
+   ```bash
+   docker ps | grep postgres
+   # or
+   sudo systemctl status postgresql
+   ```
+
+2. Check port 5332 is correct:
+   ```bash
+   psql -U amigoscode -h localhost -p 5332 -d amigos
+   ```
+
+3. Verify database exists:
+   ```sql
+   psql -U postgres
+   \l  -- list all databases
+   ```
+
+4. Update credentials in `application.properties` if different
+
+### Port Already in Use
+
+**Problem:** `Port 8080 is already in use`
+
+**Solutions:**
+```bash
+# Find process on port 8080
+lsof -ti:8080
+
+# Kill the process
+lsof -ti:8080 | xargs kill -9
+
+# Or run on different port
+./mvnw spring-boot:run -Dserver.port=8081
+```
+
+### Maven Build Fails
+
+**Problem:** Compilation errors or dependency issues
+
+**Solutions:**
+```bash
+# Clean and rebuild with fresh dependencies
+./mvnw clean install -U
+
+# Skip tests if they're failing
+./mvnw clean install -DskipTests
+
+# Ensure Java 17+ is active
+java -version
+```
+
+### Tests Fail with Mockito Errors
+
+**Problem:** `MockitoException` or agent initialization errors
+
+**Solutions:**
+1. Ensure Java 17 is being used (not Java 8/11)
+2. Check Maven Surefire plugin configuration in `pom.xml`
+3. Clear Maven cache:
+   ```bash
+   rm -rf ~/.m2/repository/org/mockito
+   ./mvnw clean test
+   ```
+
+### Data Not Persisting
+
+**Problem:** All data disappears on restart
+
+**Explanation:** This is **expected behavior** with `create-drop` setting.
+
+**Solutions:**
+- For development: This is intentional for clean state
+- For production: Change in `application.properties`:
+  ```properties
+  spring.jpa.hibernate.ddl-auto=update
+  ```
+
+### CLI Colors Not Working
+
+**Problem:** ANSI escape codes appear as text
+
+**Solutions:**
+1. Ensure terminal supports ANSI colors
+2. Verify setting in `application.properties`:
+   ```properties
+   spring.output.ansi.enabled=ALWAYS
+   ```
+3. Try running in different terminal (e.g., Windows Terminal, iTerm2)
+
+### Google Books API Rate Limiting
+
+**Problem:** `429 Too Many Requests` from Google Books API
+
+**Solutions:**
+1. Wait a few minutes for rate limit reset
+2. Consider implementing caching for repeated lookups
+3. Use manual book entry as fallback:
+   ```
+   Bibby:_ book new
+   ```
+
+---
+
+## Development
+
+### Project Philosophy
+
+Bibby is built as a **long-term learning platform** for practicing:
+
+- **Hexagonal Architecture** - Clean separation of concerns
+- **Domain-Driven Design** - Rich domain models with business logic
+- **Test-Driven Development** - Comprehensive test coverage
+- **Clean Code Principles** - Readable, maintainable code
+- **Systematic Refactoring** - Incremental architectural improvements
+
+### Development Workflow
+
 ```
 command → flow → service → domain → repository → persistence
 ```
 
-### Development Workflow
-
-1. Implement feature in one domain module as a template
+1. Implement feature in one domain module as template
 2. Validate approach through testing and code review
-3. Apply learned patterns to other domains systematically
-4. Maintain clean git history with detailed commit messages
-5. Document decisions in `docs/` directory
+3. Apply learned patterns systematically to other modules
+4. Maintain clean git history with descriptive commits
+5. Document architectural decisions in `docs/`
 
 ### Development Principles
 
-1. **Hexagonal Architecture** — Clear boundaries between domain and infrastructure
-2. **Domain-Driven Design** — Business rules live in domain models
-3. **Start simple, refactor when justified** — Avoid premature complexity
-4. **Test early, test often** — Catch architectural issues before they grow
-5. **Document decisions** — Maintain clear records of architectural choices
-6. **Package by feature** — Related components stay together
+1. **Hexagonal Architecture** - Clear boundaries between domain and infrastructure
+2. **Domain-Driven Design** - Business rules live in domain models
+3. **Start simple, refactor when justified** - Avoid premature optimization
+4. **Test early, test often** - Catch issues before they compound
+5. **Document decisions** - Maintain records in `docs/the-devlogs/`
+6. **Package by feature** - Keep related components together
 
-### Formatting & Linting
+### Running in Development Mode
 
-**Note:** No automated formatters or linters are currently configured. Follow existing code style conventions:
-- Standard Java naming conventions
-- Consistent indentation (4 spaces)
-- Package-by-feature organization
-
-### Common Troubleshooting
-
-**Database connection errors:**
-- Ensure PostgreSQL is running on port 5332
-- Verify database `amigos` exists
-- Check credentials in `application.properties`
-
-**Port already in use:**
 ```bash
-# Kill process on port 8080
-lsof -ti:8080 | xargs kill -9
+# Run with dev profile
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Enable debug logging
+./mvnw spring-boot:run -Dlogging.level.root=DEBUG
+
+# Run with hot reload (spring-boot-devtools)
+./mvnw spring-boot:run
+# Edit files and they'll auto-reload
 ```
 
-**Maven build fails:**
+### Code Quality Checks
+
 ```bash
-# Clean and rebuild
-./mvnw clean install -U
+# Run Spotless formatting check
+./mvnw spotless:check
+
+# Auto-format code
+./mvnw spotless:apply
+
+# Run all checks (tests + formatting)
+./mvnw clean verify
 ```
 
-**Tests fail with Mockito errors:**
-- Ensure Java 17 is being used (not Java 8/11)
-- Check Maven Surefire plugin configuration in `pom.xml`
+### Adding New Commands
+
+Example of adding a new Spring Shell command:
+
+```java
+@ShellComponent
+public class MyCommands {
+
+    @ShellMethod(value = "My command description", key = "my-command")
+    public String myCommand(String param) {
+        // Command logic
+        return "Result";
+    }
+}
+```
+
+### Documentation
+
+Comprehensive development docs in `docs/`:
+
+- **`docs/the-devlogs/`** - Development session logs with learnings
+- **`docs/systems/`** - System design documents
+- **`docs/engineering/`** - Technical specs, architecture decisions
+- **`docs/sprints/`** - Sprint planning and retrospectives
+
+**Blog:** [Building Bibby](https://buildingbibby.hashnode.dev/)
 
 ---
 
-## 📝 Documentation
-
-Comprehensive development documentation is maintained in the `docs/` directory:
-
-- **`docs/the-devlogs/`** — Detailed logs of each development session with learnings
-- **`docs/engineering/`** — Technical specifications, architecture decisions, closed issues
-- **`docs/systems/`** — System design documents
-
-Each feature follows a documentation trail: **problem → design → implementation → reflection**.
-
-**Blog:** [Building Bibby](https://buildingbibby.hashnode.dev/) — Development journey and learnings.
-
----
-
-## 🚧 Current Status & Roadmap
+## Roadmap
 
 ### ✅ Completed (v0.0.1-SNAPSHOT)
 
-- ✅ Hexagonal architecture migration across all domain modules
-- ✅ ISBN barcode scanning with Google Books API integration
+- ✅ Hexagonal architecture across all domain modules
+- ✅ ISBN barcode scanning with Google Books API
 - ✅ Scan-to-shelf complete workflow
-- ✅ Multi-author book support with many-to-many relationships
+- ✅ Multi-author many-to-many relationships
 - ✅ Shelf capacity management and enforcement
 - ✅ Entity/domain separation with factory patterns
-- ✅ REST API for web-based book imports
-- ✅ Web-based barcode scanner UI with ZXing.js
-- ✅ Interactive browse flow (Bookcase → Shelf → Books)
-- ✅ Check-in/Check-out with availability tracking
-- ✅ Cascading CLI prompts with Spring Shell ComponentFlow
+- ✅ REST API with SpringDoc OpenAPI
+- ✅ Web-based barcode scanner UI integration
+- ✅ Interactive browse flow (Bookcase → Shelf → Book)
+- ✅ Check-in/check-out with availability tracking
+- ✅ CI/CD pipeline with GitHub Actions
+- ✅ Code formatting with Spotless
 
 ### 🔄 In Progress
 
-- 🔄 Consolidating mapper classes (`BookMapper` / `BookMapperTwo`)
+- 🔄 ArchUnit tests to enforce architectural boundaries
+- 🔄 Expanding unit test coverage across modules
+- 🔄 Consolidating mapper classes
 - 🔄 Implementing facade contracts for cross-domain communication
-- 🔄 Expanding unit test coverage across all modules
-- 🔄 Error handling improvements for Google Books API failures
 
-### 🎯 Planned
+### 🎯 Planned Features
 
-- ⬜ ArchUnit tests to enforce architectural boundaries
-- ⬜ Pagination for large result sets in browse/search flows
-- ⬜ Book recommendations based on reading history
-- ⬜ Statistics and analytics dashboard (CLI + web)
-- ⬜ Export/import functionality (CSV, JSON)
-- ⬜ Enhanced selector UX (colors, animations, fuzzy search)
-- ⬜ Persistent data storage option (toggle `create-drop` → `update`)
+**Architecture & Testing**
+- ⬜ Comprehensive ArchUnit test suite
 - ⬜ Integration tests for CLI flows
-- ⬜ Dockerized PostgreSQL setup for easier onboarding
-- ⬜ Multi-library support (multiple users/libraries per database)
+- ⬜ End-to-end test scenarios
+- ⬜ Performance testing and optimization
+
+**Features**
+- ⬜ Pagination for large result sets
+- ⬜ Advanced search filters (genre, year, publisher)
+- ⬜ Book recommendations based on reading history
+- ⬜ Statistics dashboard (CLI + web)
+- ⬜ Export/import functionality (CSV, JSON)
+- ⬜ Reading lists and collections
+- ⬜ Book notes and ratings
+
+**User Experience**
+- ⬜ Enhanced CLI selector UX (fuzzy search, colors)
+- ⬜ Command history and autocomplete
+- ⬜ Batch operations (import multiple books)
+- ⬜ Undo/redo for recent actions
+
+**Infrastructure**
+- ⬜ Docker Compose setup for one-command deployment
+- ⬜ Persistent data storage option (toggle `create-drop` → `update`)
+- ⬜ Database migration scripts (Flyway/Liquibase)
+- ⬜ Multi-library support (multi-tenant)
+- ⬜ User authentication and authorization
+- ⬜ API rate limiting and caching
+
+**DevOps**
+- ⬜ Production-ready Docker images
+- ⬜ Kubernetes deployment manifests
+- ⬜ Monitoring and observability (Prometheus, Grafana)
+- ⬜ API versioning strategy
 
 ### Known Limitations
 
-- **No data persistence** — `create-drop` setting wipes data on restart
-- **Single user only** — No authentication or multi-user support
-- **Google Books API quota** — External API may rate-limit requests
-- **Limited REST API docs** — Some endpoints lack full OpenAPI/Swagger documentation
-- **No pagination** — Large book collections may slow down browse/search
-- **No Docker setup** — Manual PostgreSQL installation required
-- **Incomplete test coverage** — Some modules lack comprehensive tests
+⚠️ **No data persistence** - `create-drop` setting wipes data on restart
+⚠️ **Single user only** - No authentication or multi-user support
+⚠️ **Google Books API quota** - External API may rate-limit requests
+⚠️ **No pagination** - Large collections may impact performance
+⚠️ **Manual PostgreSQL setup** - No Docker Compose yet
+⚠️ **Incomplete test coverage** - Some modules need more tests
+⚠️ **CLI only for primary UX** - Web UI is minimal (barcode scanner only)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-This is a personal learning project and is not currently accepting external contributions. However, feedback, suggestions, and architectural discussions are welcome!
+This is a **personal learning project** and is not currently accepting external contributions.
 
-If you find a bug or have a feature suggestion, feel free to open an issue on GitHub.
+However, feedback and suggestions are welcome:
+
+- **Issues:** Report bugs or suggest features via [GitHub Issues](https://github.com/leodvincci/Bibby/issues)
+- **Discussions:** Architecture discussions and questions are encouraged
+- **Fork:** Feel free to fork and experiment with your own variations
+
+If you find this project helpful for learning, please consider:
+- ⭐ **Star** the repository
+- 📝 **Share** your learnings or blog about it
+- 🔗 **Link** to it in your portfolio
 
 ---
 
-## 📄 License
+## License
 
-This project is a personal learning endeavor and is **not currently licensed for external use**.
+This project is a **personal learning endeavor** and is currently **not licensed for external use**.
 
-If you'd like to use this code for educational purposes, please reach out first.
+If you'd like to use this code for educational purposes or derivative works, please reach out for permission.
+
+**Copyright © 2024-2026 Leo D. Penrose. All rights reserved.**
 
 ---
 
-## 👤 Author
+## Author
 
 **Leo D. Penrose**
-*Builder • Systems Thinker • Lifelong Learner*
+*Software Engineer • Systems Thinker • Lifelong Learner*
 
-- GitHub: [@leodvincci](https://github.com/leodvincci)
-- Blog: [Building Bibby](https://buildingbibby.hashnode.dev/)
+Building Bibby to master clean architecture, domain-driven design, and enterprise Java patterns through hands-on practice.
 
----
-
-## 🙏 Acknowledgments
-
-- **Spring Framework** — For the powerful ecosystem that makes this project possible
-- **Spring Shell** — For making CLI development elegant and expressive
-- **Google Books API** — For free metadata enrichment
-- **ZXing** — For barcode scanning capabilities
-- **Amigoscode** — For inspiring clean architecture practices
+- **GitHub:** [@leodvincci](https://github.com/leodvincci)
+- **Blog:** [Building Bibby](https://buildingbibby.hashnode.dev/)
+- **LinkedIn:** [Leo D. Penrose](https://linkedin.com/in/leodpenrose)
 
 ---
 
-## 📚 Additional Resources
+## Acknowledgments
+
+- **Spring Framework Team** - For the powerful ecosystem and excellent documentation
+- **Spring Shell Team** - For making CLI development elegant and expressive
+- **Google Books API** - For free book metadata enrichment
+- **ZXing Project** - For open-source barcode scanning
+- **Amigoscode** - For inspiring clean architecture practices
+- **Domain-Driven Design Community** - For patterns and principles
+- **Alistair Cockburn** - For Hexagonal Architecture
+
+---
+
+## Additional Resources
+
+### Learning Resources
 
 - [Spring Shell Documentation](https://docs.spring.io/spring-shell/docs/current/reference/htmlsingle/)
 - [Hexagonal Architecture Guide](https://alistair.cockburn.us/hexagonal-architecture/)
 - [Domain-Driven Design Reference](https://www.domainlanguage.com/ddd/reference/)
-- [Google Books API Docs](https://developers.google.com/books/docs/v1/using)
+- [Google Books API Documentation](https://developers.google.com/books/docs/v1/using)
+- [Spring Boot Best Practices](https://spring.io/guides)
+
+### Related Projects
+
+- **Frontend Repository:** [Bibby-Web](https://github.com/leodvincci/Bibby-Web) (separate React/Vue frontend)
+- **Blog Series:** [Building Bibby](https://buildingbibby.hashnode.dev/)
+
+### Documentation
+
+- **Development Logs:** `docs/the-devlogs/`
+- **System Architecture:** `docs/systems/`
+- **Engineering Decisions:** `docs/engineering/`
 
 ---
 
-**Bibby** — *Your Library. Your Rules.*
+<div align="center">
+
+**Bibby** - *Your Library. Your Rules.*
+
+[![Star on GitHub](https://img.shields.io/github/stars/leodvincci/Bibby?style=social)](https://github.com/leodvincci/Bibby)
+[![Fork on GitHub](https://img.shields.io/github/forks/leodvincci/Bibby?style=social)](https://github.com/leodvincci/Bibby/fork)
+
+Made with ☕ and 💙 by [Leo D. Penrose](https://github.com/leodvincci)
+
+</div>
