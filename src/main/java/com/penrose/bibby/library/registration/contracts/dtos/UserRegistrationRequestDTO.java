@@ -4,11 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserRegistrationRequestDTO {
-  @NotBlank
-  private String password;
+  @NotBlank private String password;
 
-  @Email
-  private String email;
+  @Email private String email;
 
   public String getPassword() {
     return password;
