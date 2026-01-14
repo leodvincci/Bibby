@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for bibby on 2026-01-14T02:32:27-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "bibby"
+primary_region = "dfw"
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+
+  # For demo stability (recommended):
+  min_machines_running = 1
+  # If you want cheapest possible and accept cold-start risk, set this back to 0.
+
+  processes = ["app"]
+
+[[http_service.checks]]
+  method = "GET"
+  path = "/actuator/health"
+  interval = "35s"
+  timeout = "30s"
+  grace_period = "120s"
+
+[[vm]]
+  memory = "1gb"
+  cpus = 1
