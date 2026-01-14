@@ -26,7 +26,15 @@ public class WebSecurityConfigs {
     http.authorizeHttpRequests(
             authorize ->
                 authorize
-                    .requestMatchers("/api/v1/user/registration/register")
+                    .requestMatchers(
+                        "/api/v1/user/registration/register",
+                        "/h2-console/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/actuator/health",
+                        "/actuator/info",
+                        "/actuator/readiness")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
