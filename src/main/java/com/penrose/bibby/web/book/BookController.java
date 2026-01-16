@@ -20,13 +20,17 @@ import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+
 @RestController
+@RequestMapping("/api/v1/books")
 public class BookController {
 
   final BookService bookService;
@@ -57,12 +61,12 @@ public class BookController {
     this.authorFacade = authorFacade;
   }
 
-  // todo: remove commented code after testing
-  @PostMapping("api/v1/books")
-  public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-    bookFacade.createNewBook(requestDTO);
-    return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
-  }
+//  // todo: remove commented code after testing
+//  @PostMapping("/")
+//  public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
+//    bookFacade.createNewBook(requestDTO);
+//    return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
+//  }
 
   @GetMapping("/lookup/{isbn}")
   public Mono<GoogleBooksResponse> getBookInfo(@PathVariable String isbn) {
@@ -75,7 +79,7 @@ public class BookController {
             });
   }
 
-  @GetMapping("api/v1/books")
+  @GetMapping("/findBookByTitle")
   public void findBookByTitle(@RequestBody BookRequestDTO requestDTO) {
     System.out.println("Controller Search For " + requestDTO.title());
     BookDTO bookDTO = bookService.findBookByTitle(requestDTO.title());
@@ -86,8 +90,8 @@ public class BookController {
             bookDTO.title(), bookDTO.isbn(), bookDTO.authors().toString(), bookDTO.publisher()));
   }
 
-  @CrossOrigin(origins = "http://localhost:5173")
-  @GetMapping("api/v1/books/search/{isbn}")
+  @CrossOrigin(origins = "*")
+  @GetMapping("/search/{isbn}")
   public ResponseEntity<BookDTO> findBookByIsbn(@PathVariable String isbn) {
     System.out.println("Controller Search For " + isbn);
     System.out.println("Now searching for ISBN in database...");
@@ -106,7 +110,7 @@ public class BookController {
     return ResponseEntity.ok(bookDTO);
   }
 
-  @PostMapping("api/v1/books/{bookId}/shelf")
+  @PostMapping("/{bookId}/shelf")
   public ResponseEntity<BookPlacementResponse> placeBookOnShelf(
       @PathVariable Long bookId, @RequestBody BookShelfAssignmentRequest request) {
     if (request == null || request.shelfId() == null) {
@@ -143,10 +147,12 @@ public class BookController {
     return ResponseEntity.ok(response);
   }
 
+  @CrossOrigin(origins = "*")
   @PostMapping("/addnewbook")
-  public void addNewBook(@RequestBody BookDTO bookDTO) {
+  public ResponseEntity<Map<String, Object>> addNewBook(@RequestBody BookDTO bookDTO) {
     List<AuthorDTO> authorDTOS = new ArrayList<>();
     for (String author : bookDTO.authors()) {
+      System.out.println(author);
       AuthorDTO authorDTO = new AuthorDTO(null, author.split(" ")[0], author.split(" ")[1]);
       authorDTOS.add(authorFacade.saveAuthor(authorDTO));
     }
@@ -155,5 +161,7 @@ public class BookController {
     bookFacade.createNewBook(bookRequestDTO);
 
     System.out.println("Book added");
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(Map.of("message", "Book Added", "title", bookDTO.title(), "isbn", bookDTO.isbn()));
   }
 }
