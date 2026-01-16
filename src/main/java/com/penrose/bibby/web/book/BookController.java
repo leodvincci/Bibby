@@ -21,13 +21,11 @@ import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
-
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -61,12 +59,12 @@ public class BookController {
     this.authorFacade = authorFacade;
   }
 
-//  // todo: remove commented code after testing
-//  @PostMapping("/")
-//  public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
-//    bookFacade.createNewBook(requestDTO);
-//    return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
-//  }
+  //  // todo: remove commented code after testing
+  //  @PostMapping("/")
+  //  public ResponseEntity<String> addBook(@RequestBody BookRequestDTO requestDTO) {
+  //    bookFacade.createNewBook(requestDTO);
+  //    return ResponseEntity.ok("Book Added Successfully: " + requestDTO.title());
+  //  }
 
   @GetMapping("/lookup/{isbn}")
   public Mono<GoogleBooksResponse> getBookInfo(@PathVariable String isbn) {
@@ -162,6 +160,6 @@ public class BookController {
 
     System.out.println("Book added");
     return ResponseEntity.status(HttpStatus.CREATED)
-            .body(Map.of("message", "Book Added", "title", bookDTO.title(), "isbn", bookDTO.isbn()));
+        .body(Map.of("message", "Book Added", "title", bookDTO.title(), "isbn", bookDTO.isbn()));
   }
 }

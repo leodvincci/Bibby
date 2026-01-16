@@ -1,5 +1,6 @@
 package com.penrose.bibby.WebSecurityConfigs;
 
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,8 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +31,9 @@ public class WebSecurityConfigs {
     http.authorizeHttpRequests(
             authorize ->
                 authorize
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
+                    .requestMatchers(HttpMethod.OPTIONS, "/**")
+                    .permitAll()
+                    .requestMatchers(
                         "/api/v1/user/registration/register",
                         "/h2-console/**",
                         "/swagger-ui/**",
@@ -46,7 +46,7 @@ public class WebSecurityConfigs {
                     .anyRequest()
                     .authenticated())
         .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
+        .cors(Customizer.withDefaults())
         .formLogin(Customizer.withDefaults())
         .logout(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults());
@@ -57,7 +57,7 @@ public class WebSecurityConfigs {
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOrigins(List.of("http://localhost:5173")); // your frontend origin
-    config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     config.setAllowedHeaders(List.of("*"));
     config.setAllowCredentials(true);
 
@@ -65,7 +65,6 @@ public class WebSecurityConfigs {
     source.registerCorsConfiguration("/**", config);
     return source;
   }
-
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -78,5 +77,4 @@ public class WebSecurityConfigs {
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
   }
-
 }
