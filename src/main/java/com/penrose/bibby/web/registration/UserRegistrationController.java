@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/user/registration")
+@RequestMapping("/api/v1/user")
 public class UserRegistrationController {
 
   Logger logger = org.slf4j.LoggerFactory.getLogger(UserRegistrationController.class);
@@ -21,7 +21,7 @@ public class UserRegistrationController {
   }
 
   @CrossOrigin(origins = "*")
-  @PostMapping("/register")
+  @PostMapping("/registration/register")
   public ResponseEntity<UserRegistrationResponseDTO> registerUser(
       @Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
 
@@ -32,5 +32,12 @@ public class UserRegistrationController {
 
     logger.info("Registering user: {}", userRegistrationResponseDTO.email());
     return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationResponseDTO);
+  }
+
+  @CrossOrigin("*")
+  @PostMapping("/login")
+  public void userLogin(){
+    // Login functionality to be implemented
+    System.out.println("User login endpoint hit");
   }
 }
