@@ -1,6 +1,7 @@
 package com.penrose.bibby.web.registration;
 
 import com.penrose.bibby.library.registration.UserRegistrationService;
+import com.penrose.bibby.library.registration.contracts.dtos.UserLoginRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationResponseDTO;
 import jakarta.validation.Valid;
@@ -36,8 +37,10 @@ public class UserRegistrationController {
 
   @CrossOrigin("*")
   @PostMapping("/login")
-  public void userLogin(){
+  public ResponseEntity<HttpStatus> userLogin(
+      @RequestBody UserLoginRequestDTO userLoginRequestDTO) {
     // Login functionality to be implemented
-    System.out.println("User login endpoint hit");
+    userRegistrationService.verifyUser(userLoginRequestDTO);
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
   }
 }
