@@ -35,6 +35,7 @@ public class WebSecurityConfigs {
                     .permitAll()
                     .requestMatchers(
                         "/api/v1/user/registration/register",
+                        "/api/v1/user/login",
                         "/h2-console/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
