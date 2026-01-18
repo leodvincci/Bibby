@@ -48,6 +48,7 @@ public class BookImportController {
                 request.isbn(), lookupResponse.items().get(0).volumeInfo().title(),
                 lookupResponse.items().get(0).volumeInfo().authors()
         );
+        log.info("Found book metadata for ISBN {}: {}", request.isbn(), googleBookResponseBrief);
 
 
 
