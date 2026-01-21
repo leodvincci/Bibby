@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.registration;
 
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
-import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
 import jakarta.validation.Valid;
 
 public class AppUserMapper {
@@ -12,10 +11,6 @@ public class AppUserMapper {
     entity.setEmail(dto.getEmail());
 
     return entity;
-  }
-
-  public static RegisterUserResponseDTO toDTO(RegisterUserCommand command) {
-    return  new RegisterUserResponseDTO(command.email());
   }
 
   public static AppUserEntity toEntity(RegisterUserCommand command) {
