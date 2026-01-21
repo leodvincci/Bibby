@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.registration;
 
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
+import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
 import jakarta.validation.Valid;
 
 public class AppUserMapper {
@@ -24,5 +25,9 @@ public class AppUserMapper {
       @Valid RegisterUserRequestDTO registerUserRequestDTO) {
     return new RegisterUserCommand(
         registerUserRequestDTO.getEmail(), registerUserRequestDTO.getPassword());
+  }
+
+  public static RegisterUserResponseDTO toResponseDTO(RegisterUserResult registerUserResult) {
+    return new RegisterUserResponseDTO(registerUserResult.userId(), registerUserResult.email());
   }
 }

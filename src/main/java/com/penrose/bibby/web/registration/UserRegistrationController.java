@@ -28,14 +28,15 @@ public class UserRegistrationController {
   public ResponseEntity<RegisterUserResponseDTO> registerUser(
       @Valid @RequestBody RegisterUserRequestDTO registerUserRequestDTO) {
     RegisterUserCommand registerUserCommand = AppUserMapper.toCommand(registerUserRequestDTO);
+    logger.info("Registering user");
 
     RegisterUserResult registerUserResult =
         userRegistrationService.registerUser(registerUserCommand);
 
+    logger.info("User registered with ID: {}", registerUserResult.userId());
     RegisterUserResponseDTO registerUserResponseDTO =
-        new RegisterUserResponseDTO(registerUserResult.userId(), registerUserResult.email());
+        AppUserMapper.toResponseDTO(registerUserResult);
 
-    logger.info("Registering user: {}", registerUserResponseDTO.email());
     return ResponseEntity.status(HttpStatus.CREATED).body(registerUserResponseDTO);
   }
 }
