@@ -1,5 +1,7 @@
 package com.penrose.bibby.web.registration;
 
+import com.penrose.bibby.library.registration.UserRegistrationMapper;
+import com.penrose.bibby.library.registration.UserRegistrationRequestCommand;
 import com.penrose.bibby.library.registration.UserRegistrationService;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationResponseDTO;
@@ -24,8 +26,9 @@ public class UserRegistrationController {
   @PostMapping("/register")
   public ResponseEntity<UserRegistrationResponseDTO> registerUser(
       @Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
-
-    userRegistrationService.registerUser(userRegistrationRequestDTO);
+    UserRegistrationRequestCommand userRegistrationRequestCommand =
+        UserRegistrationMapper.toCommand(userRegistrationRequestDTO);
+    userRegistrationService.registerUser(userRegistrationRequestCommand);
 
     UserRegistrationResponseDTO userRegistrationResponseDTO =
         new UserRegistrationResponseDTO(userRegistrationRequestDTO.getEmail());
