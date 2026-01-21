@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.registration;
 
-import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +13,9 @@ public class UserRegistrationService {
     this.userRegistrationJpaRepository = userRegistrationJpaRepository;
   }
 
-  public void registerUser(UserRegistrationRequestDTO userRegistrationRequestDTO) {
-    AppUserEntity appUserEntity = UserRegistrationMapper.toEntity(userRegistrationRequestDTO);
-    appUserEntity.setPassword(Bcrypt.encode(userRegistrationRequestDTO.getPassword()));
+  public void registerUser(UserRegistrationRequestCommand userRegistrationRequestCommand) {
+    AppUserEntity appUserEntity = UserRegistrationMapper.toEntity(userRegistrationRequestCommand);
+    appUserEntity.setPassword(Bcrypt.encode(userRegistrationRequestCommand.password()));
     userRegistrationJpaRepository.save(appUserEntity);
   }
 }
