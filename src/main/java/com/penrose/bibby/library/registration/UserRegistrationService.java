@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class UserRegistrationService {
 
   private final UserRegistrationJpaRepository userRegistrationJpaRepository;
-  private final BCryptPasswordEncoder Bcrypt = new BCryptPasswordEncoder(14);
+  private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(14);
 
   public UserRegistrationService(UserRegistrationJpaRepository userRegistrationJpaRepository) {
     this.userRegistrationJpaRepository = userRegistrationJpaRepository;
@@ -15,7 +15,7 @@ public class UserRegistrationService {
 
   public RegisterUserResult registerUser(RegisterUserCommand registerUserCommand) {
     AppUserEntity appUserEntity = AppUserMapper.toEntity(registerUserCommand);
-    appUserEntity.setPassword(Bcrypt.encode(registerUserCommand.password()));
+    appUserEntity.setPassword(bCryptPasswordEncoder.encode(registerUserCommand.password()));
     appUserEntity = userRegistrationJpaRepository.save(appUserEntity);
     return new RegisterUserResult(appUserEntity.getId(), appUserEntity.getEmail());
   }
