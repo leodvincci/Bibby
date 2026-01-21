@@ -34,7 +34,8 @@ public class UserRegistrationController {
         userRegistrationService.registerUser(registerUserCommand);
 
     logger.info("User registered with ID: {}", registerUserResult.userId());
-    RegisterUserResponseDTO registerUserResponseDTO = AppUserMapper.toResponseDTO(registerUserResult);
+    RegisterUserResponseDTO registerUserResponseDTO =
+        AppUserMapper.toResponseDTO(registerUserResult);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(registerUserResponseDTO);
   }
