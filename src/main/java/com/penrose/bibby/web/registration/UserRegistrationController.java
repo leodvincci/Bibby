@@ -1,7 +1,8 @@
 package com.penrose.bibby.web.registration;
 
-import com.penrose.bibby.library.registration.UserRegistrationMapper;
-import com.penrose.bibby.library.registration.UserRegistrationRequestCommand;
+import com.penrose.bibby.library.registration.AppUserMapper;
+import com.penrose.bibby.library.registration.RegisterUserCommand;
+import com.penrose.bibby.library.registration.RegisterUserResult;
 import com.penrose.bibby.library.registration.UserRegistrationService;
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
@@ -26,12 +27,13 @@ public class UserRegistrationController {
   @PostMapping("/register")
   public ResponseEntity<RegisterUserResponseDTO> registerUser(
       @Valid @RequestBody RegisterUserRequestDTO registerUserRequestDTO) {
-    UserRegistrationRequestCommand userRegistrationRequestCommand =
-        UserRegistrationMapper.toCommand(registerUserRequestDTO);
-    userRegistrationService.registerUser(userRegistrationRequestCommand);
+    RegisterUserCommand registerUserCommand = AppUserMapper.toCommand(registerUserRequestDTO);
+
+    RegisterUserResult registerUserResult =
+        userRegistrationService.registerUser(registerUserCommand);
 
     RegisterUserResponseDTO registerUserResponseDTO =
-        new RegisterUserResponseDTO(registerUserRequestDTO.getEmail());
+        new RegisterUserResponseDTO(registerUserResult.userId(), registerUserResult.email());
 
     logger.info("Registering user: {}", registerUserResponseDTO.email());
     return ResponseEntity.status(HttpStatus.CREATED).body(registerUserResponseDTO);

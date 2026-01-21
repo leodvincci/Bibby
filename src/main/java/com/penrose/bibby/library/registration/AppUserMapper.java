@@ -3,7 +3,7 @@ package com.penrose.bibby.library.registration;
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
 import jakarta.validation.Valid;
 
-public class UserRegistrationMapper {
+public class AppUserMapper {
 
   public static AppUserEntity toEntity(RegisterUserRequestDTO dto) {
     AppUserEntity entity = new AppUserEntity();
@@ -13,16 +13,16 @@ public class UserRegistrationMapper {
     return entity;
   }
 
-  public static AppUserEntity toEntity(UserRegistrationRequestCommand command) {
+  public static AppUserEntity toEntity(RegisterUserCommand command) {
     AppUserEntity entity = new AppUserEntity();
     entity.setPassword(command.password());
     entity.setEmail(command.email());
     return entity;
   }
 
-  public static UserRegistrationRequestCommand toCommand(
+  public static RegisterUserCommand toCommand(
       @Valid RegisterUserRequestDTO registerUserRequestDTO) {
-    return new UserRegistrationRequestCommand(
+    return new RegisterUserCommand(
         registerUserRequestDTO.getEmail(), registerUserRequestDTO.getPassword());
   }
 }
