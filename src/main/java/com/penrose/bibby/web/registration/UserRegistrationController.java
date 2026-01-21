@@ -3,8 +3,8 @@ package com.penrose.bibby.web.registration;
 import com.penrose.bibby.library.registration.UserRegistrationMapper;
 import com.penrose.bibby.library.registration.UserRegistrationRequestCommand;
 import com.penrose.bibby.library.registration.UserRegistrationService;
-import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationRequestDTO;
-import com.penrose.bibby.library.registration.contracts.dtos.UserRegistrationResponseDTO;
+import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
+import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -24,16 +24,16 @@ public class UserRegistrationController {
 
   @CrossOrigin(origins = "*")
   @PostMapping("/register")
-  public ResponseEntity<UserRegistrationResponseDTO> registerUser(
-      @Valid @RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
+  public ResponseEntity<RegisterUserResponseDTO> registerUser(
+      @Valid @RequestBody RegisterUserRequestDTO registerUserRequestDTO) {
     UserRegistrationRequestCommand userRegistrationRequestCommand =
-        UserRegistrationMapper.toCommand(userRegistrationRequestDTO);
+        UserRegistrationMapper.toCommand(registerUserRequestDTO);
     userRegistrationService.registerUser(userRegistrationRequestCommand);
 
-    UserRegistrationResponseDTO userRegistrationResponseDTO =
-        new UserRegistrationResponseDTO(userRegistrationRequestDTO.getEmail());
+    RegisterUserResponseDTO registerUserResponseDTO =
+        new RegisterUserResponseDTO(registerUserRequestDTO.getEmail());
 
-    logger.info("Registering user: {}", userRegistrationResponseDTO.email());
-    return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationResponseDTO);
+    logger.info("Registering user: {}", registerUserResponseDTO.email());
+    return ResponseEntity.status(HttpStatus.CREATED).body(registerUserResponseDTO);
   }
 }
