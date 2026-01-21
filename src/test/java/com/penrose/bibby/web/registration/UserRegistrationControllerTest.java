@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.penrose.bibby.library.registration.UserRegistrationService;
 import com.penrose.bibby.library.registration.RegisterUserResult;
+import com.penrose.bibby.library.registration.UserRegistrationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,7 @@ class UserRegistrationControllerTest {
             }
             """;
 
-    RegisterUserResult expectedResult =
-        new RegisterUserResult(1L, "ldpenrose@gmail.com");
+    RegisterUserResult expectedResult = new RegisterUserResult(1L, "ldpenrose@gmail.com");
     when(userRegistrationService.registerUser(ArgumentMatchers.any())).thenReturn(expectedResult);
     mockMvc
         .perform(
@@ -49,7 +48,7 @@ class UserRegistrationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.userId").isNotEmpty())
-            .andExpect(jsonPath("$.email").value("ldpenrose@gmail.com"));
+        .andExpect(jsonPath("$.userId").isNotEmpty())
+        .andExpect(jsonPath("$.email").value("ldpenrose@gmail.com"));
   }
 }
