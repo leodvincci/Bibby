@@ -29,8 +29,8 @@ public class UserRegistrationController {
       @Valid @RequestBody RegisterUserRequestDTO registerUserRequestDTO) {
     RegisterUserCommand registerUserCommand = AppUserMapper.toCommand(registerUserRequestDTO);
 
-    RegisterUserResult registerUserResult =
-        userRegistrationService.registerUser(registerUserCommand);
+    RegisterUserResult registerUserResult = userRegistrationService.registerUser(registerUserCommand);
+
 
     RegisterUserResponseDTO registerUserResponseDTO =
         new RegisterUserResponseDTO(registerUserResult.userId(), registerUserResult.email());
