@@ -13,9 +13,10 @@ public class UserRegistrationService {
     this.userRegistrationJpaRepository = userRegistrationJpaRepository;
   }
 
-  public void registerUser(UserRegistrationRequestCommand userRegistrationRequestCommand) {
-    AppUserEntity appUserEntity = UserRegistrationMapper.toEntity(userRegistrationRequestCommand);
-    appUserEntity.setPassword(Bcrypt.encode(userRegistrationRequestCommand.password()));
-    userRegistrationJpaRepository.save(appUserEntity);
+  public RegisterUserResult registerUser(RegisterUserCommand registerUserCommand) {
+    AppUserEntity appUserEntity = AppUserMapper.toEntity(registerUserCommand);
+    appUserEntity.setPassword(Bcrypt.encode(registerUserCommand.password()));
+    appUserEntity = userRegistrationJpaRepository.save(appUserEntity);
+    return new RegisterUserResult(appUserEntity.getId(), appUserEntity.getEmail());
   }
 }
