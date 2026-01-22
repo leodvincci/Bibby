@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound;
 
+import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
 
@@ -16,7 +17,7 @@ public interface BookcaseFacade {
      */
     List<BookcaseDTO> getAllBookcases();
 
-    String createNewBookCase(String bookcaseLabel, String bookcaseZone, String bookcaseZoneIndex, int shelfCount, int bookCapacity,String location);
+    CreateBookcaseResult createNewBookCase(String bookcaseLabel, String bookcaseZone, String bookcaseZoneIndex, int shelfCount, int bookCapacity, String location);
 
     List<String> getAllBookcaseLocations();
 

@@ -35,8 +35,8 @@ public class BookcaseRepositoryImpl implements BookcaseRepository{
     }
 
     @Override
-    public void save(BookcaseEntity bookcaseEntity) {
-        bookcaseJpaRepository.save(bookcaseEntity);
+    public BookcaseEntity save(BookcaseEntity bookcaseEntity) {
+       return bookcaseJpaRepository.save(bookcaseEntity);
     }
 
     @Override

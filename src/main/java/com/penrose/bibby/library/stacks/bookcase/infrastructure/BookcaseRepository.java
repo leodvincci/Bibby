@@ -15,7 +15,7 @@ public interface BookcaseRepository {
 
     List<String> getAllBookCaseLocations();
 
-    void save(BookcaseEntity bookcaseEntity);
+    BookcaseEntity save(BookcaseEntity bookcaseEntity);
 
     Optional<BookcaseEntity> findById(Long id);
 

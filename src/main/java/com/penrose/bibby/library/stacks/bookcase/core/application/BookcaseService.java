@@ -1,4 +1,5 @@
 package com.penrose.bibby.library.stacks.bookcase.core.application;
+import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
@@ -28,20 +29,23 @@ public class BookcaseService implements BookcaseFacade {
         this.shelfFactory = shelfFactory;
     }
 
-    public String createNewBookCase(String label, String bookcaseZone ,String bookcaseZoneIndex, int shelfCapacity, int bookCapacity, String location) {
+    public CreateBookcaseResult createNewBookCase(String label, String bookcaseZone , String bookcaseZoneIndex, int shelfCapacity, int bookCapacity, String location) {
         BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLabel(label);
         if (bookcaseEntity != null) {
             log.error("Failed to save Record - Record already exist", existingRecordError);
             throw existingRecordError;
         } else {
             bookcaseEntity = new BookcaseEntity(location,bookcaseZone,bookcaseZoneIndex,shelfCapacity, bookCapacity * shelfCapacity);
-            bookcaseRepository.save(bookcaseEntity);
+            bookcaseEntity = bookcaseRepository.save(bookcaseEntity);
 
             for (int i = 0; i < bookcaseEntity.getShelfCapacity(); i++) {
                 addShelf(bookcaseEntity, i, i, bookCapacity);
             }
-            log.info("Created new bookcase: {}", bookcaseEntity.getBookcaseLabel());
-            return "Created New Bookcase " + label + " with shelf shelfCapacity of " + shelfCapacity;
+
+            CreateBookcaseResult createBookcaseResult = new CreateBookcaseResult(bookcaseEntity.getBookcaseId());
+            log.info("Created new bookcase with Id: {}", createBookcaseResult.bookcaseId());
+
+            return createBookcaseResult;
         }
     }
 
