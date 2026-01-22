@@ -15,19 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/bookcase")
 public class BookCaseController {
-    Logger logger = LoggerFactory.getLogger(BookCaseController.class);
-    BookcaseService bookCaseService;
+  Logger logger = LoggerFactory.getLogger(BookCaseController.class);
+  BookcaseService bookCaseService;
 
-    public BookCaseController(BookcaseService bookCaseService) {
-        this.bookCaseService = bookCaseService;
-    }
+  public BookCaseController(BookcaseService bookCaseService) {
+    this.bookCaseService = bookCaseService;
+  }
 
-    @PostMapping("/create")
-    public ResponseEntity<CreateBookcaseResult> createBookCase(@RequestBody CreateBookcaseRequest createBookcaseRequest){
-        logger.info("Received request to create bookcase at location: {}", createBookcaseRequest.location());
-        CreateBookcaseResult createBookcaseResult = bookCaseService.createNewBookCase(null, createBookcaseRequest.zone(), createBookcaseRequest.indexId(), createBookcaseRequest.shelfCount(), createBookcaseRequest.shelfCapacity(),createBookcaseRequest.location());
+  @PostMapping("/create")
+  public ResponseEntity<CreateBookcaseResult> createBookCase(
+      @RequestBody CreateBookcaseRequest createBookcaseRequest) {
+    logger.info(
+        "Received request to create bookcase at location: {}", createBookcaseRequest.location());
+    CreateBookcaseResult createBookcaseResult =
+        bookCaseService.createNewBookCase(
+            null,
+            createBookcaseRequest.zone(),
+            createBookcaseRequest.indexId(),
+            createBookcaseRequest.shelfCount(),
+            createBookcaseRequest.shelfCapacity(),
+            createBookcaseRequest.location());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createBookcaseResult);
-    }
-
+    return ResponseEntity.status(HttpStatus.CREATED).body(createBookcaseResult);
+  }
 }
