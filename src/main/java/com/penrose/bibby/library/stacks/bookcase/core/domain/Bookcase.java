@@ -21,7 +21,7 @@ public class Bookcase {
     public Bookcase(Long bookcaseId, String bookcaseLabel, int shelfCapacity) {
         this.bookcaseId = bookcaseId;
         this.bookcaseLabel = bookcaseLabel;
-        this.shelfCapacity = shelfCapacity;
+        setShelfCapacity(shelfCapacity);
     }
 
     public Long getBookcaseId() {
