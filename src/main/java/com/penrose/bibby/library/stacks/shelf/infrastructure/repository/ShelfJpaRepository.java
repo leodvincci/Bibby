@@ -2,19 +2,19 @@ package com.penrose.bibby.library.stacks.shelf.infrastructure.repository;
 
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
 
-    List<ShelfEntity> findByBookcaseId(Long bookcaseId);
+  List<ShelfEntity> findByBookcaseId(Long bookcaseId);
 
-    @Query("""
+  @Query(
+      """
         SELECT new com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary(
             s.shelfId,
             s.shelfLabel,
@@ -24,6 +24,7 @@ public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
         WHERE s.bookcaseId = :bookcaseId
         ORDER BY s.shelfPosition ASC
         """)
-    List<ShelfSummary> findShelfSummariesByBookcaseId(@Param("bookcaseId") Long bookcaseId);
+  List<ShelfSummary> findShelfSummariesByBookcaseId(@Param("bookcaseId") Long bookcaseId);
 
+  List<ShelfEntity> getShelfEntitiesByBookcaseId(Long bookcaseId);
 }
