@@ -155,7 +155,8 @@ public class BookController {
       authorDTOS.add(authorFacade.saveAuthor(authorDTO));
     }
 
-    BookRequestDTO bookRequestDTO = new BookRequestDTO(bookDTO.title(), bookDTO.isbn(), authorDTOS);
+    BookRequestDTO bookRequestDTO =
+        new BookRequestDTO(bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId());
     bookFacade.createNewBook(bookRequestDTO);
 
     System.out.println("Book added");

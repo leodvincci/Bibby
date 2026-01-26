@@ -1,25 +1,28 @@
 package com.penrose.bibby.web.bookcase;
 
 import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
+import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.CreateBookcaseRequest;
+import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
+import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/bookcase")
 public class BookCaseController {
+  private final BookcaseFacade bookcaseFacade;
   Logger logger = LoggerFactory.getLogger(BookCaseController.class);
   BookcaseService bookCaseService;
 
-  public BookCaseController(BookcaseService bookCaseService) {
+  public BookCaseController(BookcaseService bookCaseService, BookcaseFacade bookcaseFacade) {
     this.bookCaseService = bookCaseService;
+    this.bookcaseFacade = bookcaseFacade;
   }
 
   @PostMapping("/create")
@@ -37,5 +40,26 @@ public class BookCaseController {
             createBookcaseRequest.location());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(createBookcaseResult);
+  }
+
+  @GetMapping("/locations")
+  public ResponseEntity<Set<String>> getAllBookcaseLocations() {
+    logger.info("Received request to get all bookcase locations");
+    Set<String> locations = Set.copyOf(bookCaseService.getAllBookcaseLocations());
+    return ResponseEntity.ok(locations);
+  }
+
+  @GetMapping("/location/{location}")
+  public ResponseEntity<List<BookcaseDTO>> getBookcaseByLocation(@PathVariable String location) {
+    logger.info("Received request to get bookcase at location: {}", location);
+    List<BookcaseDTO> bookcases = bookCaseService.getAllBookcasesByLocation(location);
+    return ResponseEntity.ok(bookcases);
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<List<BookcaseDTO>> getAllBookcases() {
+    logger.info("Received request to get all bookcases");
+    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcases();
+    return ResponseEntity.ok(bookcases);
   }
 }
