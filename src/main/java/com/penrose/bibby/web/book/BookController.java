@@ -169,5 +169,4 @@ public class BookController {
     List<BookDTO> books = bookService.getBooksByShelfId(shelfId);
     return ResponseEntity.ok(books);
   }
-
 }
