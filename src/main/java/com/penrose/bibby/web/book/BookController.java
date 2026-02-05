@@ -163,4 +163,11 @@ public class BookController {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(Map.of("message", "Book Added", "title", bookDTO.title(), "isbn", bookDTO.isbn()));
   }
+
+  @GetMapping("/shelf/{shelfId}")
+  public ResponseEntity<List<BookDTO>> getBooksByShelf(@PathVariable Long shelfId) {
+    List<BookDTO> books = bookService.getBooksByShelfId(shelfId);
+    return ResponseEntity.ok(books);
+  }
+
 }

@@ -306,6 +306,14 @@ import java.util.*;
     }
 
 
+    public List<BookDTO> getBooksByShelfId(Long shelfId) {
+        List<BookEntity> bookEntities = bookJpaRepository.findByShelfId(shelfId);
+        List<BookDTO> bookDTOs = new ArrayList<>();
+        for (BookEntity bookEntity : bookEntities) {
+            bookDTOs.add(bookMapper.toDTOfromEntity(bookEntity));
+        }
+        return bookDTOs;
+    }
 }
 
 
