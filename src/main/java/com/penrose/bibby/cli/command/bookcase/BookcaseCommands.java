@@ -107,7 +107,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
       ComponentFlow.ComponentFlowResult res =  flow.run();
       if(res.getContext().get("confirmation").equals("Y") | res.getContext().get("confirmation").equals("y")) {
-          bookcaseFacade.createNewBookCase(bookcaseZone,bookcaseZone,zoneIndex,shelfCount,bookCapacity,bookcaseLocation);
+          bookcaseFacade.createNewBookCase(null,bookcaseZone,bookcaseZone,zoneIndex,shelfCount,bookCapacity,bookcaseLocation);
           System.out.println("Created");
       }else{
           System.out.println("Not Created");

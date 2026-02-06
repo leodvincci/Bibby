@@ -17,7 +17,8 @@ public interface BookcaseFacade {
   List<BookcaseDTO> getAllBookcases();
 
   CreateBookcaseResult createNewBookCase(
-      String bookcaseLabel,
+      Long userId,
+          String bookcaseLabel,
       String bookcaseZone,
       String bookcaseZoneIndex,
       int shelfCount,

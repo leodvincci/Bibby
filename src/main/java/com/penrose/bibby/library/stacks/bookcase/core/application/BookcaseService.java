@@ -34,7 +34,9 @@ public class BookcaseService implements BookcaseFacade {
   }
 
   public CreateBookcaseResult createNewBookCase(
-      String label,
+      Long userId,
+          String label,
+
       String bookcaseZone,
       String bookcaseZoneIndex,
       int shelfCapacity,
@@ -47,6 +49,7 @@ public class BookcaseService implements BookcaseFacade {
     } else {
       bookcaseEntity =
           new BookcaseEntity(
+                userId,
               location,
               bookcaseZone,
               bookcaseZoneIndex,

@@ -8,6 +8,7 @@ public class BookcaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long bookcaseId;
+    private Long userId;
     private String bookcaseLocation;
     private String bookcaseZone;
     private String bookcaseZoneIndex;
@@ -16,6 +17,16 @@ public class BookcaseEntity {
     private int bookCapacity;
     private int shelfCapacity;
 
+
+    public BookcaseEntity(Long userId, String bookcaseLocation, String bookcaseZone, String bookcaseZoneIndex, int shelfCapacity, int bookCapacity) {
+        this.userId = userId;
+        this.bookcaseLocation = bookcaseLocation;
+        this.bookcaseZone = bookcaseZone;
+        this.bookcaseZoneIndex = bookcaseZoneIndex;
+        this.bookcaseLabel = bookcaseZone + ":" + bookcaseZoneIndex;
+        this.bookCapacity = bookCapacity;
+        setShelfCapacity( shelfCapacity);
+    }
 
     public BookcaseEntity(String bookcaseLabel, int shelfCapacity, int bookCapacity) {
         this.bookcaseLabel = bookcaseLabel;
@@ -100,5 +111,21 @@ public class BookcaseEntity {
 
     public void setBookcaseZoneIndex(String bookcaseZoneIndex) {
         this.bookcaseZoneIndex = bookcaseZoneIndex;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getBookcaseZone() {
+        return bookcaseZone;
+    }
+
+    public void setBookcaseZone(String bookcaseZone) {
+        this.bookcaseZone = bookcaseZone;
     }
 }
