@@ -49,7 +49,8 @@ public class WebSecurityConfigs {
         .cors(Customizer.withDefaults())
         .formLogin(
             form ->
-                form.successHandler(
+                form.loginProcessingUrl("/login")
+                    .successHandler(
                         (request, response, authentication) -> {
                           response.setStatus(200);
                           response.setContentType("application/json");
@@ -60,7 +61,8 @@ public class WebSecurityConfigs {
                           response.setStatus(401);
                           response.setContentType("application/json");
                           response.getWriter().write("{\"error\":\"Invalid credentials\"}");
-                        }))
+                        })
+                    .permitAll())
         .logout(
             logout ->
                 logout.logoutSuccessHandler(
@@ -69,7 +71,7 @@ public class WebSecurityConfigs {
                       response.setContentType("application/json");
                       response.getWriter().write("{\"message\":\"Logout successful\"}");
                     }))
-        .httpBasic(Customizer.withDefaults());
+        .httpBasic(basic -> basic.disable());
     return http.build();
   }
 
