@@ -12,6 +12,9 @@ import com.penrose.bibby.library.cataloging.book.core.domain.BookFactory;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.discovery.BookLocationResponse;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import java.util.*;
 import org.slf4j.Logger;
@@ -30,17 +33,18 @@ public class BookService {
   private final IsbnEnrichmentService isbnEnrichmentService;
   private final BookDomainRepository bookDomainRepository;
   private final ShelfAccessPort shelfAccessPort;
+  private final BookcaseJpaRepository bookcaseJpaRepository;
   Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
   public BookService(
-      IsbnEnrichmentService isbnEnrichmentService,
-      BookJpaRepository bookJpaRepository,
-      BookFactory bookFactory,
-      BookMapper bookMapper,
-      IsbnLookupService isbnLookupService,
-      AuthorAccessPort authorAccessPort,
-      BookDomainRepository bookDomainRepository,
-      ShelfAccessPort shelfAccessPort) {
+          IsbnEnrichmentService isbnEnrichmentService,
+          BookJpaRepository bookJpaRepository,
+          BookFactory bookFactory,
+          BookMapper bookMapper,
+          IsbnLookupService isbnLookupService,
+          AuthorAccessPort authorAccessPort,
+          BookDomainRepository bookDomainRepository,
+          ShelfAccessPort shelfAccessPort, BookcaseJpaRepository bookcaseJpaRepository) {
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
     this.BookFactory = bookFactory;
@@ -49,6 +53,7 @@ public class BookService {
     this.authorAccessPort = authorAccessPort;
     this.bookDomainRepository = bookDomainRepository;
     this.shelfAccessPort = shelfAccessPort;
+    this.bookcaseJpaRepository = bookcaseJpaRepository;
   }
 
   // ============================================================
@@ -306,5 +311,27 @@ public class BookService {
       bookDTOs.add(bookMapper.toDTOfromEntity(bookEntity));
     }
     return bookDTOs;
+  }
+
+  public BookLocationResponse getBookLocation(Long bookId) {
+    BookEntity bookEntity =
+        bookJpaRepository
+            .findById(bookId)
+            .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
+    if (bookEntity.getShelfId() == null) {
+      throw new IllegalStateException("Book is not currently assigned to a shelf");
+    }
+    ShelfDTO shelf =
+        shelfAccessPort
+            .findShelfById(bookEntity.getShelfId())
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Shelf not found for shelf ID: " + bookEntity.getShelfId()));
+
+    BookcaseEntity bookcaseEntity =
+        bookcaseJpaRepository.findById(shelf.bookcaseId()).orElseThrow(() -> new IllegalStateException("Bookcase not found for bookcase ID: " + shelf.bookcaseId()));
+
+    return new BookLocationResponse( bookcaseEntity.getBookcaseLocation(),bookcaseEntity.getBookcaseLabel(),shelf.shelfLabel());
   }
 }

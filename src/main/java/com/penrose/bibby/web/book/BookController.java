@@ -14,6 +14,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichment
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.discovery.BookLocationResponse;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
@@ -95,10 +96,12 @@ public class BookController {
     System.out.println("Now searching for ISBN in database...");
     BookDTO bookDTO = bookService.findBookByIsbn(isbn);
     System.out.println(bookDTO);
+
     if (bookDTO == null) {
       System.out.println("Book not found in database. Returning 404 response.");
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
+
     BookcardRenderer bookcardRenderer = new BookcardRenderer();
     System.out.println(
         bookcardRenderer.bookImportCard(
@@ -168,5 +171,14 @@ public class BookController {
   public ResponseEntity<List<BookDTO>> getBooksByShelf(@PathVariable Long shelfId) {
     List<BookDTO> books = bookService.getBooksByShelfId(shelfId);
     return ResponseEntity.ok(books);
+  }
+
+  @GetMapping("/booklocation")
+  public ResponseEntity<BookLocationResponse> getBookLocation(@RequestParam Long bookId) {
+    BookLocationResponse response = bookService.getBookLocation(bookId);
+    if (response == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    return ResponseEntity.ok(response);
   }
 }
