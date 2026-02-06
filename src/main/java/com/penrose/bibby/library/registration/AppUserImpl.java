@@ -48,4 +48,8 @@ public class AppUserImpl implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
+  public Long getAppUserId() {
+    return appUserEntity.getId();
+  }
 }

@@ -47,8 +47,28 @@ public class WebSecurityConfigs {
                     .authenticated())
         .csrf(csrf -> csrf.disable())
         .cors(Customizer.withDefaults())
-        .formLogin(Customizer.withDefaults())
-        .logout(Customizer.withDefaults())
+        .formLogin(
+            form ->
+                form.successHandler(
+                        (request, response, authentication) -> {
+                          response.setStatus(200);
+                          response.setContentType("application/json");
+                          response.getWriter().write("{\"message\":\"Login successful\"}");
+                        })
+                    .failureHandler(
+                        (request, response, exception) -> {
+                          response.setStatus(401);
+                          response.setContentType("application/json");
+                          response.getWriter().write("{\"error\":\"Invalid credentials\"}");
+                        }))
+        .logout(
+            logout ->
+                logout.logoutSuccessHandler(
+                    (request, response, authentication) -> {
+                      response.setStatus(200);
+                      response.setContentType("application/json");
+                      response.getWriter().write("{\"message\":\"Logout successful\"}");
+                    }))
         .httpBasic(Customizer.withDefaults());
     return http.build();
   }

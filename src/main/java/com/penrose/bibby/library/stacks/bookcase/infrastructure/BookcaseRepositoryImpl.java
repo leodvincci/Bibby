@@ -47,4 +47,9 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
   public List<BookcaseEntity> findByLocation(String location) {
     return bookcaseJpaRepository.findAllByBookcaseLocation(location);
   }
+
+  @Override
+  public List<BookcaseEntity> findByAppUserId(Long appUserId) {
+    return bookcaseJpaRepository.findAllByUserId((appUserId));
+  }
 }

@@ -34,6 +34,7 @@ public class BookcaseService implements BookcaseFacade {
   }
 
   public CreateBookcaseResult createNewBookCase(
+      Long userId,
       String label,
       String bookcaseZone,
       String bookcaseZoneIndex,
@@ -47,6 +48,7 @@ public class BookcaseService implements BookcaseFacade {
     } else {
       bookcaseEntity =
           new BookcaseEntity(
+              userId,
               location,
               bookcaseZone,
               bookcaseZoneIndex,
@@ -79,6 +81,20 @@ public class BookcaseService implements BookcaseFacade {
   @Override
   public List<BookcaseDTO> getAllBookcasesByLocation(String location) {
     return bookcaseRepository.findByLocation(location).stream()
+        .map(
+            entity ->
+                new BookcaseDTO(
+                    entity.getBookcaseId(),
+                    entity.getBookcaseLabel(),
+                    entity.getShelfCapacity(),
+                    entity.getBookCapacity(),
+                    entity.getBookcaseLocation()))
+        .toList();
+  }
+
+  @Override
+  public List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId) {
+    return bookcaseRepository.findByAppUserId(appUserId).stream()
         .map(
             entity ->
                 new BookcaseDTO(
