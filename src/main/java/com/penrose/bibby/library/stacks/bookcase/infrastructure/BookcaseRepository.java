@@ -15,4 +15,6 @@ public interface BookcaseRepository {
   Optional<BookcaseEntity> findById(Long id);
 
   List<BookcaseEntity> findByLocation(String location);
+
+  List<BookcaseEntity> findByAppUserId(Long appUserId);
 }

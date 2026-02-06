@@ -30,10 +30,8 @@ public class BookCaseController {
 
   @PostMapping("/create")
   public ResponseEntity<CreateBookcaseResult> createBookCase(
-          @AuthenticationPrincipal AppUserImpl principal,
-
-      @RequestBody CreateBookcaseRequest createBookcaseRequest)
-  {
+      @AuthenticationPrincipal AppUserImpl principal,
+      @RequestBody CreateBookcaseRequest createBookcaseRequest) {
     logger.info(
         "Received request to create bookcase at location: {}", createBookcaseRequest.location());
     CreateBookcaseResult createBookcaseResult =
@@ -64,9 +62,12 @@ public class BookCaseController {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<BookcaseDTO>> getAllBookcases() {
-    logger.info("Received request to get all bookcases");
-    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcases();
+  public ResponseEntity<List<BookcaseDTO>> getAllBookcases(
+      @AuthenticationPrincipal AppUserImpl principal) {
+
+    logger.info(
+        "Received request to get all bookcases for user with ID: {}", principal.getAppUserId());
+    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcasesByUserId(principal.getAppUserId());
     return ResponseEntity.ok(bookcases);
   }
 }

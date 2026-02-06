@@ -18,7 +18,7 @@ public interface BookcaseFacade {
 
   CreateBookcaseResult createNewBookCase(
       Long userId,
-          String bookcaseLabel,
+      String bookcaseLabel,
       String bookcaseZone,
       String bookcaseZoneIndex,
       int shelfCount,
@@ -30,4 +30,6 @@ public interface BookcaseFacade {
   Optional<BookcaseEntity> findById(Long bookcaseId);
 
   List<BookcaseDTO> getAllBookcasesByLocation(String location);
+
+  List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId);
 }
