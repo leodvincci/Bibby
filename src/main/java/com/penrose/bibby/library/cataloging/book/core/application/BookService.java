@@ -37,14 +37,15 @@ public class BookService {
   Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
   public BookService(
-          IsbnEnrichmentService isbnEnrichmentService,
-          BookJpaRepository bookJpaRepository,
-          BookFactory bookFactory,
-          BookMapper bookMapper,
-          IsbnLookupService isbnLookupService,
-          AuthorAccessPort authorAccessPort,
-          BookDomainRepository bookDomainRepository,
-          ShelfAccessPort shelfAccessPort, BookcaseJpaRepository bookcaseJpaRepository) {
+      IsbnEnrichmentService isbnEnrichmentService,
+      BookJpaRepository bookJpaRepository,
+      BookFactory bookFactory,
+      BookMapper bookMapper,
+      IsbnLookupService isbnLookupService,
+      AuthorAccessPort authorAccessPort,
+      BookDomainRepository bookDomainRepository,
+      ShelfAccessPort shelfAccessPort,
+      BookcaseJpaRepository bookcaseJpaRepository) {
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
     this.BookFactory = bookFactory;
@@ -330,8 +331,16 @@ public class BookService {
                         "Shelf not found for shelf ID: " + bookEntity.getShelfId()));
 
     BookcaseEntity bookcaseEntity =
-        bookcaseJpaRepository.findById(shelf.bookcaseId()).orElseThrow(() -> new IllegalStateException("Bookcase not found for bookcase ID: " + shelf.bookcaseId()));
+        bookcaseJpaRepository
+            .findById(shelf.bookcaseId())
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Bookcase not found for bookcase ID: " + shelf.bookcaseId()));
 
-    return new BookLocationResponse( bookcaseEntity.getBookcaseLocation(),bookcaseEntity.getBookcaseLabel(),shelf.shelfLabel());
+    return new BookLocationResponse(
+        bookcaseEntity.getBookcaseLocation(),
+        bookcaseEntity.getBookcaseLabel(),
+        shelf.shelfLabel());
   }
 }
