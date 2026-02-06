@@ -78,10 +78,13 @@ public class WebSecurityConfigs {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of(" http://localhost:5173","https://*.vercel.app",
-      "https://bibby-web.vercel.app" )); // your frontend origin
+    config.setAllowedOrigins(
+        List.of(
+            " http://localhost:5173",
+            "https://*.vercel.app",
+            "https://bibby-web.vercel.app")); // your frontend origin
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    config.setAllowedHeaders(List.of("*")); 
+    config.setAllowedHeaders(List.of("*"));
     config.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
