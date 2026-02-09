@@ -1,9 +1,3 @@
-Absolutely — here’s a clean, “won’t rot” `README.md` you can drop into:
-
-`com/penrose/bibby/library/discovery/README.md`
-
----
-
 # Discovery Subdomain
 
 ## Purpose
