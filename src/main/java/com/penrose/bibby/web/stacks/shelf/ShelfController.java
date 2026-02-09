@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.shelf;
+package com.penrose.bibby.web.stacks.shelf;
 
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;

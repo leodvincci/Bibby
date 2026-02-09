@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.bookcase;
+package com.penrose.bibby.web.stacks.bookcase;
 
 import com.penrose.bibby.library.registration.AppUserImpl;
 import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
