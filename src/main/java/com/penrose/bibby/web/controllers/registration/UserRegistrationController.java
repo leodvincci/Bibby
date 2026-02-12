@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.registration;
+package com.penrose.bibby.web.controllers.registration;
 
 import com.penrose.bibby.library.registration.AppUserMapper;
 import com.penrose.bibby.library.registration.RegisterUserCommand;

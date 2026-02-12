@@ -56,7 +56,7 @@ public class BookcaseService implements BookcaseFacade {
               bookCapacity * shelfCapacity);
       bookcaseEntity = bookcaseRepository.save(bookcaseEntity);
 
-      for (int i = 0; i < bookcaseEntity.getShelfCapacity(); i++) {
+      for (int i = 1; i <= bookcaseEntity.getShelfCapacity(); i++) {
         addShelf(bookcaseEntity, i, i, bookCapacity);
       }
 

@@ -80,7 +80,7 @@ public class WebSecurityConfigs {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowedOrigins(
         List.of(
-            " http://localhost:5173",
+            "http://localhost:5173",
             "https://*.vercel.app",
             "https://bibby-web.vercel.app")); // your frontend origin
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
