@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.cataloging.book;
+package com.penrose.bibby.web.controllers.cataloging.book;
 
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;

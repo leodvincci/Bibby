@@ -22,15 +22,13 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     private final ShelfMapper shelfMapper;
     private final BookDomainRepository bookDomainRepository;
     private final ShelfJpaRepository shelfJpaRepository;
-    private final BookFacade bookFacade;
 
     public ShelfDomainRepositoryImpl(ShelfJpaRepository jpaRepository,
-                                     ShelfMapper shelfMapper, BookDomainRepository bookDomainRepository, ShelfJpaRepository shelfJpaRepository, BookFacade bookFacade) {
+                                     ShelfMapper shelfMapper, BookDomainRepository bookDomainRepository, ShelfJpaRepository shelfJpaRepository) {
         this.jpaRepository = jpaRepository;
         this.shelfMapper = shelfMapper;
         this.bookDomainRepository = bookDomainRepository;
         this.shelfJpaRepository = shelfJpaRepository;
-        this.bookFacade = bookFacade;
     }
 
     @Override

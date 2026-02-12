@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.cataloging.book;
+package com.penrose.bibby.web.controllers.cataloging.book;
 
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
