@@ -7,41 +7,41 @@ import java.util.Set;
 
 public interface AuthorFacade {
 
-    Set<AuthorDTO> findByBookId(Long id);
+  Set<AuthorDTO> findByBookId(Long id);
 
-    /**
-     * Finds an existing Author by first and last name, or creates a new one if none exists.
-     *
-     * @param namePart the author's first name
-     * @param namePart1 the author's last name
-     * @return the found or newly created AuthorDTO
-     */
-    AuthorDTO findOrCreateAuthor(String namePart, String namePart1);
+  /**
+   * Finds an existing Author by first and last name, or creates a new one if none exists.
+   *
+   * @param namePart the author's first name
+   * @param namePart1 the author's last name
+   * @return the found or newly created AuthorDTO
+   */
+  AuthorDTO findOrCreateAuthor(String namePart, String namePart1);
 
-    void registerAuthor(AuthorDTO authorDTO);
+  void registerAuthor(AuthorDTO authorDTO);
 
-    void updateAuthor(AuthorDTO authorDTO);
+  void updateAuthor(AuthorDTO authorDTO);
 
-    void saveAllAuthors(List<AuthorDTO> authors);
+  void saveAllAuthors(List<AuthorDTO> authors);
 
-    AuthorDTO saveAuthor(AuthorDTO authorDTO);
+  AuthorDTO saveAuthor(AuthorDTO authorDTO);
 
-    AuthorDTO findById(Long authorId);
+  AuthorDTO findById(Long authorId);
 
-//    List<AuthorDTO> createAuthorsIfNotExist(List<String> authors);
+  //    List<AuthorDTO> createAuthorsIfNotExist(List<String> authors);
 
-    Set<AuthorEntity> getAuthorsById(List<String> authors);
+  Set<AuthorEntity> getAuthorsById(List<String> authors);
 
-    /**
-     * Checks if an Author exists with the given first and last name.
-     *
-     * @param firstName the author's first name
-     * @param lastName the author's last name
-     * @return true if an Author with the given names exists, false otherwise
-     */
-    boolean authorExistFirstNameLastName(String firstName, String lastName);
+  /**
+   * Checks if an Author exists with the given first and last name.
+   *
+   * @param firstName the author's first name
+   * @param lastName the author's last name
+   * @return true if an Author with the given names exists, false otherwise
+   */
+  boolean authorExistFirstNameLastName(String firstName, String lastName);
 
-    List<AuthorDTO> getAllAuthorsByName(String firstName, String lastName);
+  List<AuthorDTO> getAllAuthorsByName(String firstName, String lastName);
 
-    AuthorDTO getAuthorById(Long authId);
+  AuthorDTO getAuthorById(Long authId);
 }

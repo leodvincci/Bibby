@@ -1,177 +1,172 @@
 package com.penrose.bibby.library.cataloging.author.core.domain;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class AuthorNameTest {
 
-    @Test
-    void normalized() {
-        AuthorName authorName = new AuthorName("  John     Doe  ");
-        System.out.println("Normalized Author Name: '" + authorName + "'");
-        assertEquals("John Doe", authorName.toString());
-    }
+  @Test
+  void normalized() {
+    AuthorName authorName = new AuthorName("  John     Doe  ");
+    System.out.println("Normalized Author Name: '" + authorName + "'");
+    assertEquals("John Doe", authorName.toString());
+  }
 
-    @Test
-    void normalized_2(){
-        AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
-        System.out.println("Normalized Author Name: '" + authorName.normalized() + "'");
-        assertEquals("Jane A Smith", authorName.normalized());
-    }
+  @Test
+  void normalized_2() {
+    AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
+    System.out.println("Normalized Author Name: '" + authorName.normalized() + "'");
+    assertEquals("Jane A Smith", authorName.normalized());
+  }
 
+  @Test
+  void parse_authors_middle_name() {
+    AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
+    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
+    String middleName = normalizedAuthorName.parseMiddleName();
+    System.out.println("Parse Author Middle Name: '" + middleName + "'");
 
-    @Test
-    void parse_authors_middle_name(){
-        AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
-        AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-        String middleName = normalizedAuthorName.parseMiddleName();
-        System.out.println("Parse Author Middle Name: '" + middleName + "'");
+    assertEquals("A", middleName);
+  }
 
-        assertEquals("A", middleName);
-    }
+  @Test
+  void parse_authors_middle_name_no_period() {
+    AuthorName authorName = new AuthorName("  Jane   A           Smith  ");
+    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
+    String middleName = normalizedAuthorName.parseMiddleName();
+    System.out.println("Parse Author Middle Name: '" + middleName + "'");
 
-    @Test
-    void parse_authors_middle_name_no_period(){
-        AuthorName authorName = new AuthorName("  Jane   A           Smith  ");
-        AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-        String middleName = normalizedAuthorName.parseMiddleName();
-        System.out.println("Parse Author Middle Name: '" + middleName + "'");
+    assertEquals("A", middleName);
+  }
 
-        assertEquals("A", middleName);
-    }
+  @Test
+  void parse_authors_middle_name_no_middle_name() {
+    AuthorName authorName = new AuthorName("  Jane            Smith  ");
+    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
+    String middleName = normalizedAuthorName.parseMiddleName();
+    System.out.println("Parse Author Middle Name: '" + middleName + "'");
 
-    @Test
-    void parse_authors_middle_name_no_middle_name(){
-        AuthorName authorName = new AuthorName("  Jane            Smith  ");
-        AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-        String middleName = normalizedAuthorName.parseMiddleName();
-        System.out.println("Parse Author Middle Name: '" + middleName + "'");
+    assertEquals("", middleName);
+  }
 
-        assertEquals("", middleName);
-    }
+  @Test
+  void parse_authors_middle_name_only_first_name() {
+    AuthorName authorName = new AuthorName("  Jane            ");
+    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
+    String middleName = normalizedAuthorName.parseMiddleName();
+    System.out.println("Parse Author Middle Name: '" + middleName + "'");
 
-    @Test
-    void parse_authors_middle_name_only_first_name(){
-        AuthorName authorName = new AuthorName("  Jane            ");
-        AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-        String middleName = normalizedAuthorName.parseMiddleName();
-        System.out.println("Parse Author Middle Name: '" + middleName + "'");
+    assertEquals("", middleName);
+  }
 
-        assertEquals("", middleName);
-    }
+  @Test
+  void parse_authors_first_name() {
+    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
+    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
+    String firstName = normalizedAuthorName.parseFirstName();
+    System.out.println("Parse Author First Name: '" + firstName + "'");
 
+    assertEquals("Leo", firstName);
+  }
 
-    @Test
-    void parse_authors_first_name(){
-        AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-        AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-        String firstName = normalizedAuthorName.parseFirstName();
-        System.out.println("Parse Author First Name: '" + firstName + "'");
+  @Test
+  void getAuthorName() {
+    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
+    assertEquals("Leo D Penrose", authorName.getAuthorName());
+  }
 
-        assertEquals("Leo", firstName);
-    }
+  @Test
+  void parseFirstName() {
+    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
+    String firstName = authorName.parseFirstName();
+    System.out.println("Parse Author First Name: '" + firstName + "'");
 
-    @Test
-    void getAuthorName() {
-        AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-        assertEquals("Leo D Penrose", authorName.getAuthorName());
-    }
+    assertEquals("Leo", firstName);
+  }
 
-    @Test
-    void parseFirstName() {
-        AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-        String firstName = authorName.parseFirstName();
-        System.out.println("Parse Author First Name: '" + firstName + "'");
+  @Test
+  void constructor_shouldNormalizeIncomingName() {
+    AuthorName name = new AuthorName("  J.  R. R.   Tolkien.  ");
 
-        assertEquals("Leo", firstName);
-    }
+    // periods removed, extra spaces collapsed, trimmed
+    assertEquals("J R R Tolkien", name.getAuthorName());
+  }
 
-    @Test
-    void constructor_shouldNormalizeIncomingName() {
-        AuthorName name = new AuthorName("  J.  R. R.   Tolkien.  ");
+  @Test
+  void getAuthorName_shouldReturnNormalizedName() {
+    AuthorName name = new AuthorName("  Jane   A.   Doe  ");
 
-        // periods removed, extra spaces collapsed, trimmed
-        assertEquals("J R R Tolkien", name.getAuthorName());
-    }
+    assertEquals("Jane A Doe", name.getAuthorName());
+  }
 
-    @Test
-    void getAuthorName_shouldReturnNormalizedName() {
-        AuthorName name = new AuthorName("  Jane   A.   Doe  ");
+  @Test
+  void parseFirstName_shouldReturnFirstToken() {
+    AuthorName name = new AuthorName("  Isaac   Asimov  ");
 
-        assertEquals("Jane A Doe", name.getAuthorName());
-    }
+    assertEquals("Isaac", name.parseFirstName());
+  }
 
-    @Test
-    void parseFirstName_shouldReturnFirstToken() {
-        AuthorName name = new AuthorName("  Isaac   Asimov  ");
+  @Test
+  void parseLastName_shouldReturnLastTokenWhenMultipleParts() {
+    AuthorName name = new AuthorName("  Neil   de   Grasse   Tyson  ");
 
-        assertEquals("Isaac", name.parseFirstName());
-    }
+    assertEquals("Tyson", name.parseLastName());
+  }
 
-    @Test
-    void parseLastName_shouldReturnLastTokenWhenMultipleParts() {
-        AuthorName name = new AuthorName("  Neil   de   Grasse   Tyson  ");
+  @Test
+  void parseLastName_shouldReturnEmptyStringWhenSingleName() {
+    AuthorName name = new AuthorName("Madonna");
 
-        assertEquals("Tyson", name.parseLastName());
-    }
+    assertEquals("", name.parseLastName());
+  }
 
-    @Test
-    void parseLastName_shouldReturnEmptyStringWhenSingleName() {
-        AuthorName name = new AuthorName("Madonna");
+  @Test
+  void parseMiddleName_shouldReturnEmptyStringWhenNoMiddleName() {
+    AuthorName name = new AuthorName("Ada Lovelace");
 
-        assertEquals("", name.parseLastName());
-    }
+    assertEquals("", name.parseMiddleName());
+  }
 
-    @Test
-    void parseMiddleName_shouldReturnEmptyStringWhenNoMiddleName() {
-        AuthorName name = new AuthorName("Ada Lovelace");
+  @Test
+  void parseMiddleName_shouldReturnSingleMiddleName() {
+    AuthorName name = new AuthorName("Jane Amanda Doe");
 
-        assertEquals("", name.parseMiddleName());
-    }
+    assertEquals("Amanda", name.parseMiddleName());
+  }
 
-    @Test
-    void parseMiddleName_shouldReturnSingleMiddleName() {
-        AuthorName name = new AuthorName("Jane Amanda Doe");
+  @Test
+  void parseMiddleName_shouldReturnAllMiddleNamesJoinedBySingleSpaces() {
+    AuthorName name = new AuthorName("John Ronald Reuel Tolkien");
 
-        assertEquals("Amanda", name.parseMiddleName());
-    }
+    assertEquals("Ronald Reuel", name.parseMiddleName());
+  }
 
-    @Test
-    void parseMiddleName_shouldReturnAllMiddleNamesJoinedBySingleSpaces() {
-        AuthorName name = new AuthorName("John Ronald Reuel Tolkien");
+  @Test
+  void normalized_shouldReturnAlreadyNormalizedNameAndBeIdempotent() {
+    AuthorName name = new AuthorName("  J.   K.   Rowling   ");
 
-        assertEquals("Ronald Reuel", name.parseMiddleName());
-    }
+    String firstCall = name.normalized();
+    String secondCall = name.normalized();
 
-    @Test
-    void normalized_shouldReturnAlreadyNormalizedNameAndBeIdempotent() {
-        AuthorName name = new AuthorName("  J.   K.   Rowling   ");
+    assertEquals("J K Rowling", firstCall);
+    assertEquals(firstCall, secondCall); // idempotent
+    assertEquals(name.getAuthorName(), firstCall);
+  }
 
-        String firstCall = name.normalized();
-        String secondCall = name.normalized();
+  @Test
+  void normalizeString_shouldNormalizeArbitraryInputString() {
+    AuthorName name = new AuthorName("Placeholder"); // just to get an instance
 
-        assertEquals("J K Rowling", firstCall);
-        assertEquals(firstCall, secondCall); // idempotent
-        assertEquals(name.getAuthorName(), firstCall);
-    }
+    String normalized = name.normalizeString("  G.   R. R.   Martin. ");
 
-    @Test
-    void normalizeString_shouldNormalizeArbitraryInputString() {
-        AuthorName name = new AuthorName("Placeholder"); // just to get an instance
+    assertEquals("G R R Martin", normalized);
+  }
 
-        String normalized = name.normalizeString("  G.   R. R.   Martin. ");
+  @Test
+  void toString_shouldReturnNormalizedAuthorName() {
+    AuthorName name = new AuthorName("  Chinua   Achebe. ");
 
-        assertEquals("G R R Martin", normalized);
-    }
-
-    @Test
-    void toString_shouldReturnNormalizedAuthorName() {
-        AuthorName name = new AuthorName("  Chinua   Achebe. ");
-
-        assertEquals("Chinua Achebe", name.toString());
-    }
-
-
-
+    assertEquals("Chinua Achebe", name.toString());
+  }
 }

@@ -1,19 +1,20 @@
 package com.penrose.bibby.library.stacks.bookcase.contracts.dtos;
 
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-
 import java.util.Optional;
 
-public record BookcaseDTO(Long bookcaseId, String bookcaseLabel, int shelfCapacity, int bookCapacity, String location) {
+public record BookcaseDTO(
+    Long bookcaseId, String bookcaseLabel, int shelfCapacity, int bookCapacity, String location) {
 
-    public static Optional<BookcaseDTO> fromEntity(Optional<BookcaseEntity> bookcaseEntity) {
+  public static Optional<BookcaseDTO> fromEntity(Optional<BookcaseEntity> bookcaseEntity) {
 
-        return bookcaseEntity.map(entity -> new BookcaseDTO(
+    return bookcaseEntity.map(
+        entity ->
+            new BookcaseDTO(
                 entity.getBookcaseId(),
                 entity.getBookcaseLabel(),
                 entity.getShelfCapacity(),
                 entity.getBookCapacity(),
-                entity.getBookcaseLocation()
-        ));
-    }
+                entity.getBookcaseLocation()));
+  }
 }
