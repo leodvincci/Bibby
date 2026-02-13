@@ -4,7 +4,7 @@
 
 The **Catalog** subdomain exists to define and manage **what a book is** in Bibby: its **identity** and **bibliographic metadata** (title, authors, ISBN, edition, etc.). Catalog is the source of truth for book/author meaning in the **Personal Book Library Management** domain.
 
-Catalog answers questions like: “What book is this?” and “What metadata do we know about it?”
+Catalog answers questions like: "What book is this?" and "What metadata do we know about it?"
 
 ------
 
@@ -23,14 +23,14 @@ Catalog answers questions like: “What book is this?” and “What metadata do
 - Physical location and capacity (owned by **Storage/Placement**)
 - User-defined categorization like tags and booklists (owned by **Organization**)
 - Search/ranking/query UX (owned by **Discovery**)
-- Persistence schemas as “truth” (JPA entities are implementation details)
+- Persistence schemas as "truth" (JPA entities are implementation details)
 - CLI/UI concerns (handled in adapters)
 
 ------
 
 ## Ubiquitous Language
 
-- **Book**: a bibliographic item in the user’s library (identity + metadata)
+- **Book**: a bibliographic item in the user's library (identity + metadata)
 - **ISBN**: an industry identifier for an edition of a book (validated/normalized)
 - **Title**: the human-readable name of a book
 - **Author**: a person or entity credited with creating the work
@@ -69,7 +69,7 @@ Catalog should expose a minimal set of contracts for other subdomains/adapters, 
     - `findByIsbn(Isbn)` (optional)
     - `enrichMetadataByIsbn(Isbn)` (optional)
 
-**Rule:** Other modules should depend on **contracts**, not Catalog’s internal domain objects.
+**Rule:** Other modules should depend on **contracts**, not Catalog's internal domain objects.
 
 ------
 
@@ -118,6 +118,6 @@ Catalog should NOT depend on:
 
 Catalog is about **bibliographic truth** for the personal library. It should remain stable as other subdomains evolve. When in doubt, ask:
 
-> “Is this about what the book *is*, or about how the book is *used/organized/placed*?”
+> "Is this about what the book *is*, or about how the book is *used/organized/placed*?"
 
-If it’s not “what the book is,” it probably doesn’t belong here.
+If it's not "what the book is," it probably doesn't belong here.
