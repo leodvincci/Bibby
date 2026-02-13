@@ -11,7 +11,7 @@ import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFac
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
 

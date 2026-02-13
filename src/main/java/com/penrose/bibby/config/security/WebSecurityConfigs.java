@@ -1,4 +1,4 @@
-package com.penrose.bibby.WebSecurityConfigs;
+package com.penrose.bibby.config.security;
 
 import java.util.List;
 import org.springframework.context.annotation.Bean;

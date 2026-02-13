@@ -1,5 +1,8 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outbound;
 
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

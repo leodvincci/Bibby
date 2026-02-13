@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.contracts.adapters;
 
-import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.*;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;

@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.cataloging.author.contracts.ports;
+package com.penrose.bibby.library.cataloging.author.contracts.ports.inbound;
 
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
-
 import java.util.List;
 import java.util.Set;
+
 public interface AuthorFacade {
 
     Set<AuthorDTO> findByBookId(Long id);

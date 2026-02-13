@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.cataloging.book.infrastructure.mapping;
 
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapper;

@@ -4,7 +4,7 @@ import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;

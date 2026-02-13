@@ -2,7 +2,7 @@ package com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound;
 
 import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.List;
 import java.util.Optional;
 

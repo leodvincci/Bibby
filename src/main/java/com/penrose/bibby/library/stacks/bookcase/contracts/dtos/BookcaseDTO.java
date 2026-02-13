@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.bookcase.contracts.dtos;
 
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 
 import java.util.Optional;
 

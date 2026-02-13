@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.mapping;
 
 import com.penrose.bibby.library.stacks.bookcase.core.domain.Bookcase;
 

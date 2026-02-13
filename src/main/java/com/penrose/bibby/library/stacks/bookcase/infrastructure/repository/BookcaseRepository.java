@@ -1,5 +1,6 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.repository;
 
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.List;
 import java.util.Optional;
 
