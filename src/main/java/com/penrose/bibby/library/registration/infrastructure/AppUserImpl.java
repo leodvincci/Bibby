@@ -1,5 +1,6 @@
-package com.penrose.bibby.library.registration;
+package com.penrose.bibby.library.registration.infrastructure;
 
+import com.penrose.bibby.library.registration.infrastructure.entity.AppUserEntity;
 import java.util.Collection;
 import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;

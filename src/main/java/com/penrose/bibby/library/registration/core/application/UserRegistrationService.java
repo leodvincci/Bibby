@@ -1,5 +1,10 @@
-package com.penrose.bibby.library.registration;
+package com.penrose.bibby.library.registration.core.application;
 
+import com.penrose.bibby.library.registration.contracts.RegisterUserCommand;
+import com.penrose.bibby.library.registration.contracts.RegisterUserResult;
+import com.penrose.bibby.library.registration.infrastructure.entity.AppUserEntity;
+import com.penrose.bibby.library.registration.infrastructure.mapping.AppUserMapper;
+import com.penrose.bibby.library.registration.infrastructure.repository.UserRegistrationJpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

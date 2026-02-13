@@ -1,4 +1,5 @@
-package com.penrose.bibby.library.book;
+package com.penrose.bibby.library.cataloging.book;
+
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.cataloging.book.core.application.BookService;

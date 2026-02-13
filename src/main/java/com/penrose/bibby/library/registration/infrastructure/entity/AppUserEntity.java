@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.registration;
+package com.penrose.bibby.library.registration.infrastructure.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

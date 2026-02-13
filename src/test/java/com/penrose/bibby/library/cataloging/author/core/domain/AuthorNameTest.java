@@ -1,6 +1,5 @@
-package com.penrose.bibby.library.author.core.domain;
+package com.penrose.bibby.library.cataloging.author.core.domain;
 
-import com.penrose.bibby.library.cataloging.author.core.domain.AuthorName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

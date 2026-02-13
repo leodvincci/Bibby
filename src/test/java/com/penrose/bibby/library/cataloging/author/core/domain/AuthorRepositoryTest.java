@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.author.core.domain;
+package com.penrose.bibby.library.cataloging.author.core.domain;
 
 import org.junit.jupiter.api.Test;
 
