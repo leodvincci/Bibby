@@ -4,7 +4,7 @@ import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary;

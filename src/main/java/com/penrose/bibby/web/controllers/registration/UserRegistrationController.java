@@ -1,11 +1,11 @@
 package com.penrose.bibby.web.controllers.registration;
 
-import com.penrose.bibby.library.registration.AppUserMapper;
-import com.penrose.bibby.library.registration.RegisterUserCommand;
-import com.penrose.bibby.library.registration.RegisterUserResult;
-import com.penrose.bibby.library.registration.UserRegistrationService;
+import com.penrose.bibby.library.registration.contracts.RegisterUserCommand;
+import com.penrose.bibby.library.registration.contracts.RegisterUserResult;
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
 import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
+import com.penrose.bibby.library.registration.core.application.UserRegistrationService;
+import com.penrose.bibby.library.registration.infrastructure.mapping.AppUserMapper;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

@@ -2,7 +2,7 @@ package com.penrose.bibby.web.controllers.cataloging.book;
 
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.author.infrastructure.repository.AuthorJpaRepository;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookPlacementResponse;
@@ -14,7 +14,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichment
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.discovery.BookLocationResponse;
+import com.penrose.bibby.library.discovery.contracts.dtos.BookLocationResponse;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
 import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
