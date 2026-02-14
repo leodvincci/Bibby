@@ -4,6 +4,7 @@ import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
 import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfFactory;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -23,14 +24,16 @@ public class BookcaseService implements BookcaseFacade {
   private final ResponseStatusException existingRecordError =
       new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
   private final ShelfJpaRepository shelfJpaRepository;
+  private final BookcaseJpaRepository bookcaseJpaRepository;
 
   public BookcaseService(
-      BookcaseRepository bookcaseRepository,
-      ShelfJpaRepository shelfJpaRepository,
-      ShelfFactory shelfFactory) {
+          BookcaseRepository bookcaseRepository,
+          ShelfJpaRepository shelfJpaRepository,
+          ShelfFactory shelfFactory, BookcaseJpaRepository bookcaseJpaRepository) {
     this.bookcaseRepository = bookcaseRepository;
     this.shelfJpaRepository = shelfJpaRepository;
     this.shelfFactory = shelfFactory;
+    this.bookcaseJpaRepository = bookcaseJpaRepository;
   }
 
   public CreateBookcaseResult createNewBookCase(
@@ -104,6 +107,12 @@ public class BookcaseService implements BookcaseFacade {
                     entity.getBookCapacity(),
                     entity.getBookcaseLocation()))
         .toList();
+  }
+
+  @Override
+  public void deleteBookcase(Long bookcaseId) {
+    bookcaseJpaRepository.deleteById(bookcaseId);
+      log.info("Bookcase with Id {} was deleted.", bookcaseId);
   }
 
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
