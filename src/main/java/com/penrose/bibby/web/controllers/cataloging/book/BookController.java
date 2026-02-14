@@ -3,7 +3,6 @@ package com.penrose.bibby.web.controllers.cataloging.book;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
-import com.penrose.bibby.library.cataloging.author.infrastructure.repository.AuthorJpaRepository;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookPlacementResponse;
 import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookRequestDTO;
@@ -34,7 +33,6 @@ public class BookController {
 
   final BookService bookService;
   final BookFacade bookFacade;
-  final AuthorJpaRepository authorJpaRepository;
   final IsbnLookupService isbnLookupService;
   private final IsbnEnrichmentService isbnEnrichmentService;
   private final ShelfService shelfService;
@@ -44,7 +42,6 @@ public class BookController {
   public BookController(
       BookService bookService,
       BookFacade bookFacade,
-      AuthorJpaRepository authorJpaRepository,
       IsbnLookupService isbnLookupService,
       IsbnEnrichmentService isbnEnrichmentService,
       ShelfService shelfService,
@@ -52,7 +49,6 @@ public class BookController {
       AuthorFacade authorFacade) {
     this.bookService = bookService;
     this.bookFacade = bookFacade;
-    this.authorJpaRepository = authorJpaRepository;
     this.isbnLookupService = isbnLookupService;
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.shelfService = shelfService;
