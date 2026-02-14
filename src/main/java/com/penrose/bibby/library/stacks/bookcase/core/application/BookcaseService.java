@@ -27,9 +27,10 @@ public class BookcaseService implements BookcaseFacade {
   private final BookcaseJpaRepository bookcaseJpaRepository;
 
   public BookcaseService(
-          BookcaseRepository bookcaseRepository,
-          ShelfJpaRepository shelfJpaRepository,
-          ShelfFactory shelfFactory, BookcaseJpaRepository bookcaseJpaRepository) {
+      BookcaseRepository bookcaseRepository,
+      ShelfJpaRepository shelfJpaRepository,
+      ShelfFactory shelfFactory,
+      BookcaseJpaRepository bookcaseJpaRepository) {
     this.bookcaseRepository = bookcaseRepository;
     this.shelfJpaRepository = shelfJpaRepository;
     this.shelfFactory = shelfFactory;
@@ -112,7 +113,7 @@ public class BookcaseService implements BookcaseFacade {
   @Override
   public void deleteBookcase(Long bookcaseId) {
     bookcaseJpaRepository.deleteById(bookcaseId);
-      log.info("Bookcase with Id {} was deleted.", bookcaseId);
+    log.info("Bookcase with Id {} was deleted.", bookcaseId);
   }
 
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {

@@ -33,5 +33,5 @@ public interface BookcaseFacade {
 
   List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId);
 
-    void deleteBookcase(Long bookcaseId);
+  void deleteBookcase(Long bookcaseId);
 }

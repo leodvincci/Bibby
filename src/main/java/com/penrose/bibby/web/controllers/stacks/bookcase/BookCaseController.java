@@ -48,8 +48,8 @@ public class BookCaseController {
   }
 
   @DeleteMapping("/delete/{bookcaseId}")
-  public ResponseEntity<HttpStatus> deleteBookcase(@PathVariable Long bookcaseId){
-      bookcaseFacade.deleteBookcase(bookcaseId);
+  public ResponseEntity<HttpStatus> deleteBookcase(@PathVariable Long bookcaseId) {
+    bookcaseFacade.deleteBookcase(bookcaseId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
