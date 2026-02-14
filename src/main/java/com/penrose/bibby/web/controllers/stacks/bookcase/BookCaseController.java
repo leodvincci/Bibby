@@ -47,6 +47,12 @@ public class BookCaseController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createBookcaseResult);
   }
 
+  @DeleteMapping("/delete/{bookcaseId}")
+  public ResponseEntity<HttpStatus> deleteBookcase(@PathVariable Long bookcaseId) {
+    bookcaseFacade.deleteBookcase(bookcaseId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
   @GetMapping("/locations")
   public ResponseEntity<Set<String>> getAllBookcaseLocations() {
     logger.info("Received request to get all bookcase locations");
