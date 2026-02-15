@@ -1,11 +1,12 @@
 package com.penrose.bibby.web.controllers.stacks.bookcase;
 
 import com.penrose.bibby.library.registration.infrastructure.AppUserImpl;
-import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
-import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.CreateBookcaseRequest;
-import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
+import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.api.dtos.CreateBookcaseRequest;
+import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
+import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -20,12 +21,15 @@ import org.springframework.web.bind.annotation.*;
 public class BookCaseController {
 
   private final BookcaseFacade bookcaseFacade;
+  private final ShelfFacade bookshelfFacade;
   Logger logger = LoggerFactory.getLogger(BookCaseController.class);
   BookcaseService bookCaseService;
 
-  public BookCaseController(BookcaseService bookCaseService, BookcaseFacade bookcaseFacade) {
+  public BookCaseController(
+      BookcaseService bookCaseService, BookcaseFacade bookcaseFacade, ShelfFacade bookshelfFacade) {
     this.bookCaseService = bookCaseService;
     this.bookcaseFacade = bookcaseFacade;
+    this.bookshelfFacade = bookshelfFacade;
   }
 
   @PostMapping("/create")
@@ -49,7 +53,9 @@ public class BookCaseController {
 
   @DeleteMapping("/delete/{bookcaseId}")
   public ResponseEntity<HttpStatus> deleteBookcase(@PathVariable Long bookcaseId) {
+    bookshelfFacade.deleteAllShelvesInBookcase(bookcaseId);
     bookcaseFacade.deleteBookcase(bookcaseId);
+
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 

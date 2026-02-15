@@ -1,18 +1,18 @@
 package com.penrose.bibby.library.cataloging.book.infrastructure.mapping;
 
-import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapper;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookRequestDTO;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BriefBibliographicRecord;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BriefBibliographicRecord;
 import com.penrose.bibby.library.cataloging.book.core.domain.*;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import java.util.*;
 import org.slf4j.Logger;

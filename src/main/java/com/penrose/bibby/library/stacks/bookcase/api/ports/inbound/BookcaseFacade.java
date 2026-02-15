@@ -1,0 +1,37 @@
+package com.penrose.bibby.library.stacks.bookcase.api.ports.inbound;
+
+import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
+import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import java.util.List;
+import java.util.Optional;
+
+public interface BookcaseFacade {
+  Optional<BookcaseDTO> findBookCaseById(Long aLong);
+
+  /**
+   * Retrieves a list of all bookcases in the library.
+   *
+   * @return A list of BookcaseDTO objects representing all bookcases.
+   */
+  List<BookcaseDTO> getAllBookcases();
+
+  CreateBookcaseResult createNewBookCase(
+      Long userId,
+      String bookcaseLabel,
+      String bookcaseZone,
+      String bookcaseZoneIndex,
+      int shelfCount,
+      int bookCapacity,
+      String location);
+
+  List<String> getAllBookcaseLocations();
+
+  Optional<BookcaseEntity> findById(Long bookcaseId);
+
+  List<BookcaseDTO> getAllBookcasesByLocation(String location);
+
+  List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId);
+
+  void deleteBookcase(Long bookcaseId);
+}

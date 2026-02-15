@@ -1,9 +1,9 @@
 package com.penrose.bibby.web.controllers.registration;
 
-import com.penrose.bibby.library.registration.contracts.RegisterUserCommand;
-import com.penrose.bibby.library.registration.contracts.RegisterUserResult;
-import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserRequestDTO;
-import com.penrose.bibby.library.registration.contracts.dtos.RegisterUserResponseDTO;
+import com.penrose.bibby.library.registration.api.RegisterUserCommand;
+import com.penrose.bibby.library.registration.api.RegisterUserResult;
+import com.penrose.bibby.library.registration.api.dtos.RegisterUserRequestDTO;
+import com.penrose.bibby.library.registration.api.dtos.RegisterUserResponseDTO;
 import com.penrose.bibby.library.registration.core.application.UserRegistrationService;
 import com.penrose.bibby.library.registration.infrastructure.mapping.AppUserMapper;
 import jakarta.validation.Valid;
