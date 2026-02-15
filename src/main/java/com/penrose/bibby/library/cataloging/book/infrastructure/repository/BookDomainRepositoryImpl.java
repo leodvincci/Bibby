@@ -1,15 +1,15 @@
 package com.penrose.bibby.library.cataloging.book.infrastructure.repository;
 
-import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.core.application.AuthorService;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDetailView;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.core.domain.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.penrose.bibby.library.registration.contracts.RegisterUserResult;
+import com.penrose.bibby.library.registration.api.RegisterUserResult;
 import com.penrose.bibby.library.registration.core.application.UserRegistrationService;
 import com.penrose.bibby.web.controllers.registration.UserRegistrationController;
 import org.junit.jupiter.api.Test;

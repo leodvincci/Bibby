@@ -1,14 +1,14 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfSummary;
-import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
+import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
@@ -17,6 +17,8 @@ import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpa
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class ShelfService implements ShelfFacade {
   ShelfJpaRepository shelfJpaRepository;
   BookJpaRepository bookJpaRepository;
   ShelfMapper shelfMapper;
+  private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
       ShelfMapper shelfMapper,
@@ -67,6 +70,17 @@ public class ShelfService implements ShelfFacade {
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
     return shelfJpaRepository.findShelfSummariesByBookcaseId(bookcaseId);
+  }
+
+  @Transactional
+  @Override
+  public void deleteAllShelvesInBookcase(Long bookcaseId) {
+    List<ShelfEntity> shelves = shelfJpaRepository.findByBookcaseId(bookcaseId);
+    List<Long> shelfIds = shelves.stream().map(ShelfEntity::getShelfId).toList();
+    bookJpaRepository.deleteByShelfIdIn(shelfIds);
+    logger.info("Deleted {} shelves from bookcase with ID: {}", shelfIds.size(), bookcaseId);
+    shelfJpaRepository.deleteByBookcaseId(bookcaseId);
+    logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);
   }
 
   public Shelf mapToDomain(ShelfDTO shelfDTO) {

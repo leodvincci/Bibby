@@ -1,6 +1,6 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;

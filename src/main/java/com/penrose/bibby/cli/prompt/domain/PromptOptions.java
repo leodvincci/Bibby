@@ -1,13 +1,13 @@
 package com.penrose.bibby.cli.prompt.domain;
 
-import com.penrose.bibby.library.cataloging.author.contracts.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.contracts.ports.inbound.AuthorFacade;
-import com.penrose.bibby.library.cataloging.book.contracts.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.contracts.ports.inbound.BookFacade;
-import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.contracts.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.contracts.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.*;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;

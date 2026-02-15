@@ -1,8 +1,8 @@
 package com.penrose.bibby.library.stacks.bookcase.core.application;
 
-import com.penrose.bibby.library.stacks.bookcase.contracts.CreateBookcaseResult;
-import com.penrose.bibby.library.stacks.bookcase.contracts.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.contracts.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
+import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
