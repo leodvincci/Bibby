@@ -56,7 +56,6 @@ public class BookCaseController {
     bookshelfFacade.deleteAllShelvesInBookcase(bookcaseId);
     bookcaseFacade.deleteBookcase(bookcaseId);
 
-
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
