@@ -79,7 +79,10 @@ public class ShelfService implements ShelfFacade {
     List<Long> shelfIds = shelves.stream().map(ShelfEntity::getShelfId).toList();
     bookJpaRepository.deleteByShelfIdIn(shelfIds);
     shelfJpaRepository.deleteByBookcaseId(bookcaseId);
-    logger.info("Deleted {} shelves (and their book assignments) from bookcase {}", shelfIds.size(), bookcaseId);
+    logger.info(
+        "Deleted {} shelves (and their book assignments) from bookcase {}",
+        shelfIds.size(),
+        bookcaseId);
   }
 
   public Shelf mapToDomain(ShelfDTO shelfDTO) {
