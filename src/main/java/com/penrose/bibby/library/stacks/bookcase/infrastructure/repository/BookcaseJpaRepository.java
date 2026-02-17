@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookcaseJpaRepository extends JpaRepository<BookcaseEntity, Long> {
-  BookcaseEntity findBookcaseEntityByBookcaseLabel(String s);
+  BookcaseEntity findBookcaseEntityByBookcaseLocation(String s);
 
   List<BookcaseEntity> findAllByBookcaseLocation(String s);
 

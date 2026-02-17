@@ -17,8 +17,8 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
   }
 
   @Override
-  public BookcaseEntity findBookcaseEntityByBookcaseLabel(String s) {
-    return bookcaseJpaRepository.findBookcaseEntityByBookcaseLabel(s);
+  public BookcaseEntity findBookcaseEntityByBookcaseLocation(String s) {
+    return bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(s);
   }
 
   @Override

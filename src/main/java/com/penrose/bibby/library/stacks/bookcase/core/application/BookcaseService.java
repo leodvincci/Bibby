@@ -45,7 +45,7 @@ public class BookcaseService implements BookcaseFacade {
       int shelfCapacity,
       int bookCapacity,
       String location) {
-    BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLabel(label);
+    BookcaseEntity bookcaseEntity = bookcaseRepository.findBookcaseEntityByBookcaseLocation(label);
     if (bookcaseEntity != null) {
       log.error("Failed to save Record - Record already exist", existingRecordError);
       throw existingRecordError;
