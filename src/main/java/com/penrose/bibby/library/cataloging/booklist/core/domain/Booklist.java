@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.cataloging.core.domain;
+package com.penrose.bibby.library.cataloging.booklist.core.domain;
 
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BookIdentifier;
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistId;
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistName;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BookIdentifier;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistId;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistName;
 import java.time.Instant;
 import java.util.Set;
 
