@@ -91,7 +91,9 @@ public class BookcaseService implements BookcaseFacade {
                     entity.getBookcaseId(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
-                    entity.getBookcaseLocation()))
+                    entity.getBookcaseLocation(),
+                    entity.getBookcaseZone(),
+                    entity.getBookcaseIndex()))
         .toList();
   }
 
@@ -104,7 +106,9 @@ public class BookcaseService implements BookcaseFacade {
                     entity.getBookcaseId(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
-                    entity.getBookcaseLocation()))
+                    entity.getBookcaseLocation(),
+                    entity.getBookcaseZone(),
+                    entity.getBookcaseIndex()))
         .toList();
   }
 
@@ -129,7 +133,9 @@ public class BookcaseService implements BookcaseFacade {
                     entity.getBookcaseId(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
-                    entity.getBookcaseLocation()))
+                    entity.getBookcaseLocation(),
+                    entity.getBookcaseZone(),
+                    entity.getBookcaseIndex()))
         .toList();
   }
 
