@@ -71,7 +71,7 @@
 ## Architecture Overview
 
 - **Inbound:** Spring Shell CLI (`cli/command/`), REST controllers (`web/`).
-- **Core:** Domain modules under `library/` — `cataloging` (book, author), `stacks` (bookcase, shelf), `discovery`, `registration`, `classification` (booklist). Each has contracts (ports/DTOs), core (domain + application), infrastructure (JPA, external clients).
+- **Core:** Domain modules under `library/` — `cataloging` (book, author; includes book location/search queries), `stacks` (bookcase, shelf), `registration`, `classification` (booklist). Each has contracts (ports/DTOs), core (domain + application), infrastructure (JPA, external clients).
 - **Outbound:** JPA repositories (PostgreSQL), Google Books client (WebClient).
 
 ```
