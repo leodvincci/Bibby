@@ -47,7 +47,8 @@ public class BookImportController {
         new GoogleBookResponseBrief(
             request.isbn(),
             lookupResponse.items().get(0).volumeInfo().title(),
-            lookupResponse.items().get(0).volumeInfo().authors());
+            lookupResponse.items().get(0).volumeInfo().authors(),
+            lookupResponse.items().get(0).volumeInfo().publisher());
     log.info("Found book metadata for ISBN {}: {}", request.isbn(), googleBookResponseBrief);
 
     //        BookEntity savedBook = isbnEnrichmentService.enrichIsbn(lookupResponse,

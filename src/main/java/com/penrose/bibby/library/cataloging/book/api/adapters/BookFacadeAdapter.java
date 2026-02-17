@@ -97,6 +97,7 @@ public class BookFacadeAdapter implements BookFacade {
     book.setIsbn(new Isbn(bookRequestDTO.isbn()));
     book.setTitle(new Title(bookRequestDTO.title()));
     book.setShelfId(bookRequestDTO.bookshelfId());
+    book.setPublisher(bookRequestDTO.publisher());
     log.info("Mapped BookRequestDTO to Book domain object: {}", book);
     bookDomainRepository.registerBook(book);
     log.info("Book registered successfully in the repository.");

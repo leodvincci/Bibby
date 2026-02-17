@@ -98,7 +98,7 @@ public class BookCreateCommands {
     String isbn = cliPrompt.promptForBookIsbn();
     log.info("Collected Book Details - Title: {}, ISBN: {}, Authors: {}", title, isbn, authors);
 
-    BookRequestDTO bookRequestDTO = new BookRequestDTO(title, isbn, authors);
+    BookRequestDTO bookRequestDTO = new BookRequestDTO(title, isbn, authors, null);
     log.info("BookRequestDTO created: {}", bookRequestDTO);
     bookFacade.createNewBook(bookRequestDTO);
   }
