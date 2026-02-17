@@ -8,6 +8,7 @@ public class BookcaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long bookcaseId;
+
   private Long userId;
   private String bookcaseLocation;
   private String bookcaseZone;
@@ -51,7 +52,6 @@ public class BookcaseEntity {
   public void setBookcaseId(Long bookCaseId) {
     this.bookcaseId = bookCaseId;
   }
-
 
   public int getBookCapacity() {
     return bookCapacity;
