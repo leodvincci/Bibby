@@ -61,7 +61,7 @@ public class Bookcase {
     private Long bookcaseId;
     private String bookcaseLocation;   // NEW: "Office", "Living Room", "Garage"
     private String bookcaseZone;       // NEW: "NorthWall", "Desk", "Corner"
-    private String bookcaseZoneIndex;  // NEW: "A", "B", "C"
+    private String bookcaseIndex;  // NEW: "A", "B", "C"
     private String bookcaseLabel;      // DERIVED: zone + ":" + index
     private int shelfCapacity;
     private int bookCapacity;
@@ -206,7 +206,7 @@ public class BookcaseEntity {
     
     private String bookcaseLocation;     // NEW
     private String bookcaseZone;         // NEW
-    private String bookcaseZoneIndex;    // NEW
+    private String bookcaseIndex;    // NEW
     private String bookcaseLabel;        // Now derived
     private int shelfCapacity;
     private int bookCapacity;
@@ -216,7 +216,7 @@ public class BookcaseEntity {
                           int shelfCapacity, int bookCapacity) {
         this.bookcaseLocation = location;
         this.bookcaseZone = zone;
-        this.bookcaseZoneIndex = index;
+        this.bookcaseIndex = index;
         this.bookcaseLabel = zone + ":" + index;  // Derived!
         this.shelfCapacity = shelfCapacity;
         this.bookCapacity = bookCapacity;

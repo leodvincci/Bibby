@@ -89,7 +89,6 @@ public class BookcaseService implements BookcaseFacade {
             entity ->
                 new BookcaseDTO(
                     entity.getBookcaseId(),
-                    entity.getBookcaseLabel(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
                     entity.getBookcaseLocation()))
@@ -103,7 +102,6 @@ public class BookcaseService implements BookcaseFacade {
             entity ->
                 new BookcaseDTO(
                     entity.getBookcaseId(),
-                    entity.getBookcaseLabel(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
                     entity.getBookcaseLocation()))
@@ -129,7 +127,6 @@ public class BookcaseService implements BookcaseFacade {
             entity ->
                 new BookcaseDTO(
                     entity.getBookcaseId(),
-                    entity.getBookcaseLabel(),
                     entity.getShelfCapacity(),
                     entity.getBookCapacity(),
                     entity.getBookcaseLocation()))
