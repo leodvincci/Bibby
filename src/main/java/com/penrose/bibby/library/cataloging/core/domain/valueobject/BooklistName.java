@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.classification.core.domain.valueobject;
+package com.penrose.bibby.library.cataloging.core.domain.valueobject;
 
 
 public record BooklistName(String value) {

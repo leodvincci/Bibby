@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.classification.core.domain;
+package com.penrose.bibby.library.cataloging.core.domain;
 
-import com.penrose.bibby.library.classification.core.domain.valueobject.BookIdentifier;
-import com.penrose.bibby.library.classification.core.domain.valueobject.BooklistId;
-import com.penrose.bibby.library.classification.core.domain.valueobject.BooklistName;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BookIdentifier;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistId;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

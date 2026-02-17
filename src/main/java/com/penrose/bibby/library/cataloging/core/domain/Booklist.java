@@ -1,15 +1,15 @@
-package com.penrose.bibby.library.classification.core.domain;
+package com.penrose.bibby.library.cataloging.core.domain;
 
-import com.penrose.bibby.library.classification.core.domain.valueobject.BookIdentifier;
-import com.penrose.bibby.library.classification.core.domain.valueobject.BooklistId;
-import com.penrose.bibby.library.classification.core.domain.valueobject.BooklistName;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BookIdentifier;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistId;
+import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistName;
 
 import java.time.Instant;
 import java.util.Set;
 
 
 /**
- * Aggregate root representing a named list of books in the Classification domain.
+ * Aggregate root representing a named list of books in the Cataloging domain.
  * <p>
  * A {@code Booklist} groups a set of {@link BookIdentifier book identifiers} under a stable identity
  * ({@link BooklistId}) and a human-readable {@link BooklistName}. It also tracks lifecycle metadata
