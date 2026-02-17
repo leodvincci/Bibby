@@ -28,11 +28,11 @@ public class AuthorEntity {
     public AuthorEntity() {
     }
 
-    public HashSet<BookEntity> getBooks() {
-        return (HashSet<BookEntity>) books;
+    public Set<BookEntity> getBooks() {
+        return  books;
     }
 
-    public void setBooks(HashSet<BookEntity> books) {
+    public void setBooks(Set<BookEntity> books) {
         this.books = books;
     }
 
