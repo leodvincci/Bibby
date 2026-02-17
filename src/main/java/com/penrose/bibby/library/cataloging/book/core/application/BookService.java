@@ -12,7 +12,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.BookFactory;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.discovery.api.dtos.BookLocationResponse;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;

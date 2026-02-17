@@ -13,7 +13,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichment
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.discovery.api.dtos.BookLocationResponse;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
