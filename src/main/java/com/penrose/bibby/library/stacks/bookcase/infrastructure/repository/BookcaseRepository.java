@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookcaseRepository {
-  BookcaseEntity findBookcaseEntityByBookcaseLabel(String s);
+  BookcaseEntity findBookcaseEntityByBookcaseLocation(String s);
 
   List<BookcaseEntity> findAll();
 

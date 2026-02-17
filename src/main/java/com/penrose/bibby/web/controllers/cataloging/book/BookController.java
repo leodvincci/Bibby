@@ -141,7 +141,7 @@ public class BookController {
             updatedBook.getTitle(),
             shelf.shelfId(),
             shelf.shelfLabel(),
-            bookcase.bookcaseLabel());
+            bookcase.location());
 
     return ResponseEntity.ok(response);
   }

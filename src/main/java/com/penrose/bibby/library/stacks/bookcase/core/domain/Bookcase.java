@@ -32,14 +32,6 @@ public class Bookcase {
     this.bookcaseId = bookcaseId;
   }
 
-  public String getBookcaseLabel() {
-    return bookcaseLabel;
-  }
-
-  public void setBookcaseLabel(String bookcaseLabel) {
-    this.bookcaseLabel = bookcaseLabel;
-  }
-
   public void setBookcaseLocation(String bookcaseLocation) {
     this.bookcaseLocation = bookcaseLocation;
   }

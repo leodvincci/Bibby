@@ -213,7 +213,7 @@ public class BookcaseCommands extends AbstractShellComponent {
                 """,
             bookDetails.title(),
             bookDetails.authors(),
-            bookDetails.bookcaseLabel(),
+            bookDetails.bookcaseLocation(),
             bookDetails.shelfLabel(),
             bookDetails.bookStatus());
 

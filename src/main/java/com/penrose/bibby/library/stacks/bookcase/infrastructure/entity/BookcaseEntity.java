@@ -12,9 +12,7 @@ public class BookcaseEntity {
   private Long userId;
   private String bookcaseLocation;
   private String bookcaseZone;
-  private String bookcaseZoneIndex;
-  private String bookcaseLabel;
-  private String bookcaseDescription;
+  private String bookcaseIndex;
   private int bookCapacity;
   private int shelfCapacity;
 
@@ -22,41 +20,13 @@ public class BookcaseEntity {
       Long userId,
       String bookcaseLocation,
       String bookcaseZone,
-      String bookcaseZoneIndex,
+      String bookcaseIndex,
       int shelfCapacity,
       int bookCapacity) {
     this.userId = userId;
     this.bookcaseLocation = bookcaseLocation;
     this.bookcaseZone = bookcaseZone;
-    this.bookcaseZoneIndex = bookcaseZoneIndex;
-    this.bookcaseLabel = bookcaseZone + ":" + bookcaseZoneIndex;
-    this.bookCapacity = bookCapacity;
-    setShelfCapacity(shelfCapacity);
-  }
-
-  public BookcaseEntity(String bookcaseLabel, int shelfCapacity, int bookCapacity) {
-    this.bookcaseLabel = bookcaseLabel;
-    this.bookCapacity = bookCapacity;
-    setShelfCapacity(shelfCapacity);
-  }
-
-  public BookcaseEntity(
-      Long bookcaseId, String bookcaseLabel, int shelfCapacity, int bookCapacity) {
-    this.bookcaseId = bookcaseId;
-    this.bookcaseLabel = bookcaseLabel;
-    this.shelfCapacity = shelfCapacity;
-  }
-
-  public BookcaseEntity(
-      String bookcaseLocation,
-      String bookcaseZone,
-      String bookcaseZoneIndex,
-      int shelfCapacity,
-      int bookCapacity) {
-    this.bookcaseLocation = bookcaseLocation;
-    this.bookcaseZone = bookcaseZone;
-    this.bookcaseZoneIndex = bookcaseZoneIndex;
-    this.bookcaseLabel = bookcaseZone + ":" + bookcaseZoneIndex;
+    this.bookcaseIndex = bookcaseIndex;
     this.bookCapacity = bookCapacity;
     setShelfCapacity(shelfCapacity);
   }
@@ -83,22 +53,6 @@ public class BookcaseEntity {
     this.bookcaseId = bookCaseId;
   }
 
-  public String getBookcaseLabel() {
-    return bookcaseLabel;
-  }
-
-  public void setBookcaseLabel(String bookCaseLabel) {
-    this.bookcaseLabel = bookCaseLabel;
-  }
-
-  public String getBookcaseDescription() {
-    return bookcaseDescription;
-  }
-
-  public void setBookcaseDescription(String bookcaseDescription) {
-    this.bookcaseDescription = bookcaseDescription;
-  }
-
   public int getBookCapacity() {
     return bookCapacity;
   }
@@ -115,12 +69,12 @@ public class BookcaseEntity {
     this.bookcaseLocation = bookcaseLocation;
   }
 
-  public String getBookcaseZoneIndex() {
-    return bookcaseZoneIndex;
+  public String getBookcaseIndex() {
+    return bookcaseIndex;
   }
 
-  public void setBookcaseZoneIndex(String bookcaseZoneIndex) {
-    this.bookcaseZoneIndex = bookcaseZoneIndex;
+  public void setBookcaseIndex(String bookcaseZoneIndex) {
+    this.bookcaseIndex = bookcaseZoneIndex;
   }
 
   public Long getUserId() {

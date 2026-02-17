@@ -4,6 +4,6 @@ public record BookDetailView(
     Long bookId,
     String title,
     String authors,
-    String bookcaseLabel,
+    String bookcaseLocation,
     String shelfLabel,
     String bookStatus) {}
