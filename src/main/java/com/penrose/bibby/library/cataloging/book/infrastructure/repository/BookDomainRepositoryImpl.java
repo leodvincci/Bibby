@@ -52,6 +52,7 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   public void registerBook(Book book) {
     log.info("Mapping book domain to entity for book: " + book.getTitle().title());
     BookEntity bookEntity = new BookEntity();
+    bookEntity.setPublisher(book.getPublisher());
     bookEntity.setShelfId(book.getShelfId());
     bookEntity.setIsbn(book.getIsbn().isbn);
     bookEntity.setTitle(book.getTitle().title());
@@ -64,9 +65,12 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     Set<AuthorEntity> authorEntities = bookMapper.toEntitySetFromAuthorRefs(book.getAuthors());
     log.info(authorEntities.toString());
     bookEntity.setAuthors(authorEntities);
-    log.info("Saving book entity to repository for book: {}", book.getTitle().title());
     bookJpaRepository.save(bookEntity);
-    log.info("Book registered with title: {}", book.getTitle().title());
+    log.info(
+        "Registered new book with title: {} , ISBN: {} , and Publisher:{}",
+        book.getTitle(),
+        book.getIsbn(),
+        book.getPublisher());
   }
 
   @Override

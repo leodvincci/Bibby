@@ -21,6 +21,7 @@ import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/books")
 public class BookController {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(BookController.class);
   final BookService bookService;
   final BookFacade bookFacade;
   final IsbnLookupService isbnLookupService;
@@ -147,6 +149,8 @@ public class BookController {
   @CrossOrigin(origins = "*")
   @PostMapping("/addnewbook")
   public ResponseEntity<Map<String, Object>> addNewBook(@RequestBody BookDTO bookDTO) {
+    log.info("Received BookDTO: {}", bookDTO);
+
     List<AuthorDTO> authorDTOS = new ArrayList<>();
     for (String author : bookDTO.authors()) {
       System.out.println(author);
@@ -155,7 +159,8 @@ public class BookController {
     }
 
     BookRequestDTO bookRequestDTO =
-        new BookRequestDTO(bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId());
+        new BookRequestDTO(
+            bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId(), bookDTO.publisher());
     bookFacade.createNewBook(bookRequestDTO);
 
     System.out.println("Book added");
