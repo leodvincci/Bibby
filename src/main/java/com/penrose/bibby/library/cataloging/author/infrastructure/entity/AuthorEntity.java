@@ -2,65 +2,63 @@ package com.penrose.bibby.library.cataloging.author.infrastructure.entity;
 
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "authors")
 public class AuthorEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long authorId;
-    private String firstName;
-    private String lastName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long authorId;
 
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
-    }
+  private String firstName;
+  private String lastName;
 
-    public AuthorEntity(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+  @Override
+  public String toString() {
+    return firstName + " " + lastName;
+  }
 
-    public AuthorEntity() {
-    }
+  public AuthorEntity(String firstName, String lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
-    public HashSet<BookEntity> getBooks() {
-        return (HashSet<BookEntity>) books;
-    }
+  public AuthorEntity() {}
 
-    public void setBooks(HashSet<BookEntity> books) {
-        this.books = books;
-    }
+  public Set<BookEntity> getBooks() {
+    return books;
+  }
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<BookEntity> books = new HashSet<>();
+  public void setBooks(Set<BookEntity> books) {
+    this.books = books;
+  }
 
-    public String getFirstName() {
-        return firstName;
-    }
+  @ManyToMany(mappedBy = "authors")
+  private Set<BookEntity> books = new HashSet<>();
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public Long getAuthorId() {
-        return authorId;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-    public void setAuthorId(Long id) {
-        this.authorId = id;
-    }
+  public Long getAuthorId() {
+    return authorId;
+  }
 
+  public void setAuthorId(Long id) {
+    this.authorId = id;
+  }
 }
