@@ -13,8 +13,10 @@ public class BookcaseEntity {
   private String bookcaseLocation;
   private String bookcaseZone;
   private String bookcaseIndex;
-  private int bookCapacity;
   private int shelfCapacity;
+  private int bookCapacity;
+
+  public BookcaseEntity() {}
 
   public BookcaseEntity(
       Long userId,
@@ -27,54 +29,16 @@ public class BookcaseEntity {
     this.bookcaseLocation = bookcaseLocation;
     this.bookcaseZone = bookcaseZone;
     this.bookcaseIndex = bookcaseIndex;
-    this.bookCapacity = bookCapacity;
-    setShelfCapacity(shelfCapacity);
-  }
-
-  public BookcaseEntity() {}
-
-  public int getShelfCapacity() {
-    return shelfCapacity;
-  }
-
-  public void setShelfCapacity(int shelfCapacity) {
-    // must have at least one shelf
-    if (shelfCapacity < 1) {
-      shelfCapacity = 1;
-    }
     this.shelfCapacity = shelfCapacity;
+    this.bookCapacity = bookCapacity;
   }
 
   public Long getBookcaseId() {
     return bookcaseId;
   }
 
-  public void setBookcaseId(Long bookCaseId) {
-    this.bookcaseId = bookCaseId;
-  }
-
-  public int getBookCapacity() {
-    return bookCapacity;
-  }
-
-  public void setBookCapacity(int bookCapacity) {
-    this.bookCapacity = bookCapacity;
-  }
-
-  public String getBookcaseLocation() {
-    return bookcaseLocation;
-  }
-
-  public void setBookcaseLocation(String bookcaseLocation) {
-    this.bookcaseLocation = bookcaseLocation;
-  }
-
-  public String getBookcaseIndex() {
-    return bookcaseIndex;
-  }
-
-  public void setBookcaseIndex(String bookcaseZoneIndex) {
-    this.bookcaseIndex = bookcaseZoneIndex;
+  public void setBookcaseId(Long bookcaseId) {
+    this.bookcaseId = bookcaseId;
   }
 
   public Long getUserId() {
@@ -85,11 +49,43 @@ public class BookcaseEntity {
     this.userId = userId;
   }
 
+  public String getBookcaseLocation() {
+    return bookcaseLocation;
+  }
+
+  public void setBookcaseLocation(String bookcaseLocation) {
+    this.bookcaseLocation = bookcaseLocation;
+  }
+
   public String getBookcaseZone() {
     return bookcaseZone;
   }
 
   public void setBookcaseZone(String bookcaseZone) {
     this.bookcaseZone = bookcaseZone;
+  }
+
+  public String getBookcaseIndex() {
+    return bookcaseIndex;
+  }
+
+  public void setBookcaseIndex(String bookcaseIndex) {
+    this.bookcaseIndex = bookcaseIndex;
+  }
+
+  public int getShelfCapacity() {
+    return shelfCapacity;
+  }
+
+  public void setShelfCapacity(int shelfCapacity) {
+    this.shelfCapacity = shelfCapacity;
+  }
+
+  public int getBookCapacity() {
+    return bookCapacity;
+  }
+
+  public void setBookCapacity(int bookCapacity) {
+    this.bookCapacity = bookCapacity;
   }
 }
