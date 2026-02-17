@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.registration.api.dtos;
+package com.penrose.bibby.identity.api.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

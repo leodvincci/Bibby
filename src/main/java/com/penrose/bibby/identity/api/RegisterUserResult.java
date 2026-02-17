@@ -1,3 +1,3 @@
-package com.penrose.bibby.library.registration.api.results;
+package com.penrose.bibby.identity.api;
 
 public record RegisterUserResult(Long userId, String email) {}

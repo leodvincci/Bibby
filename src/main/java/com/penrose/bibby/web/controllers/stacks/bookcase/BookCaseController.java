@@ -1,6 +1,6 @@
 package com.penrose.bibby.web.controllers.stacks.bookcase;
 
-import com.penrose.bibby.library.registration.infrastructure.AppUserImpl;
+import com.penrose.bibby.identity.infrastructure.AppUserImpl;
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.CreateBookcaseRequest;

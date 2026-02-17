@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.registration.core.application;
+package com.penrose.bibby.identity.core.application;
 
-import com.penrose.bibby.library.registration.api.RegisterUserCommand;
-import com.penrose.bibby.library.registration.api.RegisterUserResult;
-import com.penrose.bibby.library.registration.infrastructure.entity.AppUserEntity;
-import com.penrose.bibby.library.registration.infrastructure.mapping.AppUserMapper;
-import com.penrose.bibby.library.registration.infrastructure.repository.UserRegistrationJpaRepository;
+import com.penrose.bibby.identity.api.RegisterUserCommand;
+import com.penrose.bibby.identity.api.RegisterUserResult;
+import com.penrose.bibby.identity.infrastructure.entity.AppUserEntity;
+import com.penrose.bibby.identity.infrastructure.mapping.AppUserMapper;
+import com.penrose.bibby.identity.infrastructure.repository.UserRegistrationJpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

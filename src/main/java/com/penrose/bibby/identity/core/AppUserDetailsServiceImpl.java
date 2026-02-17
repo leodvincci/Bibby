@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.registration.core;
+package com.penrose.bibby.identity.core;
 
-import com.penrose.bibby.library.registration.infrastructure.AppUserImpl;
-import com.penrose.bibby.library.registration.infrastructure.entity.AppUserEntity;
-import com.penrose.bibby.library.registration.infrastructure.repository.UserRegistrationJpaRepository;
+import com.penrose.bibby.identity.infrastructure.AppUserImpl;
+import com.penrose.bibby.identity.infrastructure.entity.AppUserEntity;
+import com.penrose.bibby.identity.infrastructure.repository.UserRegistrationJpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
