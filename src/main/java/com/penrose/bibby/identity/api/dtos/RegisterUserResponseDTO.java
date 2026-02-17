@@ -1,3 +1,3 @@
-package com.penrose.bibby.library.registration.api.dtos;
+package com.penrose.bibby.identity.api.dtos;
 
 public record RegisterUserResponseDTO(Long userId, String email) {}

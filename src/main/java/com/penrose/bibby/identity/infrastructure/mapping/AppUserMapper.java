@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.registration.infrastructure.mapping;
+package com.penrose.bibby.identity.infrastructure.mapping;
 
-import com.penrose.bibby.library.registration.api.RegisterUserCommand;
-import com.penrose.bibby.library.registration.api.RegisterUserResult;
-import com.penrose.bibby.library.registration.api.dtos.RegisterUserRequestDTO;
-import com.penrose.bibby.library.registration.api.dtos.RegisterUserResponseDTO;
-import com.penrose.bibby.library.registration.infrastructure.entity.AppUserEntity;
+import com.penrose.bibby.identity.api.RegisterUserCommand;
+import com.penrose.bibby.identity.api.RegisterUserResult;
+import com.penrose.bibby.identity.api.dtos.RegisterUserRequestDTO;
+import com.penrose.bibby.identity.api.dtos.RegisterUserResponseDTO;
+import com.penrose.bibby.identity.infrastructure.entity.AppUserEntity;
 import jakarta.validation.Valid;
 
 public class AppUserMapper {

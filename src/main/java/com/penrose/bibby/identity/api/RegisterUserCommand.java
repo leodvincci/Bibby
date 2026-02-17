@@ -1,3 +1,3 @@
-package com.penrose.bibby.library.registration.api.commands;
+package com.penrose.bibby.identity.api;
 
 public record RegisterUserCommand(String email, String password) {}
