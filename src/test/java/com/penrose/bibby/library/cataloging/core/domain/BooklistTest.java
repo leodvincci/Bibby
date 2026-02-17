@@ -2,9 +2,10 @@ package com.penrose.bibby.library.cataloging.core.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BookIdentifier;
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistId;
-import com.penrose.bibby.library.cataloging.core.domain.valueobject.BooklistName;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.Booklist;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BookIdentifier;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistId;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistName;
 import java.time.Instant;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
