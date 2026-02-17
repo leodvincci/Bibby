@@ -29,14 +29,14 @@ public interface BookJpaRepository extends JpaRepository<BookEntity, Long> {
           """
         SELECT b.book_id, b.title,
                STRING_AGG(CONCAT(a.first_name, ' ', a.last_name), ', ') as authors,
-               bc.bookcase_label, s.shelf_label, b.availability_status
+               bc.bookcase_location, s.shelf_label, b.availability_status
         FROM books b
         JOIN book_authors ba ON b.book_id = ba.book_id
         JOIN authors a ON ba.author_id = a.author_id
         JOIN shelves s ON s.shelf_id = b.shelf_id
         JOIN bookcases bc ON bc.bookcase_id = s.bookcase_id
         WHERE b.book_id = :bookId
-        GROUP BY b.book_id, b.title, bc.bookcase_label, s.shelf_label, b.availability_status
+        GROUP BY b.book_id, b.title, bc.bookcase_location, s.shelf_label, b.availability_status
     """,
       nativeQuery = true)
   BookDetailView getBookDetailView(Long bookId);

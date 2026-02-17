@@ -100,7 +100,7 @@ public class PromptOptions {
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
     List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcasesByLocation(location);
     for (BookcaseDTO b : bookcaseDTOs) {
-      options.put(b.bookcaseLabel(), b.bookcaseId().toString());
+      options.put(b.location(), b.bookcaseId().toString());
     }
     return options;
   }
@@ -111,7 +111,7 @@ public class PromptOptions {
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
     List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
     for (BookcaseDTO b : bookcaseDTOs) {
-      options.put(b.bookcaseLabel(), b.bookcaseId().toString());
+      options.put(b.location(), b.bookcaseId().toString());
     }
     return options;
   }
@@ -159,7 +159,7 @@ public class PromptOptions {
   public String bookcaseRowFormater(BookcaseDTO bookcaseDTO, int bookCount) {
     return String.format(
         " %-20s \u001B[1m\u001B[38;5;63m%-2d\u001B[22m\u001B[38;5;15mShelves    \u001B[1m\u001B[38;5;63m%-3d\u001B[22m\u001B[38;5;15mBooks",
-        bookcaseDTO.bookcaseLabel().toUpperCase(), bookcaseDTO.shelfCapacity(), bookCount);
+        bookcaseDTO.location().toUpperCase(), bookcaseDTO.shelfCapacity(), bookCount);
   }
 
   public List<SelectItem> metaDataSelection() {

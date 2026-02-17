@@ -84,7 +84,7 @@ public class BookSearchCommands {
         Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
         Optional<BookcaseDTO> bookcaseDTO =
             bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
-        bookcaseLocation = bookcaseDTO.get().bookcaseLabel();
+        bookcaseLocation = bookcaseDTO.get().location();
         shelfLocation = shelfDTO.get().shelfLabel();
       }
       Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
@@ -140,7 +140,7 @@ public class BookSearchCommands {
               bookDTO.isbn(),
               authorFacade.findByBookId(bookDTO.id()).toString(),
               bookDTO.publisher(),
-              bookcaseDTO.get().bookcaseLabel(),
+              bookcaseDTO.get().location(),
               shelfDTO.get().shelfLabel(),
               bookcaseDTO.get().location());
       System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");

@@ -340,7 +340,7 @@ public class BookService {
 
     return new BookLocationResponse(
         bookcaseEntity.getBookcaseLocation(),
-        bookcaseEntity.getBookcaseLabel(),
+        bookcaseEntity.getBookcaseLocation(),
         shelf.shelfLabel());
   }
 }

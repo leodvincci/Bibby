@@ -56,7 +56,7 @@ public class BookCirculationCommands extends AbstractShellComponent {
     } else if (bookDTO.shelfId() != null) {
       Optional<ShelfDTO> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
       Optional<BookcaseDTO> bookcase = bookcaseFacade.findBookCaseById(shelf.get().bookcaseId());
-      bookcaseName = bookcase.get().bookcaseLabel();
+      bookcaseName = bookcase.get().location();
       shelfName = shelf.get().shelfLabel();
     }
     if (bookDTO.availabilityStatus().toString().equals("CHECKED_OUT")) {
@@ -132,7 +132,7 @@ public class BookCirculationCommands extends AbstractShellComponent {
       Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
       Optional<BookcaseDTO> bookcaseDTO =
           bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
-      bookcaseLabel = bookcaseDTO.get().bookcaseLabel();
+      bookcaseLabel = bookcaseDTO.get().location();
       bookshelfLabel = shelfDTO.get().shelfLabel();
     }
     Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());

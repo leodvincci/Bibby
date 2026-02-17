@@ -100,7 +100,7 @@ public class LibraryCommands {
               bookMetaDataResponse.isbn(),
               bookMetaDataResponse.authors().toString(),
               bookMetaDataResponse.publisher(),
-              bookcaseFacade.findBookCaseById(bookcaseId).get().bookcaseLabel(),
+              bookcaseFacade.findBookCaseById(bookcaseId).get().location(),
               shelfFacade.findShelfById(shelfId).get().shelfLabel(),
               bookcaseFacade.findBookCaseById(bookcaseId).get().location());
       System.out.println(updatedBookCard);
