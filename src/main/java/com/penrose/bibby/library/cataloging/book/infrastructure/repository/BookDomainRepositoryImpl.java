@@ -66,7 +66,11 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     log.info(authorEntities.toString());
     bookEntity.setAuthors(authorEntities);
     bookJpaRepository.save(bookEntity);
-    log.info("Registered new book with title: {} , ISBN: {} , and Publisher:{}", book.getTitle(), book.getIsbn(), book.getPublisher());
+    log.info(
+        "Registered new book with title: {} , ISBN: {} , and Publisher:{}",
+        book.getTitle(),
+        book.getIsbn(),
+        book.getPublisher());
   }
 
   @Override

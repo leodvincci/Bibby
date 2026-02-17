@@ -21,9 +21,7 @@ import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +40,6 @@ public class BookController {
   private final ShelfService shelfService;
   private final BookcaseService bookcaseService;
   private final AuthorFacade authorFacade;
-
 
   public BookController(
       BookService bookService,
@@ -162,7 +159,8 @@ public class BookController {
     }
 
     BookRequestDTO bookRequestDTO =
-        new BookRequestDTO(bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId(),bookDTO.publisher());
+        new BookRequestDTO(
+            bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId(), bookDTO.publisher());
     bookFacade.createNewBook(bookRequestDTO);
 
     System.out.println("Book added");
