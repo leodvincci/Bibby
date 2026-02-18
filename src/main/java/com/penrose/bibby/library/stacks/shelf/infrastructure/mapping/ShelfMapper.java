@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.shelf.infrastructure.mapping;
 
-import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import java.util.List;
