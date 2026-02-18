@@ -7,10 +7,11 @@ import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
-import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,37 +23,46 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ShelfService implements ShelfFacade {
 
-  ShelfJpaRepository shelfJpaRepository;
   BookJpaRepository bookJpaRepository;
   ShelfMapper shelfMapper;
+  ShelfDomainRepository shelfDomainRepository;
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
       ShelfMapper shelfMapper,
-      ShelfJpaRepository shelfJpaRepository,
-      BookJpaRepository bookJpaRepository) {
-    this.shelfJpaRepository = shelfJpaRepository;
+      BookJpaRepository bookJpaRepository,
+      ShelfDomainRepository shelfDomainRepository) {
     this.bookJpaRepository = bookJpaRepository;
     this.shelfMapper = shelfMapper;
+    this.shelfDomainRepository = shelfDomainRepository;
   }
 
-  public List<ShelfEntity> getAllShelves(Long bookCaseId) {
-    return shelfJpaRepository.findByBookcaseId(bookCaseId);
+  public List<ShelfDTO> getAllShelves(Long bookCaseId) {
+    return shelfDomainRepository.findByBookcaseId(bookCaseId).stream()
+        .map(
+            shelf -> {
+              Long bookcaseId =
+                  shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
+              return shelfMapper.toDTO(shelf, bookcaseId);
+            })
+        .collect(Collectors.toList());
   }
 
   @Transactional
   public Optional<ShelfDTO> findShelfById(Long shelfId) {
-    ShelfEntity shelfEntity = shelfJpaRepository.findById(shelfId).orElse(null);
-
-    List<BookEntity> bookEntities = bookJpaRepository.findByShelfId(shelfId);
-    List<Long> bookIds = bookEntities.stream().map(BookEntity::getBookId).toList();
-
-    return Optional.of(ShelfDTO.fromEntityWithBookId(shelfEntity, bookIds));
+    Shelf shelf = shelfDomainRepository.getById(new ShelfId(shelfId));
+    if (shelf == null) {
+      return Optional.empty();
+    }
+    Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelfId);
+    return Optional.of(shelfMapper.toDTO(shelf, bookcaseId));
   }
 
   public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
-    List<ShelfEntity> shelves = shelfJpaRepository.findByBookcaseId(bookcaseId);
-    return shelves.stream().map(ShelfDTO::fromEntity).collect(Collectors.toList());
+    List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
+    return shelves.stream()
+        .map(shelf -> shelfMapper.toDTO(shelf, bookcaseId))
+        .collect(Collectors.toList());
   }
 
   @Transactional
@@ -63,27 +73,23 @@ public class ShelfService implements ShelfFacade {
   }
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfJpaRepository.findShelfSummariesByBookcaseId(bookcaseId);
+    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId);
   }
 
   @Transactional
   @Override
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
-    List<ShelfEntity> shelves = shelfJpaRepository.findByBookcaseId(bookcaseId);
-    List<Long> shelfIds = shelves.stream().map(ShelfEntity::getShelfId).toList();
+    List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
+    List<Long> shelfIds = shelves.stream().map(shelf -> shelf.getShelfId().shelfId()).toList();
     bookJpaRepository.deleteByShelfIdIn(shelfIds);
     logger.info("Deleted {} shelves from bookcase with ID: {}", shelfIds.size(), bookcaseId);
-    shelfJpaRepository.deleteByBookcaseId(bookcaseId);
+    shelfDomainRepository.deleteByBookcaseId(bookcaseId);
     logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);
   }
 
   @Override
   public Boolean isFull(ShelfDTO shelfDTO) {
-    return shelfJpaRepository
-        .findById(shelfDTO.shelfId())
-        .map(shelfMapper::toDomain)
-        .map(Shelf::isFull)
-        .orElseThrow(() -> new RuntimeException("Shelf not found with ID: " + shelfDTO.shelfId()));
+    return shelfDomainRepository.findById(shelfDTO.shelfId()).isFull();
   }
 
   @Override
@@ -101,15 +107,12 @@ public class ShelfService implements ShelfFacade {
     if (position <= 0) {
       throw new IllegalArgumentException("Shelf position must be greater than 0");
     }
-
-    ShelfEntity shelfEntity =
-        shelfJpaRepository.save(new ShelfEntity(bookcaseId, position, shelfLabel, bookCapacity));
-    logger.info("Shelf created with ID: {} for bookcase: {}", shelfEntity.getShelfId(), bookcaseId);
+    shelfDomainRepository.save(bookcaseId, position, shelfLabel, bookCapacity);
   }
 
   public List<ShelfOptionResponse> getShelfOptions() {
-    return shelfJpaRepository.findAll().stream()
-        .map(this::toShelfOption)
+    return shelfDomainRepository.findAll().stream()
+        .map(shelf -> shelfMapper.toShelfOption(shelf))
         .collect(Collectors.toList());
   }
 
@@ -124,11 +127,10 @@ public class ShelfService implements ShelfFacade {
 
   @Override
   public List<ShelfDTO> getAllDTOShelves(Long bookcaseId) {
-    return getAllShelves(bookcaseId).stream().map(ShelfDTO::fromEntity).toList();
+    return getAllShelves(bookcaseId);
   }
 
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-    List<ShelfEntity> shelfEntities = shelfJpaRepository.getShelfEntitiesByBookcaseId(bookcaseId);
-    return shelfEntities.stream().map(this::toShelfOption).collect(Collectors.toList());
+    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
   }
 }
