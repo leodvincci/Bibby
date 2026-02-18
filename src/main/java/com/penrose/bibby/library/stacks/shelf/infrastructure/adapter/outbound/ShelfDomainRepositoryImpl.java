@@ -9,9 +9,8 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
-import org.slf4j.Logger;
-
 import java.util.List;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -59,18 +58,14 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
 
   @Override
   public List<Shelf> findByBookcaseId(Long bookCaseId) {
-    return jpaRepository
-        .findByBookcaseId(bookCaseId)
-        .stream()
-        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity) )
+    return jpaRepository.findByBookcaseId(bookCaseId).stream()
+        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
         .toList();
   }
 
   @Override
   public List<ShelfSummary> findShelfSummariesByBookcaseId(Long bookcaseId) {
-    return jpaRepository
-        .findByBookcaseId(bookcaseId)
-        .stream()
+    return jpaRepository.findByBookcaseId(bookcaseId).stream()
         .map(shelfEntity -> shelfMapper.toSummaryFromEntity(shelfEntity))
         .toList();
   }
@@ -84,7 +79,7 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
   @Override
   public Shelf findById(Long shelfId) {
     ShelfEntity entity = jpaRepository.findById(shelfId).orElse(null);
-    if(entity == null) {
+    if (entity == null) {
       throw new RuntimeException("Shelf not found with ID: " + shelfId);
     }
     return shelfMapper.toDomainFromEntity(entity);
@@ -92,23 +87,23 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
 
   @Override
   public List<ShelfOptionResponse> getShelfShelfOptionResponse(Long bookcaseId) {
-    return jpaRepository.findByBookcaseId(bookcaseId)
-        .stream()
-        .map(shelfEntity -> {
-          Long shelfId = shelfEntity.getShelfId();
-          String shelfLabel = shelfEntity.getShelfLabel();
-          int bookCapacity = shelfEntity.getBookCapacity();
-          long bookCount = bookAccessPort.getBookIdsByShelfId(shelfId).size();
-          boolean hasSpace = bookCount < bookCapacity;
-          return new ShelfOptionResponse(shelfId, shelfLabel, bookCapacity, bookCount, hasSpace);
-        })
+    return jpaRepository.findByBookcaseId(bookcaseId).stream()
+        .map(
+            shelfEntity -> {
+              Long shelfId = shelfEntity.getShelfId();
+              String shelfLabel = shelfEntity.getShelfLabel();
+              int bookCapacity = shelfEntity.getBookCapacity();
+              long bookCount = bookAccessPort.getBookIdsByShelfId(shelfId).size();
+              boolean hasSpace = bookCount < bookCapacity;
+              return new ShelfOptionResponse(
+                  shelfId, shelfLabel, bookCapacity, bookCount, hasSpace);
+            })
         .toList();
   }
 
   @Override
   public List<Shelf> findAll() {
-    return jpaRepository.findAll()
-        .stream()
+    return jpaRepository.findAll().stream()
         .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
         .toList();
   }

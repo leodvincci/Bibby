@@ -38,12 +38,13 @@ public class ShelfService implements ShelfFacade {
   }
 
   public List<ShelfDTO> getAllShelves(Long bookCaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookCaseId)
-        .stream()
-        .map(shelf -> {
-          Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
-          return shelfMapper.toDTO(shelf, bookcaseId);
-        })
+    return shelfDomainRepository.findByBookcaseId(bookCaseId).stream()
+        .map(
+            shelf -> {
+              Long bookcaseId =
+                  shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
+              return shelfMapper.toDTO(shelf, bookcaseId);
+            })
         .collect(Collectors.toList());
   }
 
@@ -59,7 +60,9 @@ public class ShelfService implements ShelfFacade {
 
   public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
     List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
-    return shelves.stream().map(shelf -> shelfMapper.toDTO(shelf,bookcaseId)).collect(Collectors.toList());
+    return shelves.stream()
+        .map(shelf -> shelfMapper.toDTO(shelf, bookcaseId))
+        .collect(Collectors.toList());
   }
 
   @Transactional
@@ -128,6 +131,6 @@ public class ShelfService implements ShelfFacade {
   }
 
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-      return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
+    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
   }
 }

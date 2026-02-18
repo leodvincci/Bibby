@@ -60,21 +60,17 @@ public class ShelfMapper {
   }
 
   public Shelf toDomainFromEntity(ShelfEntity shelfEntity) {
-      return new Shelf(
-          shelfEntity.getShelfLabel(),
-          shelfEntity.getShelfPosition(),
-          shelfEntity.getBookCapacity(),
-          new ShelfId(shelfEntity.getShelfId())
-      );
+    return new Shelf(
+        shelfEntity.getShelfLabel(),
+        shelfEntity.getShelfPosition(),
+        shelfEntity.getBookCapacity(),
+        new ShelfId(shelfEntity.getShelfId()));
   }
 
-    public ShelfSummary toSummaryFromEntity(ShelfEntity shelfEntity) {
-        return new ShelfSummary(
-                shelfEntity.getShelfId(),
-                shelfEntity.getShelfLabel(),
-                shelfEntity.getBookCapacity()
-        );
-    }
+  public ShelfSummary toSummaryFromEntity(ShelfEntity shelfEntity) {
+    return new ShelfSummary(
+        shelfEntity.getShelfId(), shelfEntity.getShelfLabel(), shelfEntity.getBookCapacity());
+  }
 
   public ShelfOptionResponse toShelfOption(Shelf shelf) {
     Long shelfId = shelf.getShelfId().shelfId();

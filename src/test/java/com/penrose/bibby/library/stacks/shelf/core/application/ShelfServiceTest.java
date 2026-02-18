@@ -1,7 +1,10 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
 import org.junit.jupiter.api.Test;
@@ -9,11 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.*;
 
 /**
  * Test class for {@link ShelfService}. Tests the business logic for managing shelves in the library
@@ -28,7 +26,9 @@ class ShelfServiceTest {
 
   @Mock private ShelfMapper shelfMapper;
 
-  @Mock private com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository shelfDomainRepository;
+  @Mock
+  private com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
+      shelfDomainRepository;
 
   @InjectMocks private ShelfService shelfService;
 
@@ -59,7 +59,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Book capacity cannot be negative");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -72,7 +73,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Book capacity cannot be negative");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -85,7 +87,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -98,7 +101,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -111,7 +115,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -124,7 +129,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf position must be greater than 0");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -137,7 +143,8 @@ class ShelfServiceTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf position must be greater than 0");
 
-    verify(shelfDomainRepository, never()).save(any(), any(Integer.class), any(), any(Integer.class));
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
   }
 
   /**
@@ -183,8 +190,7 @@ class ShelfServiceTest {
 
     com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
         mockShelfDomainRepository =
-            mock(
-                com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
     when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
         .thenReturn(java.util.List.of(shelf1, shelf2));
     when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
@@ -222,10 +228,8 @@ class ShelfServiceTest {
 
     com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
         mockShelfDomainRepository =
-            mock(
-                com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
-    when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
-        .thenReturn(java.util.List.of());
+            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+    when(mockShelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(java.util.List.of());
 
     ShelfService service =
         new ShelfService(shelfMapper, bookJpaRepository, mockShelfDomainRepository);
@@ -254,8 +258,7 @@ class ShelfServiceTest {
 
     com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
         mockShelfDomainRepository =
-            mock(
-                com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
     when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
         .thenReturn(java.util.List.of(shelf));
     when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
