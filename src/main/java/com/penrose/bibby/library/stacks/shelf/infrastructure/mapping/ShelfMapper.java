@@ -1,5 +1,8 @@
 package com.penrose.bibby.library.stacks.shelf.infrastructure.mapping;
 
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
@@ -34,6 +37,52 @@ public class ShelfMapper {
     shelf.setShelfPosition(entity.getShelfPosition());
     shelf.setBooks(bookIds);
     return shelf;
+  }
+
+  public ShelfDTO toDTO(Shelf shelf, Long bookcaseId) {
+    return new ShelfDTO(
+        shelf.getId(),
+        shelf.getShelfLabel(),
+        bookcaseId,
+        shelf.getShelfPosition(),
+        shelf.getBookCapacity(),
+        shelf.getBookIds());
+  }
+
+  public ShelfDTO toDTOFromEntity(ShelfEntity shelfEntity, List<Long> bookIds) {
+    return new ShelfDTO(
+        shelfEntity.getShelfId(),
+        shelfEntity.getShelfLabel(),
+        shelfEntity.getBookcaseId(),
+        shelfEntity.getShelfPosition(),
+        shelfEntity.getBookCapacity(),
+        bookIds);
+  }
+
+  public Shelf toDomainFromEntity(ShelfEntity shelfEntity) {
+      return new Shelf(
+          shelfEntity.getShelfLabel(),
+          shelfEntity.getShelfPosition(),
+          shelfEntity.getBookCapacity(),
+          new ShelfId(shelfEntity.getShelfId())
+      );
+  }
+
+    public ShelfSummary toSummaryFromEntity(ShelfEntity shelfEntity) {
+        return new ShelfSummary(
+                shelfEntity.getShelfId(),
+                shelfEntity.getShelfLabel(),
+                shelfEntity.getBookCapacity()
+        );
+    }
+
+  public ShelfOptionResponse toShelfOption(Shelf shelf) {
+    Long shelfId = shelf.getShelfId().shelfId();
+    String shelfLabel = shelf.getShelfLabel();
+    int bookCapacity = shelf.getBookCapacity();
+    long bookCount = shelf.getBookIds().size();
+    boolean hasSpace = bookCount < bookCapacity;
+    return new ShelfOptionResponse(shelfId, shelfLabel, bookCapacity, bookCount, hasSpace);
   }
 
   //    public Shelf toDomain(ShelfEntity shelfEntity) {
