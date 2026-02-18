@@ -2,13 +2,13 @@ package com.penrose.bibby.library.stacks.shelf.core.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,9 @@ class ShelfServiceTest {
 
   @Mock private ShelfJpaRepository shelfJpaRepository;
 
-  @Mock private BookcaseFacade bookcaseFacade;
+  @Mock private BookJpaRepository bookJpaRepository;
+
+  @Mock private ShelfMapper shelfMapper;
 
   @InjectMocks private ShelfService shelfService;
 
@@ -39,9 +41,6 @@ class ShelfServiceTest {
     String shelfLabel = "Shelf A";
     int bookCapacity = 10;
 
-    BookcaseEntity bookcaseEntity = new BookcaseEntity(1L, "Living Room", "A", "1", 5, 50);
-    bookcaseEntity.setBookcaseId(bookcaseId);
-
     ShelfEntity savedShelfEntity = new ShelfEntity();
     savedShelfEntity.setShelfId(1L);
     savedShelfEntity.setBookcaseId(bookcaseId);
@@ -49,28 +48,28 @@ class ShelfServiceTest {
     savedShelfEntity.setShelfLabel(shelfLabel);
     savedShelfEntity.setBookCapacity(bookCapacity);
 
-    when(bookcaseFacade.findById(bookcaseId)).thenReturn(Optional.of(bookcaseEntity));
     when(shelfJpaRepository.save(any(ShelfEntity.class))).thenReturn(savedShelfEntity);
 
     shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity);
 
-    verify(bookcaseFacade).findById(bookcaseId);
-    verify(shelfJpaRepository).save(any(ShelfEntity.class));
+    verify(shelfJpaRepository)
+        .save(
+            argThat(
+                shelf ->
+                    shelf.getBookcaseId().equals(bookcaseId)
+                        && shelf.getShelfPosition() == position
+                        && shelf.getShelfLabel().equals(shelfLabel)
+                        && shelf.getBookCapacity() == bookCapacity));
   }
 
   /**
    * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that an
-   * IllegalArgumentException is thrown when book capacity is zero.
+   * IllegalArgumentException is thrown when book capacity is zero (business rule: capacity must be
+   * at least 1).
    */
   @Test
   void createShelf_shouldThrowExceptionWhenBookCapacityIsZero() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = 0;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 1, "Shelf A", 0))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Book capacity cannot be negative");
 
@@ -83,13 +82,7 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldThrowExceptionWhenBookCapacityIsNegative() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = -5;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 1, "Shelf A", -5))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Book capacity cannot be negative");
 
@@ -102,13 +95,7 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldThrowExceptionWhenShelfLabelIsNull() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = null;
-    int bookCapacity = 10;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 1, null, 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
@@ -121,13 +108,7 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldThrowExceptionWhenShelfLabelIsBlank() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = "   ";
-    int bookCapacity = 10;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 1, "   ", 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
@@ -140,13 +121,7 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldThrowExceptionWhenShelfLabelIsEmpty() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = "";
-    int bookCapacity = 10;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 1, "", 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
@@ -159,38 +134,10 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldThrowExceptionWhenPositionIsNegative() {
-    Long bookcaseId = 100L;
-    int position = -1;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = 10;
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
+    assertThatThrownBy(() -> shelfService.createShelf(100L, -1, "Shelf A", 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf position cannot be negative");
 
-    verify(shelfJpaRepository, never()).save(any(ShelfEntity.class));
-  }
-
-  /**
-   * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that an
-   * IllegalArgumentException is thrown when bookcase does not exist.
-   */
-  @Test
-  void createShelf_shouldThrowExceptionWhenBookcaseDoesNotExist() {
-    Long bookcaseId = 999L;
-    int position = 1;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = 10;
-
-    when(bookcaseFacade.findById(bookcaseId)).thenReturn(Optional.empty());
-
-    assertThatThrownBy(
-            () -> shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Bookcase with ID: " + bookcaseId + " does not exist");
-
-    verify(bookcaseFacade).findById(bookcaseId);
     verify(shelfJpaRepository, never()).save(any(ShelfEntity.class));
   }
 
@@ -200,28 +147,14 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldCreateShelfWithPositionZero() {
-    Long bookcaseId = 100L;
-    int position = 0;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = 10;
+    when(shelfJpaRepository.save(any(ShelfEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
 
-    BookcaseEntity bookcaseEntity = new BookcaseEntity(1L, "Living Room", "A", "1", 5, 50);
-    bookcaseEntity.setBookcaseId(bookcaseId);
+    shelfService.createShelf(100L, 0, "Shelf A", 10);
 
-    ShelfEntity savedShelfEntity = new ShelfEntity();
-    savedShelfEntity.setShelfId(1L);
-    savedShelfEntity.setBookcaseId(bookcaseId);
-    savedShelfEntity.setShelfPosition(position);
-    savedShelfEntity.setShelfLabel(shelfLabel);
-    savedShelfEntity.setBookCapacity(bookCapacity);
-
-    when(bookcaseFacade.findById(bookcaseId)).thenReturn(Optional.of(bookcaseEntity));
-    when(shelfJpaRepository.save(any(ShelfEntity.class))).thenReturn(savedShelfEntity);
-
-    shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity);
-
-    verify(bookcaseFacade).findById(bookcaseId);
-    verify(shelfJpaRepository).save(any(ShelfEntity.class));
+    verify(shelfJpaRepository)
+        .save(
+            argThat(shelf -> shelf.getShelfPosition() == 0 && shelf.getBookcaseId().equals(100L)));
   }
 
   /**
@@ -230,28 +163,12 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldCreateShelfWithMinimumBookCapacity() {
-    Long bookcaseId = 100L;
-    int position = 1;
-    String shelfLabel = "Shelf A";
-    int bookCapacity = 1;
+    when(shelfJpaRepository.save(any(ShelfEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
 
-    BookcaseEntity bookcaseEntity = new BookcaseEntity(1L, "Living Room", "A", "1", 5, 50);
-    bookcaseEntity.setBookcaseId(bookcaseId);
+    shelfService.createShelf(100L, 1, "Shelf A", 1);
 
-    ShelfEntity savedShelfEntity = new ShelfEntity();
-    savedShelfEntity.setShelfId(1L);
-    savedShelfEntity.setBookcaseId(bookcaseId);
-    savedShelfEntity.setShelfPosition(position);
-    savedShelfEntity.setShelfLabel(shelfLabel);
-    savedShelfEntity.setBookCapacity(bookCapacity);
-
-    when(bookcaseFacade.findById(bookcaseId)).thenReturn(Optional.of(bookcaseEntity));
-    when(shelfJpaRepository.save(any(ShelfEntity.class))).thenReturn(savedShelfEntity);
-
-    shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity);
-
-    verify(bookcaseFacade).findById(bookcaseId);
-    verify(shelfJpaRepository).save(any(ShelfEntity.class));
+    verify(shelfJpaRepository).save(argThat(shelf -> shelf.getBookCapacity() == 1));
   }
 
   /**
@@ -260,27 +177,17 @@ class ShelfServiceTest {
    */
   @Test
   void createShelf_shouldCreateShelfWithLargeBookCapacity() {
-    Long bookcaseId = 100L;
-    int position = 5;
-    String shelfLabel = "Shelf Z";
-    int bookCapacity = 1000;
+    when(shelfJpaRepository.save(any(ShelfEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
 
-    BookcaseEntity bookcaseEntity = new BookcaseEntity(1L, "Library", "E", "5", 10, 10000);
-    bookcaseEntity.setBookcaseId(bookcaseId);
+    shelfService.createShelf(100L, 5, "Shelf Z", 1000);
 
-    ShelfEntity savedShelfEntity = new ShelfEntity();
-    savedShelfEntity.setShelfId(1L);
-    savedShelfEntity.setBookcaseId(bookcaseId);
-    savedShelfEntity.setShelfPosition(position);
-    savedShelfEntity.setShelfLabel(shelfLabel);
-    savedShelfEntity.setBookCapacity(bookCapacity);
-
-    when(bookcaseFacade.findById(bookcaseId)).thenReturn(Optional.of(bookcaseEntity));
-    when(shelfJpaRepository.save(any(ShelfEntity.class))).thenReturn(savedShelfEntity);
-
-    shelfService.createShelf(bookcaseId, position, shelfLabel, bookCapacity);
-
-    verify(bookcaseFacade).findById(bookcaseId);
-    verify(shelfJpaRepository).save(any(ShelfEntity.class));
+    verify(shelfJpaRepository)
+        .save(
+            argThat(
+                shelf ->
+                    shelf.getBookCapacity() == 1000
+                        && shelf.getShelfPosition() == 5
+                        && shelf.getShelfLabel().equals("Shelf Z")));
   }
 }

@@ -117,15 +117,11 @@ public class ShelfService implements ShelfFacade {
 
   private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
     long bookCount = bookJpaRepository.countByShelfId(shelf.getShelfId());
-//    BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
-//    String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLocation() : "Unknown Case";
+    //    BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
+    //    String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLocation() : "Unknown Case";
     boolean hasSpace = bookCount < shelf.getBookCapacity();
     return new ShelfOptionResponse(
-        shelf.getShelfId(),
-        shelf.getShelfLabel(),
-        shelf.getBookCapacity(),
-        bookCount,
-        hasSpace);
+        shelf.getShelfId(), shelf.getShelfLabel(), shelf.getBookCapacity(), bookCount, hasSpace);
   }
 
   @Override
