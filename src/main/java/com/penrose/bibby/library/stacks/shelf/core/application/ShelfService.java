@@ -3,14 +3,11 @@ package com.penrose.bibby.library.stacks.shelf.core.application;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -25,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ShelfService implements ShelfFacade {
 
-  private final BookcaseFacade bookcaseFacade;
   ShelfJpaRepository shelfJpaRepository;
   BookJpaRepository bookJpaRepository;
   ShelfMapper shelfMapper;
@@ -34,12 +30,10 @@ public class ShelfService implements ShelfFacade {
   public ShelfService(
       ShelfMapper shelfMapper,
       ShelfJpaRepository shelfJpaRepository,
-      BookJpaRepository bookJpaRepository,
-      BookcaseFacade bookcaseFacade) {
+      BookJpaRepository bookJpaRepository) {
     this.shelfJpaRepository = shelfJpaRepository;
     this.bookJpaRepository = bookJpaRepository;
     this.shelfMapper = shelfMapper;
-    this.bookcaseFacade = bookcaseFacade;
   }
 
   public List<ShelfEntity> getAllShelves(Long bookCaseId) {
@@ -83,14 +77,6 @@ public class ShelfService implements ShelfFacade {
     logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);
   }
 
-  public Shelf mapToDomain(ShelfDTO shelfDTO) {
-    return new Shelf(
-        shelfDTO.shelfLabel(),
-        shelfDTO.shelfPosition(),
-        shelfDTO.bookCapacity(),
-        new ShelfId(shelfDTO.shelfId()));
-  }
-
   @Override
   public Boolean isFull(ShelfDTO shelfDTO) {
     return shelfJpaRepository
@@ -98,6 +84,29 @@ public class ShelfService implements ShelfFacade {
         .map(shelfMapper::toDomain)
         .map(Shelf::isFull)
         .orElseThrow(() -> new RuntimeException("Shelf not found with ID: " + shelfDTO.shelfId()));
+  }
+
+  @Override
+  public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
+    if (bookCapacity <= 0) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    } else if (shelfLabel == null || shelfLabel.isBlank()) {
+      throw new IllegalArgumentException("Shelf label cannot be null or blank");
+    } else if (position < 0) {
+      throw new IllegalArgumentException("Shelf position cannot be negative");
+    }
+
+    ShelfEntity shelfEntity =
+        shelfJpaRepository.save(
+            new ShelfEntity() {
+              {
+                setBookcaseId(bookcaseId);
+                setShelfPosition(position);
+                setShelfLabel(shelfLabel);
+                setBookCapacity(bookCapacity);
+              }
+            });
+    logger.info("Shelf created with ID: {} for bookcase: {}", shelfEntity.getShelfId(), bookcaseId);
   }
 
   public List<ShelfOptionResponse> getShelfOptions() {
@@ -108,16 +117,11 @@ public class ShelfService implements ShelfFacade {
 
   private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
     long bookCount = bookJpaRepository.countByShelfId(shelf.getShelfId());
-    BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
-    String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLocation() : "Unknown Case";
+    //    BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
+    //    String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLocation() : "Unknown Case";
     boolean hasSpace = bookCount < shelf.getBookCapacity();
     return new ShelfOptionResponse(
-        shelf.getShelfId(),
-        shelf.getShelfLabel(),
-        bookcaseLabel,
-        shelf.getBookCapacity(),
-        bookCount,
-        hasSpace);
+        shelf.getShelfId(), shelf.getShelfLabel(), shelf.getBookCapacity(), bookCount, hasSpace);
   }
 
   @Override

@@ -111,7 +111,7 @@ public class BookcaseService {
 
 ```java
 
-import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfFactory;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfFactory;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
 
 public class BookcaseService {
@@ -120,7 +120,7 @@ public class BookcaseService {
     private final BookcaseRepository bookcaseRepository;
     private final ShelfJpaRepository shelfRepository;
 
-    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfJpaRepository shelfRepository, ShelfFactory shelfFactory) {
+    public BookcaseService(BookcaseRepository bookcaseRepository, ShelfJpaRepository shelfRepository, com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfFactory shelfFactory) {
         this.bookcaseRepository = bookcaseRepository;
         this.shelfRepository = shelfRepository;
         this.shelfFactory = shelfFactory;
@@ -216,7 +216,7 @@ package com.penrose.bibby.library.bookcase;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfFactory;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

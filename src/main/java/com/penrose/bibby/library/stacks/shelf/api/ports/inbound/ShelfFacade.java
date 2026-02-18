@@ -21,4 +21,6 @@ public interface ShelfFacade {
   void deleteAllShelvesInBookcase(Long bookcaseId);
 
   Boolean isFull(ShelfDTO shelfDTO);
+
+  void createShelf(Long bookcaseId, int position, String s, int bookCapacity);
 }

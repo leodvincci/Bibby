@@ -6,8 +6,7 @@ import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacad
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfFactory;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -18,23 +17,20 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class BookcaseService implements BookcaseFacade {
-  private final ShelfFactory shelfFactory;
   private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
   private final BookcaseRepository bookcaseRepository;
   private final ResponseStatusException existingRecordError =
       new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
-  private final ShelfJpaRepository shelfJpaRepository;
   private final BookcaseJpaRepository bookcaseJpaRepository;
+  private final ShelfFacade shelfFacade;
 
   public BookcaseService(
       BookcaseRepository bookcaseRepository,
-      ShelfJpaRepository shelfJpaRepository,
-      ShelfFactory shelfFactory,
-      BookcaseJpaRepository bookcaseJpaRepository) {
+      BookcaseJpaRepository bookcaseJpaRepository,
+      ShelfFacade shelfFacade) {
     this.bookcaseRepository = bookcaseRepository;
-    this.shelfJpaRepository = shelfJpaRepository;
-    this.shelfFactory = shelfFactory;
     this.bookcaseJpaRepository = bookcaseJpaRepository;
+    this.shelfFacade = shelfFacade;
   }
 
   public CreateBookcaseResult createNewBookCase(
@@ -119,9 +115,19 @@ public class BookcaseService implements BookcaseFacade {
   }
 
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
-    shelfJpaRepository.save(
-        shelfFactory.createEntity(
-            bookcaseEntity.getBookcaseId(), position, "Shelf " + label, bookCapacity));
+    if (bookCapacity <= 0) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    } else if (bookcaseEntity == null) {
+      throw new NullPointerException("Bookcase cannot be null");
+    } else if (position <= 0 || position > bookcaseEntity.getShelfCapacity()) {
+      throw new IllegalArgumentException(
+          "Position must be between 1 and " + bookcaseEntity.getShelfCapacity());
+    } else if (label <= 0) {
+      throw new IllegalArgumentException("Label must be a positive integer");
+    }
+
+    shelfFacade.createShelf(
+        bookcaseEntity.getBookcaseId(), position, "Shelf " + label, bookCapacity);
   }
 
   public List<BookcaseDTO> getAllBookcases() {
