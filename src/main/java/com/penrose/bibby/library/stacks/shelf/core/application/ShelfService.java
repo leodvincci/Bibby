@@ -10,7 +10,6 @@ import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -83,14 +82,6 @@ public class ShelfService implements ShelfFacade {
     logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);
   }
 
-  public Shelf mapToDomain(ShelfDTO shelfDTO) {
-    return new Shelf(
-        shelfDTO.shelfLabel(),
-        shelfDTO.shelfPosition(),
-        shelfDTO.bookCapacity(),
-        new ShelfId(shelfDTO.shelfId()));
-  }
-
   @Override
   public Boolean isFull(ShelfDTO shelfDTO) {
     return shelfJpaRepository
@@ -98,6 +89,31 @@ public class ShelfService implements ShelfFacade {
         .map(shelfMapper::toDomain)
         .map(Shelf::isFull)
         .orElseThrow(() -> new RuntimeException("Shelf not found with ID: " + shelfDTO.shelfId()));
+  }
+
+  @Override
+  public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
+    if (bookCapacity <= 0) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    } else if (shelfLabel == null || shelfLabel.isBlank()) {
+      throw new IllegalArgumentException("Shelf label cannot be null or blank");
+    } else if (position < 0) {
+      throw new IllegalArgumentException("Shelf position cannot be negative");
+    } else if (!bookcaseFacade.findById(bookcaseId).isPresent()) {
+      throw new IllegalArgumentException("Bookcase with ID: " + bookcaseId + " does not exist");
+    }
+
+    ShelfEntity shelfEntity =
+        shelfJpaRepository.save(
+            new ShelfEntity() {
+              {
+                setBookcaseId(bookcaseId);
+                setShelfPosition(position);
+                setShelfLabel(shelfLabel);
+                setBookCapacity(bookCapacity);
+              }
+            });
+    logger.info("Shelf created with ID: {} for bookcase: {}", shelfEntity.getShelfId(), bookcaseId);
   }
 
   public List<ShelfOptionResponse> getShelfOptions() {

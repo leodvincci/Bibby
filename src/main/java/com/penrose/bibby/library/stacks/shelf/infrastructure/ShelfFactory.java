@@ -14,4 +14,5 @@ public class ShelfFactory {
         shelfEntity.setBookCapacity(bookCapacity);
         return shelfEntity;
     }
+
 }

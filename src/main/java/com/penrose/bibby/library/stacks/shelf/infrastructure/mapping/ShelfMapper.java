@@ -12,11 +12,12 @@ public class ShelfMapper {
   public ShelfMapper() {}
 
   public Shelf toDomain(ShelfEntity shelfEntity) {
-    Shelf shelf = new Shelf();
-    shelf.setShelfId(new ShelfId(shelfEntity.getShelfId()));
-    shelf.setBookCapacity(shelfEntity.getBookCapacity());
-    shelf.setLabel(shelfEntity.getShelfLabel());
-    shelf.setShelfPosition(shelfEntity.getShelfPosition());
+    Shelf shelf =
+        new Shelf(
+            shelfEntity.getShelfLabel(),
+            shelfEntity.getShelfPosition(),
+            shelfEntity.getBookCapacity(),
+            new ShelfId(shelfEntity.getShelfId()));
     shelf.setShelfDescription(shelfEntity.getShelfDescription());
     return shelf;
   }
@@ -24,11 +25,6 @@ public class ShelfMapper {
   public ShelfEntity toEntity(Shelf shelf) {
 
     return null;
-  }
-
-  public ShelfEntity updateEntity(ShelfEntity shelf) {
-
-    return shelf;
   }
 
   public Shelf toDomainFromDTO(ShelfEntity entity, List<Long> bookIds) {
