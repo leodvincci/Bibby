@@ -136,7 +136,7 @@ class ShelfServiceTest {
   void createShelf_shouldThrowExceptionWhenPositionIsNegative() {
     assertThatThrownBy(() -> shelfService.createShelf(100L, -1, "Shelf A", 10))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Shelf position cannot be negative");
+        .hasMessage("Shelf position must be greater than 0");
 
     verify(shelfJpaRepository, never()).save(any(ShelfEntity.class));
   }
@@ -146,15 +146,12 @@ class ShelfServiceTest {
    * shelf is created with position zero (edge case).
    */
   @Test
-  void createShelf_shouldCreateShelfWithPositionZero() {
-    when(shelfJpaRepository.save(any(ShelfEntity.class)))
-        .thenAnswer(invocation -> invocation.getArgument(0));
+  void createShelf_shouldNotCreateShelfWithPositionZero() {
+    assertThatThrownBy(() -> shelfService.createShelf(100L, 0, "Shelf A", 10))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Shelf position must be greater than 0");
 
-    shelfService.createShelf(100L, 0, "Shelf A", 10);
-
-    verify(shelfJpaRepository)
-        .save(
-            argThat(shelf -> shelf.getShelfPosition() == 0 && shelf.getBookcaseId().equals(100L)));
+    verify(shelfJpaRepository, never()).save(any(ShelfEntity.class));
   }
 
   /**
