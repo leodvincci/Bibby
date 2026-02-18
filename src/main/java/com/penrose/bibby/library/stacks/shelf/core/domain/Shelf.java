@@ -16,6 +16,16 @@ public class Shelf {
 
   // Constructor
   public Shelf(String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId) {
+    if (shelfLabel == null || shelfLabel.isBlank()) {
+      throw new IllegalArgumentException("Shelf label cannot be null or blank");
+    }
+    if (shelfPosition < 1) {
+      throw new IllegalArgumentException("Shelf position must be greater than 0");
+    }
+    if (bookCapacity < 1) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    }
+
     this.shelfLabel = shelfLabel;
     this.shelfPosition = shelfPosition;
     this.bookCapacity = bookCapacity;
@@ -52,14 +62,6 @@ public class Shelf {
     this.shelfLabel = shelfLabel;
   }
 
-  public String getLabel() {
-    return shelfLabel;
-  }
-
-  public void setLabel(String label) {
-    this.shelfLabel = label;
-  }
-
   public String getShelfDescription() {
     return shelfDescription;
   }
@@ -90,10 +92,6 @@ public class Shelf {
 
   public void setBookIds(List<Long> bookIds) {
     this.bookIds = bookIds;
-  }
-
-  public List<Long> getBooks() {
-    return bookIds;
   }
 
   public void setBooks(List<Long> books) {
