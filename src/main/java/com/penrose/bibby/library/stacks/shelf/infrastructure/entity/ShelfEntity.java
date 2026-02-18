@@ -18,27 +18,10 @@ public class ShelfEntity {
   private Long bookcaseId;
   private int shelfPosition;
   private int bookCapacity;
-  private String shelfDescription;
 
   public ShelfEntity() {}
 
   public ShelfEntity(Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity) {
-    if (shelfLabel == null || shelfLabel.isBlank()) {
-      throw new IllegalArgumentException("Shelf label cannot be null or blank");
-    }
-    if (shelfPosition < 1) {
-      throw new IllegalArgumentException("Shelf position must be greater than 0");
-    }
-    if (bookCapacity < 1) {
-      throw new IllegalArgumentException("Book capacity cannot be negative");
-    }
-    if (bookcaseId == null) {
-      throw new IllegalArgumentException("Bookcase ID cannot be null");
-    }
-    if (bookcaseId < 1) {
-      throw new IllegalArgumentException("Bookcase ID must be greater than 0");
-    }
-
     this.bookcaseId = bookcaseId;
     this.shelfPosition = shelfPosition;
     this.shelfLabel = shelfLabel;
@@ -50,9 +33,6 @@ public class ShelfEntity {
   }
 
   public void setBookcaseId(Long bookCaseLabel) {
-    if (bookCaseLabel < 1) {
-      throw new IllegalArgumentException("Bookcase ID must be greater than 0");
-    }
     this.bookcaseId = bookCaseLabel;
   }
 
@@ -78,9 +58,6 @@ public class ShelfEntity {
   }
 
   public void setShelfPosition(int shelfPosition) {
-    if (shelfPosition < 1) {
-      throw new IllegalArgumentException("Shelf position must be greater than 0");
-    }
     this.shelfPosition = shelfPosition;
   }
 
@@ -89,17 +66,6 @@ public class ShelfEntity {
   }
 
   public void setBookCapacity(int shelfCapacity) {
-    if (shelfCapacity < 1) {
-      throw new IllegalArgumentException("Book capacity cannot be negative");
-    }
     this.bookCapacity = shelfCapacity;
-  }
-
-  public String getShelfDescription() {
-    return shelfDescription;
-  }
-
-  public void setShelfDescription(String shelfDescription) {
-    this.shelfDescription = shelfDescription;
   }
 }

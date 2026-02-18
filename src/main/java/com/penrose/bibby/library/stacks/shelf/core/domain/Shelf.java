@@ -4,17 +4,13 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import java.util.List;
 
 public class Shelf {
-  // Fields
+
   private ShelfId shelfId;
-  // todo: remove shelfLabel
   private String shelfLabel;
-  // todo: remove shelfDescription
-  private String shelfDescription;
   private int shelfPosition;
   private int bookCapacity;
   private List<Long> bookIds;
 
-  // Constructor
   public Shelf(String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId) {
     if (shelfLabel == null || shelfLabel.isBlank()) {
       throw new IllegalArgumentException("Shelf label cannot be null or blank");
@@ -32,7 +28,6 @@ public class Shelf {
     this.shelfId = shelfId;
   }
 
-  // Business Logic Methods
   public boolean isFull() {
     return bookIds != null && bookIds.size() >= bookCapacity;
   }
@@ -41,7 +36,6 @@ public class Shelf {
     return bookIds.size();
   }
 
-  // Getters and Setters
   public ShelfId getShelfId() {
     return shelfId;
   }
@@ -62,19 +56,14 @@ public class Shelf {
     this.shelfLabel = shelfLabel;
   }
 
-  public String getShelfDescription() {
-    return shelfDescription;
-  }
-
-  public void setShelfDescription(String shelfDescription) {
-    this.shelfDescription = shelfDescription;
-  }
-
   public int getShelfPosition() {
     return shelfPosition;
   }
 
   public void setShelfPosition(int shelfPosition) {
+    if (shelfPosition < 1) {
+      throw new IllegalArgumentException("Shelf position must be greater than 0");
+    }
     this.shelfPosition = shelfPosition;
   }
 
@@ -83,6 +72,9 @@ public class Shelf {
   }
 
   public void setBookCapacity(int bookCapacity) {
+    if (bookCapacity < 1) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    }
     this.bookCapacity = bookCapacity;
   }
 
@@ -98,7 +90,6 @@ public class Shelf {
     this.bookIds = books;
   }
 
-  // Object Methods
   @Override
   public String toString() {
     return "Shelf{"
@@ -108,7 +99,6 @@ public class Shelf {
         + shelfLabel
         + '\''
         + ", shelfDescription='"
-        + shelfDescription
         + '\''
         + ", shelfPosition="
         + shelfPosition
