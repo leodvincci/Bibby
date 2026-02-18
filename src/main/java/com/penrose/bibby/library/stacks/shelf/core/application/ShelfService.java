@@ -88,6 +88,20 @@ public class ShelfService implements ShelfFacade {
 
   @Override
   public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
+    if (bookCapacity <= 0) {
+      throw new IllegalArgumentException("Book capacity cannot be negative");
+    }
+    if (shelfLabel == null || shelfLabel.isBlank()) {
+      throw new IllegalArgumentException("Shelf label cannot be null or blank");
+    }
+    if (bookcaseId == null) {
+      throw new IllegalArgumentException("Bookcase ID cannot be null");
+    }
+
+    if (position <= 0) {
+      throw new IllegalArgumentException("Shelf position must be greater than 0");
+    }
+
     ShelfEntity shelfEntity =
         shelfJpaRepository.save(new ShelfEntity(bookcaseId, position, shelfLabel, bookCapacity));
     logger.info("Shelf created with ID: {} for bookcase: {}", shelfEntity.getShelfId(), bookcaseId);

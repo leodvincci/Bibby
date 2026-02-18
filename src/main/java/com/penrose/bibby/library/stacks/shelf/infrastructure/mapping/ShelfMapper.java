@@ -18,7 +18,6 @@ public class ShelfMapper {
             shelfEntity.getShelfPosition(),
             shelfEntity.getBookCapacity(),
             new ShelfId(shelfEntity.getShelfId()));
-    shelf.setShelfDescription(shelfEntity.getShelfDescription());
     return shelf;
   }
 

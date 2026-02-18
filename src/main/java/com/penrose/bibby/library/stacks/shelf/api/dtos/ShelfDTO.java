@@ -9,7 +9,6 @@ public record ShelfDTO(
     Long bookcaseId,
     int shelfPosition,
     int bookCapacity,
-    String shelfDescription,
     List<Long> bookIds) {
   public static ShelfDTO fromEntity(ShelfEntity shelfEntity) {
     return new ShelfDTO(
@@ -18,7 +17,6 @@ public record ShelfDTO(
         shelfEntity.getBookcaseId(),
         shelfEntity.getShelfPosition(),
         shelfEntity.getBookCapacity(),
-        shelfEntity.getShelfDescription(),
         null);
   }
 
@@ -29,7 +27,6 @@ public record ShelfDTO(
         shelfEntity.getBookcaseId(),
         shelfEntity.getShelfPosition(),
         shelfEntity.getBookCapacity(),
-        shelfEntity.getShelfDescription(),
         bookIds);
   }
 }
