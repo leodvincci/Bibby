@@ -1,7 +1,5 @@
-package com.penrose.bibby.library.stacks.shelf.core.domain;
+package com.penrose.bibby.library.stacks.shelf.core.ports.outbound;
 
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import java.util.List;
@@ -16,13 +14,13 @@ public interface ShelfDomainRepository {
 
   List<Shelf> findByBookcaseId(Long bookCaseId);
 
-  List<ShelfSummary> findShelfSummariesByBookcaseId(Long bookcaseId);
+  List<Shelf> findShelfSummariesByBookcaseId(Long bookcaseId);
 
   void deleteByBookcaseId(Long bookcaseId);
 
   Shelf findById(Long shelfId);
 
-  List<ShelfOptionResponse> getShelfShelfOptionResponse(Long bookcaseId);
+  List<Shelf> getShelfShelfOptionResponse(Long bookcaseId);
 
   List<Shelf> findAll();
 

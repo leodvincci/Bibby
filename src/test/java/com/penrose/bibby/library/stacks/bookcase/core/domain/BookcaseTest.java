@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.bookcase.core.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import org.junit.jupiter.api.Test;
 
 class BookcaseTest {

@@ -7,9 +7,9 @@ import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import java.util.List;
@@ -73,7 +73,12 @@ public class ShelfService implements ShelfFacade {
   }
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId);
+    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId).stream()
+        .map(
+            shelf ->
+                new ShelfSummary(
+                    shelf.getShelfId().shelfId(), shelf.getShelfLabel(), shelf.getBookCount()))
+        .toList();
   }
 
   @Transactional
@@ -131,6 +136,8 @@ public class ShelfService implements ShelfFacade {
   }
 
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
+    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId).stream()
+        .map(shelf -> shelfMapper.toShelfOption(shelf))
+        .toList();
   }
 }

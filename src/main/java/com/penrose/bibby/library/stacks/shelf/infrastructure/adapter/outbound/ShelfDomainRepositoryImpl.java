@@ -1,11 +1,9 @@
 package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ports.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.ports.BookAccessPort;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -64,10 +62,8 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
   }
 
   @Override
-  public List<ShelfSummary> findShelfSummariesByBookcaseId(Long bookcaseId) {
-    return jpaRepository.findByBookcaseId(bookcaseId).stream()
-        .map(shelfEntity -> shelfMapper.toSummaryFromEntity(shelfEntity))
-        .toList();
+  public List<Shelf> findShelfSummariesByBookcaseId(Long bookcaseId) {
+    return jpaRepository.findByBookcaseId(bookcaseId).stream().map(shelfMapper::toDomain).toList();
   }
 
   @Override
@@ -86,18 +82,9 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
   }
 
   @Override
-  public List<ShelfOptionResponse> getShelfShelfOptionResponse(Long bookcaseId) {
+  public List<Shelf> getShelfShelfOptionResponse(Long bookcaseId) {
     return jpaRepository.findByBookcaseId(bookcaseId).stream()
-        .map(
-            shelfEntity -> {
-              Long shelfId = shelfEntity.getShelfId();
-              String shelfLabel = shelfEntity.getShelfLabel();
-              int bookCapacity = shelfEntity.getBookCapacity();
-              long bookCount = bookAccessPort.getBookIdsByShelfId(shelfId).size();
-              boolean hasSpace = bookCount < bookCapacity;
-              return new ShelfOptionResponse(
-                  shelfId, shelfLabel, bookCapacity, bookCount, hasSpace);
-            })
+        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
         .toList();
   }
 

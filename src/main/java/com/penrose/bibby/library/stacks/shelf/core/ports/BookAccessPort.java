@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.core.domain.ports;
+package com.penrose.bibby.library.stacks.shelf.core.ports;
 
 import java.util.List;
 
