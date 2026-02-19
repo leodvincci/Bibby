@@ -48,7 +48,8 @@ public class ShelfMapper {
         shelfEntity.getShelfPosition(),
         shelfEntity.getBookCapacity(),
         new ShelfId(shelfEntity.getShelfId()),
-        bookIds);
+        bookIds,
+        shelfEntity.getBookcaseId());
   }
 
   public ShelfSummary toSummaryFromEntity(ShelfEntity shelfEntity) {

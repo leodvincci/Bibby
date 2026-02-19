@@ -11,8 +11,23 @@ public class Shelf {
   private int bookCapacity;
   private List<Long> bookIds;
 
+  public Long getBookcaseId() {
+    return bookcaseId;
+  }
+
+  public void setBookcaseId(Long bookcaseId) {
+    this.bookcaseId = bookcaseId;
+  }
+
+  private Long bookcaseId;
+
   public Shelf(
-      String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId, List<Long> bookIds) {
+      String shelfLabel,
+      int shelfPosition,
+      int bookCapacity,
+      ShelfId shelfId,
+      List<Long> bookIds,
+      Long bookcaseId) {
     if (shelfLabel == null || shelfLabel.isBlank()) {
       throw new IllegalArgumentException("Shelf label cannot be null or blank");
     }
@@ -27,6 +42,8 @@ public class Shelf {
     this.shelfPosition = shelfPosition;
     this.bookCapacity = bookCapacity;
     this.shelfId = shelfId;
+    this.bookIds = bookIds;
+    this.bookcaseId = bookcaseId;
   }
 
   public boolean isFull() {
