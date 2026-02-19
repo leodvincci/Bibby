@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
 import org.junit.jupiter.api.Test;
@@ -26,9 +27,7 @@ class ShelfServiceTest {
 
   @Mock private ShelfMapper shelfMapper;
 
-  @Mock
-  private com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-      shelfDomainRepository;
+  @Mock private ShelfDomainRepository shelfDomainRepository;
 
   @InjectMocks private ShelfService shelfService;
 
@@ -188,9 +187,7 @@ class ShelfServiceTest {
     when(shelf1.getShelfId()).thenReturn(shelfId1);
     when(shelf2.getShelfId()).thenReturn(shelfId2);
 
-    com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-        mockShelfDomainRepository =
-            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
     when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
         .thenReturn(java.util.List.of(shelf1, shelf2));
     when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
@@ -226,9 +223,7 @@ class ShelfServiceTest {
   void getAllShelves_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
     Long bookcaseId = 100L;
 
-    com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-        mockShelfDomainRepository =
-            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
     when(mockShelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(java.util.List.of());
 
     ShelfService service =
@@ -256,9 +251,7 @@ class ShelfServiceTest {
 
     when(shelf.getShelfId()).thenReturn(shelfId);
 
-    com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-        mockShelfDomainRepository =
-            mock(com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository.class);
+    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
     when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
         .thenReturn(java.util.List.of(shelf));
     when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);

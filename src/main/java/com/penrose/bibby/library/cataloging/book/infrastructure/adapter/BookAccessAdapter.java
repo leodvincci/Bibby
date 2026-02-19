@@ -2,7 +2,7 @@ package com.penrose.bibby.library.cataloging.book.infrastructure.adapter;
 
 import com.penrose.bibby.library.cataloging.book.core.domain.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
-import com.penrose.bibby.library.stacks.shelf.core.domain.ports.BookAccessPort;
+import com.penrose.bibby.library.stacks.shelf.core.ports.BookAccessPort;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;

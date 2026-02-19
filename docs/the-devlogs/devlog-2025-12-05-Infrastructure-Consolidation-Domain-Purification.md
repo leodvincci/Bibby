@@ -106,7 +106,7 @@ public Shelf(String shelfLabel, int shelfPosition, int bookCapacity)
 package com.penrose.bibby.library.shelf.domain;
 
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;  // ❌ Infrastructure leak
-import com.penrose.bibby.library.stacks.bookcase.core.domain.Bookcase;              // ❌ Cross-aggregate coupling
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;              // ❌ Cross-aggregate coupling
 
 public class Shelf {
     private Long id;

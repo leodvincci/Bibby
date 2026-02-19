@@ -2,16 +2,15 @@ package com.penrose.bibby.library.stacks.bookcase.core.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.Arrays;
 import java.util.List;
