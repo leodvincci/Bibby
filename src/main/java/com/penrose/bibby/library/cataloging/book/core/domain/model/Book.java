@@ -105,6 +105,9 @@ public class Book {
   }
 
   public BookId getBookId() {
+    if (bookId == null) {
+      throw new IllegalStateException("Book ID has not been initialized");
+    }
     return bookId;
   }
 
