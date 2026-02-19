@@ -127,8 +127,19 @@ public class BookController {
     ShelfDTO shelf =
         shelfService
             .findShelfById(request.shelfId())
+            .map(
+                shelfDomain -> {
+                  return new ShelfDTO(
+                      shelfDomain.getShelfId().shelfId(),
+                      shelfDomain.getShelfLabel(),
+                      shelfDomain.getBookcaseId(),
+                      shelfDomain.getShelfPosition(),
+                      shelfDomain.getBookCapacity(),
+                      shelfDomain.getBookIds());
+                })
             .orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf not found"));
+
     BookcaseDTO bookcase =
         bookcaseService
             .findBookCaseById(shelf.bookcaseId())

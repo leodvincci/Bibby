@@ -42,7 +42,20 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
-    List<ShelfDTO> shelfDTOS = shelfFacade.getAllDTOShelves(bookcaseId);
+    List<ShelfDTO> shelfDTOS =
+        shelfFacade.findAllShelves(bookcaseId).stream()
+            .map(
+                shelf -> {
+                  return new ShelfDTO(
+                      shelf.getShelfId().shelfId(),
+                      shelf.getShelfLabel(),
+                      bookcaseId,
+                      shelf.getShelfPosition(),
+                      shelf.getBookCapacity(),
+                      shelf.getBookIds());
+                })
+            .toList();
+
     for (ShelfDTO s : shelfDTOS) {
       options.put(s.shelfLabel(), String.valueOf(s.shelfId()));
     }
@@ -144,10 +157,22 @@ public class PromptOptions {
     List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
     for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
       int shelfBookCount = 0;
-      List<ShelfDTO> shelves = shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId());
+      List<ShelfDTO> shelves =
+          shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId()).stream()
+              .map(
+                  shelf -> {
+                    return new ShelfDTO(
+                        shelf.getShelfId().shelfId(),
+                        shelf.getShelfLabel(),
+                        bookcaseDTO.bookcaseId(),
+                        shelf.getShelfPosition(),
+                        shelf.getBookCapacity(),
+                        shelf.getBookIds());
+                  })
+              .toList();
 
       for (ShelfDTO s : shelves) {
-        List<BookDTO> bookList = shelfFacade.findBooksByShelf(s.shelfId());
+        List<BookDTO> bookList = bookFacade.findByShelfId(s.shelfId());
         shelfBookCount += bookList.size();
       }
       options.put(

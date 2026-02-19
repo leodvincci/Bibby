@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.shelf.infrastructure.repository;
 
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ public interface ShelfJpaRepository extends JpaRepository<ShelfEntity, Long> {
 
   @Query(
       """
-        SELECT new com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary(
+        SELECT new com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary(
             s.shelfId,
             s.shelfLabel,
             (SELECT COUNT(b.bookId) FROM com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity b WHERE b.shelfId = s.shelfId)

@@ -49,9 +49,20 @@ public class BookPlacementCommands {
       Long bookCaseId = cliPrompt.promptForBookcaseSelection(promptOptions.bookCaseOptions());
       Long newShelfId = cliPrompt.promptForShelfSelection(bookCaseId);
 
-      // Checks if shelf is full/capacity reached
-      Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(newShelfId);
-      //            Boolean isFull = shelfFacade.isFull(shelfDTO.get());
+      Optional<ShelfDTO> shelfDTO =
+          shelfFacade
+              .findShelfById(newShelfId)
+              .map(
+                  shelf -> {
+                    return new ShelfDTO(
+                        shelf.getShelfId().shelfId(),
+                        shelf.getShelfLabel(),
+                        bookCaseId,
+                        shelf.getShelfPosition(),
+                        shelf.getBookCapacity(),
+                        shelf.getBookIds());
+                  });
+
       if (shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()) {
         throw new IllegalStateException("Shelf is full");
       } else {
