@@ -133,7 +133,7 @@ public class Shelf {
 ```java
 package com.penrose.bibby.library.shelf.domain;
 
-import com.penrose.bibby.library.cataloging.book.core.domain.Book;  // ✓ Domain-to-domain only
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;  // ✓ Domain-to-domain only
 
 import java.util.List;
 

@@ -58,4 +58,8 @@ public interface BookFacade {
   void updatePublisher(String isbn, String newPublisher);
 
   boolean isDuplicate(String isbn);
+
+  void deleteByShelfIdIn(List<Long> shelfIds);
+
+  List<BookDTO> findByShelfId(Long shelfId);
 }

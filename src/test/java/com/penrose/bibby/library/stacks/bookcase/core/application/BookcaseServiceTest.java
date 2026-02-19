@@ -10,7 +10,6 @@ import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +29,6 @@ import org.springframework.web.server.ResponseStatusException;
 class BookcaseServiceTest {
 
   @Mock private BookcaseRepository bookcaseRepository;
-
-  @Mock private BookcaseJpaRepository bookcaseJpaRepository;
 
   @Mock private ShelfFacade shelfFacade;
 
@@ -371,7 +368,7 @@ class BookcaseServiceTest {
 
     bookcaseService.deleteBookcase(bookcaseId);
 
-    verify(bookcaseJpaRepository).deleteById(bookcaseId);
+    verify(bookcaseRepository).deleteById(bookcaseId);
   }
 
   /**

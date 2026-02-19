@@ -5,7 +5,6 @@ import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.api.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import java.util.List;
 import java.util.Optional;
@@ -21,15 +20,10 @@ public class BookcaseService implements BookcaseFacade {
   private final BookcaseRepository bookcaseRepository;
   private final ResponseStatusException existingRecordError =
       new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
-  private final BookcaseJpaRepository bookcaseJpaRepository;
   private final ShelfFacade shelfFacade;
 
-  public BookcaseService(
-      BookcaseRepository bookcaseRepository,
-      BookcaseJpaRepository bookcaseJpaRepository,
-      ShelfFacade shelfFacade) {
+  public BookcaseService(BookcaseRepository bookcaseRepository, ShelfFacade shelfFacade) {
     this.bookcaseRepository = bookcaseRepository;
-    this.bookcaseJpaRepository = bookcaseJpaRepository;
     this.shelfFacade = shelfFacade;
   }
 
@@ -110,7 +104,7 @@ public class BookcaseService implements BookcaseFacade {
 
   @Override
   public void deleteBookcase(Long bookcaseId) {
-    bookcaseJpaRepository.deleteById(bookcaseId);
+    bookcaseRepository.deleteById(bookcaseId);
     log.info("Bookcase with Id {} was deleted.", bookcaseId);
   }
 

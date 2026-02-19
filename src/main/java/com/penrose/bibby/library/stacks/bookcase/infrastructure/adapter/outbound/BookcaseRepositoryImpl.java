@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookcaseRepositoryImpl implements BookcaseRepository {
   BookcaseJpaRepository bookcaseJpaRepository;
+  private static final org.slf4j.Logger logger =
+      org.slf4j.LoggerFactory.getLogger(BookcaseRepositoryImpl.class);
 
   public BookcaseRepositoryImpl(BookcaseJpaRepository bookcaseJpaRepository) {
     this.bookcaseJpaRepository = bookcaseJpaRepository;
@@ -54,5 +56,11 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
   @Override
   public List<BookcaseEntity> findByAppUserId(Long appUserId) {
     return bookcaseJpaRepository.findAllByUserId((appUserId));
+  }
+
+  @Override
+  public void deleteById(Long bookcaseId) {
+    bookcaseJpaRepository.deleteById(bookcaseId);
+    logger.info("Deleted bookcase with Id: {}", bookcaseId);
   }
 }

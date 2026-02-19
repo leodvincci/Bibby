@@ -18,4 +18,6 @@ public interface BookcaseRepository {
   List<BookcaseEntity> findByLocation(String location);
 
   List<BookcaseEntity> findByAppUserId(Long appUserId);
+
+  void deleteById(Long bookcaseId);
 }

@@ -10,6 +10,10 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BriefBibliographicRecord;
 import com.penrose.bibby.library.cataloging.book.core.domain.*;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
@@ -406,6 +410,24 @@ public class BookMapper {
               book.getPublicationYear(),
               book.getIsbn().isbn,
               book.getDescription());
+      briefBibliographicRecords.add(briefBibliographicRecord);
+    }
+    return briefBibliographicRecords;
+  }
+
+  public List<BriefBibliographicRecord> toBookBriefListFromBookDTOs(List<BookDTO> booksByShelfId) {
+    List<BriefBibliographicRecord> briefBibliographicRecords = new ArrayList<>();
+    for (BookDTO book : booksByShelfId) {
+      BriefBibliographicRecord briefBibliographicRecord =
+          new BriefBibliographicRecord(
+              book.id(),
+              book.title(),
+              book.authors(),
+              book.edition(),
+              book.publisher(),
+              book.publicationYear(),
+              book.isbn(),
+              book.description());
       briefBibliographicRecords.add(briefBibliographicRecord);
     }
     return briefBibliographicRecords;

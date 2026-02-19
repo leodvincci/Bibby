@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.core.ports;
+package com.penrose.bibby.library.stacks.shelf.core.ports.outbound;
 
 import java.util.List;
 
