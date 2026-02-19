@@ -7,9 +7,9 @@ import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.mappers.ShelfDTOMapper;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,13 +22,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShelfService implements ShelfFacade {
 
   private final BookFacade bookFacade;
-  ShelfMapper shelfMapper;
+  ShelfDTOMapper shelfDTOMapper;
   ShelfDomainRepository shelfDomainRepository;
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
-      ShelfMapper shelfMapper, ShelfDomainRepository shelfDomainRepository, BookFacade bookFacade) {
-    this.shelfMapper = shelfMapper;
+      ShelfDomainRepository shelfDomainRepository,
+      BookFacade bookFacade,
+      ShelfDTOMapper shelfDTOMapper) {
+    this.shelfDTOMapper = shelfDTOMapper;
     this.shelfDomainRepository = shelfDomainRepository;
     this.bookFacade = bookFacade;
   }
@@ -39,7 +41,7 @@ public class ShelfService implements ShelfFacade {
             shelf -> {
               Long bookcaseId =
                   shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
-              return shelfMapper.toDTO(shelf, bookcaseId);
+              return shelfDTOMapper.toDTO(shelf, bookcaseId);
             })
         .collect(Collectors.toList());
   }
@@ -51,13 +53,13 @@ public class ShelfService implements ShelfFacade {
       return Optional.empty();
     }
     Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelfId);
-    return Optional.of(shelfMapper.toDTO(shelf, bookcaseId));
+    return Optional.of(shelfDTOMapper.toDTO(shelf, bookcaseId));
   }
 
   public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
     List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
     return shelves.stream()
-        .map(shelf -> shelfMapper.toDTO(shelf, bookcaseId))
+        .map(shelf -> shelfDTOMapper.toDTO(shelf, bookcaseId))
         .collect(Collectors.toList());
   }
 
@@ -112,7 +114,7 @@ public class ShelfService implements ShelfFacade {
 
   public List<ShelfOptionResponse> getShelfOptions() {
     return shelfDomainRepository.findAll().stream()
-        .map(shelf -> shelfMapper.toShelfOption(shelf))
+        .map(shelf -> shelfDTOMapper.toShelfOption(shelf))
         .collect(Collectors.toList());
   }
 
@@ -123,7 +125,7 @@ public class ShelfService implements ShelfFacade {
 
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
     return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId).stream()
-        .map(shelf -> shelfMapper.toShelfOption(shelf))
+        .map(shelf -> shelfDTOMapper.toShelfOption(shelf))
         .toList();
   }
 }

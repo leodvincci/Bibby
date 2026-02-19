@@ -11,7 +11,8 @@ public class Shelf {
   private int bookCapacity;
   private List<Long> bookIds;
 
-  public Shelf(String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId) {
+  public Shelf(
+      String shelfLabel, int shelfPosition, int bookCapacity, ShelfId shelfId, List<Long> bookIds) {
     if (shelfLabel == null || shelfLabel.isBlank()) {
       throw new IllegalArgumentException("Shelf label cannot be null or blank");
     }

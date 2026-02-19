@@ -33,7 +33,7 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
       return null;
     }
     List<Long> bookIds = bookAccessPort.getBookIdsByShelfId(id.shelfId());
-    return shelfMapper.toDomainFromDTO(entity, bookIds);
+    return shelfMapper.toDomainFromEntity(entity, bookIds);
   }
 
   @Override
@@ -57,13 +57,21 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
   @Override
   public List<Shelf> findByBookcaseId(Long bookCaseId) {
     return jpaRepository.findByBookcaseId(bookCaseId).stream()
-        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
+        .map(
+            shelfEntity ->
+                shelfMapper.toDomainFromEntity(
+                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
         .toList();
   }
 
   @Override
   public List<Shelf> findShelfSummariesByBookcaseId(Long bookcaseId) {
-    return jpaRepository.findByBookcaseId(bookcaseId).stream().map(shelfMapper::toDomain).toList();
+    return jpaRepository.findByBookcaseId(bookcaseId).stream()
+        .map(
+            shelfEntity ->
+                shelfMapper.toDomainFromEntity(
+                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
+        .toList();
   }
 
   @Override
@@ -78,20 +86,28 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     if (entity == null) {
       throw new RuntimeException("Shelf not found with ID: " + shelfId);
     }
-    return shelfMapper.toDomainFromEntity(entity);
+    List<Long> bookIds = bookAccessPort.getBookIdsByShelfId(shelfId);
+
+    return shelfMapper.toDomainFromEntity(entity, bookIds);
   }
 
   @Override
   public List<Shelf> getShelfShelfOptionResponse(Long bookcaseId) {
     return jpaRepository.findByBookcaseId(bookcaseId).stream()
-        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
+        .map(
+            shelfEntity ->
+                shelfMapper.toDomainFromEntity(
+                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
         .toList();
   }
 
   @Override
   public List<Shelf> findAll() {
     return jpaRepository.findAll().stream()
-        .map(shelfEntity -> shelfMapper.toDomainFromEntity(shelfEntity))
+        .map(
+            shelfEntity ->
+                shelfMapper.toDomainFromEntity(
+                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
         .toList();
   }
 }
