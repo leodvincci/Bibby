@@ -8,7 +8,7 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.*;
 import org.springframework.shell.command.annotation.Command;
@@ -54,10 +54,10 @@ public class BookCirculationCommands extends AbstractShellComponent {
     if (bookDTO == null) {
       System.out.println("Book Not Found.");
     } else if (bookDTO.shelfId() != null) {
-      Optional<ShelfDTO> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
-      Optional<BookcaseDTO> bookcase = bookcaseFacade.findBookCaseById(shelf.get().bookcaseId());
+      Optional<Shelf> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
+      Optional<BookcaseDTO> bookcase = bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId());
       bookcaseName = bookcase.get().location();
-      shelfName = shelf.get().shelfLabel();
+      shelfName = shelf.get().getShelfLabel();
     }
     if (bookDTO.availabilityStatus().toString().equals("CHECKED_OUT")) {
       System.out.println(
@@ -129,11 +129,11 @@ public class BookCirculationCommands extends AbstractShellComponent {
     if (bookDTO == null) {
       System.out.println("Book Not Found");
     } else if (bookDTO.shelfId() != null) {
-      Optional<ShelfDTO> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
+      Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
       Optional<BookcaseDTO> bookcaseDTO =
-          bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId());
+          bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId());
       bookcaseLabel = bookcaseDTO.get().location();
-      bookshelfLabel = shelfDTO.get().shelfLabel();
+      bookshelfLabel = shelfDTO.get().getShelfLabel();
     }
     Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
 

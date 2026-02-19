@@ -95,7 +95,7 @@ public class BookCreateImportCommands {
               bookMetaDataResponse.authors().toString(),
               bookMetaDataResponse.publisher(),
               bookcaseFacade.findBookCaseById(bookcaseId).get().location(),
-              shelfFacade.findShelfById(shelfId).get().shelfLabel(),
+              shelfFacade.findShelfById(shelfId).get().getShelfLabel(),
               bookcaseFacade.findBookCaseById(bookcaseId).get().location());
       System.out.println(updatedBookCard);
     }
