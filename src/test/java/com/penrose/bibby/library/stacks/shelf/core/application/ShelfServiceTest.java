@@ -6,11 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
-import com.penrose.bibby.library.stacks.shelf.core.mappers.ShelfDTOMapper;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -26,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ShelfServiceTest {
 
-  @Mock private ShelfDTOMapper shelfDTOMapper;
   @Mock private ShelfDomainRepository shelfDomainRepository;
   @Mock private BookFacade bookFacade;
   @InjectMocks private ShelfService shelfService;
@@ -191,30 +186,13 @@ class ShelfServiceTest {
     Long bookcaseId = 100L;
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
-    ShelfId shelfId1 = new ShelfId(1L);
-    ShelfId shelfId2 = new ShelfId(2L);
-
-    when(shelf1.getShelfId()).thenReturn(shelfId1);
-    when(shelf2.getShelfId()).thenReturn(shelfId2);
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
-    when(shelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
-    when(shelfDomainRepository.getBookcaseIdByShelfId(2L)).thenReturn(bookcaseId);
 
-    ShelfDTO dto1 = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
-    ShelfDTO dto2 = new ShelfDTO(2L, "Shelf B", bookcaseId, 2, 15, List.of());
+    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
 
-    when(shelfDTOMapper.toDTOFromDomain(shelf1, bookcaseId)).thenReturn(dto1);
-    when(shelfDTOMapper.toDTOFromDomain(shelf2, bookcaseId)).thenReturn(dto2);
-
-    List<ShelfDTO> result = shelfService.getAllShelves(bookcaseId);
-
-    assertThat(result).hasSize(2).containsExactly(dto1, dto2);
+    assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
-    verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
-    verify(shelfDomainRepository).getBookcaseIdByShelfId(2L);
-    verify(shelfDTOMapper).toDTOFromDomain(shelf1, bookcaseId);
-    verify(shelfDTOMapper).toDTOFromDomain(shelf2, bookcaseId);
   }
 
   /**
@@ -227,34 +205,27 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<ShelfDTO> result = shelfService.getAllShelves(bookcaseId);
+    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
-    verify(shelfDTOMapper, never()).toDTOFromDomain(any(), any());
   }
 
   /**
-   * Tests the {@link ShelfService#getAllShelves(Long)} method. Verifies that the mapper is invoked
-   * for each shelf with correct parameters.
+   * Tests the {@link ShelfService#getAllShelves(Long)} method. Verifies that the repository is
+   * invoked with the correct bookcase ID.
    */
   @Test
-  void getAllShelves_shouldInvokeMapperForEachShelf() {
+  void getAllShelves_shouldDelegateToRepository() {
     Long bookcaseId = 100L;
     Shelf shelf = mock(Shelf.class);
-    ShelfId shelfId = new ShelfId(1L);
 
-    when(shelf.getShelfId()).thenReturn(shelfId);
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
-    when(shelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
 
-    ShelfDTO dto = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
-    when(shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId)).thenReturn(dto);
+    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
 
-    shelfService.getAllShelves(bookcaseId);
-
-    verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
-    verify(shelfDTOMapper).toDTOFromDomain(shelf, bookcaseId);
+    assertThat(result).containsExactly(shelf);
+    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   /**
@@ -268,18 +239,10 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.findAll()).thenReturn(List.of(shelf1, shelf2));
 
-    ShelfOptionResponse option1 = new ShelfOptionResponse(1L, "Shelf A", 10, 5, true);
-    ShelfOptionResponse option2 = new ShelfOptionResponse(2L, "Shelf B", 15, 15, false);
+    List<Shelf> result = shelfService.getShelfOptions();
 
-    when(shelfDTOMapper.toShelfOption(shelf1)).thenReturn(option1);
-    when(shelfDTOMapper.toShelfOption(shelf2)).thenReturn(option2);
-
-    List<ShelfOptionResponse> result = shelfService.getShelfOptions();
-
-    assertThat(result).hasSize(2).containsExactly(option1, option2);
+    assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
     verify(shelfDomainRepository).findAll();
-    verify(shelfDTOMapper).toShelfOption(shelf1);
-    verify(shelfDTOMapper).toShelfOption(shelf2);
   }
 
   /**
@@ -290,11 +253,10 @@ class ShelfServiceTest {
   void getShelfOptions_shouldReturnEmptyListWhenNoShelvesExist() {
     when(shelfDomainRepository.findAll()).thenReturn(List.of());
 
-    List<ShelfOptionResponse> result = shelfService.getShelfOptions();
+    List<Shelf> result = shelfService.getShelfOptions();
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).findAll();
-    verify(shelfDTOMapper, never()).toShelfOption(any());
   }
 
   /**
@@ -310,18 +272,10 @@ class ShelfServiceTest {
     when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId))
         .thenReturn(List.of(shelf1, shelf2));
 
-    ShelfOptionResponse option1 = new ShelfOptionResponse(1L, "Shelf A", 10, 5, true);
-    ShelfOptionResponse option2 = new ShelfOptionResponse(2L, "Shelf B", 15, 10, true);
+    List<Shelf> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
 
-    when(shelfDTOMapper.toShelfOption(shelf1)).thenReturn(option1);
-    when(shelfDTOMapper.toShelfOption(shelf2)).thenReturn(option2);
-
-    List<ShelfOptionResponse> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
-
-    assertThat(result).hasSize(2).containsExactly(option1, option2);
+    assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
     verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
-    verify(shelfDTOMapper).toShelfOption(shelf1);
-    verify(shelfDTOMapper).toShelfOption(shelf2);
   }
 
   /**
@@ -334,48 +288,9 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId)).thenReturn(List.of());
 
-    List<ShelfOptionResponse> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
+    List<Shelf> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
-    verify(shelfDTOMapper, never()).toShelfOption(any());
-  }
-
-  /**
-   * Tests the {@link ShelfService#isFull(ShelfDTO)} method. Verifies that the method correctly
-   * delegates to the repository and returns the shelf's full status.
-   */
-  @Test
-  void isFull_shouldReturnTrueWhenShelfIsFull() {
-    ShelfDTO shelfDTO = new ShelfDTO(1L, "Shelf A", 100L, 1, 10, List.of());
-    Shelf shelf = mock(Shelf.class);
-
-    when(shelfDomainRepository.findById(1L)).thenReturn(shelf);
-    when(shelf.isFull()).thenReturn(true);
-
-    Boolean result = shelfService.isFull(shelfDTO);
-
-    assertThat(result).isTrue();
-    verify(shelfDomainRepository).findById(1L);
-    verify(shelf).isFull();
-  }
-
-  /**
-   * Tests the {@link ShelfService#isFull(ShelfDTO)} method. Verifies that the method returns false
-   * when shelf has available space.
-   */
-  @Test
-  void isFull_shouldReturnFalseWhenShelfHasSpace() {
-    ShelfDTO shelfDTO = new ShelfDTO(1L, "Shelf A", 100L, 1, 10, List.of());
-    Shelf shelf = mock(Shelf.class);
-
-    when(shelfDomainRepository.findById(1L)).thenReturn(shelf);
-    when(shelf.isFull()).thenReturn(false);
-
-    Boolean result = shelfService.isFull(shelfDTO);
-
-    assertThat(result).isFalse();
-    verify(shelfDomainRepository).findById(1L);
-    verify(shelf).isFull();
   }
 }
