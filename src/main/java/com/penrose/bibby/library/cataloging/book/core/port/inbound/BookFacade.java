@@ -54,12 +54,12 @@ public interface BookFacade {
   List<String> getBooksByAuthorId(Long id);
 
   /**
-   * Retrieves a list of brief bibliographic records associated with the specified shelf ID.
-   * Each record provides a summary of key bibliographic details for books located on the shelf.
+   * Retrieves a list of brief bibliographic records associated with the specified shelf ID. Each
+   * record provides a summary of key bibliographic details for books located on the shelf.
    *
    * @param shelfId the ID of the shelf for which brief bibliographic records are being requested
    * @return a list of {@code BriefBibliographicRecord} objects containing summarized bibliographic
-   *         details of books on the specified shelf
+   *     details of books on the specified shelf
    */
   List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId);
 
