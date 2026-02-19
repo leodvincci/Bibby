@@ -1,15 +1,15 @@
 package com.penrose.bibby.library.cataloging.book.core.application;
 
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookSummary;
-import com.penrose.bibby.library.cataloging.book.api.ports.outbound.AuthorAccessPort;
-import com.penrose.bibby.library.cataloging.book.api.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookBuilder;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.port.outbound.AuthorAccessPort;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
+import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;

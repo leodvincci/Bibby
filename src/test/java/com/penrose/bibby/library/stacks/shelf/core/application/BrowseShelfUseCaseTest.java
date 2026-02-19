@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BriefBibliographicRecord;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import java.util.List;
 import org.junit.jupiter.api.Test;

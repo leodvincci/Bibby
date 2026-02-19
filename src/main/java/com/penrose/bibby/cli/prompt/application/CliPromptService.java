@@ -2,9 +2,9 @@ package com.penrose.bibby.cli.prompt.application;
 
 import com.penrose.bibby.cli.prompt.api.PromptFacade;
 import com.penrose.bibby.cli.prompt.domain.PromptOptions;
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.infrastructure.repository;
 
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.core.application.AuthorService;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;

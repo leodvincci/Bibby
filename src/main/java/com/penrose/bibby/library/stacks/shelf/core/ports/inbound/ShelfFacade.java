@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.api.ports.inbound;
+package com.penrose.bibby.library.stacks.shelf.core.ports.inbound;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;

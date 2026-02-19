@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.booklist.core.domain;
+package com.penrose.bibby.library.cataloging.booklist.core.domain.model;
 
 import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BookIdentifier;
 import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistId;

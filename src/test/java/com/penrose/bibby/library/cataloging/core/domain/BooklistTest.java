@@ -2,7 +2,7 @@ package com.penrose.bibby.library.cataloging.core.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.penrose.bibby.library.cataloging.booklist.core.domain.Booklist;
+import com.penrose.bibby.library.cataloging.booklist.core.domain.model.Booklist;
 import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BookIdentifier;
 import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistId;
 import com.penrose.bibby.library.cataloging.booklist.core.domain.valueobject.BooklistName;

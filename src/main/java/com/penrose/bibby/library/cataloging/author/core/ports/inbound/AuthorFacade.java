@@ -1,6 +1,6 @@
-package com.penrose.bibby.library.cataloging.author.api.ports.inbound;
+package com.penrose.bibby.library.cataloging.author.core.ports.inbound;
 
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import java.util.List;
 import java.util.Set;
