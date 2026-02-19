@@ -3,7 +3,7 @@ package com.penrose.bibby.cli.command.book;
 import com.penrose.bibby.cli.prompt.application.CliPromptService;
 import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.transaction.annotation.Transactional;

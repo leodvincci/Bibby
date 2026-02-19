@@ -1,7 +1,7 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BriefBibliographicRecord;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import java.util.List;
 

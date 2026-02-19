@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.author.api;
+package com.penrose.bibby.library.cataloging.author.api.dtos;
 
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;

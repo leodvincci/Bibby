@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.api.ports.inbound;
+package com.penrose.bibby.library.stacks.bookcase.core.ports.inbound;
 
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;

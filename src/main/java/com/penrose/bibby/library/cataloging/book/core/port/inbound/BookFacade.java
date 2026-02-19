@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.api.ports.inbound;
+package com.penrose.bibby.library.cataloging.book.core.port.inbound;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import java.util.List;

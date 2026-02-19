@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound;
+package com.penrose.bibby.library.stacks.bookcase.core.ports.outbound;
 
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.List;

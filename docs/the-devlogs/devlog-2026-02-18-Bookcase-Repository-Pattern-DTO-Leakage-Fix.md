@@ -235,12 +235,14 @@ public List<Shelf> getShelfShelfOptionResponse(Long bookcaseId) {
 ### 5. Import Updates Across the Board
 
 **BookcaseService:**
+
 ```java
 // ❌ BEFORE
+
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseRepository;
 
 // ✅ AFTER
-import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
+
 ```
 
 **BookcaseMapper:**
@@ -266,9 +268,9 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.ports.BookAccessPort;
 ### 6. Test Updates
 
 **BookcaseServiceTest:**
+
 ```java
 // Updated import
-import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
 ```
 
 **BookcaseTest:**
@@ -278,17 +280,20 @@ import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 ```
 
 **ShelfServiceTest:**
+
 ```java
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+
 // ❌ BEFORE: Verbose mock declaration
 @Mock
 private com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-    shelfDomainRepository;
+        shelfDomainRepository;
 
 // ✅ AFTER: Clean import
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import ShelfDomainRepository;
 
-@Mock
-private ShelfDomainRepository shelfDomainRepository;
+        @Mock
+        private ShelfDomainRepository shelfDomainRepository;
 ```
 
 ---

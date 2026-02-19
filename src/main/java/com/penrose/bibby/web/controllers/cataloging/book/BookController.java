@@ -1,17 +1,17 @@
 package com.penrose.bibby.web.controllers.cataloging.book;
 
 import com.penrose.bibby.cli.ui.BookcardRenderer;
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookPlacementResponse;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookShelfAssignmentRequest;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;

@@ -1,10 +1,10 @@
 package com.penrose.bibby.library.cataloging.book.api.adapters;
 
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
-import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
-import com.penrose.bibby.library.cataloging.book.api.ports.outbound.AuthorAccessPort;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorName;
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;
+import com.penrose.bibby.library.cataloging.book.core.port.outbound.AuthorAccessPort;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 

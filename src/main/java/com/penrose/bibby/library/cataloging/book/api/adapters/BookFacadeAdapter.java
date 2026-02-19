@@ -1,12 +1,12 @@
 package com.penrose.bibby.library.cataloging.book.api.adapters;
 
-import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacade;
+import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
-import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;

@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.api.dtos;
 
-import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
+import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import java.util.List;
 
 public record BookRequestDTO(

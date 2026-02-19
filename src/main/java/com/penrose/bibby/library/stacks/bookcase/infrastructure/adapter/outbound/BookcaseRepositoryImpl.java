@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outbound;
 
-import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
 import java.util.ArrayList;

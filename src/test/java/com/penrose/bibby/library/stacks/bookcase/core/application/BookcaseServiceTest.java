@@ -8,9 +8,9 @@ import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.core.domain.ports.outbound.BookcaseRepository;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
