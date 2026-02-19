@@ -24,10 +24,38 @@ class BookAccessAdapterTest {
   @Test
   void getBookIdsByShelfId_shouldReturnBookIdsWhenBooksExist() {
     Long shelfId = 1L;
-    List<BookDTO> books = List.of(
-        new BookDTO(101L, 1, "Book A", List.of("Author A"), "1234567890", "Fiction", "Publisher A", 2020, shelfId, "Description A", AvailabilityStatus.AVAILABLE, LocalDate.now(), LocalDate.now(), "2020-01-01"),
-        new BookDTO(102L, 1, "Book B", List.of("Author B"), "0987654321", "Non-Fiction", "Publisher B", 2021, shelfId, "Description B", AvailabilityStatus.AVAILABLE, LocalDate.now(), LocalDate.now(), "2021-01-01")
-    );
+    List<BookDTO> books =
+        List.of(
+            new BookDTO(
+                101L,
+                1,
+                "Book A",
+                List.of("Author A"),
+                "1234567890",
+                "Fiction",
+                "Publisher A",
+                2020,
+                shelfId,
+                "Description A",
+                AvailabilityStatus.AVAILABLE,
+                LocalDate.now(),
+                LocalDate.now(),
+                "2020-01-01"),
+            new BookDTO(
+                102L,
+                1,
+                "Book B",
+                List.of("Author B"),
+                "0987654321",
+                "Non-Fiction",
+                "Publisher B",
+                2021,
+                shelfId,
+                "Description B",
+                AvailabilityStatus.AVAILABLE,
+                LocalDate.now(),
+                LocalDate.now(),
+                "2021-01-01"));
     when(bookDomainRepository.getBooksByShelfId(shelfId)).thenReturn(books);
 
     List<Long> bookIds = bookAccessAdapter.getBookIdsByShelfId(shelfId);

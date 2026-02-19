@@ -49,5 +49,5 @@ public interface BookJpaRepository extends JpaRepository<BookEntity, Long> {
 
   void deleteByShelfIdIn(List<Long> shelfIds);
 
-    List<BookEntity> findByShelfIdIn(List<Long> shelfIds);
+  List<BookEntity> findByShelfIdIn(List<Long> shelfIds);
 }

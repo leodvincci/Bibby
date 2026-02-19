@@ -108,7 +108,6 @@ public class BookcaseService implements BookcaseFacade {
     log.info("Bookcase with Id {} was deleted.", bookcaseId);
   }
 
-
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
     if (bookCapacity <= 0) {
       throw new IllegalArgumentException("Book capacity cannot be negative");

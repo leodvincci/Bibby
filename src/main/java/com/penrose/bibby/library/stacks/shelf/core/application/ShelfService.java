@@ -9,10 +9,7 @@ import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
-
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,9 +27,7 @@ public class ShelfService implements ShelfFacade {
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
-          ShelfMapper shelfMapper,
-          ShelfDomainRepository shelfDomainRepository,
-          BookFacade bookFacade) {
+      ShelfMapper shelfMapper, ShelfDomainRepository shelfDomainRepository, BookFacade bookFacade) {
     this.shelfMapper = shelfMapper;
     this.shelfDomainRepository = shelfDomainRepository;
     this.bookFacade = bookFacade;

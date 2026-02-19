@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookcaseRepositoryImpl implements BookcaseRepository {
   BookcaseJpaRepository bookcaseJpaRepository;
-  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BookcaseRepositoryImpl.class);
+  private static final org.slf4j.Logger logger =
+      org.slf4j.LoggerFactory.getLogger(BookcaseRepositoryImpl.class);
 
   public BookcaseRepositoryImpl(BookcaseJpaRepository bookcaseJpaRepository) {
     this.bookcaseJpaRepository = bookcaseJpaRepository;

@@ -19,5 +19,5 @@ public interface BookcaseRepository {
 
   List<BookcaseEntity> findByAppUserId(Long appUserId);
 
-    void deleteById(Long bookcaseId);
+  void deleteById(Long bookcaseId);
 }

@@ -44,7 +44,7 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
       BookDTO book = bookMapper.toDTOfromEntity(bookEntity);
       books.add(book);
     }
-      log.info("Retrieved books for shelfId: {}, count: {}", shelfId, books.size());
+    log.info("Retrieved books for shelfId: {}, count: {}", shelfId, books.size());
     return books;
   }
 
@@ -52,7 +52,7 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   // todo(Leo): create a factory for BookEntity creation
   @Override
   public void registerBook(Book book) {
-      log.info("Mapping book domain to entity for book: {}", book.getTitle().title());
+    log.info("Mapping book domain to entity for book: {}", book.getTitle().title());
     BookEntity bookEntity = new BookEntity();
     bookEntity.setPublisher(book.getPublisher());
     bookEntity.setShelfId(book.getShelfId());

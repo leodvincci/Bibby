@@ -1,7 +1,6 @@
 package com.penrose.bibby.library.cataloging.book.infrastructure.adapter;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import java.util.List;
