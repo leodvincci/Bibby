@@ -1,18 +1,13 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
-import com.penrose.bibby.library.stacks.shelf.core.mappers.ShelfDTOMapper;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,51 +17,34 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShelfService implements ShelfFacade {
 
   private final BookFacade bookFacade;
-  ShelfDTOMapper shelfDTOMapper;
-  ShelfDomainRepository shelfDomainRepository;
+  private final ShelfDomainRepository shelfDomainRepository;
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
-  public ShelfService(
-      ShelfDomainRepository shelfDomainRepository,
-      BookFacade bookFacade,
-      ShelfDTOMapper shelfDTOMapper) {
-    this.shelfDTOMapper = shelfDTOMapper;
+  public ShelfService(ShelfDomainRepository shelfDomainRepository, BookFacade bookFacade) {
     this.shelfDomainRepository = shelfDomainRepository;
     this.bookFacade = bookFacade;
   }
 
-  public List<ShelfDTO> getAllShelves(Long bookCaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookCaseId).stream()
-        .map(
-            shelf -> {
-              Long bookcaseId =
-                  shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
-              return shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId);
-            })
-        .collect(Collectors.toList());
+  public List<Shelf> getAllShelves(Long bookCaseId) {
+    return shelfDomainRepository.findByBookcaseId(bookCaseId);
+  }
+
+  @Override
+  public List<Shelf> findAllShelves(Long bookCaseId) {
+    return shelfDomainRepository.findByBookcaseId(bookCaseId);
   }
 
   @Transactional
-  public Optional<ShelfDTO> findShelfById(Long shelfId) {
+  public Optional<Shelf> findShelfById(Long shelfId) {
     Shelf shelf = shelfDomainRepository.getById(new ShelfId(shelfId));
     if (shelf == null) {
       return Optional.empty();
     }
-    Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelfId);
-    return Optional.of(shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId));
+    return Optional.of(shelf);
   }
 
-  public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
-    List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
-    return shelves.stream()
-        .map(shelf -> shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId))
-        .collect(Collectors.toList());
-  }
-
-  @Transactional
-  @Override
-  public List<BookDTO> findBooksByShelf(Long shelfId) {
-    return bookFacade.findByShelfId(shelfId);
+  public List<Shelf> findByBookcaseId(Long bookcaseId) {
+    return shelfDomainRepository.findByBookcaseId(bookcaseId);
   }
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
@@ -90,11 +68,6 @@ public class ShelfService implements ShelfFacade {
   }
 
   @Override
-  public Boolean isFull(ShelfDTO shelfDTO) {
-    return shelfDomainRepository.findById(shelfDTO.shelfId()).isFull();
-  }
-
-  @Override
   public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
     if (bookCapacity <= 0) {
       throw new IllegalArgumentException("Book capacity cannot be negative");
@@ -112,20 +85,11 @@ public class ShelfService implements ShelfFacade {
     shelfDomainRepository.save(bookcaseId, position, shelfLabel, bookCapacity);
   }
 
-  public List<ShelfOptionResponse> getShelfOptions() {
-    return shelfDomainRepository.findAll().stream()
-        .map(shelf -> shelfDTOMapper.toShelfOption(shelf))
-        .collect(Collectors.toList());
+  public List<Shelf> getShelfOptions() {
+    return shelfDomainRepository.findAll();
   }
 
-  @Override
-  public List<ShelfDTO> getAllDTOShelves(Long bookcaseId) {
-    return getAllShelves(bookcaseId);
-  }
-
-  public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId).stream()
-        .map(shelf -> shelfDTOMapper.toShelfOption(shelf))
-        .toList();
+  public List<Shelf> getShelfOptionsByBookcase(Long bookcaseId) {
+    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
   }
 }
