@@ -19,7 +19,7 @@ public class ShelfDTOMapper {
         bookIds);
   }
 
-  public ShelfDTO toDTO(Shelf shelf, Long bookcaseId) {
+  public ShelfDTO toDTOFromDomain(Shelf shelf, Long bookcaseId) {
     return new ShelfDTO(
         shelf.getId(),
         shelf.getShelfLabel(),

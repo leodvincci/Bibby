@@ -204,8 +204,8 @@ class ShelfServiceTest {
     ShelfDTO dto1 = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
     ShelfDTO dto2 = new ShelfDTO(2L, "Shelf B", bookcaseId, 2, 15, List.of());
 
-    when(shelfDTOMapper.toDTO(shelf1, bookcaseId)).thenReturn(dto1);
-    when(shelfDTOMapper.toDTO(shelf2, bookcaseId)).thenReturn(dto2);
+    when(shelfDTOMapper.toDTOFromDomain(shelf1, bookcaseId)).thenReturn(dto1);
+    when(shelfDTOMapper.toDTOFromDomain(shelf2, bookcaseId)).thenReturn(dto2);
 
     List<ShelfDTO> result = shelfService.getAllShelves(bookcaseId);
 
@@ -213,8 +213,8 @@ class ShelfServiceTest {
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
     verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
     verify(shelfDomainRepository).getBookcaseIdByShelfId(2L);
-    verify(shelfDTOMapper).toDTO(shelf1, bookcaseId);
-    verify(shelfDTOMapper).toDTO(shelf2, bookcaseId);
+    verify(shelfDTOMapper).toDTOFromDomain(shelf1, bookcaseId);
+    verify(shelfDTOMapper).toDTOFromDomain(shelf2, bookcaseId);
   }
 
   /**
@@ -231,7 +231,7 @@ class ShelfServiceTest {
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
-    verify(shelfDTOMapper, never()).toDTO(any(), any());
+    verify(shelfDTOMapper, never()).toDTOFromDomain(any(), any());
   }
 
   /**
@@ -249,12 +249,12 @@ class ShelfServiceTest {
     when(shelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
 
     ShelfDTO dto = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
-    when(shelfDTOMapper.toDTO(shelf, bookcaseId)).thenReturn(dto);
+    when(shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId)).thenReturn(dto);
 
     shelfService.getAllShelves(bookcaseId);
 
     verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
-    verify(shelfDTOMapper).toDTO(shelf, bookcaseId);
+    verify(shelfDTOMapper).toDTOFromDomain(shelf, bookcaseId);
   }
 
   /**

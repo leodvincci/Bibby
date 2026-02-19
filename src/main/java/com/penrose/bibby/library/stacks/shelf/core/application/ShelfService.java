@@ -41,7 +41,7 @@ public class ShelfService implements ShelfFacade {
             shelf -> {
               Long bookcaseId =
                   shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
-              return shelfDTOMapper.toDTO(shelf, bookcaseId);
+              return shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId);
             })
         .collect(Collectors.toList());
   }
@@ -53,13 +53,13 @@ public class ShelfService implements ShelfFacade {
       return Optional.empty();
     }
     Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelfId);
-    return Optional.of(shelfDTOMapper.toDTO(shelf, bookcaseId));
+    return Optional.of(shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId));
   }
 
   public List<ShelfDTO> findByBookcaseId(Long bookcaseId) {
     List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
     return shelves.stream()
-        .map(shelf -> shelfDTOMapper.toDTO(shelf, bookcaseId))
+        .map(shelf -> shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId))
         .collect(Collectors.toList());
   }
 
