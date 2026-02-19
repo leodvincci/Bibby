@@ -2,7 +2,7 @@ package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
-import com.penrose.bibby.library.stacks.shelf.core.ports.BookAccessPort;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;

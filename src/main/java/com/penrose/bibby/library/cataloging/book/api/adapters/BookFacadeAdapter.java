@@ -4,10 +4,10 @@ import com.penrose.bibby.library.cataloging.author.api.ports.inbound.AuthorFacad
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
-import com.penrose.bibby.library.cataloging.book.core.domain.Book;
-import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
-import com.penrose.bibby.library.cataloging.book.core.domain.Isbn;
-import com.penrose.bibby.library.cataloging.book.core.domain.Title;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
@@ -135,7 +135,7 @@ public class BookFacadeAdapter implements BookFacade {
 
   @Override
   public List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId) {
-    return bookMapper.toBookBriefListFromEntities(bookDomainRepository.getBooksByShelfId(shelfId));
+    return bookMapper.toBookBriefListFromBookDTOs(bookDomainRepository.getBooksByShelfId(shelfId));
   }
 
   @Override
@@ -146,5 +146,15 @@ public class BookFacadeAdapter implements BookFacade {
   @Override
   public boolean isDuplicate(String isbn) {
     return bookDomainRepository.findBookByIsbn(isbn) != null;
+  }
+
+  @Override
+  public void deleteByShelfIdIn(List<Long> shelfIds) {
+    bookDomainRepository.deleteByShelfIdIn(shelfIds);
+  }
+
+  @Override
+  public List<BookDTO> findByShelfId(Long shelfId) {
+    return bookDomainRepository.getBooksByShelfId(shelfId);
   }
 }

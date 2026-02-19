@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.core.domain;
+package com.penrose.bibby.library.cataloging.book.core.domain.valueObject;
 
 public class BookId {
     private final Long id;

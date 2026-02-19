@@ -1,13 +1,18 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,14 +26,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ShelfServiceTest {
 
-  @Mock private ShelfJpaRepository shelfJpaRepository;
-
-  @Mock private BookJpaRepository bookJpaRepository;
-
   @Mock private ShelfMapper shelfMapper;
-
   @Mock private ShelfDomainRepository shelfDomainRepository;
-
+  @Mock private BookFacade bookFacade;
   @InjectMocks private ShelfService shelfService;
 
   /**
@@ -120,6 +120,20 @@ class ShelfServiceTest {
 
   /**
    * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that an
+   * IllegalArgumentException is thrown when bookcase ID is null.
+   */
+  @Test
+  void createShelf_shouldThrowExceptionWhenBookcaseIdIsNull() {
+    assertThatThrownBy(() -> shelfService.createShelf(null, 1, "Shelf A", 10))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Bookcase ID cannot be null");
+
+    verify(shelfDomainRepository, never())
+        .save(any(), any(Integer.class), any(), any(Integer.class));
+  }
+
+  /**
+   * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that an
    * IllegalArgumentException is thrown when position is negative.
    */
   @Test
@@ -133,11 +147,11 @@ class ShelfServiceTest {
   }
 
   /**
-   * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that a
-   * shelf is created with position zero (edge case).
+   * Tests the {@link ShelfService#createShelf(Long, int, String, int)} method. Verifies that an
+   * IllegalArgumentException is thrown when position is zero.
    */
   @Test
-  void createShelf_shouldNotCreateShelfWithPositionZero() {
+  void createShelf_shouldThrowExceptionWhenPositionIsZero() {
     assertThatThrownBy(() -> shelfService.createShelf(100L, 0, "Shelf A", 10))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf position must be greater than 0");
@@ -175,42 +189,30 @@ class ShelfServiceTest {
   @Test
   void getAllShelves_shouldReturnAllShelvesForBookcase() {
     Long bookcaseId = 100L;
-    com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf shelf1 =
-        mock(com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf.class);
-    com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf shelf2 =
-        mock(com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf.class);
-    com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId shelfId1 =
-        new com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId(1L);
-    com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId shelfId2 =
-        new com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId(2L);
+    Shelf shelf1 = mock(Shelf.class);
+    Shelf shelf2 = mock(Shelf.class);
+    ShelfId shelfId1 = new ShelfId(1L);
+    ShelfId shelfId2 = new ShelfId(2L);
 
     when(shelf1.getShelfId()).thenReturn(shelfId1);
     when(shelf2.getShelfId()).thenReturn(shelfId2);
 
-    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
-    when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
-        .thenReturn(java.util.List.of(shelf1, shelf2));
-    when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
-    when(mockShelfDomainRepository.getBookcaseIdByShelfId(2L)).thenReturn(bookcaseId);
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
+    when(shelfDomainRepository.getBookcaseIdByShelfId(2L)).thenReturn(bookcaseId);
 
-    ShelfService service =
-        new ShelfService(shelfMapper, bookJpaRepository, mockShelfDomainRepository);
-
-    com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO dto1 =
-        new com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO(
-            1L, "Shelf A", bookcaseId, 1, 10, java.util.List.of());
-    com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO dto2 =
-        new com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO(
-            2L, "Shelf B", bookcaseId, 2, 15, java.util.List.of());
+    ShelfDTO dto1 = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
+    ShelfDTO dto2 = new ShelfDTO(2L, "Shelf B", bookcaseId, 2, 15, List.of());
 
     when(shelfMapper.toDTO(shelf1, bookcaseId)).thenReturn(dto1);
     when(shelfMapper.toDTO(shelf2, bookcaseId)).thenReturn(dto2);
 
-    java.util.List<com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO> result =
-        service.getAllShelves(bookcaseId);
+    List<ShelfDTO> result = shelfService.getAllShelves(bookcaseId);
 
-    org.assertj.core.api.Assertions.assertThat(result).hasSize(2).containsExactly(dto1, dto2);
-    verify(mockShelfDomainRepository).findByBookcaseId(bookcaseId);
+    assertThat(result).hasSize(2).containsExactly(dto1, dto2);
+    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
+    verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
+    verify(shelfDomainRepository).getBookcaseIdByShelfId(2L);
     verify(shelfMapper).toDTO(shelf1, bookcaseId);
     verify(shelfMapper).toDTO(shelf2, bookcaseId);
   }
@@ -223,17 +225,12 @@ class ShelfServiceTest {
   void getAllShelves_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
     Long bookcaseId = 100L;
 
-    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
-    when(mockShelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(java.util.List.of());
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    ShelfService service =
-        new ShelfService(shelfMapper, bookJpaRepository, mockShelfDomainRepository);
+    List<ShelfDTO> result = shelfService.getAllShelves(bookcaseId);
 
-    java.util.List<com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO> result =
-        service.getAllShelves(bookcaseId);
-
-    org.assertj.core.api.Assertions.assertThat(result).isEmpty();
-    verify(mockShelfDomainRepository).findByBookcaseId(bookcaseId);
+    assertThat(result).isEmpty();
+    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
     verify(shelfMapper, never()).toDTO(any(), any());
   }
 
@@ -244,29 +241,103 @@ class ShelfServiceTest {
   @Test
   void getAllShelves_shouldInvokeMapperForEachShelf() {
     Long bookcaseId = 100L;
-    com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf shelf =
-        mock(com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf.class);
-    com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId shelfId =
-        new com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId(1L);
+    Shelf shelf = mock(Shelf.class);
+    ShelfId shelfId = new ShelfId(1L);
 
     when(shelf.getShelfId()).thenReturn(shelfId);
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
+    when(shelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
 
-    ShelfDomainRepository mockShelfDomainRepository = mock(ShelfDomainRepository.class);
-    when(mockShelfDomainRepository.findByBookcaseId(bookcaseId))
-        .thenReturn(java.util.List.of(shelf));
-    when(mockShelfDomainRepository.getBookcaseIdByShelfId(1L)).thenReturn(bookcaseId);
-
-    ShelfService service =
-        new ShelfService(shelfMapper, bookJpaRepository, mockShelfDomainRepository);
-
-    com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO dto =
-        new com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO(
-            1L, "Shelf A", bookcaseId, 1, 10, java.util.List.of());
+    ShelfDTO dto = new ShelfDTO(1L, "Shelf A", bookcaseId, 1, 10, List.of());
     when(shelfMapper.toDTO(shelf, bookcaseId)).thenReturn(dto);
 
-    service.getAllShelves(bookcaseId);
+    shelfService.getAllShelves(bookcaseId);
 
-    verify(mockShelfDomainRepository).getBookcaseIdByShelfId(1L);
+    verify(shelfDomainRepository).getBookcaseIdByShelfId(1L);
     verify(shelfMapper).toDTO(shelf, bookcaseId);
+  }
+
+  /**
+   * Tests the {@link ShelfService#getShelfOptions()} method. Verifies that all shelf options are
+   * retrieved and mapped correctly.
+   */
+  @Test
+  void getShelfOptions_shouldReturnAllShelfOptionsWithCorrectMapping() {
+    Shelf shelf1 = mock(Shelf.class);
+    Shelf shelf2 = mock(Shelf.class);
+
+    when(shelfDomainRepository.findAll()).thenReturn(List.of(shelf1, shelf2));
+
+    ShelfOptionResponse option1 = new ShelfOptionResponse(1L, "Shelf A", 10, 5, true);
+    ShelfOptionResponse option2 = new ShelfOptionResponse(2L, "Shelf B", 15, 15, false);
+
+    when(shelfMapper.toShelfOption(shelf1)).thenReturn(option1);
+    when(shelfMapper.toShelfOption(shelf2)).thenReturn(option2);
+
+    List<ShelfOptionResponse> result = shelfService.getShelfOptions();
+
+    assertThat(result).hasSize(2).containsExactly(option1, option2);
+    verify(shelfDomainRepository).findAll();
+    verify(shelfMapper).toShelfOption(shelf1);
+    verify(shelfMapper).toShelfOption(shelf2);
+  }
+
+  /**
+   * Tests the {@link ShelfService#getShelfOptions()} method. Verifies that an empty list is
+   * returned when no shelves exist.
+   */
+  @Test
+  void getShelfOptions_shouldReturnEmptyListWhenNoShelvesExist() {
+    when(shelfDomainRepository.findAll()).thenReturn(List.of());
+
+    List<ShelfOptionResponse> result = shelfService.getShelfOptions();
+
+    assertThat(result).isEmpty();
+    verify(shelfDomainRepository).findAll();
+    verify(shelfMapper, never()).toShelfOption(any());
+  }
+
+  /**
+   * Tests the {@link ShelfService#getShelfOptionsByBookcase(Long)} method. Verifies that shelf
+   * options for a specific bookcase are retrieved correctly.
+   */
+  @Test
+  void getShelfOptionsByBookcase_shouldReturnShelfOptionsForSpecificBookcase() {
+    Long bookcaseId = 100L;
+    Shelf shelf1 = mock(Shelf.class);
+    Shelf shelf2 = mock(Shelf.class);
+
+    when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId))
+        .thenReturn(List.of(shelf1, shelf2));
+
+    ShelfOptionResponse option1 = new ShelfOptionResponse(1L, "Shelf A", 10, 5, true);
+    ShelfOptionResponse option2 = new ShelfOptionResponse(2L, "Shelf B", 15, 10, true);
+
+    when(shelfMapper.toShelfOption(shelf1)).thenReturn(option1);
+    when(shelfMapper.toShelfOption(shelf2)).thenReturn(option2);
+
+    List<ShelfOptionResponse> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
+
+    assertThat(result).hasSize(2).containsExactly(option1, option2);
+    verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
+    verify(shelfMapper).toShelfOption(shelf1);
+    verify(shelfMapper).toShelfOption(shelf2);
+  }
+
+  /**
+   * Tests the {@link ShelfService#getShelfOptionsByBookcase(Long)} method. Verifies that an empty
+   * list is returned when bookcase has no shelves.
+   */
+  @Test
+  void getShelfOptionsByBookcase_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
+    Long bookcaseId = 100L;
+
+    when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId)).thenReturn(List.of());
+
+    List<ShelfOptionResponse> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
+
+    assertThat(result).isEmpty();
+    verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
+    verify(shelfMapper, never()).toShelfOption(any());
   }
 }

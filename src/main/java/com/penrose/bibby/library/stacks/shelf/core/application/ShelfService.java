@@ -1,8 +1,7 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
-import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
+import com.penrose.bibby.library.cataloging.book.api.ports.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfSummary;
@@ -10,8 +9,10 @@ import com.penrose.bibby.library.stacks.shelf.api.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
+import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,18 +24,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ShelfService implements ShelfFacade {
 
-  BookJpaRepository bookJpaRepository;
+  private final BookFacade bookFacade;
   ShelfMapper shelfMapper;
   ShelfDomainRepository shelfDomainRepository;
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
-      ShelfMapper shelfMapper,
-      BookJpaRepository bookJpaRepository,
-      ShelfDomainRepository shelfDomainRepository) {
-    this.bookJpaRepository = bookJpaRepository;
+          ShelfMapper shelfMapper,
+          ShelfDomainRepository shelfDomainRepository,
+          BookFacade bookFacade) {
     this.shelfMapper = shelfMapper;
     this.shelfDomainRepository = shelfDomainRepository;
+    this.bookFacade = bookFacade;
   }
 
   public List<ShelfDTO> getAllShelves(Long bookCaseId) {
@@ -67,9 +68,8 @@ public class ShelfService implements ShelfFacade {
 
   @Transactional
   @Override
-  public List<BookDTO> findBooksByShelf(Long aLong) {
-    List<BookEntity> books = bookJpaRepository.findByShelfId(aLong);
-    return books.stream().map(BookDTO::fromEntity).collect(Collectors.toList());
+  public List<BookDTO> findBooksByShelf(Long shelfId) {
+    return bookFacade.findByShelfId(shelfId);
   }
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
@@ -86,7 +86,7 @@ public class ShelfService implements ShelfFacade {
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
     List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
     List<Long> shelfIds = shelves.stream().map(shelf -> shelf.getShelfId().shelfId()).toList();
-    bookJpaRepository.deleteByShelfIdIn(shelfIds);
+    bookFacade.deleteByShelfIdIn(shelfIds);
     logger.info("Deleted {} shelves from bookcase with ID: {}", shelfIds.size(), bookcaseId);
     shelfDomainRepository.deleteByBookcaseId(bookcaseId);
     logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);
@@ -119,15 +119,6 @@ public class ShelfService implements ShelfFacade {
     return shelfDomainRepository.findAll().stream()
         .map(shelf -> shelfMapper.toShelfOption(shelf))
         .collect(Collectors.toList());
-  }
-
-  private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
-    long bookCount = bookJpaRepository.countByShelfId(shelf.getShelfId());
-    //    BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
-    //    String bookcaseLabel = bookcase != null ? bookcase.getBookcaseLocation() : "Unknown Case";
-    boolean hasSpace = bookCount < shelf.getBookCapacity();
-    return new ShelfOptionResponse(
-        shelf.getShelfId(), shelf.getShelfLabel(), shelf.getBookCapacity(), bookCount, hasSpace);
   }
 
   @Override

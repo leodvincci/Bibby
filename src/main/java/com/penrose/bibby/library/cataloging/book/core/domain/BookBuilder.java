@@ -1,6 +1,10 @@
 package com.penrose.bibby.library.cataloging.book.core.domain;
 
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class BookFactory {
+public class BookBuilder {
 
     public BookEntity createBookEntity(String title, Set<AuthorEntity> authors){
         BookEntity bookEntity = new BookEntity();

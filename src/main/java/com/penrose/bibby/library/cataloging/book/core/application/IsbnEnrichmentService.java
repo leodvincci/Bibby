@@ -6,7 +6,7 @@ import com.penrose.bibby.library.cataloging.author.core.domain.AuthorFactory;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
-import com.penrose.bibby.library.cataloging.book.core.domain.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapperTwo;

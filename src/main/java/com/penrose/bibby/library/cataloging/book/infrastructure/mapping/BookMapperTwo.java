@@ -2,8 +2,8 @@ package com.penrose.bibby.library.cataloging.book.infrastructure.mapping;
 
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapperTwo;
-import com.penrose.bibby.library.cataloging.book.core.domain.Book;
-import com.penrose.bibby.library.cataloging.book.core.domain.BookFactory;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.BookBuilder;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,12 @@ import java.util.List;
 
 @Component
 public class BookMapperTwo {
-    BookFactory bookFactory;
+    BookBuilder bookBuilder;
     AuthorMapperTwo authorMapperTwo;
 
 
-    public BookMapperTwo(BookFactory bookFactory,AuthorMapperTwo authorMapperTwo){
-        this.bookFactory = bookFactory;
+    public BookMapperTwo(BookBuilder bookBuilder, AuthorMapperTwo authorMapperTwo){
+        this.bookBuilder = bookBuilder;
         this.authorMapperTwo = authorMapperTwo;
     }
 
@@ -42,6 +42,6 @@ public class BookMapperTwo {
         String description = (googleBooksResponse.items().get(0).volumeInfo().description());
         String publishingDate = (googleBooksResponse.items().get(0).volumeInfo().publishedDate());
 
-        return bookFactory.createBookDomainFromJSON(title,publisher,description,isbn,authors);
+        return bookBuilder.createBookDomainFromJSON(title,publisher,description,isbn,authors);
     }
 }

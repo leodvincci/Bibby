@@ -3,10 +3,11 @@ package com.penrose.bibby.library.cataloging.book.infrastructure.repository;
 import com.penrose.bibby.library.cataloging.author.api.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.core.application.AuthorService;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
-import com.penrose.bibby.library.cataloging.book.core.domain.Book;
-import com.penrose.bibby.library.cataloging.book.core.domain.BookDomainRepository;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
@@ -32,17 +33,18 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   }
 
   @Override
-  public List<Book> getBooksByShelfId(Long shelfId) {
+  public List<BookDTO> getBooksByShelfId(Long shelfId) {
     List<BookEntity> bookEntities = bookJpaRepository.findByShelfId(shelfId);
-    List<Book> books = new ArrayList<>();
+    List<BookDTO> books = new ArrayList<>();
 
     Set<AuthorDTO> authorDTO = null;
     ShelfDTO shelfDTO = null;
 
     for (BookEntity bookEntity : bookEntities) {
-      Book book = bookMapper.toDomainFromEntity(bookEntity);
+      BookDTO book = bookMapper.toDTOfromEntity(bookEntity);
       books.add(book);
     }
+      log.info("Retrieved books for shelfId: {}, count: {}", shelfId, books.size());
     return books;
   }
 
@@ -50,7 +52,7 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   // todo(Leo): create a factory for BookEntity creation
   @Override
   public void registerBook(Book book) {
-    log.info("Mapping book domain to entity for book: " + book.getTitle().title());
+      log.info("Mapping book domain to entity for book: {}", book.getTitle().title());
     BookEntity bookEntity = new BookEntity();
     bookEntity.setPublisher(book.getPublisher());
     bookEntity.setShelfId(book.getShelfId());
@@ -177,5 +179,12 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
       log.error("Book with ISBN: {} not found", isbn);
       throw new RuntimeException("Book not found with ISBN: " + isbn);
     }
+  }
+
+  @Override
+  public void deleteByShelfIdIn(List<Long> shelfIds) {
+    List<BookEntity> booksToDelete = bookJpaRepository.findByShelfIdIn(shelfIds);
+    bookJpaRepository.deleteAll(booksToDelete);
+    log.info("Deleted {} books with shelf IDs in {}", booksToDelete.size(), shelfIds);
   }
 }

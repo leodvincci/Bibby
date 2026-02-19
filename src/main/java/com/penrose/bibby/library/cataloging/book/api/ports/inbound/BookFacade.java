@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.cataloging.book.api.ports.inbound;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -58,4 +59,8 @@ public interface BookFacade {
   void updatePublisher(String isbn, String newPublisher);
 
   boolean isDuplicate(String isbn);
+
+  void deleteByShelfIdIn(List<Long> shelfIds);
+
+  List<BookDTO> findByShelfId(Long shelfId);
 }

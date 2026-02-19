@@ -1,4 +1,10 @@
-package com.penrose.bibby.library.cataloging.book.core.domain;
+package com.penrose.bibby.library.cataloging.book.core.domain.model;
+
+import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;
+import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 
 import java.time.LocalDate;
 import java.util.List;

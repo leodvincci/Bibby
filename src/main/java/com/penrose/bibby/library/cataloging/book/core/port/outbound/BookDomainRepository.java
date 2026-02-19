@@ -1,13 +1,15 @@
-package com.penrose.bibby.library.cataloging.book.core.domain;
+package com.penrose.bibby.library.cataloging.book.core.port.outbound;
 
+import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import java.util.List;
 
 public interface BookDomainRepository {
 
-  List<Book> getBooksByShelfId(Long shelfId);
+  List<BookDTO> getBooksByShelfId(Long shelfId);
 
   void registerBook(Book book);
 
@@ -43,4 +45,6 @@ public interface BookDomainRepository {
   List<BookEntity> getThreeBooksByAuthorId(Long id);
 
   void updatePublisher(String isbn, String newPublisher);
+
+  void deleteByShelfIdIn(List<Long> shelfIds);
 }
