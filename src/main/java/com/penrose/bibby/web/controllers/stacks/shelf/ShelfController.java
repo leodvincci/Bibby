@@ -1,7 +1,6 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
 import java.util.List;
@@ -17,8 +16,7 @@ public class ShelfController {
   ShelfFacade shelfFacade;
   ShelfResponseMapper shelfResponseMapper;
 
-  public ShelfController(
-      ShelfFacade shelfFacade, ShelfResponseMapper shelfResponseMapper) {
+  public ShelfController(ShelfFacade shelfFacade, ShelfResponseMapper shelfResponseMapper) {
     this.shelfFacade = shelfFacade;
     this.shelfResponseMapper = shelfResponseMapper;
   }
