@@ -1,7 +1,7 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ShelfController {
 
-  QueryShelfUseCase queryShelfUseCase;
+  ShelfFacade shelfFacade;
   ShelfResponseMapper shelfResponseMapper;
 
-  public ShelfController(
-      QueryShelfUseCase queryShelfUseCase, ShelfResponseMapper shelfResponseMapper) {
-    this.queryShelfUseCase = queryShelfUseCase;
+  public ShelfController(ShelfFacade shelfFacade, ShelfResponseMapper shelfResponseMapper) {
+    this.shelfFacade = shelfFacade;
     this.shelfResponseMapper = shelfResponseMapper;
   }
 
   @GetMapping("/options")
   public List<ShelfOptionResponse> getShelfOptions() {
-    return queryShelfUseCase.findAll().stream().map(shelfResponseMapper::toShelfOption).toList();
+    return shelfFacade.findAll().stream().map(shelfResponseMapper::toShelfOption).toList();
   }
 
   /**
@@ -36,7 +35,7 @@ public class ShelfController {
    */
   @GetMapping("/options/{bookcaseId}")
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(@PathVariable Long bookcaseId) {
-    return queryShelfUseCase.findAllShelves(bookcaseId).stream()
+    return shelfFacade.findAllShelves(bookcaseId).stream()
         .map(shelfResponseMapper::toShelfOption)
         .toList();
   }

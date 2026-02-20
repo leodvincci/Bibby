@@ -16,4 +16,6 @@ public interface ShelfFacade {
   void deleteAllShelvesInBookcase(Long bookcaseId);
 
   void createShelf(Long bookcaseId, int position, String s, int bookCapacity);
+
+  List<Shelf> findAll();
 }
