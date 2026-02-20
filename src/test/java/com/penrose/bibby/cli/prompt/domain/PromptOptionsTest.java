@@ -4,7 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
+import com.penrose.bibby.library.cataloging.book.core.domain.AuthorName;
+import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;
+import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
+import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
@@ -83,9 +89,9 @@ class PromptOptionsTest {
     Shelf shelf1 = new Shelf("Top Shelf", 1, 10, new ShelfId(10L), List.of(100L, 101L), 1L);
     Shelf shelf2 = new Shelf("Bottom Shelf", 2, 10, new ShelfId(11L), List.of(200L), 1L);
 
-    BookDTO book1 = buildBookDTO(100L);
-    BookDTO book2 = buildBookDTO(101L);
-    BookDTO book3 = buildBookDTO(200L);
+    Book book1 = buildBook(100L);
+    Book book2 = buildBook(101L);
+    Book book3 = buildBook(200L);
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
     when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of(shelf1, shelf2));
@@ -151,19 +157,19 @@ class PromptOptionsTest {
     assertThat(values).containsExactly("cancel", "1", "2", "3");
   }
 
-  private BookDTO buildBookDTO(Long id) {
-    return new BookDTO(
-        id,
+  private Book buildBook(Long id) {
+    return new Book(
+        new BookId(id),
         1,
-        "Title",
-        List.of("Author"),
-        "isbn",
+        new Title("Title"),
+        List.of(new AuthorRef(1L, new AuthorName("First", "Last"))),
+        new Isbn("9780345391803"),
         "genre",
         "publisher",
         2020,
         1L,
         "desc",
-        null,
+        AvailabilityStatus.AVAILABLE,
         null,
         null,
         null);
