@@ -25,13 +25,13 @@ public class ShelfService implements ShelfFacade {
     this.bookAccessPort = bookAccessPort;
   }
 
-  public List<Shelf> getAllShelves(Long bookCaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookCaseId);
-  }
-
   @Override
   public List<Shelf> findAllShelves(Long bookCaseId) {
     return shelfDomainRepository.findByBookcaseId(bookCaseId);
+  }
+
+  public List<Shelf> getShelfOptionsByBookcase(Long bookcaseId) {
+    return shelfDomainRepository.findByBookcaseId(bookcaseId);
   }
 
   @Transactional
@@ -43,12 +43,10 @@ public class ShelfService implements ShelfFacade {
     return Optional.of(shelf);
   }
 
-  public List<Shelf> findByBookcaseId(Long bookcaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookcaseId);
-  }
+
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId).stream()
+    return shelfDomainRepository.findByBookcaseId(bookcaseId).stream()
         .map(
             shelf ->
                 new ShelfSummary(
@@ -89,7 +87,5 @@ public class ShelfService implements ShelfFacade {
     return shelfDomainRepository.findAll();
   }
 
-  public List<Shelf> getShelfOptionsByBookcase(Long bookcaseId) {
-    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
-  }
+
 }

@@ -71,8 +71,8 @@ class PromptOptionsTest {
     BookcaseDTO bookcase2 = new BookcaseDTO(2L, 3, 15, "Office", "B", "2");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase1, bookcase2));
-    when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of());
-    when(shelfFacade.findByBookcaseId(2L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(1L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(2L)).thenReturn(List.of());
 
     Map<String, String> options = promptOptions.bookCaseOptions();
 
@@ -94,7 +94,7 @@ class PromptOptionsTest {
     Book book3 = buildBook(200L);
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
-    when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfFacade.findAllShelves(1L)).thenReturn(List.of(shelf1, shelf2));
     when(bookFacade.findByShelfId(10L)).thenReturn(List.of(book1, book2));
     when(bookFacade.findByShelfId(11L)).thenReturn(List.of(book3));
 
@@ -112,7 +112,7 @@ class PromptOptionsTest {
     BookcaseDTO bookcase = new BookcaseDTO(1L, 2, 10, "basement", "A", "1");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
-    when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(1L)).thenReturn(List.of());
 
     Map<String, String> options = promptOptions.bookCaseOptions();
 
@@ -128,7 +128,7 @@ class PromptOptionsTest {
     Shelf emptyShelf = new Shelf("Empty Shelf", 1, 10, new ShelfId(20L), new ArrayList<>(), 1L);
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
-    when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of(emptyShelf));
+    when(shelfFacade.findAllShelves(1L)).thenReturn(List.of(emptyShelf));
     when(bookFacade.findByShelfId(20L)).thenReturn(List.of());
 
     Map<String, String> options = promptOptions.bookCaseOptions();
@@ -147,9 +147,9 @@ class PromptOptionsTest {
     BookcaseDTO bookcase3 = new BookcaseDTO(3L, 2, 10, "Gamma", "C", "3");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase1, bookcase2, bookcase3));
-    when(shelfFacade.findByBookcaseId(1L)).thenReturn(List.of());
-    when(shelfFacade.findByBookcaseId(2L)).thenReturn(List.of());
-    when(shelfFacade.findByBookcaseId(3L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(1L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(2L)).thenReturn(List.of());
+    when(shelfFacade.findAllShelves(3L)).thenReturn(List.of());
 
     Map<String, String> options = promptOptions.bookCaseOptions();
 
