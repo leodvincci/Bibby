@@ -11,8 +11,6 @@ public interface ShelfFacade {
 
   Optional<Shelf> findShelfById(Long shelfId);
 
-  List<Shelf> findByBookcaseId(Long bookcaseId);
-
   List<ShelfSummary> getShelfSummariesForBookcase(Long bookCaseId);
 
   void deleteAllShelvesInBookcase(Long bookcaseId);

@@ -10,20 +10,11 @@ public interface ShelfDomainRepository {
 
   void save(Long bookcaseId, int position, String shelfLabel, int bookCapacity);
 
-  Long getBookcaseIdByShelfId(Long shelfId);
-
-  List<Shelf> findByBookcaseId(Long bookCaseId);
-
-  List<Shelf> findShelfSummariesByBookcaseId(Long bookcaseId);
-
   void deleteByBookcaseId(Long bookcaseId);
+
+  List<Shelf> findByBookcaseId(Long bookcaseId);
 
   Shelf findById(Long shelfId);
 
-  List<Shelf> getShelfShelfOptionResponse(Long bookcaseId);
-
   List<Shelf> findAll();
-
-  // optional: queries that return Shelf or domain read models
-
 }

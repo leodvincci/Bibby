@@ -178,8 +178,8 @@ class ShelfServiceTest {
   }
 
   /**
-   * Tests the {@link ShelfService#getAllShelves(Long)} method. Verifies that all shelves for a
-   * bookcase are retrieved successfully.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that all shelves
+   * for a bookcase are retrieved successfully.
    */
   @Test
   void getAllShelves_shouldReturnAllShelvesForBookcase() {
@@ -189,15 +189,15 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
-    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
+    List<Shelf> result = shelfService.findAllShelves(bookcaseId);
 
     assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   /**
-   * Tests the {@link ShelfService#getAllShelves(Long)} method. Verifies that an empty list is
-   * returned when bookcase has no shelves.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that an empty list
+   * is returned when bookcase has no shelves.
    */
   @Test
   void getAllShelves_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
@@ -205,15 +205,15 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
+    List<Shelf> result = shelfService.findAllShelves(bookcaseId);
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   /**
-   * Tests the {@link ShelfService#getAllShelves(Long)} method. Verifies that the repository is
-   * invoked with the correct bookcase ID.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that the
+   * repository is invoked with the correct bookcase ID.
    */
   @Test
   void getAllShelves_shouldDelegateToRepository() {
@@ -222,7 +222,7 @@ class ShelfServiceTest {
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
-    List<Shelf> result = shelfService.getAllShelves(bookcaseId);
+    List<Shelf> result = shelfService.findAllShelves(bookcaseId);
 
     assertThat(result).containsExactly(shelf);
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
@@ -269,13 +269,12 @@ class ShelfServiceTest {
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
-    when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId))
-        .thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
     List<Shelf> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
 
     assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
-    verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
+    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   /**
@@ -286,11 +285,11 @@ class ShelfServiceTest {
   void getShelfOptionsByBookcase_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
     Long bookcaseId = 100L;
 
-    when(shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId)).thenReturn(List.of());
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
     List<Shelf> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
 
     assertThat(result).isEmpty();
-    verify(shelfDomainRepository).getShelfShelfOptionResponse(bookcaseId);
+    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 }

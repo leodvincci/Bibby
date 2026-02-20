@@ -47,33 +47,6 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     logger.info("Shelf created with ID: {} for bookcase: {}", entity.getShelfId(), bookcaseId);
   }
 
-  public Long getBookcaseIdByShelfId(Long shelfId) {
-    return jpaRepository
-        .findById(shelfId)
-        .map(ShelfEntity::getBookcaseId)
-        .orElseThrow(() -> new RuntimeException("Shelf not found with ID: " + shelfId));
-  }
-
-  @Override
-  public List<Shelf> findByBookcaseId(Long bookCaseId) {
-    return jpaRepository.findByBookcaseId(bookCaseId).stream()
-        .map(
-            shelfEntity ->
-                shelfMapper.toDomainFromEntity(
-                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
-        .toList();
-  }
-
-  @Override
-  public List<Shelf> findShelfSummariesByBookcaseId(Long bookcaseId) {
-    return jpaRepository.findByBookcaseId(bookcaseId).stream()
-        .map(
-            shelfEntity ->
-                shelfMapper.toDomainFromEntity(
-                    shelfEntity, bookAccessPort.getBookIdsByShelfId(shelfEntity.getShelfId())))
-        .toList();
-  }
-
   @Override
   public void deleteByBookcaseId(Long bookcaseId) {
     jpaRepository.deleteByBookcaseId(bookcaseId);
@@ -91,8 +64,16 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     return shelfMapper.toDomainFromEntity(entity, bookIds);
   }
 
+  /**
+   * Retrieves a list of shelves for a given bookcase, suitable for populating shelf selection
+   * options.
+   *
+   * @param bookcaseId the ID of the bookcase whose shelves are to be retrieved
+   * @return a list of {@link Shelf} domain objects associated with the specified bookcase, each
+   *     populated with its corresponding book IDs
+   */
   @Override
-  public List<Shelf> getShelfShelfOptionResponse(Long bookcaseId) {
+  public List<Shelf> findByBookcaseId(Long bookcaseId) {
     return jpaRepository.findByBookcaseId(bookcaseId).stream()
         .map(
             shelfEntity ->

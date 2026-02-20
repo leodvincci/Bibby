@@ -158,7 +158,7 @@ public class PromptOptions {
     for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
       int shelfBookCount = 0;
       List<ShelfDTO> shelves =
-          shelfFacade.findByBookcaseId(bookcaseDTO.bookcaseId()).stream()
+          shelfFacade.findAllShelves(bookcaseDTO.bookcaseId()).stream()
               .map(
                   shelf -> {
                     return new ShelfDTO(
