@@ -125,11 +125,6 @@ public class BookService implements BookFacade {
     bookDomainRepository.updateAvailabilityStatus(bookDTO.title());
   }
 
-  public Book bookMapper(BookDTO bookDTO, Set<AuthorDTO> authorDTOs) {
-    Optional<ShelfDTO> shelfEntity = shelfAccessPort.findShelfById(bookDTO.shelfId());
-    return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
-  }
-
   @Override
   public void checkInBook(String bookTitle) {
     bookDomainRepository.updateAvailabilityStatus(bookTitle);
