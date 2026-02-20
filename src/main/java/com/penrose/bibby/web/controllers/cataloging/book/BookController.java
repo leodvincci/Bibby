@@ -12,7 +12,6 @@ import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
@@ -118,7 +117,8 @@ public class BookController {
 
     BookDTO updatedBook;
     try {
-      updatedBook = BookMapper.toDTOFromDomain(bookService.assignBookToShelf(bookId, request.shelfId()));
+      updatedBook =
+          BookMapper.toDTOFromDomain(bookService.assignBookToShelf(bookId, request.shelfId()));
     } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (IllegalStateException e) {
