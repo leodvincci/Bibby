@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.cataloging.book.core.application;
 
-import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookBuilder;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
@@ -123,11 +122,6 @@ public class BookService implements BookFacade {
   @Override
   public void checkOutBook(BookDTO bookDTO) {
     bookDomainRepository.updateAvailabilityStatus(bookDTO.title());
-  }
-
-  public Book bookMapper(BookDTO bookDTO, Set<AuthorDTO> authorDTOs) {
-    Optional<ShelfDTO> shelfEntity = shelfAccessPort.findShelfById(bookDTO.shelfId());
-    return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
   }
 
   @Override
