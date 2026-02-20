@@ -47,8 +47,6 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
     logger.info("Shelf created with ID: {} for bookcase: {}", entity.getShelfId(), bookcaseId);
   }
 
-
-
   @Override
   public void deleteByBookcaseId(Long bookcaseId) {
     jpaRepository.deleteByBookcaseId(bookcaseId);

@@ -178,8 +178,8 @@ class ShelfServiceTest {
   }
 
   /**
-   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that all shelves for a
-   * bookcase are retrieved successfully.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that all shelves
+   * for a bookcase are retrieved successfully.
    */
   @Test
   void getAllShelves_shouldReturnAllShelvesForBookcase() {
@@ -196,8 +196,8 @@ class ShelfServiceTest {
   }
 
   /**
-   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that an empty list is
-   * returned when bookcase has no shelves.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that an empty list
+   * is returned when bookcase has no shelves.
    */
   @Test
   void getAllShelves_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
@@ -212,8 +212,8 @@ class ShelfServiceTest {
   }
 
   /**
-   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that the repository is
-   * invoked with the correct bookcase ID.
+   * Tests the {@link ShelfService#findAllShelves(Long)} (Long)} method. Verifies that the
+   * repository is invoked with the correct bookcase ID.
    */
   @Test
   void getAllShelves_shouldDelegateToRepository() {
@@ -269,8 +269,7 @@ class ShelfServiceTest {
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId))
-        .thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
     List<Shelf> result = shelfService.getShelfOptionsByBookcase(bookcaseId);
 

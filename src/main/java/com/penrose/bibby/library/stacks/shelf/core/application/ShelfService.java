@@ -43,8 +43,6 @@ public class ShelfService implements ShelfFacade {
     return Optional.of(shelf);
   }
 
-
-
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
     return shelfDomainRepository.findByBookcaseId(bookcaseId).stream()
         .map(
@@ -86,6 +84,4 @@ public class ShelfService implements ShelfFacade {
   public List<Shelf> getShelfOptions() {
     return shelfDomainRepository.findAll();
   }
-
-
 }
