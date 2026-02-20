@@ -50,4 +50,9 @@ public class ShelfService implements ShelfFacade {
   public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
     createShelfUseCase.execute(bookcaseId, position, shelfLabel, bookCapacity);
   }
+
+  @Override
+  public List<Shelf> findAll() {
+    return queryShelfUseCase.findAll();
+  }
 }
