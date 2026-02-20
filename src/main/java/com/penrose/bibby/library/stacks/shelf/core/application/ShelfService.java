@@ -1,10 +1,10 @@
 package com.penrose.bibby.library.stacks.shelf.core.application;
 
-import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ShelfService implements ShelfFacade {
 
-  private final BookFacade bookFacade;
   private final ShelfDomainRepository shelfDomainRepository;
   private final Logger logger = LoggerFactory.getLogger(ShelfService.class);
+  private final BookAccessPort bookAccessPort;
 
-  public ShelfService(ShelfDomainRepository shelfDomainRepository, BookFacade bookFacade) {
+  public ShelfService(ShelfDomainRepository shelfDomainRepository, BookAccessPort bookAccessPort) {
     this.shelfDomainRepository = shelfDomainRepository;
-    this.bookFacade = bookFacade;
+    this.bookAccessPort = bookAccessPort;
   }
 
   public List<Shelf> getAllShelves(Long bookCaseId) {
@@ -61,7 +61,7 @@ public class ShelfService implements ShelfFacade {
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
     List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
     List<Long> shelfIds = shelves.stream().map(shelf -> shelf.getShelfId().shelfId()).toList();
-    bookFacade.deleteByShelfIdIn(shelfIds);
+    bookAccessPort.deleteBooksOnShelves(shelfIds);
     logger.info("Deleted {} shelves from bookcase with ID: {}", shelfIds.size(), bookcaseId);
     shelfDomainRepository.deleteByBookcaseId(bookcaseId);
     logger.info("Bookcase with ID: {} has been cleared of shelves", bookcaseId);

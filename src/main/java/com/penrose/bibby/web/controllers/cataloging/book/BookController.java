@@ -116,9 +116,9 @@ public class BookController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shelf id is required");
     }
 
-    BookEntity updatedBook;
+    BookDTO updatedBook;
     try {
-      updatedBook = bookService.assignBookToShelf(bookId, request.shelfId());
+      updatedBook = BookMapper.toDTOFromDomain(bookService.assignBookToShelf(bookId, request.shelfId()));
     } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (IllegalStateException e) {
@@ -148,8 +148,8 @@ public class BookController {
 
     BookPlacementResponse response =
         new BookPlacementResponse(
-            updatedBook.getBookId(),
-            updatedBook.getTitle(),
+            updatedBook.id(),
+            updatedBook.title(),
             shelf.shelfId(),
             shelf.shelfLabel(),
             bookcase.location());

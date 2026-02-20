@@ -8,6 +8,8 @@ import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound.BookAccessAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

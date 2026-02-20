@@ -151,7 +151,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfIdIn(shelfIds)).thenReturn(booksToDelete);
 
     // when
-    bookDomainRepositoryImpl.deleteByShelfIdIn(shelfIds);
+    bookDomainRepositoryImpl.deleteByShelfId(shelfIds);
 
     // then
     verify(bookJpaRepository).findByShelfIdIn(shelfIds);
@@ -166,7 +166,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfIdIn(shelfIds)).thenReturn(emptyList);
 
     // when
-    bookDomainRepositoryImpl.deleteByShelfIdIn(shelfIds);
+    bookDomainRepositoryImpl.deleteByShelfId(shelfIds);
 
     // then
     verify(bookJpaRepository).findByShelfIdIn(shelfIds);
@@ -198,7 +198,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfIdIn(shelfIds)).thenReturn(booksToDelete);
 
     // when
-    bookDomainRepositoryImpl.deleteByShelfIdIn(shelfIds);
+    bookDomainRepositoryImpl.deleteByShelfId(shelfIds);
 
     // then
     verify(bookJpaRepository).findByShelfIdIn(shelfIds);

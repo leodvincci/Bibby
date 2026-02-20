@@ -18,4 +18,6 @@ public interface BookAccessPort {
    * @return List of book IDs on the shelf
    */
   List<Long> getBookIdsByShelfId(Long shelfId);
+
+  void deleteBooksOnShelves(List<Long> shelfIds);
 }

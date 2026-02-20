@@ -7,7 +7,6 @@ import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.cataloging.book.core.port.outbound.AuthorAccessPort;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
@@ -28,7 +27,6 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class BookService implements BookFacade {
   private final BookJpaRepository bookJpaRepository;
-  private final AuthorAccessPort authorAccessPort;
 
   private final BookBuilder BookBuilder;
   private final BookMapper bookMapper;
@@ -45,7 +43,6 @@ public class BookService implements BookFacade {
       BookBuilder bookBuilder,
       BookMapper bookMapper,
       IsbnLookupService isbnLookupService,
-      AuthorAccessPort authorAccessPort,
       BookDomainRepository bookDomainRepository,
       @Lazy ShelfAccessPort shelfAccessPort,
       BookcaseJpaRepository bookcaseJpaRepository) {
@@ -54,7 +51,6 @@ public class BookService implements BookFacade {
     this.BookBuilder = bookBuilder;
     this.bookMapper = bookMapper;
     this.isbnLookupService = isbnLookupService;
-    this.authorAccessPort = authorAccessPort;
     this.bookDomainRepository = bookDomainRepository;
     this.shelfAccessPort = shelfAccessPort;
     this.bookcaseJpaRepository = bookcaseJpaRepository;
@@ -120,25 +116,8 @@ public class BookService implements BookFacade {
   // UPDATE Operations
   // ============================================================
 
-  public BookEntity assignBookToShelf(Long bookId, Long shelfId) {
-    BookEntity bookEntity =
-        bookJpaRepository
-            .findById(bookId)
-            .orElseThrow(() -> new IllegalArgumentException("Book not found: " + bookId));
-    ShelfDTO shelf =
-        shelfAccessPort
-            .findShelfById(shelfId)
-            .orElseThrow(() -> new IllegalArgumentException("Shelf not found: " + shelfId));
-
-    long bookCount = bookJpaRepository.countByShelfId(shelfId);
-    if (bookCount >= shelf.bookCapacity()) {
-      throw new IllegalStateException("Shelf is full");
-    }
-
-    bookEntity.setShelfId(shelfId);
-    Book book = bookMapper.toDomainFromEntity(bookEntity);
-    bookDomainRepository.updateBook(book);
-    return bookEntity;
+  public Book assignBookToShelf(Long bookId, Long shelfId) {
+    return bookDomainRepository.placeBookOnShelf(bookId, shelfId);
   }
 
   @Override
@@ -279,7 +258,7 @@ public class BookService implements BookFacade {
 
   @Override
   public void deleteByShelfIdIn(List<Long> shelfIds) {
-    bookDomainRepository.deleteByShelfIdIn(shelfIds);
+    bookDomainRepository.deleteByShelfId(shelfIds);
   }
 
   @Override

@@ -16,20 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BookDomainRepositoryImpl implements BookDomainRepository {
   private final BookMapper bookMapper;
   private final BookJpaRepository bookJpaRepository;
+  private final ShelfFacade shelfFacade;
   Logger log = org.slf4j.LoggerFactory.getLogger(BookDomainRepositoryImpl.class);
 
   public BookDomainRepositoryImpl(
-      BookMapper bookMapper, BookJpaRepository bookJpaRepository, AuthorService authorService) {
+          BookMapper bookMapper, BookJpaRepository bookJpaRepository, AuthorService authorService, @Lazy ShelfFacade shelfFacade) {
 
     this.bookMapper = bookMapper;
     this.bookJpaRepository = bookJpaRepository;
+    this.shelfFacade = shelfFacade;
   }
 
   @Override
@@ -182,9 +187,39 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   }
 
   @Override
-  public void deleteByShelfIdIn(List<Long> shelfIds) {
+  public void deleteByShelfId(List<Long> shelfIds) {
     List<BookEntity> booksToDelete = bookJpaRepository.findByShelfIdIn(shelfIds);
     bookJpaRepository.deleteAll(booksToDelete);
     log.info("Deleted {} books with shelf IDs in {}", booksToDelete.size(), shelfIds);
+  }
+
+  @Override
+  public Book getBookDomainById(Long bookId) {
+    BookEntity bookEntity =
+        bookJpaRepository
+            .findById(bookId)
+            .orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
+    return bookMapper.toDomainFromEntity(bookEntity);
+  }
+
+  @Override
+  public Book placeBookOnShelf(Long bookId, Long shelfId) {
+    Optional<BookEntity> bookEntityOptional = bookJpaRepository.findById(bookId);
+    if (bookEntityOptional.isEmpty()) {
+      log.error("Book with id {} not found", bookId);
+      throw new RuntimeException("Book not found with id: " + bookId);
+    }
+
+    if(shelfFacade.findShelfById(shelfId).get().isFull()) {
+      log.error("Shelf with id {} is full", shelfId);
+      throw new RuntimeException("Shelf with id " + shelfId + " is full");
+    }
+
+    BookEntity bookEntity = bookEntityOptional.get();
+    bookEntity.setShelfId(shelfId);
+    bookJpaRepository.save(bookEntity);
+    log.info(
+        "Placed book with title {} on shelf with id {}", bookEntity.getTitle(), shelfId);
+    return bookMapper.toDomainFromEntity(bookEntity);
   }
 }

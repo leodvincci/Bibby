@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.api.adapters;
+package com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound;
 
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
