@@ -2,7 +2,6 @@ package com.penrose.bibby.library.cataloging.book.core.port.inbound;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
-
 import java.util.List;
 import java.util.Optional;
 

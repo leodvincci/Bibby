@@ -19,8 +19,8 @@ import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.Bookc
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import java.util.*;
 import org.slf4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,15 +40,15 @@ public class BookService implements BookFacade {
   Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
   public BookService(
-          IsbnEnrichmentService isbnEnrichmentService,
-          BookJpaRepository bookJpaRepository,
-          BookBuilder bookBuilder,
-          BookMapper bookMapper,
-          IsbnLookupService isbnLookupService,
-          AuthorAccessPort authorAccessPort,
-          BookDomainRepository bookDomainRepository,
-          @Lazy ShelfAccessPort shelfAccessPort,
-          BookcaseJpaRepository bookcaseJpaRepository) {
+      IsbnEnrichmentService isbnEnrichmentService,
+      BookJpaRepository bookJpaRepository,
+      BookBuilder bookBuilder,
+      BookMapper bookMapper,
+      IsbnLookupService isbnLookupService,
+      AuthorAccessPort authorAccessPort,
+      BookDomainRepository bookDomainRepository,
+      @Lazy ShelfAccessPort shelfAccessPort,
+      BookcaseJpaRepository bookcaseJpaRepository) {
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
     this.BookBuilder = bookBuilder;
