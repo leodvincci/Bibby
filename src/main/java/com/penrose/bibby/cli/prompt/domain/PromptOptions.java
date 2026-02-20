@@ -172,7 +172,30 @@ public class PromptOptions {
               .toList();
 
       for (ShelfDTO s : shelves) {
-        List<BookDTO> bookList = bookFacade.findByShelfId(s.shelfId());
+        List<BookDTO> bookList =
+            bookFacade.findByShelfId(s.shelfId()).stream()
+                .map(
+                    book -> {
+                      return new BookDTO(
+                          book.getBookId().getId(),
+                          book.getEdition(),
+                          book.getTitle().title(),
+                          book.getAuthors().stream()
+                              .map(a -> a.getAuthorFirstName() + " " + a.getAuthorLastName())
+                              .toList(),
+                          book.getIsbn().isbn,
+                          book.getGenre(),
+                          book.getPublisher(),
+                          book.getPublicationYear(),
+                          book.getShelfId(),
+                          book.getDescription(),
+                          book.getAvailabilityStatus(),
+                          book.getCreatedAt(),
+                          book.getUpdatedAt(),
+                          book.getPublishedDate());
+                    })
+                .toList();
+
         shelfBookCount += bookList.size();
       }
       options.put(

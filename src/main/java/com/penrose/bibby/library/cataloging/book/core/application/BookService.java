@@ -1,16 +1,17 @@
 package com.penrose.bibby.library.cataloging.book.core.application;
 
 import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookSummary;
+import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookBuilder;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
+import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
+import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.AuthorAccessPort;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
@@ -18,12 +19,14 @@ import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.Bookc
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import java.util.*;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class BookService {
+public class BookService implements BookFacade {
   private final BookJpaRepository bookJpaRepository;
   private final AuthorAccessPort authorAccessPort;
 
@@ -44,7 +47,7 @@ public class BookService {
       IsbnLookupService isbnLookupService,
       AuthorAccessPort authorAccessPort,
       BookDomainRepository bookDomainRepository,
-      ShelfAccessPort shelfAccessPort,
+      @Lazy ShelfAccessPort shelfAccessPort,
       BookcaseJpaRepository bookcaseJpaRepository) {
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
@@ -68,13 +71,14 @@ public class BookService {
   // ============================================================
   //      READ Operations
   // ============================================================
+  @Override
   public Optional<BookDTO> findBookById(Long bookId) {
     BookEntity bookEntity = bookJpaRepository.findById(bookId).orElse(null);
     return Optional.of(BookDTO.fromEntity(bookEntity));
   }
 
-  public List<BookEntity> findBooksByShelf(Long id) {
-    return bookJpaRepository.findByShelfId(id);
+  public List<Book> findBooksByShelf(Long id) {
+    return findByShelfId(id);
   }
 
   public Optional<BookDTO> findBookByTitleIgnoreCase(String title) {
@@ -89,6 +93,8 @@ public class BookService {
    * @param title the title of the book to search for
    * @return the book entity with the specified title, or null if no such book exists
    */
+  @Override
+  @Transactional
   public BookDTO findBookByTitle(String title) {
     Optional<BookEntity> bookEntity = bookJpaRepository.findByTitleIgnoreCase(title);
     if (bookEntity.isEmpty()) {
@@ -105,6 +111,7 @@ public class BookService {
     return bookEntities;
   }
 
+  @Override
   public List<BookSummary> getBooksForShelf(Long shelfId) {
     return bookJpaRepository.findBookSummariesByShelfIdOrderByTitleAsc(shelfId);
   }
@@ -134,6 +141,7 @@ public class BookService {
     return bookEntity;
   }
 
+  @Override
   public void checkOutBook(BookDTO bookDTO) {
     bookDomainRepository.updateAvailabilityStatus(bookDTO.title());
   }
@@ -143,10 +151,12 @@ public class BookService {
     return bookMapper.toDomain(bookDTO, authorDTOs, shelfEntity.orElse(null));
   }
 
+  @Override
   public void checkInBook(String bookTitle) {
     bookDomainRepository.updateAvailabilityStatus(bookTitle);
   }
 
+  @Override
   public BookDTO findBookByIsbn(String isbn) {
     BookEntity bookEntity = bookJpaRepository.findByIsbn(isbn);
     if (bookEntity == null) {
@@ -193,5 +203,92 @@ public class BookService {
         bookcaseEntity.getBookcaseLocation(),
         bookcaseEntity.getBookcaseLocation(),
         shelf.shelfLabel());
+  }
+
+  // ============================================================
+  //      BookFacade Implementation
+  // ============================================================
+
+  @Override
+  public void updateTheBooksShelf(BookDTO bookDTO, Long newShelfId) {
+    Book book = bookMapper.toDomainFromDTO(bookDTO);
+    Long bookId = bookDTO.id();
+    bookDomainRepository.updateTheBooksShelf(book, bookId, newShelfId);
+    logger.info("Updated book with title {} to shelf with id {}", bookDTO.title(), newShelfId);
+  }
+
+  @Override
+  public BriefBibliographicRecord findBookBriefByShelfId(Long bookId) {
+    return bookMapper.toBookBriefFromEntity(bookDomainRepository.getBookById(bookId));
+  }
+
+  @Override
+  public BookMetaDataResponse findBookMetaDataByIsbn(String isbn) {
+    GoogleBooksResponse googleBooksResponse = isbnLookupService.lookupBook(isbn).block();
+    logger.info("Fetched book metadata for ISBN: {}", isbn);
+    return bookMapper.toBookMetaDataResponseFromGoogleBooksResponse(googleBooksResponse, isbn);
+  }
+
+  @Override
+  public void createBookFromMetaData(
+      BookMetaDataResponse bookMetaDataResponse, List<Long> authorIds, String isbn, Long shelfId) {
+    bookDomainRepository.createBookFromMetaData(bookMetaDataResponse, authorIds, isbn, shelfId);
+  }
+
+  @Override
+  public void createNewBook(BookRequestDTO bookRequestDTO) {
+    logger.info("Creating new book with title: {}", bookRequestDTO.title());
+    Book book = bookMapper.toDomainFromBookRequestDTO(bookRequestDTO);
+    book.setIsbn(new Isbn(bookRequestDTO.isbn()));
+    book.setTitle(new Title(bookRequestDTO.title()));
+    book.setShelfId(bookRequestDTO.bookshelfId());
+    book.setPublisher(bookRequestDTO.publisher());
+    logger.info("Mapped BookRequestDTO to Book domain object: {}", book);
+    bookDomainRepository.registerBook(book);
+    logger.info("Book registered successfully in the repository.");
+  }
+
+  @Override
+  public BookDetailView getBookDetails(Long bookId) {
+    return bookDomainRepository.getBookDetailView(bookId);
+  }
+
+  @Override
+  public List<String> getBooksByAuthorId(Long id) {
+    List<BookEntity> bookEntities = bookDomainRepository.getThreeBooksByAuthorId(id);
+    logger.info(bookEntities.size() + " books found for author id: " + id);
+    List<String> bookTitles = bookEntities.stream().limit(3).map(BookEntity::getTitle).toList();
+    logger.info("Book titles: " + bookTitles);
+    return bookTitles;
+  }
+
+  @Override
+  public List<BriefBibliographicRecord> getBriefBibliographicRecordsByShelfId(Long shelfId) {
+    return bookMapper.toBookBriefListFromBookDTOs(bookDomainRepository.getBooksByShelfId(shelfId));
+  }
+
+  @Override
+  public void updatePublisher(String isbn, String newPublisher) {
+    bookDomainRepository.updatePublisher(isbn, newPublisher);
+  }
+
+  @Override
+  public boolean isDuplicate(String isbn) {
+    return bookDomainRepository.findBookByIsbn(isbn) != null;
+  }
+
+  @Override
+  public void deleteByShelfIdIn(List<Long> shelfIds) {
+    bookDomainRepository.deleteByShelfIdIn(shelfIds);
+  }
+
+  @Override
+  public List<Book> findByShelfId(Long shelfId) {
+    List<BookEntity> entities = bookJpaRepository.findByShelfId(shelfId);
+    List<Book> books = new ArrayList<>();
+    for (BookEntity entity : entities) {
+      books.add(bookMapper.toDomainFromEntity(entity));
+    }
+    return books;
   }
 }
