@@ -12,7 +12,6 @@ import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
@@ -116,9 +115,10 @@ public class BookController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shelf id is required");
     }
 
-    BookEntity updatedBook;
+    BookDTO updatedBook;
     try {
-      updatedBook = bookService.assignBookToShelf(bookId, request.shelfId());
+      updatedBook =
+          BookMapper.toDTOFromDomain(bookService.assignBookToShelf(bookId, request.shelfId()));
     } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     } catch (IllegalStateException e) {
@@ -148,8 +148,8 @@ public class BookController {
 
     BookPlacementResponse response =
         new BookPlacementResponse(
-            updatedBook.getBookId(),
-            updatedBook.getTitle(),
+            updatedBook.id(),
+            updatedBook.title(),
             shelf.shelfId(),
             shelf.shelfLabel(),
             bookcase.location());

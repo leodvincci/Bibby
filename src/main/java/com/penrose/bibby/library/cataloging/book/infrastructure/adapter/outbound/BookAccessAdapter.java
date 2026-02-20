@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.infrastructure.adapter;
+package com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
@@ -27,5 +27,10 @@ public class BookAccessAdapter implements BookAccessPort {
   public List<Long> getBookIdsByShelfId(Long shelfId) {
     List<BookDTO> books = bookDomainRepository.getBooksByShelfId(shelfId);
     return books.stream().map(book -> book.id()).collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteBooksOnShelves(List<Long> shelfIds) {
+    bookDomainRepository.deleteByShelfId(shelfIds);
   }
 }

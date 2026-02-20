@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
+import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound.BookAccessAdapter;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;

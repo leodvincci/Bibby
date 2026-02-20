@@ -46,5 +46,9 @@ public interface BookDomainRepository {
 
   void updatePublisher(String isbn, String newPublisher);
 
-  void deleteByShelfIdIn(List<Long> shelfIds);
+  void deleteByShelfId(List<Long> shelfIds);
+
+  Book getBookDomainById(Long bookId);
+
+  Book placeBookOnShelf(Long bookId, Long shelfId);
 }
