@@ -25,15 +25,15 @@ class ShelfServiceTest {
   @InjectMocks private ShelfService shelfService;
 
   @Test
-  void findAllShelves_shouldDelegateToQueryUseCase() {
+  void findShelvesByBookcaseId_shouldDelegateToQueryUseCase() {
     Long bookcaseId = 100L;
     List<Shelf> expected = List.of(mock(Shelf.class));
-    when(queryShelfUseCase.findAllShelves(bookcaseId)).thenReturn(expected);
+    when(queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)).thenReturn(expected);
 
-    List<Shelf> result = shelfService.findAllShelves(bookcaseId);
+    List<Shelf> result = shelfService.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).isEqualTo(expected);
-    verify(queryShelfUseCase).findAllShelves(bookcaseId);
+    verify(queryShelfUseCase).findShelvesByBookcaseId(bookcaseId);
   }
 
   @Test

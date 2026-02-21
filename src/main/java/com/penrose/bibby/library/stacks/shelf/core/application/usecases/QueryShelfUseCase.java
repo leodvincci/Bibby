@@ -18,7 +18,7 @@ public class QueryShelfUseCase {
     this.shelfDomainRepository = shelfDomainRepository;
   }
 
-  public List<Shelf> findAllShelves(Long bookcaseId) {
+  public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
     return shelfDomainRepository.findByBookcaseId(bookcaseId);
   }
 

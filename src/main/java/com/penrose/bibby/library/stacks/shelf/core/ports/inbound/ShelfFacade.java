@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ShelfFacade {
 
-  List<Shelf> findAllShelves(Long bookCaseId);
+  List<Shelf> findShelvesByBookcaseId(Long bookcaseId);
 
   Optional<Shelf> findShelfById(Long shelfId);
 

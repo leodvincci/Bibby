@@ -35,7 +35,7 @@ public class ShelfController {
    */
   @GetMapping("/options/{bookcaseId}")
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(@PathVariable Long bookcaseId) {
-    return shelfFacade.findAllShelves(bookcaseId).stream()
+    return shelfFacade.findShelvesByBookcaseId(bookcaseId).stream()
         .map(shelfResponseMapper::toShelfOption)
         .toList();
   }
