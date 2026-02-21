@@ -43,7 +43,7 @@ public class PromptOptions {
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
     List<ShelfDTO> shelfDTOS =
-        shelfFacade.findAllShelves(bookcaseId).stream()
+        shelfFacade.findShelvesByBookcaseId(bookcaseId).stream()
             .map(
                 shelf -> {
                   return new ShelfDTO(
@@ -158,7 +158,7 @@ public class PromptOptions {
     for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
       int shelfBookCount = 0;
       List<ShelfDTO> shelves =
-          shelfFacade.findAllShelves(bookcaseDTO.bookcaseId()).stream()
+          shelfFacade.findShelvesByBookcaseId(bookcaseDTO.bookcaseId()).stream()
               .map(
                   shelf -> {
                     return new ShelfDTO(

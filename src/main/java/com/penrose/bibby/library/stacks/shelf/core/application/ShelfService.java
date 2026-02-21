@@ -27,8 +27,8 @@ public class ShelfService implements ShelfFacade {
   }
 
   @Override
-  public List<Shelf> findAllShelves(Long bookCaseId) {
-    return queryShelfUseCase.findAllShelves(bookCaseId);
+  public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
+    return queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
   }
 
   @Override

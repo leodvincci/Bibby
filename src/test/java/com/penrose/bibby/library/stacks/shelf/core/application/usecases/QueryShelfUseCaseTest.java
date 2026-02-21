@@ -22,39 +22,39 @@ class QueryShelfUseCaseTest {
   @InjectMocks private QueryShelfUseCase queryShelfUseCase;
 
   @Test
-  void findAllShelves_shouldReturnAllShelvesForBookcase() {
+  void findShelvesByBookcaseId_shouldReturnAllShelvesForBookcase() {
     Long bookcaseId = 100L;
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
-    List<Shelf> result = queryShelfUseCase.findAllShelves(bookcaseId);
+    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   @Test
-  void findAllShelves_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
+  void findShelvesByBookcaseId_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
     Long bookcaseId = 100L;
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<Shelf> result = queryShelfUseCase.findAllShelves(bookcaseId);
+    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
   }
 
   @Test
-  void findAllShelves_shouldDelegateToRepository() {
+  void findShelvesByBookcaseId_shouldDelegateToRepository() {
     Long bookcaseId = 100L;
     Shelf shelf = mock(Shelf.class);
 
     when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
-    List<Shelf> result = queryShelfUseCase.findAllShelves(bookcaseId);
+    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).containsExactly(shelf);
     verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
