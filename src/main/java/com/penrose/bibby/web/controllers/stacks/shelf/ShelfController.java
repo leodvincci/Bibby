@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ShelfController {
 
-  ShelfFacade shelfFacade;
-  ShelfResponseMapper shelfResponseMapper;
+  private final ShelfFacade shelfFacade;
+  private final ShelfResponseMapper shelfResponseMapper;
 
   public ShelfController(ShelfFacade shelfFacade, ShelfResponseMapper shelfResponseMapper) {
     this.shelfFacade = shelfFacade;
