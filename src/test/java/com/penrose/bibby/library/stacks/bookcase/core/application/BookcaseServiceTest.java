@@ -119,7 +119,6 @@ class BookcaseServiceTest {
     verify(shelfFacade).createShelf(eq(500L), eq(position), eq("Shelf 8"), eq(bookCapacity));
   }
 
-
   /**
    * Tests the {@link BookcaseService#createNewBookCase(Long, String, String, String, int, int,
    * String)} method. Verifies that a new bookcase is created successfully when no existing bookcase
