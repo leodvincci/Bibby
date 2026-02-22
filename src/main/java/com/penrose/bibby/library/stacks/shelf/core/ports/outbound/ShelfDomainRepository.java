@@ -8,7 +8,7 @@ public interface ShelfDomainRepository {
 
   Shelf getById(ShelfId id);
 
-  void save(Long bookcaseId, int position, String shelfLabel, int bookCapacity);
+  void save(Shelf shelf);
 
   void deleteByBookcaseId(Long bookcaseId);
 

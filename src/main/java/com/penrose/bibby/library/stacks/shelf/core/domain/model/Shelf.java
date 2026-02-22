@@ -38,6 +38,10 @@ public class Shelf {
       throw new IllegalArgumentException("Book capacity cannot be negative");
     }
 
+    if (bookcaseId == null) {
+      throw new IllegalArgumentException("Bookcase ID cannot be null");
+    }
+
     this.shelfLabel = shelfLabel;
     this.shelfPosition = shelfPosition;
     this.bookCapacity = bookCapacity;

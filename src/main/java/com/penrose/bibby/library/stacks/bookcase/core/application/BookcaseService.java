@@ -109,17 +109,6 @@ public class BookcaseService implements BookcaseFacade {
   }
 
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
-    if (bookCapacity <= 0) {
-      throw new IllegalArgumentException("Book capacity cannot be negative");
-    } else if (bookcaseEntity == null) {
-      throw new NullPointerException("Bookcase cannot be null");
-    } else if (position <= 0 || position > bookcaseEntity.getShelfCapacity()) {
-      throw new IllegalArgumentException(
-          "Position must be between 1 and " + bookcaseEntity.getShelfCapacity());
-    } else if (label <= 0) {
-      throw new IllegalArgumentException("Label must be a positive integer");
-    }
-
     shelfFacade.createShelf(
         bookcaseEntity.getBookcaseId(), position, "Shelf " + label, bookCapacity);
   }

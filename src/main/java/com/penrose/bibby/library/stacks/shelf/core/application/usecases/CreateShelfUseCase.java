@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
+import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +27,7 @@ public class CreateShelfUseCase {
    *     shelfLabel is null or blank, if the bookcaseId is null, or if the position is less than or
    *     equal to 0.
    */
-  public void execute(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
-    if (bookCapacity <= 0) {
-      throw new IllegalArgumentException("Book capacity cannot be negative");
-    }
-    if (shelfLabel == null || shelfLabel.isBlank()) {
-      throw new IllegalArgumentException("Shelf label cannot be null or blank");
-    }
-    if (bookcaseId == null) {
-      throw new IllegalArgumentException("Bookcase ID cannot be null");
-    }
-    if (position <= 0) {
-      throw new IllegalArgumentException("Shelf position must be greater than 0");
-    }
-    shelfDomainRepository.save(bookcaseId, position, shelfLabel, bookCapacity);
+  public void execute(Shelf shelf) {
+    shelfDomainRepository.save(shelf);
   }
 }

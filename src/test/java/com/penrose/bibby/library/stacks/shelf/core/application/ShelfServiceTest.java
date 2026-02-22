@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +25,7 @@ class ShelfServiceTest {
   @Mock private CreateShelfUseCase createShelfUseCase;
   @Mock private DeleteShelvesUseCase deleteShelvesUseCase;
   @InjectMocks private ShelfService shelfService;
+  @Captor private ArgumentCaptor<Shelf> shelfCaptor;
 
   @Test
   void findShelvesByBookcaseId_shouldDelegateToQueryUseCase() {
@@ -61,10 +64,17 @@ class ShelfServiceTest {
   }
 
   @Test
-  void createShelf_shouldDelegateToCreateUseCase() {
+  void createShelf_shouldDelegateToCreateUseCaseWithCorrectShelf() {
     shelfService.createShelf(100L, 1, "Shelf A", 10);
 
-    verify(createShelfUseCase).execute(100L, 1, "Shelf A", 10);
+    verify(createShelfUseCase).execute(shelfCaptor.capture());
+    Shelf captured = shelfCaptor.getValue();
+    assertThat(captured.getShelfLabel()).isEqualTo("Shelf A");
+    assertThat(captured.getShelfPosition()).isEqualTo(1);
+    assertThat(captured.getBookCapacity()).isEqualTo(10);
+    assertThat(captured.getBookcaseId()).isEqualTo(100L);
+    assertThat(captured.getBookIds()).isEmpty();
+    assertThat(captured.getShelfId()).isNull();
   }
 
   @Test
