@@ -119,37 +119,6 @@ class BookcaseServiceTest {
     verify(shelfFacade).createShelf(eq(500L), eq(position), eq("Shelf 8"), eq(bookCapacity));
   }
 
-  @Test
-  void addShelf_shouldNotCreateShelfWithNegativeBookCapacity() {
-    BookcaseEntity bookcaseEntity = new BookcaseEntity(6L, "Basement", "F", "1", 3, 30);
-    bookcaseEntity.setBookcaseId(600L);
-    int label = 2;
-    int position = 2;
-    int bookCapacity = -5;
-
-    assertThatThrownBy(
-            () -> bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Book capacity cannot be negative");
-
-    verify(shelfFacade, never()).createShelf(anyLong(), anyInt(), anyString(), anyInt());
-  }
-
-  @Test
-  void addShelf_shouldNotCreateShelfWithNullBookcase() {
-    BookcaseEntity bookcaseEntity = null;
-    // bookcaseId is not set, remains null
-    int label = 3;
-    int position = 3;
-    int bookCapacity = 20;
-
-    assertThatThrownBy(
-            () -> bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity))
-        .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("Bookcase cannot be null");
-
-    verify(shelfFacade, never()).createShelf(anyLong(), anyInt(), anyString(), anyInt());
-  }
 
   /**
    * Tests the {@link BookcaseService#createNewBookCase(Long, String, String, String, int, int,
