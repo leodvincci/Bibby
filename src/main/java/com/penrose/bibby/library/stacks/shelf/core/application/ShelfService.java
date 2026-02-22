@@ -48,7 +48,8 @@ public class ShelfService implements ShelfFacade {
 
   @Override
   public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
-    createShelfUseCase.execute(bookcaseId, position, shelfLabel, bookCapacity);
+    Shelf shelf = new Shelf(shelfLabel, position, bookCapacity, null, List.of(), bookcaseId);
+    createShelfUseCase.execute(shelf);
   }
 
   @Override

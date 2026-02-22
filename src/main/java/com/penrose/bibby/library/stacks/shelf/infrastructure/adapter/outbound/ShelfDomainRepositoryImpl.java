@@ -37,14 +37,15 @@ public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
   }
 
   @Override
-  public void save(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
+  public void save(Shelf shelf) {
     ShelfEntity entity = new ShelfEntity();
-    entity.setBookcaseId(bookcaseId);
-    entity.setShelfPosition(position);
-    entity.setShelfLabel(shelfLabel);
-    entity.setBookCapacity(bookCapacity);
+    entity.setBookcaseId(shelf.getBookcaseId());
+    entity.setShelfPosition(shelf.getShelfPosition());
+    entity.setShelfLabel(shelf.getShelfLabel());
+    entity.setBookCapacity(shelf.getBookCapacity());
     jpaRepository.save(entity);
-    logger.info("Shelf created with ID: {} for bookcase: {}", entity.getShelfId(), bookcaseId);
+    logger.info(
+        "Shelf created with ID: {} for bookcase: {}", entity.getShelfId(), shelf.getBookcaseId());
   }
 
   @Override
