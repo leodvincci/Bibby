@@ -5,8 +5,8 @@ import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRep
 import org.springframework.stereotype.Service;
 
 /**
- * Service class responsible for handling the creation of shelves.
- * This use case interacts with the ShelfDomainRepository to persist shelf data.
+ * Service class responsible for handling the creation of shelves. This use case interacts with the
+ * ShelfDomainRepository to persist shelf data.
  */
 @Service
 public class CreateShelfUseCase {

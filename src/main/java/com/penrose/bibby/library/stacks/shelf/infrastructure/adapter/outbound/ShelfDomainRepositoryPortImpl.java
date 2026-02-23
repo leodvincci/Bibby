@@ -17,7 +17,8 @@ public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort 
   private final ShelfJpaRepository jpaRepository;
   private final ShelfMapper shelfMapper;
   private final BookAccessPort bookAccessPort;
-  private final Logger logger = org.slf4j.LoggerFactory.getLogger(ShelfDomainRepositoryPortImpl.class);
+  private final Logger logger =
+      org.slf4j.LoggerFactory.getLogger(ShelfDomainRepositoryPortImpl.class);
 
   public ShelfDomainRepositoryPortImpl(
       ShelfJpaRepository jpaRepository, ShelfMapper shelfMapper, BookAccessPort bookAccessPort) {

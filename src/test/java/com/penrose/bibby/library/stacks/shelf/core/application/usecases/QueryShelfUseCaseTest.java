@@ -9,7 +9,6 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +27,8 @@ class QueryShelfUseCaseTest {
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
-    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
+        .thenReturn(List.of(shelf1, shelf2));
 
     List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 

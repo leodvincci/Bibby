@@ -4,7 +4,6 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class DeleteShelvesUseCase {
   private final Logger logger = LoggerFactory.getLogger(DeleteShelvesUseCase.class);
 
   public DeleteShelvesUseCase(
-          ShelfDomainRepositoryPort shelfDomainRepositoryPort, BookAccessPort bookAccessPort) {
+      ShelfDomainRepositoryPort shelfDomainRepositoryPort, BookAccessPort bookAccessPort) {
     this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
     this.bookAccessPort = bookAccessPort;
   }

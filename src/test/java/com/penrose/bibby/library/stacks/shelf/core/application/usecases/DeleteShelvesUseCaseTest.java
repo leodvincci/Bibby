@@ -29,7 +29,8 @@ class DeleteShelvesUseCaseTest {
     when(shelf1.getShelfId()).thenReturn(new ShelfId(1L));
     when(shelf2.getShelfId()).thenReturn(new ShelfId(2L));
 
-    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
+        .thenReturn(List.of(shelf1, shelf2));
 
     deleteShelvesUseCase.execute(bookcaseId);
 
