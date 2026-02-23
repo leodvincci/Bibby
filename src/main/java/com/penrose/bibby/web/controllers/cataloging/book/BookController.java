@@ -5,18 +5,12 @@ import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFacade;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookLocationResponse;
-import com.penrose.bibby.library.cataloging.book.api.dtos.BookPlacementResponse;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookRequestDTO;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookShelfAssignmentRequest;
 import com.penrose.bibby.library.cataloging.book.core.application.BookService;
-import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.core.application.ShelfService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +18,6 @@ import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -35,25 +28,16 @@ public class BookController {
   final BookService bookService;
   final BookFacade bookFacade;
   final IsbnLookupService isbnLookupService;
-  private final IsbnEnrichmentService isbnEnrichmentService;
-  private final ShelfService shelfService;
-  private final BookcaseService bookcaseService;
   private final AuthorFacade authorFacade;
 
   public BookController(
       BookService bookService,
       BookFacade bookFacade,
       IsbnLookupService isbnLookupService,
-      IsbnEnrichmentService isbnEnrichmentService,
-      ShelfService shelfService,
-      BookcaseService bookcaseService,
       AuthorFacade authorFacade) {
     this.bookService = bookService;
     this.bookFacade = bookFacade;
     this.isbnLookupService = isbnLookupService;
-    this.isbnEnrichmentService = isbnEnrichmentService;
-    this.shelfService = shelfService;
-    this.bookcaseService = bookcaseService;
     this.authorFacade = authorFacade;
   }
 
@@ -109,52 +93,10 @@ public class BookController {
   }
 
   @PostMapping("/{bookId}/shelf")
-  public ResponseEntity<BookPlacementResponse> placeBookOnShelf(
-      @PathVariable Long bookId, @RequestBody BookShelfAssignmentRequest request) {
-    if (request == null || request.shelfId() == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shelf id is required");
-    }
-
-    BookDTO updatedBook;
-    try {
-      updatedBook =
-          BookMapper.toDTOFromDomain(bookService.assignBookToShelf(bookId, request.shelfId()));
-    } catch (IllegalArgumentException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-    } catch (IllegalStateException e) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-    }
-    ShelfDTO shelf =
-        shelfService
-            .findShelfById(request.shelfId())
-            .map(
-                shelfDomain -> {
-                  return new ShelfDTO(
-                      shelfDomain.getShelfId().shelfId(),
-                      shelfDomain.getShelfLabel(),
-                      shelfDomain.getBookcaseId(),
-                      shelfDomain.getShelfPosition(),
-                      shelfDomain.getBookCapacity(),
-                      shelfDomain.getBookIds());
-                })
-            .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf not found"));
-
-    BookcaseDTO bookcase =
-        bookcaseService
-            .findBookCaseById(shelf.bookcaseId())
-            .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bookcase not found"));
-
-    BookPlacementResponse response =
-        new BookPlacementResponse(
-            updatedBook.id(),
-            updatedBook.title(),
-            shelf.shelfId(),
-            shelf.shelfLabel(),
-            bookcase.location());
-
-    return ResponseEntity.ok(response);
+  public ResponseEntity<HttpStatus> placeBookOnShelf(
+      @PathVariable Long bookId, @RequestBody BookShelfAssignmentRequest shelfAssignmentRequest) {
+    bookFacade.placeBookOnShelf(bookId, shelfAssignmentRequest);
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   @CrossOrigin(origins = "*")
