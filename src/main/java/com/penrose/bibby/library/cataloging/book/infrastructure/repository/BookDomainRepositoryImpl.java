@@ -18,17 +18,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
-
 @Component
 public class BookDomainRepositoryImpl implements BookDomainRepository {
   private final BookMapper bookMapper;
   private final BookJpaRepository bookJpaRepository;
   Logger log = org.slf4j.LoggerFactory.getLogger(BookDomainRepositoryImpl.class);
 
-  public BookDomainRepositoryImpl(
-      BookMapper bookMapper,
-      BookJpaRepository bookJpaRepository) {
+  public BookDomainRepositoryImpl(BookMapper bookMapper, BookJpaRepository bookJpaRepository) {
 
     this.bookMapper = bookMapper;
     this.bookJpaRepository = bookJpaRepository;
@@ -206,7 +202,6 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
       log.error("Book with id {} not found", bookId);
       throw new RuntimeException("Book not found with id: " + bookId);
     }
-
 
     bookEntity.get().setShelfId(shelfId);
     bookJpaRepository.save(bookEntity.get());
