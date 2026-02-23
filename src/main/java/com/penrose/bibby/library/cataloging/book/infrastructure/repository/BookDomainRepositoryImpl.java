@@ -26,17 +26,20 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
   private final BookMapper bookMapper;
   private final BookJpaRepository bookJpaRepository;
   private final ShelfFacade shelfFacade;
+  private final BookDomainRepository bookDomainRepository;
   Logger log = org.slf4j.LoggerFactory.getLogger(BookDomainRepositoryImpl.class);
 
   public BookDomainRepositoryImpl(
       BookMapper bookMapper,
       BookJpaRepository bookJpaRepository,
       AuthorService authorService,
-      @Lazy ShelfFacade shelfFacade) {
+      @Lazy ShelfFacade shelfFacade,
+      BookDomainRepository bookDomainRepository) {
 
     this.bookMapper = bookMapper;
     this.bookJpaRepository = bookJpaRepository;
     this.shelfFacade = shelfFacade;
+    this.bookDomainRepository = bookDomainRepository;
   }
 
   @Override
@@ -206,18 +209,12 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
 
   @Override
   public Book placeBookOnShelf(Long bookId, Long shelfId) {
-    Optional<BookEntity> bookEntityOptional = bookJpaRepository.findById(bookId);
-    if (bookEntityOptional.isEmpty()) {
+    BookEntity bookEntity = bookDomainRepository.getBookById(bookId);
+    if (bookEntity == null) {
       log.error("Book with id {} not found", bookId);
       throw new RuntimeException("Book not found with id: " + bookId);
     }
 
-    if (shelfFacade.findShelfById(shelfId).get().isFull()) {
-      log.error("Shelf with id {} is full", shelfId);
-      throw new RuntimeException("Shelf with id " + shelfId + " is full");
-    }
-
-    BookEntity bookEntity = bookEntityOptional.get();
     bookEntity.setShelfId(shelfId);
     bookJpaRepository.save(bookEntity);
     log.info("Placed book with title {} on shelf with id {}", bookEntity.getTitle(), shelfId);

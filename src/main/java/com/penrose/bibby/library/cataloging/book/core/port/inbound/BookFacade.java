@@ -71,4 +71,6 @@ public interface BookFacade {
   void deleteByShelfIdIn(List<Long> shelfIds);
 
   List<Book> findByShelfId(Long shelfId);
+
+  void placeBookOnShelf(Long bookId, BookShelfAssignmentRequest shelfAssignmentRequest);
 }
