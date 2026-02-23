@@ -106,7 +106,7 @@ public BookCommands(
     ShelfFacade shelfFacade, 
     CliPromptService cliPrompt, 
     IsbnLookupService isbnLookupService,  // Removed
-    ShelfDomainRepositoryImpl shelfDomainRepository, 
+    ShelfDomainRepositoryImpl shelfDomainRepositoryPort, 
     BookFacade bookFacade
 )
 ```
@@ -120,7 +120,7 @@ public BookCommands(
     AuthorFacade authorFacade,
     ShelfFacade shelfFacade,
     CliPromptService cliPrompt,
-    ShelfDomainRepositoryImpl shelfDomainRepository,
+    ShelfDomainRepositoryImpl shelfDomainRepositoryPort,
     BookFacade bookFacade,
     BookcaseFacade bookcaseFacade  // Added
 )
@@ -192,7 +192,7 @@ The CLI still has some non-facade dependencies:
 ```java
 private final BookService bookService;           // Should use BookFacade only
 private final ShelfService shelfService;         // Should use ShelfFacade only
-private final ShelfDomainRepositoryImpl shelfDomainRepository;  // Implementation detail
+private final ShelfDomainRepositoryImpl shelfDomainRepositoryPort;  // Implementation detail
 private final ComponentFlow.Builder componentFlowBuilder;       // Framework, OK
 private final CliPromptService cliPrompt;        // CLI internal, OK
 ```

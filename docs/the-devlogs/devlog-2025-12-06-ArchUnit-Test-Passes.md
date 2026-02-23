@@ -89,7 +89,7 @@ public BookCommandLine(
     ShelfMapper shelfMapper,           // ❌ Removed
     BookMapper bookMapper,             // ❌ Removed  
     IsbnLookupService isbnLookupService, 
-    ShelfDomainRepositoryImpl shelfDomainRepository, 
+    ShelfDomainRepositoryImpl shelfDomainRepositoryPort, 
     BookFacade bookFacade
 )
 ```
@@ -105,7 +105,7 @@ public BookCommandLine(
     ShelfFacade shelfFacade,           // ✅ Added facade
     CliPromptService cliPrompt, 
     IsbnLookupService isbnLookupService, 
-    ShelfDomainRepositoryImpl shelfDomainRepository, 
+    ShelfDomainRepositoryImpl shelfDomainRepositoryPort, 
     BookFacade bookFacade
 )
 ```

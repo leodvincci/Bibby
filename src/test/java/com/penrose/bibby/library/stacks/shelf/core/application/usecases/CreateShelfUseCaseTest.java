@@ -3,8 +3,9 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CreateShelfUseCaseTest {
 
-  @Mock private ShelfDomainRepository shelfDomainRepository;
+  @Mock private ShelfDomainRepositoryPort shelfDomainRepositoryPort;
   @InjectMocks private CreateShelfUseCase createShelfUseCase;
 
   @Test
@@ -23,7 +24,7 @@ class CreateShelfUseCaseTest {
 
     createShelfUseCase.execute(shelf);
 
-    verify(shelfDomainRepository).save(shelf);
+    verify(shelfDomainRepositoryPort).save(shelf);
   }
 
   @Test
@@ -32,7 +33,7 @@ class CreateShelfUseCaseTest {
 
     createShelfUseCase.execute(shelf);
 
-    verify(shelfDomainRepository).save(shelf);
+    verify(shelfDomainRepositoryPort).save(shelf);
   }
 
   @Test
@@ -41,6 +42,6 @@ class CreateShelfUseCaseTest {
 
     createShelfUseCase.execute(shelf);
 
-    verify(shelfDomainRepository).save(shelf);
+    verify(shelfDomainRepositoryPort).save(shelf);
   }
 }

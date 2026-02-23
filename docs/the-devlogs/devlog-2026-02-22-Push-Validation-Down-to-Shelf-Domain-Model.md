@@ -100,7 +100,7 @@ createShelfUseCase.execute(shelf);
 
 ```java
 public void execute(Shelf shelf) {
-  shelfDomainRepository.save(shelf);
+  shelfDomainRepositoryPort.save(shelf);
 }
 ```
 
@@ -158,7 +158,7 @@ BookcaseService.addShelf(entity, label, position, capacity)
                  |-- validates: label non-blank, position >= 1, capacity >= 1, bookcaseId non-null
                  |-- (throws IllegalArgumentException on violation)
             -> createShelfUseCase.execute(shelf)
-                 -> shelfDomainRepository.save(shelf)
+                 -> shelfDomainRepositoryPort.save(shelf)
                       -> ShelfDomainRepositoryImpl: maps Shelf -> ShelfEntity -> JPA save
 ```
 

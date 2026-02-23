@@ -4,7 +4,7 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import java.util.List;
 
-public interface ShelfDomainRepository {
+public interface ShelfDomainRepositoryPort {
 
   Shelf getById(ShelfId id);
 

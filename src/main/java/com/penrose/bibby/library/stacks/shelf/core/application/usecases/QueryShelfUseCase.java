@@ -3,28 +3,29 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QueryShelfUseCase {
 
-  private final ShelfDomainRepository shelfDomainRepository;
+  private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 
-  public QueryShelfUseCase(ShelfDomainRepository shelfDomainRepository) {
-    this.shelfDomainRepository = shelfDomainRepository;
+  public QueryShelfUseCase(ShelfDomainRepositoryPort shelfDomainRepositoryPort) {
+    this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
   }
 
   public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookcaseId);
+    return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId);
   }
 
   @Transactional
   public Optional<Shelf> findShelfById(Long shelfId) {
-    Shelf shelf = shelfDomainRepository.getById(new ShelfId(shelfId));
+    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
     if (shelf == null) {
       return Optional.empty();
     }
@@ -32,7 +33,7 @@ public class QueryShelfUseCase {
   }
 
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookcaseId).stream()
+    return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId).stream()
         .map(
             shelf ->
                 new ShelfSummary(
@@ -41,6 +42,6 @@ public class QueryShelfUseCase {
   }
 
   public List<Shelf> findAll() {
-    return shelfDomainRepository.findAll();
+    return shelfDomainRepositoryPort.findAll();
   }
 }

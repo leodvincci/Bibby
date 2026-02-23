@@ -53,14 +53,14 @@ The `ShelfJpaRepository` had a complex `@Query` to calculate `ShelfSummary` (cou
 
 **After:**
 The `ShelfService` now orchestrates this:
-1. `ShelfService.getShelfSummariesForBookcase(id)` calls `shelfDomainRepository.findByBookcaseId(id)`.
+1. `ShelfService.getShelfSummariesForBookcase(id)` calls `shelfDomainRepositoryPort.findByBookcaseId(id)`.
 2. The repository implementation fetches the `Shelf` domain objects.
 3. The service maps these objects to `ShelfSummary` using the domain object's internal state (which already knows its book count via the `BookAccessPort`).
 
 ```java
 // Simplified mapping in ShelfService.java
 public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findByBookcaseId(bookcaseId).stream()
+    return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId).stream()
         .map(shelf -> new ShelfSummary(
                 shelf.getShelfId().shelfId(), 
                 shelf.getShelfLabel(), 

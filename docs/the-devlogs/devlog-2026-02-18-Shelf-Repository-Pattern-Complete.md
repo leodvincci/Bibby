@@ -72,10 +72,10 @@ This session completed a multi-step architectural refactor of the **Shelf domain
 
 **Application (`ShelfService`) — removed all JPA imports:**
 - Dropped `ShelfJpaRepository` injection entirely
-- All 7 query methods now delegate to `shelfDomainRepository`
+- All 7 query methods now delegate to `shelfDomainRepositoryPort`
 - `getAllShelves()` return type changed from `List<ShelfEntity>` → `List<ShelfDTO>`
 - `getAllDTOShelves()` simplified from `getAllShelves().stream().map(ShelfDTO::fromEntity)` → just `getAllShelves()` (already returns DTOs now)
-- `isFull()` simplified from a 4-step JPA chain → `shelfDomainRepository.findById(id).isFull()`
+- `isFull()` simplified from a 4-step JPA chain → `shelfDomainRepositoryPort.findById(id).isFull()`
 - `createShelf()` no longer returns a `ShelfEntity` — logging moved into the repository impl
 
 **Infrastructure (`ShelfDomainRepositoryImpl`) — fleshed out all new methods:**

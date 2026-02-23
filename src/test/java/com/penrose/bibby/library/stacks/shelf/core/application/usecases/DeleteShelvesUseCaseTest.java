@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class DeleteShelvesUseCaseTest {
 
-  @Mock private ShelfDomainRepository shelfDomainRepository;
+  @Mock private ShelfDomainRepositoryPort shelfDomainRepositoryPort;
   @Mock private BookAccessPort bookAccessPort;
   @InjectMocks private DeleteShelvesUseCase deleteShelvesUseCase;
 
@@ -29,25 +29,25 @@ class DeleteShelvesUseCaseTest {
     when(shelf1.getShelfId()).thenReturn(new ShelfId(1L));
     when(shelf2.getShelfId()).thenReturn(new ShelfId(2L));
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
     deleteShelvesUseCase.execute(bookcaseId);
 
-    InOrder inOrder = inOrder(bookAccessPort, shelfDomainRepository);
+    InOrder inOrder = inOrder(bookAccessPort, shelfDomainRepositoryPort);
     inOrder.verify(bookAccessPort).deleteBooksOnShelves(List.of(1L, 2L));
-    inOrder.verify(shelfDomainRepository).deleteByBookcaseId(bookcaseId);
+    inOrder.verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
   }
 
   @Test
   void execute_shouldHandleEmptyBookcase() {
     Long bookcaseId = 100L;
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
     deleteShelvesUseCase.execute(bookcaseId);
 
     verify(bookAccessPort).deleteBooksOnShelves(List.of());
-    verify(shelfDomainRepository).deleteByBookcaseId(bookcaseId);
+    verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
   }
 
   @Test
@@ -60,12 +60,12 @@ class DeleteShelvesUseCaseTest {
     when(shelf2.getShelfId()).thenReturn(new ShelfId(20L));
     when(shelf3.getShelfId()).thenReturn(new ShelfId(30L));
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId))
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
         .thenReturn(List.of(shelf1, shelf2, shelf3));
 
     deleteShelvesUseCase.execute(bookcaseId);
 
     verify(bookAccessPort).deleteBooksOnShelves(List.of(10L, 20L, 30L));
-    verify(shelfDomainRepository).deleteByBookcaseId(bookcaseId);
+    verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
   }
 }

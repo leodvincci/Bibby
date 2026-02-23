@@ -105,10 +105,10 @@ public List<ShelfOptionResponse> getShelfOptionsByBookcase(@PathVariable Long bo
 Small excerpt:
 ```java
 public void execute(Long bookcaseId) {
-  List<Shelf> shelves = shelfDomainRepository.findByBookcaseId(bookcaseId);
+  List<Shelf> shelves = shelfDomainRepositoryPort.findByBookcaseId(bookcaseId);
   List<Long> shelfIds = shelves.stream().map(shelf -> shelf.getShelfId().shelfId()).toList();
   bookAccessPort.deleteBooksOnShelves(shelfIds);
-  shelfDomainRepository.deleteByBookcaseId(bookcaseId);
+  shelfDomainRepositoryPort.deleteByBookcaseId(bookcaseId);
 }
 ```
 

@@ -6,9 +6,10 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class QueryShelfUseCaseTest {
 
-  @Mock private ShelfDomainRepository shelfDomainRepository;
+  @Mock private ShelfDomainRepositoryPort shelfDomainRepositoryPort;
   @InjectMocks private QueryShelfUseCase queryShelfUseCase;
 
   @Test
@@ -27,24 +28,24 @@ class QueryShelfUseCaseTest {
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf1, shelf2));
 
     List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
-    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
+    verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
   }
 
   @Test
   void findShelvesByBookcaseId_shouldReturnEmptyListWhenBookcaseHasNoShelves() {
     Long bookcaseId = 100L;
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
     List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).isEmpty();
-    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
+    verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
   }
 
   @Test
@@ -52,12 +53,12 @@ class QueryShelfUseCaseTest {
     Long bookcaseId = 100L;
     Shelf shelf = mock(Shelf.class);
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
     List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).containsExactly(shelf);
-    verify(shelfDomainRepository).findByBookcaseId(bookcaseId);
+    verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
   }
 
   @Test
@@ -65,7 +66,7 @@ class QueryShelfUseCaseTest {
     Long shelfId = 1L;
     Shelf shelf = mock(Shelf.class);
 
-    when(shelfDomainRepository.getById(new ShelfId(shelfId))).thenReturn(shelf);
+    when(shelfDomainRepositoryPort.getById(new ShelfId(shelfId))).thenReturn(shelf);
 
     Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
 
@@ -76,7 +77,7 @@ class QueryShelfUseCaseTest {
   void findShelfById_shouldReturnEmptyWhenNotFound() {
     Long shelfId = 1L;
 
-    when(shelfDomainRepository.getById(new ShelfId(shelfId))).thenReturn(null);
+    when(shelfDomainRepositoryPort.getById(new ShelfId(shelfId))).thenReturn(null);
 
     Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
 
@@ -91,7 +92,7 @@ class QueryShelfUseCaseTest {
     when(shelf.getShelfLabel()).thenReturn("Shelf A");
     when(shelf.getBookCount()).thenReturn(5);
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
     List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcase(bookcaseId);
 
@@ -105,7 +106,7 @@ class QueryShelfUseCaseTest {
   void getShelfSummariesForBookcase_shouldReturnEmptyListWhenNoShelves() {
     Long bookcaseId = 100L;
 
-    when(shelfDomainRepository.findByBookcaseId(bookcaseId)).thenReturn(List.of());
+    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
     List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcase(bookcaseId);
 
@@ -117,21 +118,21 @@ class QueryShelfUseCaseTest {
     Shelf shelf1 = mock(Shelf.class);
     Shelf shelf2 = mock(Shelf.class);
 
-    when(shelfDomainRepository.findAll()).thenReturn(List.of(shelf1, shelf2));
+    when(shelfDomainRepositoryPort.findAll()).thenReturn(List.of(shelf1, shelf2));
 
     List<Shelf> result = queryShelfUseCase.findAll();
 
     assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
-    verify(shelfDomainRepository).findAll();
+    verify(shelfDomainRepositoryPort).findAll();
   }
 
   @Test
   void findAll_shouldReturnEmptyListWhenNoShelvesExist() {
-    when(shelfDomainRepository.findAll()).thenReturn(List.of());
+    when(shelfDomainRepositoryPort.findAll()).thenReturn(List.of());
 
     List<Shelf> result = queryShelfUseCase.findAll();
 
     assertThat(result).isEmpty();
-    verify(shelfDomainRepository).findAll();
+    verify(shelfDomainRepositoryPort).findAll();
   }
 }
