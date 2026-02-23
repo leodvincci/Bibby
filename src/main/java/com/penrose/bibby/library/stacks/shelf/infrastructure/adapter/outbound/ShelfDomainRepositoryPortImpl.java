@@ -3,7 +3,7 @@ package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
@@ -12,14 +12,15 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShelfDomainRepositoryImpl implements ShelfDomainRepository {
+public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort {
 
   private final ShelfJpaRepository jpaRepository;
   private final ShelfMapper shelfMapper;
   private final BookAccessPort bookAccessPort;
-  private final Logger logger = org.slf4j.LoggerFactory.getLogger(ShelfDomainRepositoryImpl.class);
+  private final Logger logger =
+      org.slf4j.LoggerFactory.getLogger(ShelfDomainRepositoryPortImpl.class);
 
-  public ShelfDomainRepositoryImpl(
+  public ShelfDomainRepositoryPortImpl(
       ShelfJpaRepository jpaRepository, ShelfMapper shelfMapper, BookAccessPort bookAccessPort) {
     this.jpaRepository = jpaRepository;
     this.shelfMapper = shelfMapper;

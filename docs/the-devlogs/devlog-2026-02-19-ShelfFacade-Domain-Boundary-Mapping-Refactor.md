@@ -126,7 +126,7 @@ mvn -q -DskipTests compile
 
 ### refactor: add bookcaseId field to Shelf domain model (`c45f6d9`)
 
-**Intent:** The `Shelf` domain object previously had no knowledge of which bookcase it belonged to. Any code that needed `bookcaseId` had to make a second repository call: `shelfDomainRepository.getBookcaseIdByShelfId(shelfId)`. This forced the application service to keep extra state and bloated every mapping site.
+**Intent:** The `Shelf` domain object previously had no knowledge of which bookcase it belonged to. Any code that needed `bookcaseId` had to make a second repository call: `shelfDomainRepositoryPort.getBookcaseIdByShelfId(shelfId)`. This forced the application service to keep extra state and bloated every mapping site.
 
 **Files touched:**
 - `Shelf.java` — add `private Long bookcaseId` field, getter, setter, constructor parameter
@@ -165,9 +165,9 @@ public Shelf(String shelfLabel, int shelfPosition, int bookCapacity,
 public ShelfService(ShelfDomainRepository repo, BookFacade bookFacade, ShelfDTOMapper mapper) { ... }
 
 public List<ShelfDTO> getAllShelves(Long bookCaseId) {
-  return shelfDomainRepository.findByBookcaseId(bookCaseId).stream()
+  return shelfDomainRepositoryPort.findByBookcaseId(bookCaseId).stream()
       .map(shelf -> {
-        Long bookcaseId = shelfDomainRepository.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
+        Long bookcaseId = shelfDomainRepositoryPort.getBookcaseIdByShelfId(shelf.getShelfId().shelfId());
         return shelfDTOMapper.toDTOFromDomain(shelf, bookcaseId);
       }).collect(Collectors.toList());
 }
@@ -178,7 +178,7 @@ public List<ShelfDTO> getAllShelves(Long bookCaseId) {
 public ShelfService(ShelfDomainRepository repo, BookFacade bookFacade) { ... }
 
 public List<Shelf> getAllShelves(Long bookCaseId) {
-  return shelfDomainRepository.findByBookcaseId(bookCaseId);
+  return shelfDomainRepositoryPort.findByBookcaseId(bookCaseId);
 }
 ```
 
@@ -366,7 +366,7 @@ ShelfController (web layer)
     │  maps: shelfResponseMapper.toShelfOption(shelf) → ShelfOptionResponse
     ▼
 ShelfService (application) implements ShelfFacade
-    │  calls shelfDomainRepository.findAll() → List<Shelf>
+    │  calls shelfDomainRepositoryPort.findAll() → List<Shelf>
     ▼
 ShelfDomainRepositoryImpl (infrastructure)
     │  calls ShelfJpaRepository.findAll() → List<ShelfEntity>

@@ -59,7 +59,7 @@ The naming made it look like `findAllShelves` was the "real" findAll and `findAl
 | File | Layer | What changed |
 |------|-------|-------------|
 | `ShelfFacade.java` | ports/inbound | Method signature renamed + param casing fixed |
-| `QueryShelfUseCase.java` | application/usecases | Method renamed (delegates to `shelfDomainRepository.findByBookcaseId`) |
+| `QueryShelfUseCase.java` | application/usecases | Method renamed (delegates to `shelfDomainRepositoryPort.findByBookcaseId`) |
 | `ShelfService.java` | application | `@Override` method renamed + param casing fixed; delegates to `QueryShelfUseCase` |
 | `ShelfController.java` | api/web | Call site updated in `getShelfOptionsByBookcase()` |
 | `PromptOptions.java` | cli/domain | 2 call sites updated: `bookShelfOptions()` and `bookCaseOptions()` |
@@ -84,7 +84,7 @@ The repository method was *already* named `findByBookcaseId`. The rename brings 
 ShelfController.getShelfOptionsByBookcase(bookcaseId)
   → shelfFacade.findShelvesByBookcaseId(bookcaseId)
     → queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)
-      → shelfDomainRepository.findByBookcaseId(bookcaseId)
+      → shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)
 ```
 
 Every layer uses the same vocabulary: **"by bookcase ID."**
@@ -120,7 +120,7 @@ All three test classes pass. The tests exercise the full delegation chain from f
 1. `ShelfController.getShelfOptionsByBookcase(@PathVariable Long bookcaseId)` receives the request.
 2. Calls `shelfFacade.findShelvesByBookcaseId(bookcaseId)` — the inbound port.
 3. `ShelfService` (the facade implementation) delegates to `queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)`.
-4. `QueryShelfUseCase` calls `shelfDomainRepository.findByBookcaseId(bookcaseId)` — the outbound port.
+4. `QueryShelfUseCase` calls `shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)` — the outbound port.
 5. The JPA adapter behind `ShelfDomainRepository` executes the query and returns `List<Shelf>`.
 6. `ShelfController` maps each `Shelf` to `ShelfOptionResponse` via `shelfResponseMapper::toShelfOption` and returns the list.
 

@@ -1,33 +1,33 @@
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class responsible for handling the creation of shelves. This use case interacts with the
+ * ShelfDomainRepository to persist shelf data.
+ */
 @Service
 public class CreateShelfUseCase {
 
-  private final ShelfDomainRepository shelfDomainRepository;
+  private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 
-  public CreateShelfUseCase(ShelfDomainRepository shelfDomainRepository) {
-    this.shelfDomainRepository = shelfDomainRepository;
+  /**
+   * Constructor for CreateShelfUseCase.
+   *
+   * @param shelfDomainRepositoryPort the repository used to persist shelf data
+   */
+  public CreateShelfUseCase(ShelfDomainRepositoryPort shelfDomainRepositoryPort) {
+    this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
   }
 
   /**
-   * Creates a new shelf in the specified bookcase with the provided position, label, and book
-   * capacity.
+   * Executes the use case to create and save a shelf.
    *
-   * @param bookcaseId the unique identifier of the bookcase where the shelf will be created. Cannot
-   *     be null.
-   * @param position the position of the shelf within the bookcase. Must be greater than 0.
-   * @param shelfLabel the label or name assigned to the shelf. Cannot be null or blank.
-   * @param bookCapacity the maximum number of books the shelf can accommodate. Must be greater than
-   *     0.
-   * @throws IllegalArgumentException if the bookCapacity is less than or equal to 0, if the
-   *     shelfLabel is null or blank, if the bookcaseId is null, or if the position is less than or
-   *     equal to 0.
+   * @param shelf the shelf entity to be saved
    */
   public void execute(Shelf shelf) {
-    shelfDomainRepository.save(shelf);
+    shelfDomainRepositoryPort.save(shelf);
   }
 }

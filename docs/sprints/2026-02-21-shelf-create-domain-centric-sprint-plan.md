@@ -168,7 +168,7 @@ public record CreateShelfCommand(
       command.bookcaseId()
   );
   ```
-- [ ] Call `shelfDomainRepository.save(shelf)`
+- [ ] Call `shelfDomainRepositoryPort.save(shelf)`
 - [ ] Keep `@Service` annotation; add TODO comment:
   ```java
   @Service // TODO: SHELF-SERVICE-ANNOT — move wiring to @Configuration in infrastructure
@@ -176,34 +176,37 @@ public record CreateShelfCommand(
 - [ ] Update imports (remove unused ones, add `CreateShelfCommand`, `Shelf`, `List`)
 
 **Final state of `CreateShelfUseCase.java`:**
+
 ```java
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.CreateShelfCommand;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
+
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service // TODO: SHELF-SERVICE-ANNOT — move wiring to @Configuration in infrastructure
 public class CreateShelfUseCase {
 
-    private final ShelfDomainRepository shelfDomainRepository;
+    private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 
-    public CreateShelfUseCase(ShelfDomainRepository shelfDomainRepository) {
-        this.shelfDomainRepository = shelfDomainRepository;
+    public CreateShelfUseCase(ShelfDomainRepositoryPort shelfDomainRepositoryPort) {
+        this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
     }
 
     public void execute(CreateShelfCommand command) {
         Shelf shelf = new Shelf(
-            command.shelfLabel(),
-            command.position(),
-            command.bookCapacity(),
-            null,
-            List.of(),
-            command.bookcaseId()
+                command.shelfLabel(),
+                command.position(),
+                command.bookCapacity(),
+                null,
+                List.of(),
+                command.bookcaseId()
         );
-        shelfDomainRepository.save(shelf);
+        shelfDomainRepositoryPort.save(shelf);
     }
 }
 ```
@@ -307,7 +310,7 @@ public class CreateShelfUseCase {
         createShelfUseCase.execute(command);
 
         ArgumentCaptor<Shelf> captor = ArgumentCaptor.forClass(Shelf.class);
-        verify(shelfDomainRepository).save(captor.capture());
+        verify(shelfDomainRepositoryPort).save(captor.capture());
 
         Shelf saved = captor.getValue();
         assertThat(saved.getShelfLabel()).isEqualTo("Shelf A");
@@ -324,7 +327,7 @@ public class CreateShelfUseCase {
         assertThatThrownBy(() -> createShelfUseCase.execute(command))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Shelf label cannot be null or blank");
-        verify(shelfDomainRepository, never()).save(any(Shelf.class));
+        verify(shelfDomainRepositoryPort, never()).save(any(Shelf.class));
     }
     ```
 
@@ -408,29 +411,31 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.CreateShelfCommand;
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
+
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service // TODO: SHELF-SERVICE-ANNOT — move wiring to @Configuration in infrastructure
 public class CreateShelfUseCase {
 
-    private final ShelfDomainRepository shelfDomainRepository;
+    private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 
-    public CreateShelfUseCase(ShelfDomainRepository shelfDomainRepository) {
-        this.shelfDomainRepository = shelfDomainRepository;
+    public CreateShelfUseCase(ShelfDomainRepositoryPort shelfDomainRepositoryPort) {
+        this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
     }
 
     public void execute(CreateShelfCommand command) {
         Shelf shelf = new Shelf(
-            command.shelfLabel(),
-            command.position(),
-            command.bookCapacity(),
-            null,
-            List.of(),
-            command.bookcaseId()
+                command.shelfLabel(),
+                command.position(),
+                command.bookCapacity(),
+                null,
+                List.of(),
+                command.bookcaseId()
         );
-        shelfDomainRepository.save(shelf);
+        shelfDomainRepositoryPort.save(shelf);
     }
 }
 ```
@@ -554,7 +559,7 @@ void execute_shouldRejectBlankLabel_viaDomainConstructor() {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
 
-    verify(shelfDomainRepository, never()).save(any(Shelf.class));
+    verify(shelfDomainRepositoryPort, never()).save(any(Shelf.class));
 }
 ```
 

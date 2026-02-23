@@ -148,14 +148,14 @@ public interface ShelfDomainRepository {
 ```java
 // ❌ BEFORE: Repository returns DTOs directly
 public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId);
+    return shelfDomainRepositoryPort.findShelfSummariesByBookcaseId(bookcaseId);
 }
 ```
 
 ```java
 // ✅ AFTER: Service maps domain objects to DTOs
 public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
-    return shelfDomainRepository.findShelfSummariesByBookcaseId(bookcaseId).stream()
+    return shelfDomainRepositoryPort.findShelfSummariesByBookcaseId(bookcaseId).stream()
         .map(shelf -> new ShelfSummary(
             shelf.getShelfId().shelfId(),
             shelf.getShelfLabel(),
@@ -167,14 +167,14 @@ public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
 ```java
 // ❌ BEFORE: Repository returns DTOs directly
 public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId);
+    return shelfDomainRepositoryPort.getShelfShelfOptionResponse(bookcaseId);
 }
 ```
 
 ```java
 // ✅ AFTER: Service maps domain objects to DTOs
 public List<ShelfOptionResponse> getShelfOptionsByBookcase(Long bookcaseId) {
-    return shelfDomainRepository.getShelfShelfOptionResponse(bookcaseId).stream()
+    return shelfDomainRepositoryPort.getShelfShelfOptionResponse(bookcaseId).stream()
         .map(shelf -> shelfMapper.toShelfOption(shelf))
         .toList();
 }
@@ -282,18 +282,18 @@ import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 **ShelfServiceTest:**
 
 ```java
-import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepository;
+import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 
 // ❌ BEFORE: Verbose mock declaration
 @Mock
 private com.penrose.bibby.library.stacks.shelf.core.domain.ShelfDomainRepository
-        shelfDomainRepository;
+        shelfDomainRepositoryPort;
 
 // ✅ AFTER: Clean import
-import ShelfDomainRepository;
+import ShelfDomainRepositoryPort;
 
         @Mock
-        private ShelfDomainRepository shelfDomainRepository;
+        private ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 ```
 
 ---

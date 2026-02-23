@@ -71,7 +71,7 @@ CreateShelfUseCase.execute(bookcaseId, position, shelfLabel, bookCapacity)
    │
    ├── validates all four params (if/throw x4)
    │
-   └── shelfDomainRepository.save(bookcaseId, position, shelfLabel, bookCapacity)
+   └── shelfDomainRepositoryPort.save(bookcaseId, position, shelfLabel, bookCapacity)
           │
           └── ShelfDomainRepositoryImpl.save(...)
                  │
@@ -280,7 +280,7 @@ When a domain expert reads the first signature, they see plumbing. When they rea
 // CreateShelfUseCase.java
 public void execute(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
     // duplicated validation...
-    shelfDomainRepository.save(bookcaseId, position, shelfLabel, bookCapacity);
+    shelfDomainRepositoryPort.save(bookcaseId, position, shelfLabel, bookCapacity);
 }
 
 // ShelfDomainRepositoryImpl.java
@@ -308,7 +308,7 @@ public void execute(CreateShelfCommand command) {
         List.of(),              // no books yet
         command.bookcaseId()
     );
-    shelfDomainRepository.save(shelf);
+    shelfDomainRepositoryPort.save(shelf);
 }
 
 // ShelfDomainRepository.java (port)
@@ -599,10 +599,10 @@ public record CreateShelfCommand(
 // Use case (core/application/usecases/)
 public class CreateShelfUseCase {
 
-    private final ShelfDomainRepository shelfDomainRepository;
+    private final ShelfDomainRepository shelfDomainRepositoryPort;
 
-    public CreateShelfUseCase(ShelfDomainRepository shelfDomainRepository) {
-        this.shelfDomainRepository = shelfDomainRepository;
+    public CreateShelfUseCase(ShelfDomainRepository shelfDomainRepositoryPort) {
+        this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
     }
 
     public void execute(CreateShelfCommand command) {
@@ -614,7 +614,7 @@ public class CreateShelfUseCase {
             List.of(),      // empty book list for new shelf
             command.bookcaseId()
         );
-        shelfDomainRepository.save(shelf);
+        shelfDomainRepositoryPort.save(shelf);
     }
 }
 
@@ -679,7 +679,7 @@ Each step is small, safe, and independently deployable.
 ```java
 public void execute(CreateShelfCommand command) {
     // Still forwarding primitives — temporary
-    shelfDomainRepository.save(
+    shelfDomainRepositoryPort.save(
         command.bookcaseId(), command.position(),
         command.shelfLabel(), command.bookCapacity()
     );
@@ -703,7 +703,7 @@ public void execute(CreateShelfCommand command) {
         null, List.of(), command.bookcaseId()
     );
     // Still calling old save(primitives) — temporary
-    shelfDomainRepository.save(
+    shelfDomainRepositoryPort.save(
         shelf.getBookcaseId(), shelf.getShelfPosition(),
         shelf.getShelfLabel(), shelf.getBookCapacity()
     );
@@ -729,7 +729,7 @@ public void save(Shelf shelf) {
 
 **Do**: Ensure `ShelfMapper` has a `toEntity(Shelf)` method. If not, add it.
 
-**Do**: Update use case to call `shelfDomainRepository.save(shelf)`.
+**Do**: Update use case to call `shelfDomainRepositoryPort.save(shelf)`.
 
 **Test**: Update adapter/integration tests. Verify that saving a domain `Shelf` results in the correct `ShelfEntity` in the database.
 
