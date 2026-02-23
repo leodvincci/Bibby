@@ -1,4 +1,4 @@
-package com.penrose.bibby.web.controllers.cataloging.book;
+package com.penrose.bibby.web.controllers.cataloging.book.mappers;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;

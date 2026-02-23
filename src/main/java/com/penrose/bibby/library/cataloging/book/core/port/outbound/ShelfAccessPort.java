@@ -6,4 +6,6 @@ import java.util.Optional;
 public interface ShelfAccessPort {
 
   Optional<ShelfDTO> findShelfById(Long shelfId);
+
+  boolean isFull(Long aLong);
 }

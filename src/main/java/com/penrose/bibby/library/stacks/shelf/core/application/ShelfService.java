@@ -56,4 +56,14 @@ public class ShelfService implements ShelfFacade {
   public List<Shelf> findAll() {
     return queryShelfUseCase.findAll();
   }
+
+  @Override
+  public boolean isFull(Long shelfId) {
+    return queryShelfUseCase.isFull(shelfId);
+  }
+
+  @Override
+  public boolean isEmpty(Long shelfId) {
+    return queryShelfUseCase.isEmpty(shelfId);
+  }
 }

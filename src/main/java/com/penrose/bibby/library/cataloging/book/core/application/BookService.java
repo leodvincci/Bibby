@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.cataloging.book.core.application;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.*;
+import com.penrose.bibby.library.cataloging.book.core.application.usecases.bookCommandUseCases;
 import com.penrose.bibby.library.cataloging.book.core.domain.BookBuilder;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
@@ -34,6 +35,7 @@ public class BookService implements BookFacade {
   private final BookDomainRepository bookDomainRepository;
   private final ShelfAccessPort shelfAccessPort;
   private final BookcaseJpaRepository bookcaseJpaRepository;
+  private final bookCommandUseCases bookCommandUseCases;
   Logger logger = org.slf4j.LoggerFactory.getLogger(BookService.class);
 
   public BookService(
@@ -44,7 +46,8 @@ public class BookService implements BookFacade {
       IsbnLookupService isbnLookupService,
       BookDomainRepository bookDomainRepository,
       @Lazy ShelfAccessPort shelfAccessPort,
-      BookcaseJpaRepository bookcaseJpaRepository) {
+      BookcaseJpaRepository bookcaseJpaRepository,
+      bookCommandUseCases bookCommandUseCases) {
     this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
     this.BookBuilder = bookBuilder;
@@ -53,6 +56,7 @@ public class BookService implements BookFacade {
     this.bookDomainRepository = bookDomainRepository;
     this.shelfAccessPort = shelfAccessPort;
     this.bookcaseJpaRepository = bookcaseJpaRepository;
+    this.bookCommandUseCases = bookCommandUseCases;
   }
 
   private void validateBookDoesNotExist(BookRequestDTO bookDTO) {
@@ -263,5 +267,10 @@ public class BookService implements BookFacade {
       books.add(bookMapper.toDomainFromEntity(entity));
     }
     return books;
+  }
+
+  @Override
+  public void placeBookOnShelf(Long bookId, BookShelfAssignmentRequest shelfAssignmentRequest) {
+    bookCommandUseCases.placeBookOnShelf(bookId, shelfAssignmentRequest);
   }
 }

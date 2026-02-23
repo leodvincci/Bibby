@@ -43,4 +43,20 @@ public class QueryShelfUseCase {
   public List<Shelf> findAll() {
     return shelfDomainRepositoryPort.findAll();
   }
+
+  public boolean isFull(Long shelfId) {
+    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
+    if (shelf == null) {
+      throw new IllegalStateException("Shelf not found with id: " + shelfId);
+    }
+    return shelf.isFull();
+  }
+
+  public boolean isEmpty(Long shelfId) {
+    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
+    if (shelf == null) {
+      throw new IllegalStateException("Shelf not found with id: " + shelfId);
+    }
+    return shelf.getBookCount() == 0;
+  }
 }

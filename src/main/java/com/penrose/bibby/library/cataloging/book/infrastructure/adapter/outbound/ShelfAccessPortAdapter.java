@@ -29,4 +29,9 @@ public class ShelfAccessPortAdapter implements ShelfAccessPort {
                     shelf.getBookCapacity(),
                     shelf.getBookIds()));
   }
+
+  @Override
+  public boolean isFull(Long aLong) {
+    return shelfFacade.isFull(aLong);
+  }
 }
