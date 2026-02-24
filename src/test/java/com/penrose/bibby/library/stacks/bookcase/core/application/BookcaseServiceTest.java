@@ -41,7 +41,7 @@ class BookcaseServiceTest {
 
   @Test
   void findBookCaseById_shouldDelegateToQueryBookcaseUseCase() {
-    Bookcase bookcase = new Bookcase(100L, 5, 50, "Living Room", "A", "1");
+    Bookcase bookcase = new Bookcase(100L, 1L, 5, 50, "Living Room", "A", "1");
     when(queryBookcaseUseCase.findBookCaseById(100L)).thenReturn(bookcase);
 
     Bookcase result = bookcaseService.findBookCaseById(100L);
@@ -63,7 +63,7 @@ class BookcaseServiceTest {
 
   @Test
   void getAllBookcases_shouldDelegateToQueryBookcaseUseCase() {
-    List<Bookcase> expected = List.of(new Bookcase(100L, 5, 50, "Living Room", "A", "1"));
+    List<Bookcase> expected = List.of(new Bookcase(100L, 1L, 5, 50, "Living Room", "A", "1"));
     when(queryBookcaseUseCase.getAllBookcases()).thenReturn(expected);
 
     List<Bookcase> result = bookcaseService.getAllBookcases();
@@ -85,7 +85,7 @@ class BookcaseServiceTest {
 
   @Test
   void findById_shouldDelegateToQueryBookcaseUseCase() {
-    Bookcase bookcase = new Bookcase(100L, 5, 50, "Living Room", "A", "1");
+    Bookcase bookcase = new Bookcase(100L, 1L, 5, 50, "Living Room", "A", "1");
     when(queryBookcaseUseCase.findById(100L)).thenReturn(bookcase);
 
     Bookcase result = bookcaseService.findById(100L);
@@ -107,7 +107,7 @@ class BookcaseServiceTest {
 
   @Test
   void getAllBookcasesByLocation_shouldDelegateToQueryBookcaseUseCase() {
-    List<Bookcase> expected = List.of(new Bookcase(100L, 5, 50, "Living Room", "A", "1"));
+    List<Bookcase> expected = List.of(new Bookcase(100L, 1L, 5, 50, "Living Room", "A", "1"));
     when(queryBookcaseUseCase.getAllBookcasesByLocation("Living Room")).thenReturn(expected);
 
     List<Bookcase> result = bookcaseService.getAllBookcasesByLocation("Living Room");
@@ -118,7 +118,7 @@ class BookcaseServiceTest {
 
   @Test
   void getAllBookcasesByUserId_shouldDelegateToQueryBookcaseUseCase() {
-    List<Bookcase> expected = List.of(new Bookcase(100L, 5, 50, "Living Room", "A", "1"));
+    List<Bookcase> expected = List.of(new Bookcase(100L, 1L, 5, 50, "Living Room", "A", "1"));
     when(queryBookcaseUseCase.getAllBookcasesByUserId(1L)).thenReturn(expected);
 
     List<Bookcase> result = bookcaseService.getAllBookcasesByUserId(1L);

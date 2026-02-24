@@ -88,4 +88,27 @@ public class BookcaseEntity {
   public void setBookCapacity(int bookCapacity) {
     this.bookCapacity = bookCapacity;
   }
+
+  @Override
+  public String toString() {
+    return "BookcaseEntity{"
+        + "bookcaseId="
+        + bookcaseId
+        + ", userId="
+        + userId
+        + ", bookcaseLocation='"
+        + bookcaseLocation
+        + '\''
+        + ", bookcaseZone='"
+        + bookcaseZone
+        + '\''
+        + ", bookcaseIndex='"
+        + bookcaseIndex
+        + '\''
+        + ", shelfCapacity="
+        + shelfCapacity
+        + ", bookCapacity="
+        + bookCapacity
+        + '}';
+  }
 }
