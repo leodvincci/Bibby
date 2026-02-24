@@ -6,7 +6,6 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.author.core.ports.outbound.AuthorRepository;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapper;
-import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapperTwo;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -18,16 +17,11 @@ public class AuthorFacadeImpl implements AuthorFacade {
 
   //    final AuthorService authorService;
   private final AuthorRepository authorRepository;
-  private final AuthorMapper authorMapper;
   Logger log = org.slf4j.LoggerFactory.getLogger(AuthorFacadeImpl.class);
 
-  public AuthorFacadeImpl(
-      AuthorRepository authorRepository,
-      AuthorMapperTwo authorMapperTwo,
-      AuthorMapper authorMapper) {
+  public AuthorFacadeImpl(AuthorRepository authorRepository, AuthorMapper authorMapper) {
     //        this.authorService = authorService;
     this.authorRepository = authorRepository;
-    this.authorMapper = authorMapper;
   }
 
   @Override
