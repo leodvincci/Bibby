@@ -93,4 +93,3 @@ public class Bookcase {
     this.bookcaseIndex = bookcaseIndex;
   }
 }
-

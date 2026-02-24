@@ -91,14 +91,24 @@ public class BookcaseEntity {
 
   @Override
   public String toString() {
-    return "BookcaseEntity{" +
-            "bookcaseId=" + bookcaseId +
-            ", userId=" + userId +
-            ", bookcaseLocation='" + bookcaseLocation + '\'' +
-            ", bookcaseZone='" + bookcaseZone + '\'' +
-            ", bookcaseIndex='" + bookcaseIndex + '\'' +
-            ", shelfCapacity=" + shelfCapacity +
-            ", bookCapacity=" + bookCapacity +
-            '}';
+    return "BookcaseEntity{"
+        + "bookcaseId="
+        + bookcaseId
+        + ", userId="
+        + userId
+        + ", bookcaseLocation='"
+        + bookcaseLocation
+        + '\''
+        + ", bookcaseZone='"
+        + bookcaseZone
+        + '\''
+        + ", bookcaseIndex='"
+        + bookcaseIndex
+        + '\''
+        + ", shelfCapacity="
+        + shelfCapacity
+        + ", bookCapacity="
+        + bookCapacity
+        + '}';
   }
 }

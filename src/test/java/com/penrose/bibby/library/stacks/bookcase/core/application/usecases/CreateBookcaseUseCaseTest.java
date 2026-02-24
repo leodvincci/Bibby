@@ -36,7 +36,14 @@ class CreateBookcaseUseCaseTest {
     String location = "Living Room";
 
     Bookcase savedBookcase =
-        new Bookcase(100L, userId, shelfCapacity, bookCapacity * shelfCapacity, location, bookcaseZone, bookcaseZoneIndex);
+        new Bookcase(
+            100L,
+            userId,
+            shelfCapacity,
+            bookCapacity * shelfCapacity,
+            location,
+            bookcaseZone,
+            bookcaseZoneIndex);
     when(bookcaseRepository.findBookcaseByBookcaseLocation(label)).thenReturn(null);
     when(bookcaseRepository.save(any(Bookcase.class))).thenReturn(savedBookcase);
 
@@ -63,7 +70,8 @@ class CreateBookcaseUseCaseTest {
     String location = "Living Room";
 
     Bookcase existingBookcase =
-        new Bookcase(50L, userId, shelfCapacity, bookCapacity * shelfCapacity, location, null, null);
+        new Bookcase(
+            50L, userId, shelfCapacity, bookCapacity * shelfCapacity, location, null, null);
     when(bookcaseRepository.findBookcaseByBookcaseLocation(label)).thenReturn(existingBookcase);
 
     assertThatThrownBy(
@@ -90,7 +98,8 @@ class CreateBookcaseUseCaseTest {
     int bookCapacity = 10;
 
     Bookcase savedBookcase =
-        new Bookcase(100L, 1L, shelfCapacity, bookCapacity * shelfCapacity, "Living Room", "A", "1");
+        new Bookcase(
+            100L, 1L, shelfCapacity, bookCapacity * shelfCapacity, "Living Room", "A", "1");
     when(bookcaseRepository.findBookcaseByBookcaseLocation("BC001")).thenReturn(null);
     when(bookcaseRepository.save(any(Bookcase.class))).thenReturn(savedBookcase);
 

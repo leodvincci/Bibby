@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 
 public class BookcaseMapper {
 
-    final static private Logger logger = org.slf4j.LoggerFactory.getLogger(BookcaseMapper.class);
+  private static final Logger logger = org.slf4j.LoggerFactory.getLogger(BookcaseMapper.class);
 
   public static Bookcase toDomain(BookcaseEntity bookcaseEntity) {
     return new Bookcase(

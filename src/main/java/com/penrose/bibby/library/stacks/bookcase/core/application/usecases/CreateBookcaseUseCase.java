@@ -4,9 +4,7 @@ import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
-import org.apache.logging.slf4j.SLF4JLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,7 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class CreateBookcaseUseCase {
 
-  private static final Logger logger = org.slf4j.LoggerFactory.getLogger(CreateBookcaseUseCase.class);
+  private static final Logger logger =
+      org.slf4j.LoggerFactory.getLogger(CreateBookcaseUseCase.class);
   private final BookcaseRepository bookcaseRepository;
   private final ShelfAccessPort shelfAccessPort;
 
@@ -61,6 +60,6 @@ public class CreateBookcaseUseCase {
     }
     logger.info("Shelves created successfully for bookcase ID: {}", bookcase.getBookcaseId());
 
-      return new CreateBookcaseResult(bookcase.getBookcaseId());
+    return new CreateBookcaseResult(bookcase.getBookcaseId());
   }
 }
