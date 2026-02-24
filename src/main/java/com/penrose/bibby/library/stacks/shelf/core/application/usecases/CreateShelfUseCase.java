@@ -2,9 +2,7 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
-
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 /**

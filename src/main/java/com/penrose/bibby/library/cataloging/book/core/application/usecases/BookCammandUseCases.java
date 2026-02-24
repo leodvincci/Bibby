@@ -39,5 +39,4 @@ public class bookCommandUseCases {
     log.info(
         "Placed book with id {} on shelf with id {}", bookId, shelfAssignmentRequest.shelfId());
   }
-
 }

@@ -15,7 +15,8 @@ public interface ShelfFacade {
 
   void deleteAllShelvesInBookcaseByBookcaseId(Long bookcaseId);
 
-  void createShelfInBookcaseByBookcaseId(Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity);
+  void createShelfInBookcaseByBookcaseId(
+      Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity);
 
   List<Shelf> findAll();
 

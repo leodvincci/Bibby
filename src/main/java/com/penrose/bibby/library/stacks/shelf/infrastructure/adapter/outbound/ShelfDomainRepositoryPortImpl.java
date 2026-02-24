@@ -52,7 +52,9 @@ public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort 
     ShelfEntity shelfEntity = shelfMapper.toEntity(shelf);
     jpaRepository.save(shelfEntity);
     logger.info(
-        "Shelf created with ID: {} for bookcase: {}", shelfEntity.getShelfId(), shelf.getBookcaseId());
+        "Shelf created with ID: {} for bookcase: {}",
+        shelfEntity.getShelfId(),
+        shelf.getBookcaseId());
   }
 
   /**

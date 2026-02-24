@@ -49,8 +49,8 @@ public class ShelfService implements ShelfFacade {
   }
 
   /**
-   * Deletes every shelf belonging to the specified bookcase.
-   * Delegates to {@link DeleteShelvesUseCase} for the actual removal.
+   * Deletes every shelf belonging to the specified bookcase. Delegates to {@link
+   * DeleteShelvesUseCase} for the actual removal.
    *
    * @param bookcaseId the ID of the bookcase whose shelves should be deleted
    */
@@ -60,17 +60,17 @@ public class ShelfService implements ShelfFacade {
   }
 
   /**
-   * Creates a new shelf within a bookcase and persists it.
-   * Constructs a {@link Shelf} domain object from the supplied parameters and
-   * delegates persistence to {@link CreateShelfUseCase}.
+   * Creates a new shelf within a bookcase and persists it. Constructs a {@link Shelf} domain object
+   * from the supplied parameters and delegates persistence to {@link CreateShelfUseCase}.
    *
-   * @param bookcaseId   the ID of the bookcase that will contain the new shelf
-   * @param position     the ordinal position of the shelf within the bookcase
-   * @param shelfLabel   the display label for the shelf
+   * @param bookcaseId the ID of the bookcase that will contain the new shelf
+   * @param position the ordinal position of the shelf within the bookcase
+   * @param shelfLabel the display label for the shelf
    * @param bookCapacity the maximum number of books the shelf can hold
    */
   @Override
-  public void createShelfInBookcaseByBookcaseId(Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity) {
+  public void createShelfInBookcaseByBookcaseId(
+      Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity) {
     createShelfUseCase.execute(shelfLabel, shelfPosition, bookCapacity, bookcaseId);
   }
 
