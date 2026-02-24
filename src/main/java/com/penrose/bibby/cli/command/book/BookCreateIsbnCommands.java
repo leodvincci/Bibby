@@ -121,9 +121,9 @@ public class BookCreateIsbnCommands {
                   bookMetaDataResponse.isbn(),
                   bookMetaDataResponse.authors().toString(),
                   bookMetaDataResponse.publisher(),
-                  bookcaseFacade.findBookCaseById(bookcaseId).get().location(),
+                  bookcaseFacade.findBookCaseById(bookcaseId).getBookcaseLocation(),
                   shelfFacade.findShelfById(shelfId).get().getShelfLabel(),
-                  bookcaseFacade.findBookCaseById(bookcaseId).get().location());
+                  bookcaseFacade.findBookCaseById(bookcaseId).getBookcaseLocation());
           System.out.println(updatedBookCard);
           System.out.println("\n\033[38;5;42mSuccessfully added to the library\u001B[0m");
 

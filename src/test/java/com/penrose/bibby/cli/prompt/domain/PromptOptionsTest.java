@@ -12,7 +12,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
-import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
@@ -67,8 +67,8 @@ class PromptOptionsTest {
 
   @Test
   void bookCaseOptions_shouldContainOneEntryPerBookcase() {
-    BookcaseDTO bookcase1 = new BookcaseDTO(1L, 5, 20, "Living Room", "A", "1");
-    BookcaseDTO bookcase2 = new BookcaseDTO(2L, 3, 15, "Office", "B", "2");
+    Bookcase bookcase1 = new Bookcase(1L, 5, 20, "Living Room", "A", "1");
+    Bookcase bookcase2 = new Bookcase(2L, 3, 15, "Office", "B", "2");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase1, bookcase2));
     when(shelfFacade.findShelvesByBookcaseId(1L)).thenReturn(List.of());
@@ -84,7 +84,7 @@ class PromptOptionsTest {
 
   @Test
   void bookCaseOptions_shouldCorrectlyCountBooksAcrossShelves() {
-    BookcaseDTO bookcase = new BookcaseDTO(1L, 2, 10, "Study", "C", "3");
+    Bookcase bookcase = new Bookcase(1L, 2, 10, "Study", "C", "3");
 
     Shelf shelf1 = new Shelf("Top Shelf", 1, 10, new ShelfId(10L), List.of(100L, 101L), 1L);
     Shelf shelf2 = new Shelf("Bottom Shelf", 2, 10, new ShelfId(11L), List.of(200L), 1L);
@@ -109,7 +109,7 @@ class PromptOptionsTest {
 
   @Test
   void bookCaseOptions_shouldFormatKeyWithBookcaseLocationInUppercase() {
-    BookcaseDTO bookcase = new BookcaseDTO(1L, 2, 10, "basement", "A", "1");
+    Bookcase bookcase = new Bookcase(1L, 2, 10, "basement", "A", "1");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
     when(shelfFacade.findShelvesByBookcaseId(1L)).thenReturn(List.of());
@@ -124,7 +124,7 @@ class PromptOptionsTest {
 
   @Test
   void bookCaseOptions_shouldCountZeroBooksWhenShelvesAreEmpty() {
-    BookcaseDTO bookcase = new BookcaseDTO(1L, 3, 10, "Garage", "D", "4");
+    Bookcase bookcase = new Bookcase(1L, 3, 10, "Garage", "D", "4");
     Shelf emptyShelf = new Shelf("Empty Shelf", 1, 10, new ShelfId(20L), new ArrayList<>(), 1L);
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
@@ -142,9 +142,9 @@ class PromptOptionsTest {
 
   @Test
   void bookCaseOptions_shouldPreservesInsertionOrder() {
-    BookcaseDTO bookcase1 = new BookcaseDTO(1L, 2, 10, "Alpha", "A", "1");
-    BookcaseDTO bookcase2 = new BookcaseDTO(2L, 2, 10, "Beta", "B", "2");
-    BookcaseDTO bookcase3 = new BookcaseDTO(3L, 2, 10, "Gamma", "C", "3");
+    Bookcase bookcase1 = new Bookcase(1L, 2, 10, "Alpha", "A", "1");
+    Bookcase bookcase2 = new Bookcase(2L, 2, 10, "Beta", "B", "2");
+    Bookcase bookcase3 = new Bookcase(3L, 2, 10, "Gamma", "C", "3");
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase1, bookcase2, bookcase3));
     when(shelfFacade.findShelvesByBookcaseId(1L)).thenReturn(List.of());

@@ -4,6 +4,7 @@ import com.penrose.bibby.identity.infrastructure.AppUserImpl;
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.CreateBookcaseRequest;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +61,10 @@ public class BookCaseController {
   @GetMapping("/location/{location}")
   public ResponseEntity<List<BookcaseDTO>> getBookcaseByLocation(@PathVariable String location) {
     logger.info("Received request to get bookcase at location: {}", location);
-    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcasesByLocation(location);
+    List<BookcaseDTO> bookcases =
+        bookcaseFacade.getAllBookcasesByLocation(location).stream()
+            .map(BookcaseMapper::toDTO)
+            .toList();
     return ResponseEntity.ok(bookcases);
   }
 
@@ -70,7 +74,10 @@ public class BookCaseController {
 
     logger.info(
         "Received request to get all bookcases for user with ID: {}", principal.getAppUserId());
-    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcasesByUserId(principal.getAppUserId());
+    List<BookcaseDTO> bookcases =
+        bookcaseFacade.getAllBookcasesByUserId(principal.getAppUserId()).stream()
+            .map(BookcaseMapper::toDTO)
+            .toList();
     return ResponseEntity.ok(bookcases);
   }
 }

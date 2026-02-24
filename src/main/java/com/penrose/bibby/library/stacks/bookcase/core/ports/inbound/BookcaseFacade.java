@@ -2,20 +2,40 @@ package com.penrose.bibby.library.stacks.bookcase.core.ports.inbound;
 
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.List;
 import java.util.Optional;
 
 public interface BookcaseFacade {
-  Optional<BookcaseDTO> findBookCaseById(Long aLong);
+
+  /**
+   * Finds a bookcase by its unique identifier and returns it as a DTO.
+   *
+   * @param aLong the unique identifier of the bookcase to find.
+   * @return an {@link Optional} containing the {@link BookcaseDTO} if found, or empty if not.
+   */
+  Bookcase findBookCaseById(Long bookcaseId);
 
   /**
    * Retrieves a list of all bookcases in the library.
    *
    * @return A list of BookcaseDTO objects representing all bookcases.
    */
-  List<BookcaseDTO> getAllBookcases();
+  List<Bookcase> getAllBookcases();
 
+  /**
+   * Creates a new bookcase with the specified configuration and shelving layout.
+   *
+   * @param userId the ID of the user creating the bookcase.
+   * @param bookcaseLabel a descriptive label for the bookcase.
+   * @param bookcaseZone the zone where the bookcase is located.
+   * @param bookcaseZoneIndex the index position of the bookcase within its zone.
+   * @param shelfCount the number of shelves to create in the bookcase.
+   * @param bookCapacity the book capacity per shelf.
+   * @param location the physical location of the bookcase.
+   * @return a {@link CreateBookcaseResult} indicating the outcome of the creation.
+   */
   CreateBookcaseResult createNewBookCase(
       Long userId,
       String bookcaseLabel,
@@ -25,13 +45,41 @@ public interface BookcaseFacade {
       int bookCapacity,
       String location);
 
+  /**
+   * Retrieves all distinct bookcase locations in the library.
+   *
+   * @return a list of location strings.
+   */
   List<String> getAllBookcaseLocations();
 
-  Optional<BookcaseEntity> findById(Long bookcaseId);
+  /**
+   * Finds a bookcase entity by its unique identifier.
+   *
+   * @param bookcaseId the unique identifier of the bookcase.
+   * @return an {@link Optional} containing the {@link BookcaseEntity} if found, or empty if not.
+   */
+  Bookcase findById(Long bookcaseId);
 
-  List<BookcaseDTO> getAllBookcasesByLocation(String location);
+  /**
+   * Retrieves all bookcases at the specified location.
+   *
+   * @param location the physical location to filter by.
+   * @return a list of {@link BookcaseDTO} objects at the given location.
+   */
+  List<Bookcase> getAllBookcasesByLocation(String location);
 
-  List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId);
+  /**
+   * Retrieves all bookcases owned by the specified user.
+   *
+   * @param appUserId the unique identifier of the user.
+   * @return a list of {@link BookcaseDTO} objects belonging to the user.
+   */
+  List<Bookcase> getAllBookcasesByUserId(Long appUserId);
 
+  /**
+   * Deletes a bookcase by its unique identifier.
+   *
+   * @param bookcaseId the unique identifier of the bookcase to delete.
+   */
   void deleteBookcase(Long bookcaseId);
 }
