@@ -1,23 +1,24 @@
 package com.penrose.bibby.library.stacks.bookcase.core.ports.outbound;
 
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import java.util.List;
 import java.util.Optional;
 
 public interface BookcaseRepository {
-  BookcaseEntity findBookcaseEntityByBookcaseLocation(String s);
+  Bookcase findBookcaseByBookcaseLocation(String bookcaseLocation);
 
-  List<BookcaseEntity> findAll();
+  List<Bookcase> findAll();
 
   List<String> getAllBookCaseLocations();
 
-  BookcaseEntity save(BookcaseEntity bookcaseEntity);
+  void save(Bookcase bookcaseEntity);
 
-  Optional<BookcaseEntity> findById(Long id);
+  Bookcase findById(Long id);
 
-  List<BookcaseEntity> findByLocation(String location);
+  List<Bookcase> findByLocation(String location);
 
-  List<BookcaseEntity> findByAppUserId(Long appUserId);
+  List<Bookcase> findByAppUserId(Long appUserId);
 
   void deleteById(Long bookcaseId);
 }
