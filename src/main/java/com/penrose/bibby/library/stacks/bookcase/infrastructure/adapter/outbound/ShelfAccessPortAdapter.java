@@ -4,7 +4,7 @@ import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccess
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("bookcaseShelfAccessPortAdapter")
 public class ShelfAccessPortAdapter implements ShelfAccessPort {
   private final ShelfFacade shelfFacade;
 
