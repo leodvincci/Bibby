@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class bookCommandUseCases {
+public class BookCommandUseCases {
 
-  private static final Logger log = LoggerFactory.getLogger(bookCommandUseCases.class);
+  private static final Logger log = LoggerFactory.getLogger(BookCommandUseCases.class);
   private final BookDomainRepository bookDomainRepository;
   private final ShelfAccessPort shelfAccessPort;
 
-  public bookCommandUseCases(
+  public BookCommandUseCases(
       BookDomainRepository bookDomainRepository, ShelfAccessPort shelfAccessPort) {
     this.bookDomainRepository = bookDomainRepository;
     this.shelfAccessPort = shelfAccessPort;
