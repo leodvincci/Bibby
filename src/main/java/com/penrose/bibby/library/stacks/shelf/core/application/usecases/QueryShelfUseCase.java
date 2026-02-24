@@ -18,10 +18,22 @@ public class QueryShelfUseCase {
     this.shelfDomainRepositoryPort = shelfDomainRepositoryPort;
   }
 
+  /**
+   * Retrieves all shelves belonging to a given bookcase.
+   *
+   * @param bookcaseId the ID of the bookcase to query
+   * @return a list of shelves within the specified bookcase
+   */
   public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
     return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId);
   }
 
+  /**
+   * Finds a shelf by its unique identifier within a transactional context.
+   *
+   * @param shelfId the ID of the shelf to look up
+   * @return an {@link Optional} containing the shelf if found, or empty otherwise
+   */
   @Transactional
   public Optional<Shelf> findShelfById(Long shelfId) {
     Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
@@ -31,6 +43,13 @@ public class QueryShelfUseCase {
     return Optional.of(shelf);
   }
 
+  /**
+   * Builds lightweight summaries for all shelves in a bookcase, including each shelf's
+   * ID, label, and current book count.
+   *
+   * @param bookcaseId the ID of the bookcase whose shelf summaries are requested
+   * @return a list of {@link ShelfSummary} objects for the bookcase
+   */
   public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
     return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId).stream()
         .map(
@@ -40,10 +59,22 @@ public class QueryShelfUseCase {
         .toList();
   }
 
+  /**
+   * Retrieves every shelf in the system.
+   *
+   * @return a list of all shelves
+   */
   public List<Shelf> findAll() {
     return shelfDomainRepositoryPort.findAll();
   }
 
+  /**
+   * Checks whether a shelf has reached its maximum book capacity.
+   *
+   * @param shelfId the ID of the shelf to check
+   * @return {@code true} if the shelf is at capacity, {@code false} otherwise
+   * @throws IllegalStateException if no shelf exists with the given ID
+   */
   public boolean isFull(Long shelfId) {
     Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
     if (shelf == null) {
@@ -52,6 +83,13 @@ public class QueryShelfUseCase {
     return shelf.isFull();
   }
 
+  /**
+   * Checks whether a shelf currently holds no books.
+   *
+   * @param shelfId the ID of the shelf to check
+   * @return {@code true} if the shelf has zero books, {@code false} otherwise
+   * @throws IllegalStateException if no shelf exists with the given ID
+   */
   public boolean isEmpty(Long shelfId) {
     Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
     if (shelf == null) {
