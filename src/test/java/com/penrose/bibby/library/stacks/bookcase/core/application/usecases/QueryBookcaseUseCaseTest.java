@@ -22,7 +22,7 @@ class QueryBookcaseUseCaseTest {
 
   @Test
   void findBookCaseById_shouldReturnBookcaseWhenExists() {
-    Bookcase bookcase = new Bookcase(100L, 5, 50, "Living Room", null, null);
+    Bookcase bookcase = new Bookcase(100L, 1L, 5, 50, "Living Room", null, null);
     when(bookcaseRepository.findById(100L)).thenReturn(bookcase);
 
     Bookcase result = queryBookcaseUseCase.findBookCaseById(100L);
@@ -45,8 +45,8 @@ class QueryBookcaseUseCaseTest {
 
   @Test
   void getAllBookcases_shouldReturnAllBookcases() {
-    Bookcase bookcase1 = new Bookcase(100L, 5, 50, "Living Room", null, null);
-    Bookcase bookcase2 = new Bookcase(200L, 4, 40, "Study Room", null, null);
+    Bookcase bookcase1 = new Bookcase(100L, 1L, 5, 50, "Living Room", null, null);
+    Bookcase bookcase2 = new Bookcase(200L, 1L, 4, 40, "Study Room", null, null);
     when(bookcaseRepository.findAll()).thenReturn(List.of(bookcase1, bookcase2));
 
     List<Bookcase> result = queryBookcaseUseCase.getAllBookcases();
@@ -81,7 +81,7 @@ class QueryBookcaseUseCaseTest {
 
   @Test
   void findById_shouldReturnBookcaseWhenExists() {
-    Bookcase bookcase = new Bookcase(100L, 5, 50, "Living Room", null, null);
+    Bookcase bookcase = new Bookcase(100L, 1L, 5, 50, "Living Room", null, null);
     when(bookcaseRepository.findById(100L)).thenReturn(bookcase);
 
     Bookcase result = queryBookcaseUseCase.findById(100L);
@@ -103,8 +103,8 @@ class QueryBookcaseUseCaseTest {
 
   @Test
   void getAllBookcasesByLocation_shouldReturnBookcasesForLocation() {
-    Bookcase bookcase1 = new Bookcase(100L, 5, 50, "Living Room", null, null);
-    Bookcase bookcase2 = new Bookcase(200L, 4, 40, "Living Room", null, null);
+    Bookcase bookcase1 = new Bookcase(100L, 1L, 5, 50, "Living Room", null, null);
+    Bookcase bookcase2 = new Bookcase(200L, 1L, 4, 40, "Living Room", null, null);
     when(bookcaseRepository.findByLocation("Living Room"))
         .thenReturn(List.of(bookcase1, bookcase2));
 
@@ -128,8 +128,8 @@ class QueryBookcaseUseCaseTest {
 
   @Test
   void getAllBookcasesByUserId_shouldReturnBookcasesForUser() {
-    Bookcase bookcase1 = new Bookcase(100L, 5, 50, "Living Room", null, null);
-    Bookcase bookcase2 = new Bookcase(200L, 3, 30, "Bedroom", null, null);
+    Bookcase bookcase1 = new Bookcase(100L, 1L, 5, 50, "Living Room", null, null);
+    Bookcase bookcase2 = new Bookcase(200L, 1L, 3, 30, "Bedroom", null, null);
     when(bookcaseRepository.findByAppUserId(1L)).thenReturn(List.of(bookcase1, bookcase2));
 
     List<Bookcase> result = queryBookcaseUseCase.getAllBookcasesByUserId(1L);
