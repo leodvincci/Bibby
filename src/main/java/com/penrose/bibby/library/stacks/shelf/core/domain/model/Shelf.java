@@ -1,6 +1,8 @@
 package com.penrose.bibby.library.stacks.shelf.core.domain.model;
 
+
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+
 import java.util.List;
 
 public class Shelf {

@@ -7,6 +7,7 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
@@ -55,8 +56,8 @@ public class BookCirculationCommands extends AbstractShellComponent {
       System.out.println("Book Not Found.");
     } else if (bookDTO.shelfId() != null) {
       Optional<Shelf> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
-      Optional<BookcaseDTO> bookcase = bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId());
-      bookcaseName = bookcase.get().location();
+      BookcaseDTO bookcase = BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId()));
+      bookcaseName = bookcase.location();
       shelfName = shelf.get().getShelfLabel();
     }
     if (bookDTO.availabilityStatus().toString().equals("CHECKED_OUT")) {
@@ -130,9 +131,9 @@ public class BookCirculationCommands extends AbstractShellComponent {
       System.out.println("Book Not Found");
     } else if (bookDTO.shelfId() != null) {
       Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
-      Optional<BookcaseDTO> bookcaseDTO =
-          bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId());
-      bookcaseLabel = bookcaseDTO.get().location();
+      BookcaseDTO bookcaseDTO =
+          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
+      bookcaseLabel = bookcaseDTO.location();
       bookshelfLabel = shelfDTO.get().getShelfLabel();
     }
     Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());

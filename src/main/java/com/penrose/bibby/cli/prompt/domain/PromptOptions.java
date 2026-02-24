@@ -5,6 +5,7 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
@@ -111,7 +112,7 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcasesByLocation(location);
+    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcasesByLocation(location).stream().map(BookcaseMapper::toDTO).toList();
     for (BookcaseDTO b : bookcaseDTOs) {
       options.put(b.location(), b.bookcaseId().toString());
     }
@@ -122,7 +123,7 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
+    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
     for (BookcaseDTO b : bookcaseDTOs) {
       options.put(b.location(), b.bookcaseId().toString());
     }
@@ -154,7 +155,7 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m [CANCEL]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases();
+    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
     for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
       int shelfBookCount = 0;
       List<ShelfDTO> shelves =
