@@ -48,12 +48,12 @@ public class PromptOptions {
             .map(
                 shelf -> {
                   return new ShelfDTO(
-                      shelf.getShelfId().shelfId(),
-                      shelf.getShelfLabel(),
+                      shelf.id(),
+                      shelf.shelfLabel(),
                       bookcaseId,
-                      shelf.getShelfPosition(),
-                      shelf.getBookCapacity(),
-                      shelf.getBookIds());
+                      shelf.shelfPosition(),
+                      shelf.bookCapacity(),
+                      shelf.bookIds());
                 })
             .toList();
 
@@ -168,12 +168,12 @@ public class PromptOptions {
               .map(
                   shelf -> {
                     return new ShelfDTO(
-                        shelf.getShelfId().shelfId(),
-                        shelf.getShelfLabel(),
+                        shelf.id(),
+                        shelf.shelfLabel(),
                         bookcaseDTO.bookcaseId(),
-                        shelf.getShelfPosition(),
-                        shelf.getBookCapacity(),
-                        shelf.getBookIds());
+                        shelf.shelfPosition(),
+                        shelf.bookCapacity(),
+                        shelf.bookIds());
                   })
               .toList();
 

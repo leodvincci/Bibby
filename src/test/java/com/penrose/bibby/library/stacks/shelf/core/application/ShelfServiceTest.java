@@ -8,6 +8,7 @@ import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteSh
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,10 @@ class ShelfServiceTest {
   @Test
   void findShelvesByBookcaseId_shouldDelegateToQueryUseCase() {
     Long bookcaseId = 100L;
-    List<Shelf> expected = List.of(mock(Shelf.class));
+    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of()));
     when(queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)).thenReturn(expected);
 
-    List<Shelf> result = shelfService.findShelvesByBookcaseId(bookcaseId);
+    List<ShelfResponse> result = shelfService.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).isEqualTo(expected);
     verify(queryShelfUseCase).findShelvesByBookcaseId(bookcaseId);
