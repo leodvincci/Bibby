@@ -21,8 +21,13 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
 
   @Override
   public Bookcase findBookcaseByBookcaseLocation(String bookcaseLocation) {
-    return BookcaseMapper.toDomain(
-        bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(bookcaseLocation));
+    if (bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(bookcaseLocation) != null) {;
+      return BookcaseMapper.toDomain(
+          bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(bookcaseLocation));
+    } else {
+      logger.warn("No bookcase found at location: {}", bookcaseLocation);
+      return null;
+    }
   }
 
   @Override
@@ -42,8 +47,10 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
   }
 
   @Override
-  public void save(Bookcase bookcase) {
-    bookcaseJpaRepository.save(BookcaseMapper.toEntity(bookcase));
+  public Bookcase save(Bookcase bookcase) {
+    Bookcase savedBookcase = BookcaseMapper.toDomain(bookcaseJpaRepository.save(BookcaseMapper.toEntity(bookcase)));
+    logger.info("Bookcase saved successfully with ID: {}", savedBookcase.getBookcaseId());
+    return savedBookcase;
   }
 
   @Override

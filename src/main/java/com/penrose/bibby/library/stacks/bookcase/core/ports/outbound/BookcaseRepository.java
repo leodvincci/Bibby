@@ -10,7 +10,7 @@ public interface BookcaseRepository {
 
   List<String> getAllBookCaseLocations();
 
-  void save(Bookcase bookcaseEntity);
+  Bookcase save(Bookcase bookcase);
 
   Bookcase findById(Long id);
 
