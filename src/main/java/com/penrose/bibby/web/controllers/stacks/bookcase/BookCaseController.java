@@ -4,9 +4,7 @@ import com.penrose.bibby.identity.infrastructure.AppUserImpl;
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.CreateBookcaseRequest;
-import com.penrose.bibby.library.stacks.bookcase.core.application.BookcaseService;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -21,15 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class BookCaseController {
 
   private final BookcaseFacade bookcaseFacade;
-  private final ShelfFacade bookshelfFacade;
   Logger logger = LoggerFactory.getLogger(BookCaseController.class);
-  BookcaseService bookCaseService;
 
-  public BookCaseController(
-      BookcaseService bookCaseService, BookcaseFacade bookcaseFacade, ShelfFacade bookshelfFacade) {
-    this.bookCaseService = bookCaseService;
+  public BookCaseController(BookcaseFacade bookcaseFacade) {
     this.bookcaseFacade = bookcaseFacade;
-    this.bookshelfFacade = bookshelfFacade;
   }
 
   @PostMapping("/create")
@@ -39,7 +32,7 @@ public class BookCaseController {
     logger.info(
         "Received request to create bookcase at location: {}", createBookcaseRequest.location());
     CreateBookcaseResult createBookcaseResult =
-        bookCaseService.createNewBookCase(
+        bookcaseFacade.createNewBookCase(
             principal.getAppUserId(),
             createBookcaseRequest.zone() + "-" + createBookcaseRequest.indexId(),
             createBookcaseRequest.zone(),
@@ -53,23 +46,21 @@ public class BookCaseController {
 
   @DeleteMapping("/delete/{bookcaseId}")
   public ResponseEntity<HttpStatus> deleteBookcase(@PathVariable Long bookcaseId) {
-    bookshelfFacade.deleteAllShelvesInBookcase(bookcaseId);
     bookcaseFacade.deleteBookcase(bookcaseId);
-
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/locations")
   public ResponseEntity<Set<String>> getAllBookcaseLocations() {
     logger.info("Received request to get all bookcase locations");
-    Set<String> locations = Set.copyOf(bookCaseService.getAllBookcaseLocations());
+    Set<String> locations = Set.copyOf(bookcaseFacade.getAllBookcaseLocations());
     return ResponseEntity.ok(locations);
   }
 
   @GetMapping("/location/{location}")
   public ResponseEntity<List<BookcaseDTO>> getBookcaseByLocation(@PathVariable String location) {
     logger.info("Received request to get bookcase at location: {}", location);
-    List<BookcaseDTO> bookcases = bookCaseService.getAllBookcasesByLocation(location);
+    List<BookcaseDTO> bookcases = bookcaseFacade.getAllBookcasesByLocation(location);
     return ResponseEntity.ok(bookcases);
   }
 

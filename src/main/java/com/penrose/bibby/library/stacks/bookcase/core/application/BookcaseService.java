@@ -4,8 +4,9 @@ import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -18,13 +19,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookcaseService implements BookcaseFacade {
   private static final Logger log = LoggerFactory.getLogger(BookcaseService.class);
   private final BookcaseRepository bookcaseRepository;
+  private final ShelfAccessPort shelfAccessPort;
   private final ResponseStatusException existingRecordError =
       new ResponseStatusException(HttpStatus.CONFLICT, "Bookcase with the label already exist");
-  private final ShelfFacade shelfFacade;
 
-  public BookcaseService(BookcaseRepository bookcaseRepository, ShelfFacade shelfFacade) {
+  public BookcaseService(BookcaseRepository bookcaseRepository, ShelfAccessPort shelfAccessPort) {
     this.bookcaseRepository = bookcaseRepository;
-    this.shelfFacade = shelfFacade;
+    this.shelfAccessPort = shelfAccessPort;
   }
 
   public CreateBookcaseResult createNewBookCase(
@@ -103,13 +104,14 @@ public class BookcaseService implements BookcaseFacade {
   }
 
   @Override
+  @Transactional
   public void deleteBookcase(Long bookcaseId) {
+    shelfAccessPort.deleteAllShelvesInBookcase(bookcaseId);
     bookcaseRepository.deleteById(bookcaseId);
-    log.info("Bookcase with Id {} was deleted.", bookcaseId);
   }
 
   public void addShelf(BookcaseEntity bookcaseEntity, int label, int position, int bookCapacity) {
-    shelfFacade.createShelf(
+    shelfAccessPort.createShelf(
         bookcaseEntity.getBookcaseId(), position, "Shelf " + label, bookCapacity);
   }
 
