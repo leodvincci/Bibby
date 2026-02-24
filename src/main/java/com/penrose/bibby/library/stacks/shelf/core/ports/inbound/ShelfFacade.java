@@ -11,11 +11,11 @@ public interface ShelfFacade {
 
   Optional<Shelf> findShelfById(Long shelfId);
 
-  List<ShelfSummary> getShelfSummariesForBookcase(Long bookCaseId);
+  List<ShelfSummary> getShelfSummariesForBookcaseByBookcaseId(Long bookcaseId);
 
-  void deleteAllShelvesInBookcase(Long bookcaseId);
+  void deleteAllShelvesInBookcaseByBookcaseId(Long bookcaseId);
 
-  void createShelf(Long bookcaseId, int position, String s, int bookCapacity);
+  void createShelfInBookcaseByBookcaseId(Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity);
 
   List<Shelf> findAll();
 

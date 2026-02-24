@@ -36,7 +36,7 @@ public class QueryShelfUseCase {
    */
   @Transactional
   public Optional<Shelf> findShelfById(Long shelfId) {
-    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
+    Shelf shelf = shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId));
     if (shelf == null) {
       return Optional.empty();
     }
@@ -50,7 +50,7 @@ public class QueryShelfUseCase {
    * @param bookcaseId the ID of the bookcase whose shelf summaries are requested
    * @return a list of {@link ShelfSummary} objects for the bookcase
    */
-  public List<ShelfSummary> getShelfSummariesForBookcase(Long bookcaseId) {
+  public List<ShelfSummary> getShelfSummariesForBookcaseById(Long bookcaseId) {
     return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId).stream()
         .map(
             shelf ->
@@ -76,7 +76,7 @@ public class QueryShelfUseCase {
    * @throws IllegalStateException if no shelf exists with the given ID
    */
   public boolean isFull(Long shelfId) {
-    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
+    Shelf shelf = shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId));
     if (shelf == null) {
       throw new IllegalStateException("Shelf not found with id: " + shelfId);
     }
@@ -91,7 +91,7 @@ public class QueryShelfUseCase {
    * @throws IllegalStateException if no shelf exists with the given ID
    */
   public boolean isEmpty(Long shelfId) {
-    Shelf shelf = shelfDomainRepositoryPort.getById(new ShelfId(shelfId));
+    Shelf shelf = shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId));
     if (shelf == null) {
       throw new IllegalStateException("Shelf not found with id: " + shelfId);
     }

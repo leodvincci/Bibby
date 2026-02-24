@@ -15,10 +15,11 @@ public class ShelfMapper {
 
   public ShelfEntity toEntity(Shelf shelf) {
     ShelfEntity entity = new ShelfEntity();
-    entity.setShelfId(shelf.getShelfId().shelfId());
-    entity.setShelfLabel(shelf.getShelfLabel());
+    entity.setBookcaseId(shelf.getBookcaseId());
     entity.setShelfPosition(shelf.getShelfPosition());
+    entity.setShelfLabel(shelf.getShelfLabel());
     entity.setBookCapacity(shelf.getBookCapacity());
+    entity.setShelfId(shelf.getShelfId().shelfId());
     return entity;
   }
 

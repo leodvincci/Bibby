@@ -14,11 +14,11 @@ public class ShelfAccessPortAdapter implements ShelfAccessPort {
 
   @Override
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
-    shelfFacade.deleteAllShelvesInBookcase(bookcaseId);
+    shelfFacade.deleteAllShelvesInBookcaseByBookcaseId(bookcaseId);
   }
 
   @Override
   public void createShelf(Long bookcaseId, int position, String string, int bookCapacity) {
-    shelfFacade.createShelf(bookcaseId, position, string, bookCapacity);
+    shelfFacade.createShelfInBookcaseByBookcaseId(bookcaseId, position, string, bookCapacity);
   }
 }
