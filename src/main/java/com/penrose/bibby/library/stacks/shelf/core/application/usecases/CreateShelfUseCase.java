@@ -2,7 +2,7 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
-import org.slf4j.Logger;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class CreateShelfUseCase {
 
   private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
-  private final Logger logger = org.slf4j.LoggerFactory.getLogger(CreateShelfUseCase.class);
 
   /**
    * Constructor for CreateShelfUseCase.
@@ -27,11 +26,13 @@ public class CreateShelfUseCase {
   /**
    * Executes the use case to create and save a shelf.
    *
-   * @param shelf the shelf entity to be saved
+   * @param shelfLabel the label of the shelf to be created
+   * @param shelfPosition the position of the shelf to be created
+   * @param bookCapacity the capacity of the shelf to be created
+   * @param bookcaseId the ID of the bookcase to be created
    */
-  public void execute(Shelf shelf) {
-    shelfDomainRepositoryPort.save(shelf);
-    logger.info(
-        "Shelf created with ID: {} for bookcase: {}", shelf.getShelfId(), shelf.getBookcaseId());
+  public void execute(String shelfLabel, int shelfPosition, int bookCapacity, Long bookcaseId) {
+    Shelf shelf = new Shelf(shelfLabel, shelfPosition, bookCapacity, null, List.of(), bookcaseId);
+    shelfDomainRepositoryPort.createNewShelfInBookcase(shelf);
   }
 }

@@ -7,7 +7,9 @@ import java.util.List;
  * by the Shelf module and defines what it needs from books in its own terms, following the
  * Dependency Inversion Principle.
  *
- * <p>The Book module will provide an adapter that implements this interface.
+ * <p>The Shelf module's infrastructure layer provides an adapter that implements this interface,
+ * delegating to Book's public inbound port ({@link
+ * com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade}).
  */
 public interface BookAccessPort {
 

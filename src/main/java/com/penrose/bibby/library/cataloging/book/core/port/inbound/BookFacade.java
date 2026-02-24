@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookFacade {
+  List<BookDTO> getBooksByShelfId(Long shelfId);
+
+  void deleteByShelfId(List<Long> shelfIds);
+
   void updateTheBooksShelf(BookDTO bookDTO, Long newShelfId);
 
   BookDTO findBookByIsbn(String isbn);
@@ -73,4 +77,6 @@ public interface BookFacade {
   List<Book> findByShelfId(Long shelfId);
 
   void placeBookOnShelf(Long bookId, BookShelfAssignmentRequest shelfAssignmentRequest);
+
+  List<Long> getBookIdsByShelfId(Long shelfId);
 }

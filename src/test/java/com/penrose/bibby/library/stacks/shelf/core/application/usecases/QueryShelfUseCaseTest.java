@@ -66,7 +66,7 @@ class QueryShelfUseCaseTest {
     Long shelfId = 1L;
     Shelf shelf = mock(Shelf.class);
 
-    when(shelfDomainRepositoryPort.getById(new ShelfId(shelfId))).thenReturn(shelf);
+    when(shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId))).thenReturn(shelf);
 
     Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
 
@@ -77,7 +77,7 @@ class QueryShelfUseCaseTest {
   void findShelfById_shouldReturnEmptyWhenNotFound() {
     Long shelfId = 1L;
 
-    when(shelfDomainRepositoryPort.getById(new ShelfId(shelfId))).thenReturn(null);
+    when(shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId))).thenReturn(null);
 
     Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
 
@@ -94,7 +94,7 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
-    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcase(bookcaseId);
+    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).shelfId()).isEqualTo(1L);
@@ -108,7 +108,7 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcase(bookcaseId);
+    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
 
     assertThat(result).isEmpty();
   }
