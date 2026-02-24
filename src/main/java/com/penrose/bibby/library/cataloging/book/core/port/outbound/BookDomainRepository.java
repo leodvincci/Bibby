@@ -51,4 +51,6 @@ public interface BookDomainRepository {
   Book getBookDomainById(Long bookId);
 
   Book placeBookOnShelf(Long bookId, Long shelfId);
+
+  List<Long> getBookIdsByShelfId(Long shelfId);
 }

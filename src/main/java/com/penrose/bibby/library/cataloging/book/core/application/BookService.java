@@ -269,4 +269,14 @@ public class BookService implements BookFacade {
   public void placeBookOnShelf(Long bookId, BookShelfAssignmentRequest shelfAssignmentRequest) {
     bookCommandUseCases.placeBookOnShelf(bookId, shelfAssignmentRequest);
   }
+
+  @Override
+  public void deleteByShelfId(List<Long> shelfIds) {
+    bookDomainRepository.deleteByShelfId(shelfIds);
+  }
+
+  @Override
+  public List<Long> getBookIdsByShelfId(Long shelfId) {
+    return bookCommandUseCases.getBookIdsByShelfId(shelfId);
+  }
 }

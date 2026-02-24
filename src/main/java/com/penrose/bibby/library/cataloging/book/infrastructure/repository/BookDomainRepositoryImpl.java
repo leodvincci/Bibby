@@ -208,4 +208,9 @@ public class BookDomainRepositoryImpl implements BookDomainRepository {
     log.info("Placed book with title {} on shelf with id {}", bookEntity.get().getTitle(), shelfId);
     return bookMapper.toDomainFromEntity(bookEntity.get());
   }
+
+  @Override
+  public List<Long> getBookIdsByShelfId(Long shelfId) {
+    return bookJpaRepository.findByShelfId(shelfId).stream().map(BookEntity::getBookId).toList();
+  }
 }
