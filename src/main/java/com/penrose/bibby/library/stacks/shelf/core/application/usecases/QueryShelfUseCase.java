@@ -44,8 +44,8 @@ public class QueryShelfUseCase {
   }
 
   /**
-   * Builds lightweight summaries for all shelves in a bookcase, including each shelf's
-   * ID, label, and current book count.
+   * Builds lightweight summaries for all shelves in a bookcase, including each shelf's ID, label,
+   * and current book count.
    *
    * @param bookcaseId the ID of the bookcase whose shelf summaries are requested
    * @return a list of {@link ShelfSummary} objects for the bookcase
