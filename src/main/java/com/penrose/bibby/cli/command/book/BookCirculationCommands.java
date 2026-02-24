@@ -56,7 +56,8 @@ public class BookCirculationCommands extends AbstractShellComponent {
       System.out.println("Book Not Found.");
     } else if (bookDTO.shelfId() != null) {
       Optional<Shelf> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
-      BookcaseDTO bookcase = BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId()));
+      BookcaseDTO bookcase =
+          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId()));
       bookcaseName = bookcase.location();
       shelfName = shelf.get().getShelfLabel();
     }

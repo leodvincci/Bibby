@@ -6,13 +6,16 @@ public class Bookcase {
   private String bookcaseZone;
   private String bookcaseIndex;
 
-
   private int shelfCapacity;
   private int bookCapacity;
 
-
-
-  public Bookcase(Long bookcaseId, int shelfCapacity, int bookCapacity, String bookcaseLocation, String bookcaseZone, String bookcaseIndex) {
+  public Bookcase(
+      Long bookcaseId,
+      int shelfCapacity,
+      int bookCapacity,
+      String bookcaseLocation,
+      String bookcaseZone,
+      String bookcaseIndex) {
     this.bookcaseId = bookcaseId;
     setShelfCapacity(shelfCapacity);
     this.bookCapacity = bookCapacity;
@@ -71,6 +74,4 @@ public class Bookcase {
   public void setBookcaseIndex(String bookcaseIndex) {
     this.bookcaseIndex = bookcaseIndex;
   }
-
-
 }

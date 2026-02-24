@@ -1,6 +1,5 @@
 package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outbound;
 
-import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
@@ -22,7 +21,8 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
 
   @Override
   public Bookcase findBookcaseByBookcaseLocation(String bookcaseLocation) {
-    return BookcaseMapper.toDomain(bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(bookcaseLocation));
+    return BookcaseMapper.toDomain(
+        bookcaseJpaRepository.findBookcaseEntityByBookcaseLocation(bookcaseLocation));
   }
 
   @Override
@@ -33,7 +33,8 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
   @Override
   public List<String> getAllBookCaseLocations() {
     List<String> locations = new ArrayList<>();
-    List<Bookcase> bookcaseEntities = bookcaseJpaRepository.findAll().stream().map(BookcaseMapper::toDomain).toList();
+    List<Bookcase> bookcaseEntities =
+        bookcaseJpaRepository.findAll().stream().map(BookcaseMapper::toDomain).toList();
     for (Bookcase entity : bookcaseEntities) {
       locations.add(entity.getBookcaseLocation());
     }
@@ -47,17 +48,23 @@ public class BookcaseRepositoryImpl implements BookcaseRepository {
 
   @Override
   public Bookcase findById(Long id) {
-    return Optional.ofNullable(bookcaseJpaRepository.findById(id).orElse(null)).map(BookcaseMapper::toDomain).orElse(null);
+    return Optional.ofNullable(bookcaseJpaRepository.findById(id).orElse(null))
+        .map(BookcaseMapper::toDomain)
+        .orElse(null);
   }
 
   @Override
   public List<Bookcase> findByLocation(String location) {
-    return bookcaseJpaRepository.findAllByBookcaseLocation(location).stream().map(BookcaseMapper::toDomain).toList();
+    return bookcaseJpaRepository.findAllByBookcaseLocation(location).stream()
+        .map(BookcaseMapper::toDomain)
+        .toList();
   }
 
   @Override
   public List<Bookcase> findByAppUserId(Long appUserId) {
-    return bookcaseJpaRepository.findAllByUserId(appUserId).stream().map(BookcaseMapper::toDomain).toList();
+    return bookcaseJpaRepository.findAllByUserId(appUserId).stream()
+        .map(BookcaseMapper::toDomain)
+        .toList();
   }
 
   @Override

@@ -84,7 +84,7 @@ public class BookSearchCommands {
       } else {
         Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
         BookcaseDTO bookcaseDTO =
-                BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
+            BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
         bookcaseLocation = bookcaseDTO.location();
         shelfLocation = shelfDTO.get().getShelfLabel();
       }

@@ -36,11 +36,14 @@ class CreateBookcaseUseCaseTest {
     String location = "Living Room";
 
     when(bookcaseRepository.findBookcaseByBookcaseLocation(label)).thenReturn(null);
-    doAnswer(invocation -> {
-      Bookcase b = invocation.getArgument(0);
-      b.setBookcaseId(100L);
-      return null;
-    }).when(bookcaseRepository).save(any(Bookcase.class));
+    doAnswer(
+            invocation -> {
+              Bookcase b = invocation.getArgument(0);
+              b.setBookcaseId(100L);
+              return null;
+            })
+        .when(bookcaseRepository)
+        .save(any(Bookcase.class));
 
     CreateBookcaseResult result =
         createBookcaseUseCase.createNewBookCase(
@@ -64,7 +67,8 @@ class CreateBookcaseUseCaseTest {
     int bookCapacity = 10;
     String location = "Living Room";
 
-    Bookcase existingBookcase = new Bookcase(50L, shelfCapacity, bookCapacity * shelfCapacity, location, null, null);
+    Bookcase existingBookcase =
+        new Bookcase(50L, shelfCapacity, bookCapacity * shelfCapacity, location, null, null);
     when(bookcaseRepository.findBookcaseByBookcaseLocation(label)).thenReturn(existingBookcase);
 
     assertThatThrownBy(
@@ -91,11 +95,14 @@ class CreateBookcaseUseCaseTest {
     int bookCapacity = 10;
 
     when(bookcaseRepository.findBookcaseByBookcaseLocation("BC001")).thenReturn(null);
-    doAnswer(invocation -> {
-      Bookcase b = invocation.getArgument(0);
-      b.setBookcaseId(100L);
-      return null;
-    }).when(bookcaseRepository).save(any(Bookcase.class));
+    doAnswer(
+            invocation -> {
+              Bookcase b = invocation.getArgument(0);
+              b.setBookcaseId(100L);
+              return null;
+            })
+        .when(bookcaseRepository)
+        .save(any(Bookcase.class));
 
     createBookcaseUseCase.createNewBookCase(
         1L, "BC001", "A", "1", shelfCapacity, bookCapacity, "Living Room");

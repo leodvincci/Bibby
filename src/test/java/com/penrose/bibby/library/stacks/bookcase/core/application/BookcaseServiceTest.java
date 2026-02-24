@@ -36,8 +36,7 @@ class BookcaseServiceTest {
         bookcaseService.createNewBookCase(1L, "BC001", "A", "1", 5, 10, "Living Room");
 
     assertThat(result).isEqualTo(expected);
-    verify(createBookcaseUseCase)
-        .createNewBookCase(1L, "BC001", "A", "1", 5, 10, "Living Room");
+    verify(createBookcaseUseCase).createNewBookCase(1L, "BC001", "A", "1", 5, 10, "Living Room");
   }
 
   @Test

@@ -2,7 +2,6 @@ package com.penrose.bibby.library.stacks.bookcase.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

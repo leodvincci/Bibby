@@ -112,7 +112,10 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcasesByLocation(location).stream().map(BookcaseMapper::toDTO).toList();
+    List<BookcaseDTO> bookcaseDTOs =
+        bookcaseFacade.getAllBookcasesByLocation(location).stream()
+            .map(BookcaseMapper::toDTO)
+            .toList();
     for (BookcaseDTO b : bookcaseDTOs) {
       options.put(b.location(), b.bookcaseId().toString());
     }
@@ -123,7 +126,8 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m[Cancel]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
+    List<BookcaseDTO> bookcaseDTOs =
+        bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
     for (BookcaseDTO b : bookcaseDTOs) {
       options.put(b.location(), b.bookcaseId().toString());
     }
@@ -155,7 +159,8 @@ public class PromptOptions {
     // LinkedHashMap keeps insertion order so the menu shows in the order you add them
     Map<String, String> options = new LinkedHashMap<>();
     options.put("\u001B[38;5;202m [CANCEL]\033[36m", "cancel");
-    List<BookcaseDTO> bookcaseDTOs = bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
+    List<BookcaseDTO> bookcaseDTOs =
+        bookcaseFacade.getAllBookcases().stream().map(BookcaseMapper::toDTO).toList();
     for (BookcaseDTO bookcaseDTO : bookcaseDTOs) {
       int shelfBookCount = 0;
       List<ShelfDTO> shelves =

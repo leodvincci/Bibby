@@ -1,7 +1,5 @@
 package com.penrose.bibby.library.stacks.bookcase.core.application.usecases;
 
-import static org.mockito.Mockito.verify;
-
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
 import org.junit.jupiter.api.Test;
