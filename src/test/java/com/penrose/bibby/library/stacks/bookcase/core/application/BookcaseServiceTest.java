@@ -9,8 +9,8 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +30,7 @@ class BookcaseServiceTest {
 
   @Mock private BookcaseRepository bookcaseRepository;
 
-  @Mock private ShelfFacade shelfFacade;
+  @Mock private ShelfAccessPort shelfAccessPort;
 
   @InjectMocks private BookcaseService bookcaseService;
 
@@ -48,7 +48,8 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfFacade).createShelf(eq(100L), eq(position), eq("Shelf " + label), eq(bookCapacity));
+    verify(shelfAccessPort)
+        .createShelf(eq(100L), eq(position), eq("Shelf " + label), eq(bookCapacity));
   }
 
   /**
@@ -65,7 +66,8 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfFacade).createShelf(eq(200L), eq(position), eq("Shelf " + label), eq(bookCapacity));
+    verify(shelfAccessPort)
+        .createShelf(eq(200L), eq(position), eq("Shelf " + label), eq(bookCapacity));
   }
 
   /**
@@ -82,7 +84,7 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfFacade).createShelf(eq(300L), eq(position), eq("Shelf 5"), eq(bookCapacity));
+    verify(shelfAccessPort).createShelf(eq(300L), eq(position), eq("Shelf 5"), eq(bookCapacity));
   }
 
   /**
@@ -99,7 +101,7 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfFacade).createShelf(eq(400L), eq(position), eq("Shelf 1"), eq(bookCapacity));
+    verify(shelfAccessPort).createShelf(eq(400L), eq(position), eq("Shelf 1"), eq(bookCapacity));
   }
 
   /**
@@ -116,7 +118,7 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfFacade).createShelf(eq(500L), eq(position), eq("Shelf 8"), eq(bookCapacity));
+    verify(shelfAccessPort).createShelf(eq(500L), eq(position), eq("Shelf 8"), eq(bookCapacity));
   }
 
   /**
@@ -155,7 +157,7 @@ class BookcaseServiceTest {
     assertThat(result.bookcaseId()).isEqualTo(100L);
     verify(bookcaseRepository).findBookcaseEntityByBookcaseLocation(label);
     verify(bookcaseRepository).save(any(BookcaseEntity.class));
-    verify(shelfFacade, times(shelfCapacity))
+    verify(shelfAccessPort, times(shelfCapacity))
         .createShelf(eq(100L), anyInt(), anyString(), eq(bookCapacity));
   }
 
@@ -199,7 +201,7 @@ class BookcaseServiceTest {
 
     verify(bookcaseRepository).findBookcaseEntityByBookcaseLocation(label);
     verify(bookcaseRepository, never()).save(any(BookcaseEntity.class));
-    verify(shelfFacade, never()).createShelf(anyLong(), anyInt(), anyString(), anyInt());
+    verify(shelfAccessPort, never()).createShelf(anyLong(), anyInt(), anyString(), anyInt());
   }
 
   /**
@@ -336,6 +338,7 @@ class BookcaseServiceTest {
 
     bookcaseService.deleteBookcase(bookcaseId);
 
+    verify(shelfAccessPort).deleteAllShelvesInBookcase(bookcaseId);
     verify(bookcaseRepository).deleteById(bookcaseId);
   }
 

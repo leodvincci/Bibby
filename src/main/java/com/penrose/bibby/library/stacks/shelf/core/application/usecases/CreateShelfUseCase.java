@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class CreateShelfUseCase {
 
   private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
+  private final Logger logger = org.slf4j.LoggerFactory.getLogger(CreateShelfUseCase.class);
 
   /**
    * Constructor for CreateShelfUseCase.
@@ -29,5 +31,7 @@ public class CreateShelfUseCase {
    */
   public void execute(Shelf shelf) {
     shelfDomainRepositoryPort.save(shelf);
+    logger.info(
+        "Shelf created with ID: {} for bookcase: {}", shelf.getShelfId(), shelf.getBookcaseId());
   }
 }
