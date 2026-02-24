@@ -46,7 +46,6 @@ public class ShelfService implements ShelfFacade {
   @Override
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
     deleteShelvesUseCase.execute(bookcaseId);
-    logger.info("Deleted all shelves in bookcase with ID: {}", bookcaseId);
   }
 
   @Override
