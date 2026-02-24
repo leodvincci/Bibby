@@ -1,6 +1,5 @@
 package com.penrose.bibby.web.controllers.cataloging.book;
 
-import com.penrose.bibby.library.cataloging.book.core.application.IsbnEnrichmentService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.BookImportRequest;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBookResponseBrief;
@@ -18,12 +17,9 @@ public class BookImportController {
   Logger log = org.slf4j.LoggerFactory.getLogger(BookImportController.class);
 
   private final IsbnLookupService isbnLookupService;
-  private final IsbnEnrichmentService isbnEnrichmentService;
 
-  public BookImportController(
-      IsbnLookupService isbnLookupService, IsbnEnrichmentService isbnEnrichmentService) {
+  public BookImportController(IsbnLookupService isbnLookupService) {
     this.isbnLookupService = isbnLookupService;
-    this.isbnEnrichmentService = isbnEnrichmentService;
   }
 
   @PostMapping("/api/v1/books/fetchbookmetadata")

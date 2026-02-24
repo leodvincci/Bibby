@@ -6,15 +6,13 @@ import java.util.List;
 
 public interface ShelfDomainRepositoryPort {
 
-  Shelf getById(ShelfId id);
+  Shelf getShelfByShelfId(ShelfId id);
 
-  void save(Shelf shelf);
+  void createNewShelfInBookcase(Shelf shelf);
 
   void deleteByBookcaseId(Long bookcaseId);
 
   List<Shelf> findByBookcaseId(Long bookcaseId);
-
-  Shelf findById(Long shelfId);
 
   List<Shelf> findAll();
 }

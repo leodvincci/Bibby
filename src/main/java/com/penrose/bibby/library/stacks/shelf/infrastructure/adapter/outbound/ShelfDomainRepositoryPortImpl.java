@@ -27,43 +27,45 @@ public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort 
     this.bookAccessPort = bookAccessPort;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if no shelf entity exists for the given ID
+   */
   @Override
-  public Shelf getById(ShelfId id) {
+  public Shelf getShelfByShelfId(ShelfId id) {
     ShelfEntity entity = jpaRepository.findById(id.shelfId()).orElse(null);
     if (entity == null) {
-      return null;
+      throw new RuntimeException("Shelf not found with ID: " + id);
     }
     List<Long> bookIds = bookAccessPort.getBookIdsByShelfId(id.shelfId());
     return shelfMapper.toDomainFromEntity(entity, bookIds);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Persists the shelf entity via JPA and logs the newly assigned shelf ID.
+   */
   @Override
-  public void save(Shelf shelf) {
-    ShelfEntity entity = new ShelfEntity();
-    entity.setBookcaseId(shelf.getBookcaseId());
-    entity.setShelfPosition(shelf.getShelfPosition());
-    entity.setShelfLabel(shelf.getShelfLabel());
-    entity.setBookCapacity(shelf.getBookCapacity());
-    jpaRepository.save(entity);
+  public void createNewShelfInBookcase(Shelf shelf) {
+    ShelfEntity shelfEntity = shelfMapper.toEntity(shelf);
+    jpaRepository.save(shelfEntity);
     logger.info(
-        "Shelf created with ID: {} for bookcase: {}", entity.getShelfId(), shelf.getBookcaseId());
+        "Shelf created with ID: {} for bookcase: {}",
+        shelfEntity.getShelfId(),
+        shelf.getBookcaseId());
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Deletes all shelf rows matching the bookcase ID and logs the operation.
+   */
   @Override
   public void deleteByBookcaseId(Long bookcaseId) {
     jpaRepository.deleteByBookcaseId(bookcaseId);
     logger.info("Deleted shelves for bookcase with ID: {}", bookcaseId);
-  }
-
-  @Override
-  public Shelf findById(Long shelfId) {
-    ShelfEntity entity = jpaRepository.findById(shelfId).orElse(null);
-    if (entity == null) {
-      throw new RuntimeException("Shelf not found with ID: " + shelfId);
-    }
-    List<Long> bookIds = bookAccessPort.getBookIdsByShelfId(shelfId);
-
-    return shelfMapper.toDomainFromEntity(entity, bookIds);
   }
 
   /**
@@ -84,6 +86,12 @@ public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort 
         .toList();
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Loads every shelf entity from the database and enriches each with its associated book IDs
+   * before mapping to the domain model.
+   */
   @Override
   public List<Shelf> findAll() {
     return jpaRepository.findAll().stream()

@@ -146,7 +146,8 @@ public class BookcaseCommands extends AbstractShellComponent {
   }
 
   public void selectShelf(Long bookCaseId) {
-    List<ShelfSummary> shelfSummaries = shelfFacade.getShelfSummariesForBookcase(bookCaseId);
+    List<ShelfSummary> shelfSummaries =
+        shelfFacade.getShelfSummariesForBookcaseByBookcaseId(bookCaseId);
 
     Map<String, String> bookShelfOptions = new LinkedHashMap<>();
     for (ShelfSummary s : shelfSummaries) {
