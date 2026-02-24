@@ -3,6 +3,8 @@ package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.mapper.ShelfPortModelMapper;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +26,11 @@ public class QueryShelfUseCase {
    * @param bookcaseId the ID of the bookcase to query
    * @return a list of shelves within the specified bookcase
    */
-  public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
-    return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId);
+  public List<ShelfResponse> findShelvesByBookcaseId(Long bookcaseId) {
+
+    return shelfDomainRepositoryPort.findByBookcaseId(bookcaseId).stream()
+        .map(ShelfPortModelMapper::toShelfResponse)
+        .toList();
   }
 
   /**

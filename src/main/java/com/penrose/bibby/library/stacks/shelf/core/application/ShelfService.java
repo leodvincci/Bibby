@@ -6,6 +6,7 @@ import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShe
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ShelfService implements ShelfFacade {
 
   /** {@inheritDoc} */
   @Override
-  public List<Shelf> findShelvesByBookcaseId(Long bookcaseId) {
+  public List<ShelfResponse> findShelvesByBookcaseId(Long bookcaseId) {
     return queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
   }
 
