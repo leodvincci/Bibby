@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +26,27 @@ class QueryShelfUseCaseTest {
   void findShelvesByBookcaseId_shouldReturnAllShelvesForBookcase() {
     Long bookcaseId = 100L;
     Shelf shelf1 = mock(Shelf.class);
+    when(shelf1.getId()).thenReturn(1L);
+    when(shelf1.getShelfPosition()).thenReturn(1);
+    when(shelf1.getShelfLabel()).thenReturn("Shelf A");
+    when(shelf1.getBookCapacity()).thenReturn(10);
+    when(shelf1.getBookIds()).thenReturn(List.of());
+
     Shelf shelf2 = mock(Shelf.class);
+    when(shelf2.getId()).thenReturn(2L);
+    when(shelf2.getShelfPosition()).thenReturn(2);
+    when(shelf2.getShelfLabel()).thenReturn("Shelf B");
+    when(shelf2.getBookCapacity()).thenReturn(10);
+    when(shelf2.getBookIds()).thenReturn(List.of());
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
         .thenReturn(List.of(shelf1, shelf2));
 
-    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
+    List<ShelfResponse> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
-    assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).id()).isEqualTo(1L);
+    assertThat(result.get(1).id()).isEqualTo(2L);
     verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
   }
 
@@ -42,7 +56,7 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
+    List<ShelfResponse> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
@@ -52,12 +66,19 @@ class QueryShelfUseCaseTest {
   void findShelvesByBookcaseId_shouldDelegateToRepository() {
     Long bookcaseId = 100L;
     Shelf shelf = mock(Shelf.class);
+    when(shelf.getId()).thenReturn(1L);
+    when(shelf.getShelfPosition()).thenReturn(1);
+    when(shelf.getShelfLabel()).thenReturn("Shelf A");
+    when(shelf.getBookCapacity()).thenReturn(10);
+    when(shelf.getBookIds()).thenReturn(List.of());
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
-    List<Shelf> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
+    List<ShelfResponse> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
 
-    assertThat(result).containsExactly(shelf);
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).id()).isEqualTo(1L);
+    assertThat(result.get(0).shelfLabel()).isEqualTo("Shelf A");
     verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
   }
 
