@@ -36,7 +36,7 @@ This pattern had already been identified and corrected in the book/cataloging mo
 ## Decision
 
 - **We will introduce a `ShelfAccessPort` interface in `bookcase.core.ports.outbound`**, owned by the bookcase module, defining only the shelf operations the bookcase module requires (`createShelf`, `deleteAllShelvesInBookcase`).
-- **We will implement `ShelfAccessPortAdapter` in `bookcase.infrastructure.adapter.outbound`**, delegating to the shelf module's `ShelfFacade`. This adapter is the only class in the bookcase module that imports from the shelf module.
+- **We will implement `ShelfAccessPortAdapter` in `bookcase.infrastructure.adapter.outbound`**, delegating to the shelf module's `ShelfFacade`. This adapter is the only class in the bookcase module that imports from the shelf module. It is registered with an explicit bean name (`@Component("bookcaseShelfAccessPortAdapter")`) to avoid a `ConflictingBeanDefinitionException` with the book module's identically-named `ShelfAccessPortAdapter`.
 - **We will move cross-module orchestration out of `BookCaseController`** and into `BookcaseService`, making the controller depend solely on `BookcaseFacade` (the inbound port). The `deleteBookcase()` service method now handles shelf cleanup internally and is marked `@Transactional`.
 
 ### Boundary and ownership rules introduced
@@ -97,6 +97,7 @@ This pattern had already been identified and corrected in the book/cataloging mo
 - If `ShelfFacade` method signatures change, the adapter must be updated manually. There is no compile-time link from the port to the facade (they are independent interfaces).
 - The bookcase module now has two outbound ports (`BookcaseRepository`, `ShelfAccessPort`). As the module grows, the number of outbound ports may increase; this should be monitored for over-abstraction.
 - `BookcaseServiceTest` must be updated to mock `ShelfAccessPort` instead of `ShelfFacade`, since the constructor signature changed.
+- **Bean name collision risk.** Both the book module and bookcase module now have a class named `ShelfAccessPortAdapter`. The bookcase adapter uses `@Component("bookcaseShelfAccessPortAdapter")` to disambiguate. If additional modules introduce their own `ShelfAccessPort` adapters, they must also use explicit bean names. The book module's adapter (`cataloging.book.infrastructure.adapter.outbound.ShelfAccessPortAdapter`) currently uses the default name and should be considered for an explicit qualifier for consistency.
 
 ### Follow-up work
 
@@ -120,6 +121,10 @@ This pattern had already been identified and corrected in the book/cataloging mo
   - File: `src/main/java/com/penrose/bibby/library/stacks/bookcase/core/ports/inbound/BookcaseFacade.java` (line: `Optional<BookcaseEntity> findById`)
   - Done when: `findById` returns a DTO or domain object instead of an infrastructure entity.
 
+- **Add explicit bean name to book module's `ShelfAccessPortAdapter` for consistency.**
+  - File: `src/main/java/com/penrose/bibby/library/cataloging/book/infrastructure/adapter/outbound/ShelfAccessPortAdapter.java`
+  - Done when: `@Component` is changed to `@Component("bookShelfAccessPortAdapter")` to match the bookcase module's naming convention and prevent future collisions.
+
 ## Compliance and guardrails
 
 ### Rules
@@ -127,6 +132,7 @@ This pattern had already been identified and corrected in the book/cataloging mo
 - **Bookcase core must not import shelf core.** No class in `bookcase.core` may import from `library.stacks.shelf.core`.
 - **No adapter calls another bounded context directly.** Cross-module calls must flow through an owned outbound port.
 - **Controllers depend only on inbound ports (facades).** No controller may inject a `*Service` concrete class or an outbound port.
+- **Outbound port adapters with shared class names must use explicit bean names.** Any `ShelfAccessPortAdapter` (or similarly named adapter across modules) must declare `@Component("<module>ShelfAccessPortAdapter")` to prevent Spring bean name collisions.
 
 ### How to detect violations
 
@@ -139,6 +145,9 @@ rg -n "import com\.penrose\.bibby\.library\.stacks\.shelf" \
 rg -n "import.*\.core\.application\." \
   src/main/java/com/penrose/bibby/web/controllers/
 
+# Detect duplicate default bean names for ShelfAccessPortAdapter
+rg -n "class ShelfAccessPortAdapter" src/main/java/
+
 # Compile and test
 mvn -q test
 ```
@@ -148,7 +157,7 @@ mvn -q test
 ### Code pointers (diff anchors)
 
 - **`bookcase/core/ports/outbound/ShelfAccessPort.java`** (new): Defines the contract the bookcase core uses to interact with shelves. Two methods: `deleteAllShelvesInBookcase(Long)` and `createShelf(Long, int, String, int)`.
-- **`bookcase/infrastructure/adapter/outbound/ShelfAccessPortAdapter.java`** (new): `@Component` adapter that delegates to `ShelfFacade`. Only class in the bookcase module that imports from the shelf module.
+- **`bookcase/infrastructure/adapter/outbound/ShelfAccessPortAdapter.java`** (new): `@Component("bookcaseShelfAccessPortAdapter")` adapter that delegates to `ShelfFacade`. Only class in the bookcase module that imports from the shelf module. Explicit bean name avoids collision with `cataloging.book.infrastructure.adapter.outbound.ShelfAccessPortAdapter`, which Spring would otherwise register under the same default name.
 - **`bookcase/core/application/BookcaseService.java`** (modified): Constructor changed from `(BookcaseRepository, ShelfFacade)` to `(BookcaseRepository, ShelfAccessPort)`. `deleteBookcase()` now calls `shelfAccessPort.deleteAllShelvesInBookcase()` before `bookcaseRepository.deleteById()`, wrapped in `@Transactional`. `addShelf()` delegates to `shelfAccessPort.createShelf()`.
 - **`web/controllers/stacks/bookcase/BookCaseController.java`** (modified): Removed `ShelfFacade` and `BookcaseService` dependencies. Constructor takes only `BookcaseFacade`. All endpoints delegate through `bookcaseFacade`. Delete endpoint no longer orchestrates shelf cleanup.
 - **`shelf/core/application/ShelfService.java`** (modified): Added `logger.info` after `deleteAllShelvesInBookcase` execution.

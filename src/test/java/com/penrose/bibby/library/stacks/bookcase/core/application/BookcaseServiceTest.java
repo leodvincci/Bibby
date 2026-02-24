@@ -9,8 +9,8 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,8 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfAccessPort).createShelf(eq(100L), eq(position), eq("Shelf " + label), eq(bookCapacity));
+    verify(shelfAccessPort)
+        .createShelf(eq(100L), eq(position), eq("Shelf " + label), eq(bookCapacity));
   }
 
   /**
@@ -65,7 +66,8 @@ class BookcaseServiceTest {
 
     bookcaseService.addShelf(bookcaseEntity, label, position, bookCapacity);
 
-    verify(shelfAccessPort).createShelf(eq(200L), eq(position), eq("Shelf " + label), eq(bookCapacity));
+    verify(shelfAccessPort)
+        .createShelf(eq(200L), eq(position), eq("Shelf " + label), eq(bookCapacity));
   }
 
   /**
