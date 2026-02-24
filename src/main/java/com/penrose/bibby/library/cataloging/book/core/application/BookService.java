@@ -28,8 +28,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookService implements BookFacade {
   private final BookJpaRepository bookJpaRepository;
 
+  private final BookBuilder BookBuilder;
   private final BookMapper bookMapper;
   private final IsbnLookupService isbnLookupService;
+  private final IsbnEnrichmentService isbnEnrichmentService;
   private final BookDomainRepository bookDomainRepository;
   private final ShelfAccessPort shelfAccessPort;
   private final BookcaseJpaRepository bookcaseJpaRepository;
@@ -46,7 +48,9 @@ public class BookService implements BookFacade {
       @Lazy ShelfAccessPort shelfAccessPort,
       BookcaseJpaRepository bookcaseJpaRepository,
       bookCommandUseCases bookCommandUseCases) {
+    this.isbnEnrichmentService = isbnEnrichmentService;
     this.bookJpaRepository = bookJpaRepository;
+    this.BookBuilder = bookBuilder;
     this.bookMapper = bookMapper;
     this.isbnLookupService = isbnLookupService;
     this.bookDomainRepository = bookDomainRepository;
@@ -277,6 +281,6 @@ public class BookService implements BookFacade {
 
   @Override
   public List<Long> getBookIdsByShelfId(Long shelfId) {
-    return bookCommandUseCases.getBookIdsByShelfId(shelfId);
+    return bookDomainRepository.getBookIdsByShelfId(shelfId);
   }
 }
