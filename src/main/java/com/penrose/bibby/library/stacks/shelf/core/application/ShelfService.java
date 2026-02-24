@@ -8,6 +8,7 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ public class ShelfService implements ShelfFacade {
   private final QueryShelfUseCase queryShelfUseCase;
   private final CreateShelfUseCase createShelfUseCase;
   private final DeleteShelvesUseCase deleteShelvesUseCase;
+  private final Logger logger = org.slf4j.LoggerFactory.getLogger(ShelfService.class);
 
   public ShelfService(
       QueryShelfUseCase queryShelfUseCase,
@@ -44,6 +46,7 @@ public class ShelfService implements ShelfFacade {
   @Override
   public void deleteAllShelvesInBookcase(Long bookcaseId) {
     deleteShelvesUseCase.execute(bookcaseId);
+    logger.info("Deleted all shelves in bookcase with ID: {}", bookcaseId);
   }
 
   @Override
