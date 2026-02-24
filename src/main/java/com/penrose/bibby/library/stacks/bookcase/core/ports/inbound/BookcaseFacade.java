@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.bookcase.core.ports.inbound;
 
 import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
+import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import java.util.List;
 import java.util.Optional;
@@ -14,14 +15,14 @@ public interface BookcaseFacade {
    * @param aLong the unique identifier of the bookcase to find.
    * @return an {@link Optional} containing the {@link BookcaseDTO} if found, or empty if not.
    */
-  Optional<BookcaseDTO> findBookCaseById(Long aLong);
+  Bookcase findBookCaseById(Long bookcaseId);
 
   /**
    * Retrieves a list of all bookcases in the library.
    *
    * @return A list of BookcaseDTO objects representing all bookcases.
    */
-  List<BookcaseDTO> getAllBookcases();
+  List<Bookcase> getAllBookcases();
 
   /**
    * Creates a new bookcase with the specified configuration and shelving layout.
@@ -57,7 +58,7 @@ public interface BookcaseFacade {
    * @param bookcaseId the unique identifier of the bookcase.
    * @return an {@link Optional} containing the {@link BookcaseEntity} if found, or empty if not.
    */
-  Optional<BookcaseEntity> findById(Long bookcaseId);
+  Bookcase findById(Long bookcaseId);
 
   /**
    * Retrieves all bookcases at the specified location.
@@ -65,7 +66,7 @@ public interface BookcaseFacade {
    * @param location the physical location to filter by.
    * @return a list of {@link BookcaseDTO} objects at the given location.
    */
-  List<BookcaseDTO> getAllBookcasesByLocation(String location);
+  List<Bookcase> getAllBookcasesByLocation(String location);
 
   /**
    * Retrieves all bookcases owned by the specified user.
@@ -73,7 +74,7 @@ public interface BookcaseFacade {
    * @param appUserId the unique identifier of the user.
    * @return a list of {@link BookcaseDTO} objects belonging to the user.
    */
-  List<BookcaseDTO> getAllBookcasesByUserId(Long appUserId);
+  List<Bookcase> getAllBookcasesByUserId(Long appUserId);
 
   /**
    * Deletes a bookcase by its unique identifier.
