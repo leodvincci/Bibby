@@ -137,13 +137,26 @@ class QueryShelfUseCaseTest {
   @Test
   void findAll_shouldReturnAllShelves() {
     Shelf shelf1 = mock(Shelf.class);
+    when(shelf1.getId()).thenReturn(1L);
+    when(shelf1.getShelfPosition()).thenReturn(1);
+    when(shelf1.getShelfLabel()).thenReturn("Shelf A");
+    when(shelf1.getBookCapacity()).thenReturn(10);
+    when(shelf1.getBookIds()).thenReturn(List.of());
+
     Shelf shelf2 = mock(Shelf.class);
+    when(shelf2.getId()).thenReturn(2L);
+    when(shelf2.getShelfPosition()).thenReturn(2);
+    when(shelf2.getShelfLabel()).thenReturn("Shelf B");
+    when(shelf2.getBookCapacity()).thenReturn(10);
+    when(shelf2.getBookIds()).thenReturn(List.of());
 
     when(shelfDomainRepositoryPort.findAll()).thenReturn(List.of(shelf1, shelf2));
 
-    List<Shelf> result = queryShelfUseCase.findAll();
+    List<ShelfResponse> result = queryShelfUseCase.findAll();
 
-    assertThat(result).hasSize(2).containsExactly(shelf1, shelf2);
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).id()).isEqualTo(1L);
+    assertThat(result.get(1).id()).isEqualTo(2L);
     verify(shelfDomainRepositoryPort).findAll();
   }
 
@@ -151,7 +164,7 @@ class QueryShelfUseCaseTest {
   void findAll_shouldReturnEmptyListWhenNoShelvesExist() {
     when(shelfDomainRepositoryPort.findAll()).thenReturn(List.of());
 
-    List<Shelf> result = queryShelfUseCase.findAll();
+    List<ShelfResponse> result = queryShelfUseCase.findAll();
 
     assertThat(result).isEmpty();
     verify(shelfDomainRepositoryPort).findAll();
