@@ -69,8 +69,10 @@ public class QueryShelfUseCase {
    *
    * @return a list of all shelves
    */
-  public List<Shelf> findAll() {
-    return shelfDomainRepositoryPort.findAll();
+  public List<ShelfResponse> findAll() {
+    return shelfDomainRepositoryPort.findAll().stream()
+        .map(ShelfPortModelMapper::toShelfResponse)
+        .toList();
   }
 
   /**
