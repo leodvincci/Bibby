@@ -64,8 +64,18 @@ class ShelfServiceTest {
   @Test
   void createShelf_shouldDelegateToCreateUseCaseWithCorrectParameters() {
     shelfService.createShelfInBookcaseByBookcaseId(100L, 1, "Shelf A", 10);
-
     verify(createShelfUseCase).execute("Shelf A", 1, 10, 100L);
+  }
+
+  @Test
+  void findAll_shouldDelegateToQueryUseCase() {
+    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of()));
+    when(queryShelfUseCase.findAll()).thenReturn(expected);
+
+    List<ShelfResponse> result = shelfService.findAll();
+
+    assertThat(result).isEqualTo(expected);
+    verify(queryShelfUseCase).findAll();
   }
 
   @Test

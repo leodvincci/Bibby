@@ -77,7 +77,7 @@ public class ShelfService implements ShelfFacade {
 
   /** {@inheritDoc} */
   @Override
-  public List<Shelf> findAll() {
+  public List<ShelfResponse> findAll() {
     return queryShelfUseCase.findAll();
   }
 

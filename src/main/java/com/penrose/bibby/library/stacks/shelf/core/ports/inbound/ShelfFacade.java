@@ -19,7 +19,7 @@ public interface ShelfFacade {
   void createShelfInBookcaseByBookcaseId(
       Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity);
 
-  List<Shelf> findAll();
+  List<ShelfResponse> findAll();
 
   boolean isFull(Long shelfId);
 
