@@ -2,8 +2,8 @@ package com.penrose.bibby.library.stacks.shelf.infrastructure.mapping;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -53,8 +53,8 @@ public class ShelfMapper {
         shelfEntity.getBookcaseId());
   }
 
-  public ShelfSummary toSummaryFromEntity(ShelfEntity shelfEntity) {
-    return new ShelfSummary(
+  public ShelfSummaryResponse toSummaryFromEntity(ShelfEntity shelfEntity) {
+    return new ShelfSummaryResponse(
         shelfEntity.getShelfId(), shelfEntity.getShelfLabel(), shelfEntity.getBookCapacity());
   }
 }

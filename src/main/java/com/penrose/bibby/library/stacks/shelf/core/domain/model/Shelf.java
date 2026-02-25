@@ -10,6 +10,7 @@ public class Shelf {
   private int shelfPosition;
   private int bookCapacity;
   private List<Long> bookIds;
+  private Long bookcaseId;
 
   public Long getBookcaseId() {
     return bookcaseId;
@@ -18,8 +19,6 @@ public class Shelf {
   public void setBookcaseId(Long bookcaseId) {
     this.bookcaseId = bookcaseId;
   }
-
-  private Long bookcaseId;
 
   public Shelf(
       String shelfLabel,

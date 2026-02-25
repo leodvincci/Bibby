@@ -9,8 +9,8 @@ import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -82,11 +82,11 @@ public class BookSearchCommands {
         shelfLocation = "PENDING / NOT SET";
         bookcaseLocation = "PENDING / NOT SET";
       } else {
-        Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
+        Optional<ShelfResponse> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
         BookcaseDTO bookcaseDTO =
-            BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
+            BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId()));
         bookcaseLocation = bookcaseDTO.location();
-        shelfLocation = shelfDTO.get().getShelfLabel();
+        shelfLocation = shelfDTO.get().shelfLabel();
       }
       Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
 
@@ -131,9 +131,9 @@ public class BookSearchCommands {
       System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");
       System.out.println(bookCard);
     } else {
-      Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
+      Optional<ShelfResponse> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
       BookcaseDTO bookcaseDTO =
-          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
+          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId()));
       System.out.println(authorFacade.findByBookId(bookDTO.id()).toString());
       String bookCard =
           bookcardRenderer.createBookCard(
@@ -142,7 +142,7 @@ public class BookSearchCommands {
               authorFacade.findByBookId(bookDTO.id()).toString(),
               bookDTO.publisher(),
               bookcaseDTO.location(),
-              shelfDTO.get().getShelfLabel(),
+              shelfDTO.get().shelfLabel(),
               bookcaseDTO.location());
       System.out.println("\n\u001B[36m</>\u001B[0m: Found it! Here are the details:\n");
       System.out.println(bookCard);

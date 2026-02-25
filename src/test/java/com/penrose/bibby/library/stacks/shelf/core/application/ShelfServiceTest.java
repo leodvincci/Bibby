@@ -6,9 +6,8 @@ import static org.mockito.Mockito.*;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.CreateShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteShelvesUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class ShelfServiceTest {
   @Test
   void findShelvesByBookcaseId_shouldDelegateToQueryUseCase() {
     Long bookcaseId = 100L;
-    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of()));
+    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
     when(queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)).thenReturn(expected);
 
     List<ShelfResponse> result = shelfService.findShelvesByBookcaseId(bookcaseId);
@@ -40,22 +39,23 @@ class ShelfServiceTest {
   @Test
   void findShelfById_shouldDelegateToQueryUseCase() {
     Long shelfId = 1L;
-    Shelf shelf = mock(Shelf.class);
-    when(queryShelfUseCase.findShelfById(shelfId)).thenReturn(Optional.of(shelf));
+    ShelfResponse expected = new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L);
+    when(queryShelfUseCase.findShelfById(shelfId)).thenReturn(Optional.of(expected));
 
-    Optional<Shelf> result = shelfService.findShelfById(shelfId);
+    Optional<ShelfResponse> result = shelfService.findShelfById(shelfId);
 
-    assertThat(result).isPresent().contains(shelf);
+    assertThat(result).isPresent().contains(expected);
     verify(queryShelfUseCase).findShelfById(shelfId);
   }
 
   @Test
   void getShelfSummariesForBookcase_shouldDelegateToQueryUseCase() {
     Long bookcaseId = 100L;
-    List<ShelfSummary> expected = List.of(new ShelfSummary(1L, "A", 5));
+    List<ShelfSummaryResponse> expected = List.of(new ShelfSummaryResponse(1L, "A", 5));
     when(queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId)).thenReturn(expected);
 
-    List<ShelfSummary> result = shelfService.getShelfSummariesForBookcaseByBookcaseId(bookcaseId);
+    List<ShelfSummaryResponse> result =
+        shelfService.getShelfSummariesForBookcaseByBookcaseId(bookcaseId);
 
     assertThat(result).isEqualTo(expected);
     verify(queryShelfUseCase).getShelfSummariesForBookcaseById(bookcaseId);
@@ -69,7 +69,7 @@ class ShelfServiceTest {
 
   @Test
   void findAll_shouldDelegateToQueryUseCase() {
-    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of()));
+    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
     when(queryShelfUseCase.findAll()).thenReturn(expected);
 
     List<ShelfResponse> result = shelfService.findAll();

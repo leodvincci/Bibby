@@ -8,8 +8,8 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookSummary;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.*;
 import org.slf4j.Logger;
 import org.springframework.shell.command.annotation.Command;
@@ -146,11 +146,11 @@ public class BookcaseCommands extends AbstractShellComponent {
   }
 
   public void selectShelf(Long bookCaseId) {
-    List<ShelfSummary> shelfSummaries =
+    List<ShelfSummaryResponse> shelfSummaries =
         shelfFacade.getShelfSummariesForBookcaseByBookcaseId(bookCaseId);
 
     Map<String, String> bookShelfOptions = new LinkedHashMap<>();
-    for (ShelfSummary s : shelfSummaries) {
+    for (ShelfSummaryResponse s : shelfSummaries) {
       bookShelfOptions.put(
           String.format(
               "%-10s    \u001B[38;5;197m%-2d\u001B[22m\u001B[38;5;38m Books \u001B[0m",

@@ -3,17 +3,28 @@ package com.penrose.bibby.library.stacks.shelf.core.application;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.CreateShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteShelvesUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
- * Service class responsible for managing shelf-related operations. This class delegates to
- * application use cases for the core shelf business logic.
+ * Service implementation for managing shelf-related operations within the library stacks domain.
+ *
+ * <p>This service acts as the primary implementation of the {@link ShelfFacade} inbound port,
+ * orchestrating shelf operations by delegating to specialized use case classes. It follows
+ * hexagonal architecture principles by keeping business logic encapsulated in use cases while
+ * providing a clean interface to external adapters (CLI, REST, etc.).
+ *
+ * <p>The service maintains transactional boundaries and ensures that all shelf operations
+ * are executed through well-defined use cases, promoting separation of concerns and testability.
+ *
+ * @see ShelfFacade for the contract this service fulfills
+ * @see QueryShelfUseCase for shelf query operations
+ * @see CreateShelfUseCase for shelf creation logic
+ * @see DeleteShelvesUseCase for shelf deletion operations
  */
 @Service
 public class ShelfService implements ShelfFacade {
@@ -22,6 +33,13 @@ public class ShelfService implements ShelfFacade {
   private final CreateShelfUseCase createShelfUseCase;
   private final DeleteShelvesUseCase deleteShelvesUseCase;
 
+  /**
+   * Constructs a new ShelfService with the required use case dependencies.
+   *
+   * @param queryShelfUseCase handles all shelf query operations including lookups and capacity checks
+   * @param createShelfUseCase manages shelf creation and initialization
+   * @param deleteShelvesUseCase handles bulk shelf deletion operations
+   */
   public ShelfService(
       QueryShelfUseCase queryShelfUseCase,
       CreateShelfUseCase createShelfUseCase,
@@ -39,13 +57,13 @@ public class ShelfService implements ShelfFacade {
 
   /** {@inheritDoc} */
   @Override
-  public Optional<Shelf> findShelfById(Long shelfId) {
+  public Optional<ShelfResponse> findShelfById(Long shelfId) {
     return queryShelfUseCase.findShelfById(shelfId);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<ShelfSummary> getShelfSummariesForBookcaseByBookcaseId(Long bookcaseId) {
+  public List<ShelfSummaryResponse> getShelfSummariesForBookcaseByBookcaseId(Long bookcaseId) {
     return queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
   }
 
@@ -60,15 +78,7 @@ public class ShelfService implements ShelfFacade {
     deleteShelvesUseCase.execute(bookcaseId);
   }
 
-  /**
-   * Creates a new shelf within a bookcase and persists it. Constructs a {@link Shelf} domain object
-   * from the supplied parameters and delegates persistence to {@link CreateShelfUseCase}.
-   *
-   * @param bookcaseId the ID of the bookcase that will contain the new shelf
-   * @param position the ordinal position of the shelf within the bookcase
-   * @param shelfLabel the display label for the shelf
-   * @param bookCapacity the maximum number of books the shelf can hold
-   */
+  /** {@inheritDoc} */
   @Override
   public void createShelfInBookcaseByBookcaseId(
       Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity) {

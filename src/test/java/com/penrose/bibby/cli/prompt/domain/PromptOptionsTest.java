@@ -85,8 +85,8 @@ class PromptOptionsTest {
   void bookCaseOptions_shouldCorrectlyCountBooksAcrossShelves() {
     Bookcase bookcase = new Bookcase(1L, 1L, 2, 10, "Study", "C", "3");
 
-    ShelfResponse shelf1 = new ShelfResponse(10L, 1, "Top Shelf", 10, List.of(100L, 101L));
-    ShelfResponse shelf2 = new ShelfResponse(11L, 2, "Bottom Shelf", 10, List.of(200L));
+    ShelfResponse shelf1 = new ShelfResponse(10L, 1, "Top Shelf", 10, List.of(100L, 101L), 1L);
+    ShelfResponse shelf2 = new ShelfResponse(11L, 2, "Bottom Shelf", 10, List.of(200L), 1L);
 
     Book book1 = buildBook(100L);
     Book book2 = buildBook(101L);
@@ -124,7 +124,7 @@ class PromptOptionsTest {
   @Test
   void bookCaseOptions_shouldCountZeroBooksWhenShelvesAreEmpty() {
     Bookcase bookcase = new Bookcase(1L, 1L, 3, 10, "Garage", "D", "4");
-    ShelfResponse emptyShelf = new ShelfResponse(20L, 1, "Empty Shelf", 10, new ArrayList<>());
+    ShelfResponse emptyShelf = new ShelfResponse(20L, 1, "Empty Shelf", 10, new ArrayList<>(), 1L);
 
     when(bookcaseFacade.getAllBookcases()).thenReturn(List.of(bookcase));
     when(shelfFacade.findShelvesByBookcaseId(1L)).thenReturn(List.of(emptyShelf));

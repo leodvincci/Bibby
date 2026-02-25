@@ -9,8 +9,8 @@ import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.*;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;
@@ -55,11 +55,11 @@ public class BookCirculationCommands extends AbstractShellComponent {
     if (bookDTO == null) {
       System.out.println("Book Not Found.");
     } else if (bookDTO.shelfId() != null) {
-      Optional<Shelf> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
+      Optional<ShelfResponse> shelf = shelfFacade.findShelfById(bookDTO.shelfId());
       BookcaseDTO bookcase =
-          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelf.get().getBookcaseId()));
+          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelf.get().bookcaseId()));
       bookcaseName = bookcase.location();
-      shelfName = shelf.get().getShelfLabel();
+      shelfName = shelf.get().shelfLabel();
     }
     if (bookDTO.availabilityStatus().toString().equals("CHECKED_OUT")) {
       System.out.println(
@@ -131,11 +131,11 @@ public class BookCirculationCommands extends AbstractShellComponent {
     if (bookDTO == null) {
       System.out.println("Book Not Found");
     } else if (bookDTO.shelfId() != null) {
-      Optional<Shelf> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
+      Optional<ShelfResponse> shelfDTO = shelfFacade.findShelfById(bookDTO.shelfId());
       BookcaseDTO bookcaseDTO =
-          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().getBookcaseId()));
+          BookcaseMapper.toDTO(bookcaseFacade.findBookCaseById(shelfDTO.get().bookcaseId()));
       bookcaseLabel = bookcaseDTO.location();
-      bookshelfLabel = shelfDTO.get().getShelfLabel();
+      bookshelfLabel = shelfDTO.get().shelfLabel();
     }
     Set<AuthorDTO> authors = authorFacade.findByBookId(bookDTO.id());
 
