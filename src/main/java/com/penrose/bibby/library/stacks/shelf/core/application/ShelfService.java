@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
  * hexagonal architecture principles by keeping business logic encapsulated in use cases while
  * providing a clean interface to external adapters (CLI, REST, etc.).
  *
- * <p>The service maintains transactional boundaries and ensures that all shelf operations
- * are executed through well-defined use cases, promoting separation of concerns and testability.
+ * <p>The service maintains transactional boundaries and ensures that all shelf operations are
+ * executed through well-defined use cases, promoting separation of concerns and testability.
  *
  * @see ShelfFacade for the contract this service fulfills
  * @see QueryShelfUseCase for shelf query operations
@@ -36,7 +36,8 @@ public class ShelfService implements ShelfFacade {
   /**
    * Constructs a new ShelfService with the required use case dependencies.
    *
-   * @param queryShelfUseCase handles all shelf query operations including lookups and capacity checks
+   * @param queryShelfUseCase handles all shelf query operations including lookups and capacity
+   *     checks
    * @param createShelfUseCase manages shelf creation and initialization
    * @param deleteShelvesUseCase handles bulk shelf deletion operations
    */

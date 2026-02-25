@@ -27,7 +27,8 @@ class ShelfServiceTest {
   @Test
   void findShelvesByBookcaseId_shouldDelegateToQueryUseCase() {
     Long bookcaseId = 100L;
-    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
+    List<ShelfResponse> expected =
+        List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
     when(queryShelfUseCase.findShelvesByBookcaseId(bookcaseId)).thenReturn(expected);
 
     List<ShelfResponse> result = shelfService.findShelvesByBookcaseId(bookcaseId);
@@ -69,7 +70,8 @@ class ShelfServiceTest {
 
   @Test
   void findAll_shouldDelegateToQueryUseCase() {
-    List<ShelfResponse> expected = List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
+    List<ShelfResponse> expected =
+        List.of(new ShelfResponse(1L, 1, "Shelf A", 10, List.of(), 100L));
     when(queryShelfUseCase.findAll()).thenReturn(expected);
 
     List<ShelfResponse> result = shelfService.findAll();

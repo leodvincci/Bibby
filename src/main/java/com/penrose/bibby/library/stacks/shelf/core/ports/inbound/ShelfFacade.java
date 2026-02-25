@@ -9,9 +9,9 @@ import java.util.Optional;
  * Inbound port for the Shelf bounded context.
  *
  * <p>Defines the application-level contract that external adapters (CLI commands, REST controllers,
- * etc.) use to query, create, and delete shelves. All responses are expressed as inbound port models
- * ({@link ShelfResponse}, {@link ShelfSummaryResponse}) so that domain internals never leak across
- * the boundary.
+ * etc.) use to query, create, and delete shelves. All responses are expressed as inbound port
+ * models ({@link ShelfResponse}, {@link ShelfSummaryResponse}) so that domain internals never leak
+ * across the boundary.
  *
  * @see com.penrose.bibby.library.stacks.shelf.core.application.ShelfService
  */
@@ -29,8 +29,8 @@ public interface ShelfFacade {
    * Looks up a single shelf by its numeric identifier.
    *
    * @param shelfId the numeric shelf identifier
-   * @return the matching {@link ShelfResponse} wrapped in an {@link Optional}, or
-   *     {@link Optional#empty()} when no shelf exists for the given ID
+   * @return the matching {@link ShelfResponse} wrapped in an {@link Optional}, or {@link
+   *     Optional#empty()} when no shelf exists for the given ID
    */
   Optional<ShelfResponse> findShelfById(Long shelfId);
 
@@ -53,9 +53,9 @@ public interface ShelfFacade {
   /**
    * Creates a new shelf within a bookcase and persists it.
    *
-   * @param bookcaseId   the ID of the bookcase that will contain the new shelf
+   * @param bookcaseId the ID of the bookcase that will contain the new shelf
    * @param shelfPosition the ordinal position of the shelf within the bookcase (must be &ge; 1)
-   * @param shelfLabel   the display label for the shelf (must not be blank)
+   * @param shelfLabel the display label for the shelf (must not be blank)
    * @param bookCapacity the maximum number of books the shelf can hold (must be &ge; 1)
    */
   void createShelfInBookcaseByBookcaseId(

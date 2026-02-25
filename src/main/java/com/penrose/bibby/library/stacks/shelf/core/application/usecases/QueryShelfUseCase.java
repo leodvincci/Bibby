@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Read-side use case for the Shelf aggregate.
  *
  * <p>Handles all query operations against shelves — lookups by ID, filtered listings by bookcase,
- * lightweight summary projections, and capacity checks. Domain {@link Shelf} entities retrieved from
- * the {@link ShelfDomainRepositoryPort} are mapped to inbound port models ({@link ShelfResponse},
- * {@link ShelfSummaryResponse}) before crossing the application boundary, keeping domain internals
- * encapsulated.
+ * lightweight summary projections, and capacity checks. Domain {@link Shelf} entities retrieved
+ * from the {@link ShelfDomainRepositoryPort} are mapped to inbound port models ({@link
+ * ShelfResponse}, {@link ShelfSummaryResponse}) before crossing the application boundary, keeping
+ * domain internals encapsulated.
  */
 @Service
 public class QueryShelfUseCase {
@@ -49,8 +49,8 @@ public class QueryShelfUseCase {
    * aggregate (e.g. book IDs) are available during mapping.
    *
    * @param shelfId the numeric shelf identifier
-   * @return the matching {@link ShelfResponse} wrapped in an {@link Optional}, or
-   *     {@link Optional#empty()} when no shelf exists for the given ID
+   * @return the matching {@link ShelfResponse} wrapped in an {@link Optional}, or {@link
+   *     Optional#empty()} when no shelf exists for the given ID
    */
   @Transactional
   public Optional<ShelfResponse> findShelfById(Long shelfId) {
