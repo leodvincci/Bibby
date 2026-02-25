@@ -3,4 +3,9 @@ package com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortMod
 import java.util.List;
 
 public record ShelfResponse(
-    Long id, int shelfPosition, String shelfLabel, int bookCapacity, List<Long> bookIds) {}
+    Long id,
+    int shelfPosition,
+    String shelfLabel,
+    int bookCapacity,
+    List<Long> bookIds,
+    Long bookcaseId) {}

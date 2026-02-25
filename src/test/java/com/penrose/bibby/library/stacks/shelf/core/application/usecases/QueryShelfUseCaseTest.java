@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
-import com.penrose.bibby.library.stacks.shelf.core.domain.model.ShelfSummary;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +31,7 @@ class QueryShelfUseCaseTest {
     when(shelf1.getShelfLabel()).thenReturn("Shelf A");
     when(shelf1.getBookCapacity()).thenReturn(10);
     when(shelf1.getBookIds()).thenReturn(List.of());
+    when(shelf1.getBookcaseId()).thenReturn(bookcaseId);
 
     Shelf shelf2 = mock(Shelf.class);
     when(shelf2.getId()).thenReturn(2L);
@@ -38,6 +39,7 @@ class QueryShelfUseCaseTest {
     when(shelf2.getShelfLabel()).thenReturn("Shelf B");
     when(shelf2.getBookCapacity()).thenReturn(10);
     when(shelf2.getBookIds()).thenReturn(List.of());
+    when(shelf2.getBookcaseId()).thenReturn(bookcaseId);
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
         .thenReturn(List.of(shelf1, shelf2));
@@ -71,6 +73,7 @@ class QueryShelfUseCaseTest {
     when(shelf.getShelfLabel()).thenReturn("Shelf A");
     when(shelf.getBookCapacity()).thenReturn(10);
     when(shelf.getBookIds()).thenReturn(List.of());
+    when(shelf.getBookcaseId()).thenReturn(bookcaseId);
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
@@ -83,15 +86,23 @@ class QueryShelfUseCaseTest {
   }
 
   @Test
-  void findShelfById_shouldReturnShelfWhenFound() {
+  void findShelfById_shouldReturnShelfResponseWhenFound() {
     Long shelfId = 1L;
     Shelf shelf = mock(Shelf.class);
+    when(shelf.getId()).thenReturn(1L);
+    when(shelf.getShelfPosition()).thenReturn(1);
+    when(shelf.getShelfLabel()).thenReturn("Shelf A");
+    when(shelf.getBookCapacity()).thenReturn(10);
+    when(shelf.getBookIds()).thenReturn(List.of());
+    when(shelf.getBookcaseId()).thenReturn(100L);
 
     when(shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId))).thenReturn(shelf);
 
-    Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
+    Optional<ShelfResponse> result = queryShelfUseCase.findShelfById(shelfId);
 
-    assertThat(result).isPresent().contains(shelf);
+    assertThat(result).isPresent();
+    assertThat(result.get().id()).isEqualTo(1L);
+    assertThat(result.get().shelfLabel()).isEqualTo("Shelf A");
   }
 
   @Test
@@ -100,7 +111,7 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.getShelfByShelfId(new ShelfId(shelfId))).thenReturn(null);
 
-    Optional<Shelf> result = queryShelfUseCase.findShelfById(shelfId);
+    Optional<ShelfResponse> result = queryShelfUseCase.findShelfById(shelfId);
 
     assertThat(result).isEmpty();
   }
@@ -115,7 +126,8 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
 
-    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
+    List<ShelfSummaryResponse> result =
+        queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).shelfId()).isEqualTo(1L);
@@ -129,7 +141,8 @@ class QueryShelfUseCaseTest {
 
     when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of());
 
-    List<ShelfSummary> result = queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
+    List<ShelfSummaryResponse> result =
+        queryShelfUseCase.getShelfSummariesForBookcaseById(bookcaseId);
 
     assertThat(result).isEmpty();
   }
@@ -142,6 +155,7 @@ class QueryShelfUseCaseTest {
     when(shelf1.getShelfLabel()).thenReturn("Shelf A");
     when(shelf1.getBookCapacity()).thenReturn(10);
     when(shelf1.getBookIds()).thenReturn(List.of());
+    when(shelf1.getBookcaseId()).thenReturn(100L);
 
     Shelf shelf2 = mock(Shelf.class);
     when(shelf2.getId()).thenReturn(2L);
@@ -149,6 +163,7 @@ class QueryShelfUseCaseTest {
     when(shelf2.getShelfLabel()).thenReturn("Shelf B");
     when(shelf2.getBookCapacity()).thenReturn(10);
     when(shelf2.getBookIds()).thenReturn(List.of());
+    when(shelf2.getBookcaseId()).thenReturn(100L);
 
     when(shelfDomainRepositoryPort.findAll()).thenReturn(List.of(shelf1, shelf2));
 

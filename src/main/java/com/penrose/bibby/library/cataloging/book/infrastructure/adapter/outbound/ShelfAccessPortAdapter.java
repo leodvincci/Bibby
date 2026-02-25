@@ -22,12 +22,12 @@ public class ShelfAccessPortAdapter implements ShelfAccessPort {
         .map(
             shelf ->
                 new ShelfDTO(
-                    shelf.getId(),
-                    shelf.getShelfLabel(),
-                    shelf.getBookcaseId(),
-                    shelf.getShelfPosition(),
-                    shelf.getBookCapacity(),
-                    shelf.getBookIds()));
+                    shelf.id(),
+                    shelf.shelfLabel(),
+                    shelf.bookcaseId(),
+                    shelf.shelfPosition(),
+                    shelf.bookCapacity(),
+                    shelf.bookIds()));
   }
 
   @Override

@@ -55,12 +55,12 @@ public class BookPlacementCommands {
               .map(
                   shelf -> {
                     return new ShelfDTO(
-                        shelf.getShelfId().shelfId(),
-                        shelf.getShelfLabel(),
+                        shelf.id(),
+                        shelf.shelfLabel(),
                         bookCaseId,
-                        shelf.getShelfPosition(),
-                        shelf.getBookCapacity(),
-                        shelf.getBookIds());
+                        shelf.shelfPosition(),
+                        shelf.bookCapacity(),
+                        shelf.bookIds());
                   });
 
       if (shelfDTO.get().bookCapacity() <= shelfDTO.get().bookIds().size()) {
