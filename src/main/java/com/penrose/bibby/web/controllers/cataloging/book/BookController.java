@@ -11,6 +11,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +30,19 @@ public class BookController {
   final BookFacade bookFacade;
   final IsbnLookupService isbnLookupService;
   private final AuthorFacade authorFacade;
+  private final ShelfFacade shelfFacade;
 
   public BookController(
       BookService bookService,
       BookFacade bookFacade,
       IsbnLookupService isbnLookupService,
-      AuthorFacade authorFacade) {
+      AuthorFacade authorFacade,
+      ShelfFacade shelfFacade) {
     this.bookService = bookService;
     this.bookFacade = bookFacade;
     this.isbnLookupService = isbnLookupService;
     this.authorFacade = authorFacade;
+    this.shelfFacade = shelfFacade;
   }
 
   //  // todo: remove commented code after testing
@@ -103,7 +107,6 @@ public class BookController {
   @PostMapping("/addnewbook")
   public ResponseEntity<Map<String, Object>> addNewBook(@RequestBody BookDTO bookDTO) {
     log.info("Received BookDTO: {}", bookDTO);
-
     List<AuthorDTO> authorDTOS = new ArrayList<>();
     for (String author : bookDTO.authors()) {
       System.out.println(author);
@@ -115,6 +118,8 @@ public class BookController {
         new BookRequestDTO(
             bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId(), bookDTO.publisher());
     bookFacade.createNewBook(bookRequestDTO);
+    shelfFacade.placeBookOnShelf(
+        bookFacade.findBookByIsbn(bookRequestDTO.isbn()).id(), bookDTO.shelfId());
 
     System.out.println("Book added");
     return ResponseEntity.status(HttpStatus.CREATED)

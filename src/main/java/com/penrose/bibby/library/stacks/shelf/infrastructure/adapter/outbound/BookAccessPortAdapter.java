@@ -3,7 +3,6 @@ package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import java.util.List;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,17 +19,23 @@ public class BookAccessPortAdapter implements BookAccessPort {
 
   private final BookFacade bookFacade;
 
-  public BookAccessPortAdapter(@Lazy BookFacade bookFacade) {
+  public BookAccessPortAdapter(BookFacade bookFacade) {
     this.bookFacade = bookFacade;
   }
 
   @Override
   public List<Long> getBookIdsByShelfId(Long shelfId) {
-    return bookFacade.getBookIdsByShelfId(shelfId);
+    return List.of();
   }
 
   @Override
-  public void deleteBooksOnShelves(List<Long> shelfIds) {
-    bookFacade.deleteByShelfId(shelfIds);
+  public void deleteBooksOnShelves(List<Long> shelfIds) {}
+
+  @Override
+  public Long getBookById(Long bookId) {
+    if (bookFacade.findBookById(bookId).isEmpty()) {
+      return null;
+    }
+    return bookId;
   }
 }

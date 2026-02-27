@@ -22,4 +22,12 @@ public interface BookAccessPort {
   List<Long> getBookIdsByShelfId(Long shelfId);
 
   void deleteBooksOnShelves(List<Long> shelfIds);
+
+  /**
+   * Looks up a book by its ID.
+   *
+   * @param bookId the ID of the book
+   * @return the book ID if found, or {@code null} if no book exists for the given ID
+   */
+  Long getBookById(Long bookId);
 }
