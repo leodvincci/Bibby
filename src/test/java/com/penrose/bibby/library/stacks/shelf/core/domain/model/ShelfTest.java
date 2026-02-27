@@ -1,5 +1,6 @@
 package com.penrose.bibby.library.stacks.shelf.core.domain.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
@@ -10,6 +11,93 @@ class ShelfTest {
 
   private Shelf createValidShelf() {
     return new Shelf("Shelf A", 1, 10, new ShelfId(1L), List.of(), 100L);
+  }
+
+  @Test
+  void constructor_shouldStoreAllFields() {
+    ShelfId id = new ShelfId(42L);
+    List<Long> books = List.of(1L, 2L, 3L);
+    Shelf shelf = new Shelf("Top Shelf", 3, 20, id, books, 99L);
+
+    assertThat(shelf.getShelfLabel()).isEqualTo("Top Shelf");
+    assertThat(shelf.getShelfPosition()).isEqualTo(3);
+    assertThat(shelf.getBookCapacity()).isEqualTo(20);
+    assertThat(shelf.getShelfId()).isEqualTo(id);
+    assertThat(shelf.getBooks()).isEqualTo(books);
+    assertThat(shelf.getBookcaseId()).isEqualTo(99L);
+  }
+
+  @Test
+  void constructor_shouldAcceptNullShelfId() {
+    Shelf shelf = new Shelf("Shelf A", 1, 10, null, List.of(), 100L);
+
+    assertThat(shelf.getShelfId()).isNull();
+  }
+
+  @Test
+  void setShelfLabel_shouldAcceptValidLabel() {
+    Shelf shelf = createValidShelf();
+
+    shelf.setShelfLabel("New Label");
+
+    assertThat(shelf.getShelfLabel()).isEqualTo("New Label");
+  }
+
+  @Test
+  void setShelfPosition_shouldAcceptValidPosition() {
+    Shelf shelf = createValidShelf();
+
+    shelf.setShelfPosition(5);
+
+    assertThat(shelf.getShelfPosition()).isEqualTo(5);
+  }
+
+  @Test
+  void setBookCapacity_shouldAcceptValidCapacity() {
+    Shelf shelf = createValidShelf();
+
+    shelf.setBookCapacity(25);
+
+    assertThat(shelf.getBookCapacity()).isEqualTo(25);
+  }
+
+  @Test
+  void setBookcaseId_shouldAcceptValidId() {
+    Shelf shelf = createValidShelf();
+
+    shelf.setBookcaseId(200L);
+
+    assertThat(shelf.getBookcaseId()).isEqualTo(200L);
+  }
+
+  @Test
+  void setBooks_shouldAcceptValidList() {
+    Shelf shelf = createValidShelf();
+
+    shelf.setBooks(List.of(10L, 20L));
+
+    assertThat(shelf.getBooks()).containsExactly(10L, 20L);
+  }
+
+  @Test
+  void isFull_shouldReturnTrueWhenAtCapacity() {
+    Shelf shelf = new Shelf("Shelf A", 1, 2, new ShelfId(1L), List.of(1L, 2L), 100L);
+
+    assertThat(shelf.isFull()).isTrue();
+  }
+
+  @Test
+  void isFull_shouldReturnFalseWhenBelowCapacity() {
+    Shelf shelf = new Shelf("Shelf A", 1, 10, new ShelfId(1L), List.of(1L), 100L);
+
+    assertThat(shelf.isFull()).isFalse();
+  }
+
+  @Test
+  void getBookCount_shouldReturnNumberOfBooks() {
+    Shelf shelf = new Shelf("Shelf A", 1, 10, new ShelfId(1L), List.of(1L, 2L, 3L), 100L);
+
+    assertThat(shelf.getBookCount()).isEqualTo(3);
   }
 
   @Test
