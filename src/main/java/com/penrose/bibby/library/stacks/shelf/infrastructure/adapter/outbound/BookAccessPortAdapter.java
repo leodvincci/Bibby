@@ -26,11 +26,17 @@ public class BookAccessPortAdapter implements BookAccessPort {
 
   @Override
   public List<Long> getBookIdsByShelfId(Long shelfId) {
-    return bookFacade.getBookIdsByShelfId(shelfId);
+    return List.of();
   }
 
   @Override
-  public void deleteBooksOnShelves(List<Long> shelfIds) {
-    bookFacade.deleteByShelfId(shelfIds);
+  public void deleteBooksOnShelves(List<Long> shelfIds) {}
+
+  @Override
+  public Long getBookById(Long bookId) {
+    if (bookFacade.findBookById(bookId).isEmpty()) {
+      return null;
+    }
+    return bookId;
   }
 }

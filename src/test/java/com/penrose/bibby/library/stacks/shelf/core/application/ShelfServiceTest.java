@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.CreateShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteShelvesUseCase;
+import com.penrose.bibby.library.stacks.shelf.core.application.usecases.PlaceBookOnShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
@@ -22,6 +23,7 @@ class ShelfServiceTest {
   @Mock private QueryShelfUseCase queryShelfUseCase;
   @Mock private CreateShelfUseCase createShelfUseCase;
   @Mock private DeleteShelvesUseCase deleteShelvesUseCase;
+  @Mock private PlaceBookOnShelfUseCase placeBookOnShelfUseCase;
   @InjectMocks private ShelfService shelfService;
 
   @Test
@@ -87,5 +89,15 @@ class ShelfServiceTest {
     shelfService.deleteAllShelvesInBookcaseByBookcaseId(bookcaseId);
 
     verify(deleteShelvesUseCase).execute(bookcaseId);
+  }
+
+  @Test
+  void placeBookOnShelf_shouldDelegateToPlaceBookOnShelfUseCase() {
+    Long bookId = 1L;
+    Long shelfId = 2L;
+
+    shelfService.placeBookOnShelf(bookId, shelfId);
+
+    verify(placeBookOnShelfUseCase).execute(bookId, shelfId);
   }
 }

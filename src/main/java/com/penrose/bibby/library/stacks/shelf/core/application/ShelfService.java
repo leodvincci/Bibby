@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.shelf.core.application;
 
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.CreateShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteShelvesUseCase;
+import com.penrose.bibby.library.stacks.shelf.core.application.usecases.PlaceBookOnShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
@@ -32,22 +33,17 @@ public class ShelfService implements ShelfFacade {
   private final QueryShelfUseCase queryShelfUseCase;
   private final CreateShelfUseCase createShelfUseCase;
   private final DeleteShelvesUseCase deleteShelvesUseCase;
+  private final PlaceBookOnShelfUseCase placeBookOnShelfUseCase;
 
-  /**
-   * Constructs a new ShelfService with the required use case dependencies.
-   *
-   * @param queryShelfUseCase handles all shelf query operations including lookups and capacity
-   *     checks
-   * @param createShelfUseCase manages shelf creation and initialization
-   * @param deleteShelvesUseCase handles bulk shelf deletion operations
-   */
   public ShelfService(
       QueryShelfUseCase queryShelfUseCase,
       CreateShelfUseCase createShelfUseCase,
-      DeleteShelvesUseCase deleteShelvesUseCase) {
+      DeleteShelvesUseCase deleteShelvesUseCase,
+      PlaceBookOnShelfUseCase placeBookOnShelfUseCase) {
     this.queryShelfUseCase = queryShelfUseCase;
     this.createShelfUseCase = createShelfUseCase;
     this.deleteShelvesUseCase = deleteShelvesUseCase;
+    this.placeBookOnShelfUseCase = placeBookOnShelfUseCase;
   }
 
   /** {@inheritDoc} */
@@ -102,5 +98,11 @@ public class ShelfService implements ShelfFacade {
   @Override
   public boolean isEmpty(Long shelfId) {
     return queryShelfUseCase.isEmpty(shelfId);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void placeBookOnShelf(Long bookId, Long shelfId) {
+    placeBookOnShelfUseCase.execute(bookId, shelfId);
   }
 }

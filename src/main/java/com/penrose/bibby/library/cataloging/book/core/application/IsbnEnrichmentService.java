@@ -7,9 +7,9 @@ import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorE
 import com.penrose.bibby.library.cataloging.book.core.domain.AuthorRef;
 import com.penrose.bibby.library.cataloging.book.core.domain.AvailabilityStatus;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
+import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping.BookMapperTwo;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapperTwo;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.stream.Collectors;

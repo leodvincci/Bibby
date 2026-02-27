@@ -4,10 +4,7 @@ import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/shelves")
 @RestController
@@ -38,5 +35,12 @@ public class ShelfController {
     return shelfFacade.findShelvesByBookcaseId(bookcaseId).stream()
         .map(shelfResponseMapper::toShelfOption)
         .toList();
+  }
+
+  public record AddBookToShelfRequest(Long bookId, Long shelfId) {}
+
+  @PostMapping("/placements")
+  public void addBookToShelf(@RequestBody AddBookToShelfRequest request) {
+    shelfFacade.placeBookOnShelf(request.bookId(), request.shelfId());
   }
 }

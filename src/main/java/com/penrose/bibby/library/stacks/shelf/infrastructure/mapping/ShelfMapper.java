@@ -19,7 +19,6 @@ public class ShelfMapper {
     entity.setShelfPosition(shelf.getShelfPosition());
     entity.setShelfLabel(shelf.getShelfLabel());
     entity.setBookCapacity(shelf.getBookCapacity());
-    entity.setShelfId(shelf.getShelfId().shelfId());
     return entity;
   }
 

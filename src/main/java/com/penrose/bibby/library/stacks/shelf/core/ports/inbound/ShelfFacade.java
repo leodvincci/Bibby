@@ -85,4 +85,13 @@ public interface ShelfFacade {
    * @throws IllegalStateException if no shelf exists for the given ID
    */
   boolean isEmpty(Long shelfId);
+
+  /**
+   * Places a book on a shelf by creating a new placement record.
+   *
+   * @param bookId the ID of the book to place
+   * @param shelfId the ID of the shelf to place the book on
+   * @throws IllegalArgumentException if the book does not exist
+   */
+  void placeBookOnShelf(Long bookId, Long shelfId);
 }

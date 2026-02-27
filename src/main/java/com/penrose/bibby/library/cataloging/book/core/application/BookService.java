@@ -9,9 +9,9 @@ import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
+import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.cataloging.book.infrastructure.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
@@ -72,8 +72,8 @@ public class BookService implements BookFacade {
   // ============================================================
   @Override
   public Optional<BookDTO> findBookById(Long bookId) {
-    BookEntity bookEntity = bookJpaRepository.findById(bookId).orElse(null);
-    return Optional.of(BookDTO.fromEntity(bookEntity));
+    Optional<BookEntity> bookEntity = bookJpaRepository.findById(bookId);
+    return bookEntity.map(BookDTO::fromEntity);
   }
 
   public List<Book> findBooksByShelf(Long id) {

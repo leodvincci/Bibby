@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.infrastructure.mapping;
+package com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping;
 
 import com.penrose.bibby.library.cataloging.author.core.domain.Author;
 import com.penrose.bibby.library.cataloging.author.infrastructure.mapping.AuthorMapperTwo;
