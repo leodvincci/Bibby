@@ -4,9 +4,7 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.*;
 import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
 
-@Component
 public interface BookFacade {
   List<BookDTO> getBooksByShelfId(Long shelfId);
 
