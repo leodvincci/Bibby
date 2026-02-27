@@ -2,9 +2,12 @@
 
 ## Purpose
 
-The **Stacks** bounded context manages the **physical organization** of the user's library: bookcases, shelves, and where books are placed. In library science, "stacks" refers to the shelving area where the collection is physically stored and arranged.
+The **Stacks** bounded context manages the **physical organization** of the user's library: bookcases, shelves, and
+where books are placed. In library science, "stacks" refers to the shelving area where the collection is physically
+stored and arranged.
 
-This context answers questions like "Where is this book?", "How many shelves does this bookcase have?", and "Is there room on this shelf?"
+This context answers questions like "Where is this book?", "How many shelves does this bookcase have?", and "Is there
+room on this shelf?"
 
 ------
 
@@ -15,25 +18,32 @@ This context answers questions like "Where is this book?", "How many shelves doe
 Manages physical bookcase units — their location, labeling, and shelf capacity.
 
 **Domain model:**
-- `Bookcase` — domain entity with `bookcaseId`, `bookcaseLabel`, `bookcaseLocation`, and `shelfCapacity` (enforces minimum of 1)
+
+- `Bookcase` — domain entity with `bookcaseId`, `bookcaseLabel`, `bookcaseLocation`, and `shelfCapacity` (enforces
+  minimum of 1)
 
 **Public API (inbound port):**
+
 - `BookcaseFacade` — contract consumed by the Shelf module and web layer
-  - `createNewBookCase(userId, label, zone, zoneIndex, shelfCount, bookCapacity, location)` → `CreateBookcaseResult`
-  - `findBookCaseById(Long)` → `Optional<BookcaseDTO>`
-  - `getAllBookcases()` → `List<BookcaseDTO>`
-  - `getAllBookcaseLocations()` → `List<String>`
-  - `getAllBookcasesByLocation(String)` → `List<BookcaseDTO>`
-  - `getAllBookcasesByUserId(Long)` → `List<BookcaseDTO>`
-  - `deleteBookcase(Long)` — cascade deletes shelves
+    - `createNewBookCase(userId, label, zone, zoneIndex, shelfCount, bookCapacity, location)` → `CreateBookcaseResult`
+    - `findBookCaseById(Long)` → `Optional<BookcaseDTO>`
+    - `getAllBookcases()` → `List<BookcaseDTO>`
+    - `getAllBookcaseLocations()` → `List<String>`
+    - `getAllBookcasesByLocation(String)` → `List<BookcaseDTO>`
+    - `getAllBookcasesByUserId(Long)` → `List<BookcaseDTO>`
+    - `deleteBookcase(Long)` — cascade deletes shelves
 
 **DTOs (public contracts):**
-- `BookcaseDTO` (record) — `bookcaseId`, `bookcaseLabel`, `shelfCapacity`, `bookCapacity`, `location`; includes `fromEntity()` factory method
+
+- `BookcaseDTO` (record) — `bookcaseId`, `bookcaseLabel`, `shelfCapacity`, `bookCapacity`, `location`; includes
+  `fromEntity()` factory method
 - `CreateBookcaseRequest` (record) — `location`, `zone`, `indexId`, `shelfCount`, `shelfCapacity`
 - `CreateBookcaseResult` (record) — `bookcaseId`
 
 **Infrastructure:**
-- `BookcaseEntity` — JPA entity with zone-based label generation (`zone:zoneIndex`), `userId` owner reference, and `bookCapacity` (computed from shelf count * per-shelf capacity)
+
+- `BookcaseEntity` — JPA entity with zone-based label generation (`zone:zoneIndex`), `userId` owner reference, and
+  `bookCapacity` (computed from shelf count * per-shelf capacity)
 - `BookcaseJpaRepository` — Spring Data JPA with queries by label, location, and user
 - `BookcaseRepository` — domain repository interface (outbound port)
 - `BookcaseRepositoryImpl` — adapter bridging domain repository to JPA
@@ -44,33 +54,43 @@ Manages physical bookcase units — their location, labeling, and shelf capacity
 Manages individual shelves within bookcases, including capacity tracking and book placement.
 
 **Domain model:**
-- `Shelf` — aggregate with `ShelfId` (value object), `shelfPosition`, `bookCapacity`, `bookIds`, and business logic for capacity (`isFull()`, `getBookCount()`)
+
+- `Shelf` — aggregate with `ShelfId` (value object), `shelfPosition`, `bookCapacity`, `books`, and business logic for
+  capacity (`isFull()`, `getBookCount()`)
 - `ShelfFactory` — creates `ShelfEntity` instances with position, label, and capacity
 - `ShelfDomainRepository` — domain repository port (`getById(ShelfId)`, `save(Shelf)`)
 - **Value objects:** `ShelfId`
 
 **Public API (inbound port):**
+
 - `ShelfFacade` — contract consumed by the Cataloging context and web layer
-  - `findShelfById(Long)` → `Optional<ShelfDTO>`
-  - `findByBookcaseId(Long)` → `List<ShelfDTO>`
-  - `getAllDTOShelves(Long bookcaseId)` → `List<ShelfDTO>`
-  - `findBooksByShelf(Long)` → `List<BookDTO>`
-  - `getShelfSummariesForBookcase(Long)` → `List<ShelfSummary>`
-  - `deleteAllShelvesInBookcase(Long)` — cascade deletes books on those shelves
-  - `isFull(ShelfDTO)` → `Boolean`
+    - `findShelfById(Long)` → `Optional<ShelfDTO>`
+    - `findByBookcaseId(Long)` → `List<ShelfDTO>`
+    - `getAllDTOShelves(Long bookcaseId)` → `List<ShelfDTO>`
+    - `findBooksByShelf(Long)` → `List<BookDTO>`
+    - `getShelfSummariesForBookcase(Long)` → `List<ShelfSummary>`
+    - `deleteAllShelvesInBookcase(Long)` — cascade deletes books on those shelves
+    - `isFull(ShelfDTO)` → `Boolean`
 
 **Use cases:**
-- `BrowseShelfUseCase` — returns `List<BriefBibliographicRecord>` for a shelf by delegating to `BookFacade` (cross-context dependency on Cataloging)
+
+- `BrowseShelfUseCase` — returns `List<BriefBibliographicRecord>` for a shelf by delegating to `BookFacade` (
+  cross-context dependency on Cataloging)
 
 **DTOs (public contracts):**
-- `ShelfDTO` (record) — `shelfId`, `shelfLabel`, `bookcaseId`, `shelfPosition`, `bookCapacity`, `shelfDescription`, `bookIds`; includes `fromEntity()` and `fromEntityWithBookId()` factory methods
+
+- `ShelfDTO` (record) — `shelfId`, `shelfLabel`, `bookcaseId`, `shelfPosition`, `bookCapacity`, `shelfDescription`,
+  `books`; includes `fromEntity()` and `fromEntityWithBookId()` factory methods
 - `ShelfSummary` (record) — `shelfId`, `label`, `bookCount` (designed for JPQL aggregation queries)
-- `ShelfOptionResponse` (record) — `shelfId`, `shelfLabel`, `bookcaseLabel`, `bookCapacity`, `bookCount`, `hasSpace` (computed availability for UI dropdowns)
+- `ShelfOptionResponse` (record) — `shelfId`, `shelfLabel`, `bookcaseLabel`, `bookCapacity`, `bookCount`, `hasSpace` (
+  computed availability for UI dropdowns)
 
 **Infrastructure:**
+
 - `ShelfEntity` — JPA entity with `bookcaseId` foreign key, position ordering, and capacity
 - `ShelfJpaRepository` — Spring Data JPA with custom JPQL for `ShelfSummary` aggregation
-- `ShelfDomainRepositoryImpl` — adapter bridging domain repository to JPA, enriches shelf with book data from Cataloging context
+- `ShelfDomainRepositoryImpl` — adapter bridging domain repository to JPA, enriches shelf with book data from Cataloging
+  context
 - `ShelfMapper` — entity-to-domain mapping with `ShelfId` value object construction
 
 ------
@@ -109,11 +129,11 @@ Manages individual shelves within bookcases, including capacity tracking and boo
 ## Cross-Context Dependencies
 
 - **Stacks depends on Cataloging:**
-  - `BrowseShelfUseCase` uses `BookFacade` to get bibliographic records for books on a shelf
-  - `ShelfDomainRepositoryImpl` uses `BookDomainRepository` to enrich shelf domain objects with book IDs
-  - `ShelfService` uses `BookJpaRepository` for book counts and cascade deletes
+    - `BrowseShelfUseCase` uses `BookFacade` to get bibliographic records for books on a shelf
+    - `ShelfDomainRepositoryImpl` uses `BookDomainRepository` to enrich shelf domain objects with book IDs
+    - `ShelfService` uses `BookJpaRepository` for book counts and cascade deletes
 - **Cataloging depends on Stacks:**
-  - `ShelfAccessPort` / `ShelfAccessPortAdapter` lets the Book module retrieve shelf information via `ShelfFacade`
+    - `ShelfAccessPort` / `ShelfAccessPortAdapter` lets the Book module retrieve shelf information via `ShelfFacade`
 
 ------
 
