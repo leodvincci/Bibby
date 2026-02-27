@@ -165,11 +165,11 @@ forced the application service to keep extra state and bloated every mapping sit
 ```java
 // Before
 public Shelf(String shelfLabel, int shelfPosition, int bookCapacity,
-             ShelfId shelfId, List<Long> bookIds) { ... }
+             ShelfId shelfId, List<Long> books) { ...}
 
 // After
 public Shelf(String shelfLabel, int shelfPosition, int bookCapacity,
-             ShelfId shelfId, List<Long> bookIds, Long bookcaseId) { ... }
+             ShelfId shelfId, List<Long> books, Long bookcaseId) { ...}
 ```
 
 **Architecture notes:** This enriches the domain model, making `Shelf` more self-contained. It removes the N+1-style
@@ -211,10 +211,10 @@ public List<ShelfDTO> getAllShelves(Long bookCaseId) {
 **After:**
 
 ```java
-public ShelfService(ShelfDomainRepository repo, BookFacade bookFacade) { ... }
+public ShelfService(ShelfDomainRepository repo, BookFacade bookFacade) { ...}
 
 public List<Shelf> getAllShelves(Long bookCaseId) {
-  return shelfDomainRepositoryPort.findByBookcaseId(bookCaseId);
+    return shelfDomainRepositoryPort.findByBookcaseId(bookCaseId);
 }
 ```
 
@@ -331,7 +331,7 @@ They must now consume `Optional<Shelf>` / `List<Shelf>` and access data via gett
 
 **Key code detail — BookPlacementCommands:**
 This is the one CLI file that needs a `ShelfDTO` shape post-lookup, because it uses `shelfDTO.bookCapacity()` and
-`shelfDTO.bookIds().size()` for the capacity guard. The fix is an inline `.map(shelf -> new ShelfDTO(...))` on the
+`shelfDTO.books().size()` for the capacity guard. The fix is an inline `.map(shelf -> new ShelfDTO(...))` on the
 `Optional<Shelf>`:
 
 ```java
@@ -563,7 +563,7 @@ mvn -q -DskipTests compile
 2. **`ShelfAccessPortAdapterTest`** — verify that `findShelfById` correctly maps `Shelf` → `ShelfDTO` with all fields,
    and returns `Optional.empty()` when the facade returns empty.
 
-3. **`BookPlacementCommands` capacity guard** — verify that when `shelf.bookIds.size() >= bookCapacity`, an
+3. **`BookPlacementCommands` capacity guard** — verify that when `shelf.books.size() >= bookCapacity`, an
    `IllegalStateException` is thrown before any placement is attempted.
 
 4. **`PromptOptionsTest.shelfOptions`** — the `shelfOptions(Long bookcaseId)` method has no test coverage yet. It should
@@ -613,7 +613,7 @@ mvn -q -DskipTests compile
 ### Immediate follow-ups (today)
 
 - **`BookPlacementCommands` — use `shelf.isFull()` directly.** The current code maps `Shelf → ShelfDTO` purely to check
-  `shelfDTO.bookCapacity() <= shelfDTO.bookIds().size()`. The `Shelf` domain model already has `isFull()`. Replace the
+  `shelfDTO.bookCapacity() <= shelfDTO.books().size()`. The `Shelf` domain model already has `isFull()`. Replace the
   entire inline mapping with:
   ```java
   Optional<Shelf> shelf = shelfFacade.findShelfById(newShelfId);

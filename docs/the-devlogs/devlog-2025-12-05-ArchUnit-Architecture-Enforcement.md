@@ -8,7 +8,8 @@
 
 ## Summary
 
-Added ArchUnit to the project and wrote the first architecture test: CLI packages cannot depend on infrastructure packages. This transforms architecture from "convention we try to follow" to "rule that breaks the build."
+Added ArchUnit to the project and wrote the first architecture test: CLI packages cannot depend on infrastructure
+packages. This transforms architecture from "convention we try to follow" to "rule that breaks the build."
 
 ---
 
@@ -17,6 +18,7 @@ Added ArchUnit to the project and wrote the first architecture test: CLI package
 ### 1. Added ArchUnit Dependency
 
 **pom.xml:**
+
 ```xml
 <dependency>
     <groupId>com.tngtech.archunit</groupId>
@@ -29,6 +31,7 @@ Added ArchUnit to the project and wrote the first architecture test: CLI package
 ### 2. Architecture Test
 
 **CliArchitectureTest.java:**
+
 ```java
 class CliArchitectureTest {
 
@@ -57,14 +60,15 @@ class CliArchitectureTest {
 public Shelf toDomain(ShelfEntity shelfEntity, List<Book> books)
 
 // After
-public Shelf toDomain(ShelfEntity shelfEntity, List<Long> bookIds)
+public Shelf toDomain(ShelfEntity shelfEntity, List<Long> books)
 ```
 
 Updated `ShelfDomainRepositoryImpl` to extract IDs before calling mapper:
+
 ```java
 List<Book> books = bookDomainRepository.getBooksByShelfId(id);
-List<Long> bookIds = books.stream().map(Book::getId).toList();
-return shelfMapper.toDomain(entity, bookIds);
+List<Long> books = books.stream().map(Book::getId).toList();
+return shelfMapper.toDomain(entity, books);
 ```
 
 ### 4. Removed Unused Import
@@ -102,6 +106,7 @@ noClasses()
 ```
 
 Now if someone adds an infrastructure import to CLI code:
+
 1. Tests fail
 2. Build fails
 3. PR can't merge
@@ -144,12 +149,12 @@ Runs the rule against the imported classes. Throws `AssertionError` if violated.
 
 ## Current Architecture Rules
 
-| Rule | Status |
-|------|--------|
-| CLI cannot import infrastructure | ✅ Enforced |
-| CLI cannot import domain directly | ❌ Not yet |
-| Domain cannot import infrastructure | ❌ Not yet |
-| Application cannot import other modules' internals | ❌ Not yet |
+| Rule                                               | Status     |
+|----------------------------------------------------|------------|
+| CLI cannot import infrastructure                   | ✅ Enforced |
+| CLI cannot import domain directly                  | ❌ Not yet  |
+| Domain cannot import infrastructure                | ❌ Not yet  |
+| Application cannot import other modules' internals | ❌ Not yet  |
 
 ### Planned Rules
 
@@ -191,7 +196,8 @@ The test currently exposes a violation:
 
 ```
 
-This needs to be replaced with `AuthorDTO` or `AuthorFacade` usage. The test is doing its job—it found a boundary violation I need to fix.
+This needs to be replaced with `AuthorDTO` or `AuthorFacade` usage. The test is doing its job—it found a boundary
+violation I need to fix.
 
 ---
 
@@ -199,7 +205,8 @@ This needs to be replaced with `AuthorDTO` or `AuthorFacade` usage. The test is 
 
 ### Challenge: Test Filtering
 
-Initially the test flagged test classes themselves as violations (test classes can legitimately import infrastructure for testing). Added filter:
+Initially the test flagged test classes themselves as violations (test classes can legitimately import infrastructure
+for testing). Added filter:
 
 ```java
 .and().haveSimpleNameNotEndingWith("Test")
@@ -210,6 +217,7 @@ This excludes test classes from the rule.
 ### Challenge: Package Wildcards
 
 ArchUnit uses `..` for recursive package matching:
+
 - `..cli..` matches `com.penrose.bibby.cli` and all sub-packages
 - `..infrastructure..` matches any `infrastructure` package at any depth
 
@@ -221,15 +229,21 @@ Initially used single dots which didn't match sub-packages.
 
 ### "How do you enforce architectural boundaries?"
 
-> I use ArchUnit to write tests that verify package dependencies. For example, I have a test that fails if any CLI class imports from an infrastructure package. This turns architecture from documentation into executable rules. If someone violates a boundary, the build fails—they can't merge the code until they fix it.
+> I use ArchUnit to write tests that verify package dependencies. For example, I have a test that fails if any CLI class
+> imports from an infrastructure package. This turns architecture from documentation into executable rules. If someone
+> violates a boundary, the build fails—they can't merge the code until they fix it.
 
 ### "Why test architecture instead of just documenting it?"
 
-> Documentation gets stale. People forget to read it, or they make "temporary" exceptions that become permanent. Tests run on every build. They catch violations immediately, before code gets merged. It's the difference between "please don't do this" and "you cannot do this."
+> Documentation gets stale. People forget to read it, or they make "temporary" exceptions that become permanent. Tests
+> run on every build. They catch violations immediately, before code gets merged. It's the difference between "please
+> don't do this" and "you cannot do this."
 
 ### "What architectural rules do you enforce?"
 
-> Currently I enforce that CLI layers can only depend on API packages—facades and DTOs, not infrastructure or direct domain access. I'm adding rules for domain purity (domain can't import infrastructure) and module boundaries (Book module can't reach into Shelf internals). Each rule is a test that fails if violated.
+> Currently I enforce that CLI layers can only depend on API packages—facades and DTOs, not infrastructure or direct
+> domain access. I'm adding rules for domain purity (domain can't import infrastructure) and module boundaries (Book
+> module can't reach into Shelf internals). Each rule is a test that fails if violated.
 
 ---
 
@@ -247,20 +261,23 @@ Initially used single dots which didn't match sub-packages.
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `pom.xml` | Added ArchUnit 1.3.0 dependency |
-| `CliArchitectureTest.java` | New test enforcing CLI-infrastructure boundary |
-| `ShelfMapper.java` | Parameter changed from `List<Book>` to `List<Long>` |
-| `ShelfDomainRepositoryImpl.java` | Extract book IDs before mapping |
-| `BookCommandLine.java` | Removed unused `Author` import |
+| File                             | Change                                              |
+|----------------------------------|-----------------------------------------------------|
+| `pom.xml`                        | Added ArchUnit 1.3.0 dependency                     |
+| `CliArchitectureTest.java`       | New test enforcing CLI-infrastructure boundary      |
+| `ShelfMapper.java`               | Parameter changed from `List<Book>` to `List<Long>` |
+| `ShelfDomainRepositoryImpl.java` | Extract book IDs before mapping                     |
+| `BookCommandLine.java`           | Removed unused `Author` import                      |
 
 ---
 
 ## Reflection
 
-This feels like a turning point. Before, I was refactoring toward clean architecture and hoping it stayed clean. Now I have a test that will fail if it drifts. The architecture is self-defending.
+This feels like a turning point. Before, I was refactoring toward clean architecture and hoping it stayed clean. Now I
+have a test that will fail if it drifts. The architecture is self-defending.
 
-The test also immediately found a violation I'd missed (`AuthorEntity` import). That's exactly what it's for—catching things humans overlook.
+The test also immediately found a violation I'd missed (`AuthorEntity` import). That's exactly what it's for—catching
+things humans overlook.
 
-The next step is fixing that violation by completing the `AuthorFacade` wiring, then adding more rules until the entire hexagonal structure is enforced.
+The next step is fixing that violation by completing the `AuthorFacade` wiring, then adding more rules until the entire
+hexagonal structure is enforced.

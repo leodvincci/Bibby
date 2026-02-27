@@ -8,7 +8,9 @@
 
 ## Summary
 
-Extended the value object pattern from the previous `BookId` work to cover more of the domain model. Introduced `AuthorId`, `Title`, and `Isbn` value objects, and replaced the problematic `List<String>` author representation with `List<AuthorRef>`. Also fixed a Spring annotation placement issue on the `AuthorFacade`.
+Extended the value object pattern from the previous `BookId` work to cover more of the domain model. Introduced
+`AuthorId`, `Title`, and `Isbn` value objects, and replaced the problematic `List<String>` author representation with
+`List<AuthorRef>`. Also fixed a Spring annotation placement issue on the `AuthorFacade`.
 
 ---
 
@@ -29,6 +31,7 @@ public AuthorId getAuthorId() { return authorId; }
 ```
 
 Updated in:
+
 - `Author` domain class
 - `AuthorFactory.createDomain()`
 - `AuthorMapper.toDomain()` and `toDTO()` methods
@@ -149,6 +152,7 @@ The `List<String>` author representation was a code smell hiding in plain sight.
 ### Value Objects as Domain Documentation
 
 Each value object communicates intent:
+
 - `BookId` - "This is a book identifier, not just any Long"
 - `AuthorId` - "This is an author identifier"
 - `Title` - "This is a book title with title-specific semantics"
@@ -159,6 +163,7 @@ Even before adding validation, the types make the code self-documenting.
 ### Interface vs Implementation Annotations
 
 `@Component` on an interface is technically valid but semantically wrong:
+
 - Interfaces define contracts, not Spring beans
 - The implementation is what gets instantiated and injected
 - Placing `@Component` on the interface obscures which implementation is active
@@ -180,18 +185,21 @@ book.getIsbn().isbn           // Isbn uses direct field access (record)
 author.getAuthorId().id()     // AuthorId uses record-style accessor
 ```
 
-This suggests the value objects were created at different times or with different patterns. Should standardize - probably all as records with consistent accessors.
+This suggests the value objects were created at different times or with different patterns. Should standardize -
+probably all as records with consistent accessors.
 
 **TODO:** Audit value object implementations for consistency.
 
 ### AuthorRef vs AuthorDTO vs Author
 
 The domain now has three author-related types:
+
 - `Author` - Full domain entity with ID, names, potentially more
 - `AuthorRef` - Lightweight reference for cross-module communication
 - `AuthorDTO` - Data transfer at API/infrastructure boundaries
 
 This feels right but needs clear documentation on when to use each:
+
 - `Author` - Within the Author module's domain layer
 - `AuthorRef` - When Book module needs to reference authors without depending on Author internals
 - `AuthorDTO` - At facade boundaries and external APIs
@@ -202,12 +210,12 @@ Changed from stream to explicit loop:
 
 ```java
 // Before
-List<Long> bookIds = books.stream().map(Book::getBookId).toList();
+List<Long> books = books.stream().map(Book::getBookId).toList();
 
 // After
-List<Long> bookIds = new ArrayList<>();
+List<Long> books = new ArrayList<>();
 for(Book book : books){
-    bookIds.add(book.getBookId().getId());
+    books.add(book.getBookId().getId());
 }
 ```
 
@@ -226,8 +234,9 @@ The explicit loop is arguably clearer here. Not a strong opinion either way.
 ### Value Object Equality
 
 Need to verify each value object has proper `equals()`/`hashCode()`:
+
 - [ ] `AuthorId` equality
-- [ ] `Title` equality  
+- [ ] `Title` equality
 - [ ] `Isbn` equality
 - [ ] All implemented as records? (Records get this for free)
 
@@ -239,6 +248,7 @@ Need to verify each value object has proper `equals()`/`hashCode()`:
 ### Mapper Boundary Tests
 
 The mappers are now doing more work (wrapping/unwrapping). Worth testing:
+
 - [ ] Null handling at boundaries
 - [ ] Round-trip: Domain → Entity → Domain preserves values
 - [ ] DTO → Domain → DTO preserves values
@@ -256,6 +266,7 @@ Infrastructure (primitives) ←→ Mapper ←→ Domain (value objects)
 ```
 
 The mapper is the translation layer where:
+
 - Inbound: primitives get wrapped in value objects
 - Outbound: value objects get unwrapped to primitives
 
@@ -264,6 +275,7 @@ This is the right place for this logic - keeps domain pure, keeps infrastructure
 ### Consistency Enables Automation
 
 Once all IDs are value objects with consistent accessors, could potentially:
+
 - Generate mappers with tools like MapStruct
 - Create generic repository base classes
 - Build consistent error handling around ID validation
@@ -274,15 +286,20 @@ The upfront investment in consistency pays dividends.
 
 ## Learnings
 
-1. **String concatenation is a red flag** - When you're concatenating values to store them and splitting to retrieve them, you've lost structure. The data model should preserve structure.
+1. **String concatenation is a red flag** - When you're concatenating values to store them and splitting to retrieve
+   them, you've lost structure. The data model should preserve structure.
 
-2. **Value objects compound** - Once you have `BookId`, adding `AuthorId`, `Title`, `Isbn` feels natural. The pattern creates momentum.
+2. **Value objects compound** - Once you have `BookId`, adding `AuthorId`, `Title`, `Isbn` feels natural. The pattern
+   creates momentum.
 
-3. **Annotations belong on implementations** - Interfaces define contracts; implementations define beans. Keep Spring concerns out of your interfaces.
+3. **Annotations belong on implementations** - Interfaces define contracts; implementations define beans. Keep Spring
+   concerns out of your interfaces.
 
-4. **Mappers absorb complexity** - All the wrapping/unwrapping lives in one place. The domain stays clean, the entities stay simple, the mapper handles the translation.
+4. **Mappers absorb complexity** - All the wrapping/unwrapping lives in one place. The domain stays clean, the entities
+   stay simple, the mapper handles the translation.
 
-5. **Inconsistency surfaces during refactoring** - The accessor naming inconsistency (`getId()` vs `id()` vs direct field) only became visible when touching all these files at once. Good time to standardize.
+5. **Inconsistency surfaces during refactoring** - The accessor naming inconsistency (`getId()` vs `id()` vs direct
+   field) only became visible when touching all these files at once. Good time to standardize.
 
 ---
 
@@ -300,8 +317,15 @@ The upfront investment in consistency pays dividends.
 
 ## Interview Angle
 
-**Story:** "After introducing BookId, I saw the pattern should extend across the domain. The most interesting change was replacing `List<String>` for authors with `List<AuthorRef>`. We were concatenating names with spaces, then splitting them apart elsewhere - classic 'stringly typed' code. The AuthorRef type preserves structure and eliminates fragile string parsing."
+**Story:** "After introducing BookId, I saw the pattern should extend across the domain. The most interesting change was
+replacing `List<String>` for authors with `List<AuthorRef>`. We were concatenating names with spaces, then splitting
+them apart elsewhere - classic 'stringly typed' code. The AuthorRef type preserves structure and eliminates fragile
+string parsing."
 
-**Follow-up depth:** Can discuss the trade-offs of value objects (more classes, more mapping code) vs benefits (type safety, validation encapsulation, self-documenting code). Can also discuss the facade pattern and how AuthorRef enables cross-module references without tight coupling.
+**Follow-up depth:** Can discuss the trade-offs of value objects (more classes, more mapping code) vs benefits (type
+safety, validation encapsulation, self-documenting code). Can also discuss the facade pattern and how AuthorRef enables
+cross-module references without tight coupling.
 
-**Architecture insight:** "The mappers became the natural boundary for wrapping and unwrapping. Domain stays pure with value objects, infrastructure stays simple with primitives, and the mapper handles translation. This separation makes each layer independently testable."
+**Architecture insight:** "The mappers became the natural boundary for wrapping and unwrapping. Domain stays pure with
+value objects, infrastructure stays simple with primitives, and the mapper handles translation. This separation makes
+each layer independently testable."
