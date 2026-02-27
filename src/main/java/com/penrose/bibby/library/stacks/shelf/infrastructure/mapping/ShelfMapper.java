@@ -30,7 +30,7 @@ public class ShelfMapper {
         bookcaseId,
         shelf.getShelfPosition(),
         shelf.getBookCapacity(),
-        shelf.getBookIds());
+        shelf.getBooks());
   }
 
   public ShelfDTO toDTOFromEntity(ShelfEntity shelfEntity, List<Long> bookIds) {

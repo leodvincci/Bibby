@@ -9,52 +9,31 @@ public class Shelf {
   private String shelfLabel;
   private int shelfPosition;
   private int bookCapacity;
-  private List<Long> bookIds;
+  private List<Long> books;
   private Long bookcaseId;
-
-  public Long getBookcaseId() {
-    return bookcaseId;
-  }
-
-  public void setBookcaseId(Long bookcaseId) {
-    this.bookcaseId = bookcaseId;
-  }
 
   public Shelf(
       String shelfLabel,
       int shelfPosition,
       int bookCapacity,
       ShelfId shelfId,
-      List<Long> bookIds,
+      List<Long> books,
       Long bookcaseId) {
-    if (shelfLabel == null || shelfLabel.isBlank()) {
-      throw new IllegalArgumentException("Shelf label cannot be null or blank");
-    }
-    if (shelfPosition < 1) {
-      throw new IllegalArgumentException("Shelf position must be greater than 0");
-    }
-    if (bookCapacity < 1) {
-      throw new IllegalArgumentException("Book capacity cannot be negative");
-    }
 
-    if (bookcaseId == null) {
-      throw new IllegalArgumentException("Bookcase ID cannot be null");
-    }
-
-    this.shelfLabel = shelfLabel;
-    this.shelfPosition = shelfPosition;
-    this.bookCapacity = bookCapacity;
-    this.shelfId = shelfId;
-    this.bookIds = bookIds;
-    this.bookcaseId = bookcaseId;
+    setShelfLabel(shelfLabel);
+    setShelfPosition(shelfPosition);
+    setBookCapacity(bookCapacity);
+    setBooks(books);
+    setBookcaseId(bookcaseId);
+    setShelfId(shelfId);
   }
 
   public boolean isFull() {
-    return bookIds != null && bookIds.size() >= bookCapacity;
+    return books.size() >= bookCapacity;
   }
 
   public int getBookCount() {
-    return bookIds.size();
+    return books.size();
   }
 
   public ShelfId getShelfId() {
@@ -80,6 +59,17 @@ public class Shelf {
     this.shelfLabel = shelfLabel;
   }
 
+  public Long getBookcaseId() {
+    return bookcaseId;
+  }
+
+  public void setBookcaseId(Long bookcaseId) {
+    if (bookcaseId == null) {
+      throw new IllegalArgumentException("Bookcase ID cannot be null");
+    }
+    this.bookcaseId = bookcaseId;
+  }
+
   public int getShelfPosition() {
     return shelfPosition;
   }
@@ -102,34 +92,33 @@ public class Shelf {
     this.bookCapacity = bookCapacity;
   }
 
-  public List<Long> getBookIds() {
-    return bookIds;
-  }
-
-  public void setBookIds(List<Long> bookIds) {
-    this.bookIds = bookIds;
+  public List<Long> getBooks() {
+    return books;
   }
 
   public void setBooks(List<Long> books) {
-    this.bookIds = books;
+    if (books == null) {
+      throw new IllegalArgumentException("Books cannot be null");
+    }
+    this.books = books;
   }
 
   @Override
   public String toString() {
     return "Shelf{"
-        + "shelf="
+        + "shelfId="
         + shelfId
         + ", shelfLabel='"
         + shelfLabel
-        + '\''
-        + ", shelfDescription='"
         + '\''
         + ", shelfPosition="
         + shelfPosition
         + ", bookCapacity="
         + bookCapacity
         + ", books="
-        + bookIds
+        + books
+        + ", bookcaseId="
+        + bookcaseId
         + '}';
   }
 }

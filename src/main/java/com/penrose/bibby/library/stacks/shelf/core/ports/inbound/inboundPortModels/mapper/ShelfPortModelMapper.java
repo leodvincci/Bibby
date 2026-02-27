@@ -11,7 +11,7 @@ public class ShelfPortModelMapper {
         shelf.getShelfPosition(),
         shelf.getShelfLabel(),
         shelf.getBookCapacity(),
-        shelf.getBookIds(),
+        shelf.getBooks(),
         shelf.getBookcaseId());
   }
 }

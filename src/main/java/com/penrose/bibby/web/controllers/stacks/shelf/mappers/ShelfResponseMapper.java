@@ -12,7 +12,7 @@ public class ShelfResponseMapper {
     Long shelfId = shelf.getShelfId().shelfId();
     String shelfLabel = shelf.getShelfLabel();
     int bookCapacity = shelf.getBookCapacity();
-    long bookCount = shelf.getBookIds().size();
+    long bookCount = shelf.getBooks().size();
     boolean hasSpace = bookCount < bookCapacity;
     return new ShelfOptionResponse(shelfId, shelfLabel, bookCapacity, bookCount, hasSpace);
   }
