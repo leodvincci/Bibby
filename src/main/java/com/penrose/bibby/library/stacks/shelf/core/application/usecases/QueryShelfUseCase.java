@@ -4,7 +4,7 @@ import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.mapper.ShelfPortModelMapper;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.mapper.ShelfPortModelMapper;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import java.util.Optional;

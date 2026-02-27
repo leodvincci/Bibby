@@ -18,7 +18,7 @@ public class ShelfAccessPortAdapter implements ShelfAccessPort {
   }
 
   @Override
-  public void createShelf(Long bookcaseId, int position, String string, int bookCapacity) {
-    shelfFacade.createShelfInBookcaseByBookcaseId(bookcaseId, position, string, bookCapacity);
+  public void createShelf(Long bookcaseId, int position, String shelfLabel, int bookCapacity) {
+    shelfFacade.createShelfInBookcaseByBookcaseId(bookcaseId, position, shelfLabel, bookCapacity);
   }
 }

@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.core.ports.inbound.mapper;
+package com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.mapper;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
