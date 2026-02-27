@@ -74,6 +74,9 @@ public class Shelf {
   }
 
   public void setShelfLabel(String shelfLabel) {
+    if (shelfLabel == null || shelfLabel.isBlank()) {
+      throw new IllegalArgumentException("Shelf label cannot be null or blank");
+    }
     this.shelfLabel = shelfLabel;
   }
 
