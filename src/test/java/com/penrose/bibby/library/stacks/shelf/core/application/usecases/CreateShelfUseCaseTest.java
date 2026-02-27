@@ -30,7 +30,7 @@ class CreateShelfUseCaseTest {
     assertThat(captured.getShelfPosition()).isEqualTo(1);
     assertThat(captured.getBookCapacity()).isEqualTo(10);
     assertThat(captured.getBookcaseId()).isEqualTo(100L);
-    assertThat(captured.getBookIds()).isEmpty();
+    assertThat(captured.getBooks()).isEmpty();
     assertThat(captured.getShelfId()).isNull();
   }
 
