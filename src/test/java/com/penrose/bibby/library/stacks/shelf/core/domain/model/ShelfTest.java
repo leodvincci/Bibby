@@ -38,4 +38,58 @@ class ShelfTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Shelf label cannot be null or blank");
   }
+
+  @Test
+  void setShelfPosition_shouldThrowWhenZero() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setShelfPosition(0))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Shelf position must be greater than 0");
+  }
+
+  @Test
+  void setShelfPosition_shouldThrowWhenNegative() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setShelfPosition(-1))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Shelf position must be greater than 0");
+  }
+
+  @Test
+  void setBookCapacity_shouldThrowWhenZero() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setBookCapacity(0))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Book capacity cannot be negative");
+  }
+
+  @Test
+  void setBookCapacity_shouldThrowWhenNegative() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setBookCapacity(-5))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Book capacity cannot be negative");
+  }
+
+  @Test
+  void setBookcaseId_shouldThrowWhenNull() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setBookcaseId(null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Bookcase ID cannot be null");
+  }
+
+  @Test
+  void setBooks_shouldThrowWhenNull() {
+    Shelf shelf = createValidShelf();
+
+    assertThatThrownBy(() -> shelf.setBooks(null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Books cannot be null");
+  }
 }
