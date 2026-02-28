@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound.cataloging.BookAccessPortAdapter;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
