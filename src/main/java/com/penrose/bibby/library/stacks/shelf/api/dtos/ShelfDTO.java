@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.shelf.api.dtos;
 
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.entity.ShelfEntity;
 import java.util.List;
 
 public record ShelfDTO(

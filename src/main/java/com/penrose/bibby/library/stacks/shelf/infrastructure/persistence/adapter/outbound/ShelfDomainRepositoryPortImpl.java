@@ -1,12 +1,12 @@
-package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter.outbound;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.entity.ShelfEntity;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.mapping.ShelfMapper;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.repository.ShelfJpaRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;

@@ -17,7 +17,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.entity.ShelfEntity;
 import java.util.*;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
