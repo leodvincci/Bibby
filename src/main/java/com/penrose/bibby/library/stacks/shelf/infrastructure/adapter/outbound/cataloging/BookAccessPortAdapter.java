@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.adapter.outbound.cataloging;
 
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
@@ -30,7 +30,9 @@ public class BookAccessPortAdapter implements BookAccessPort {
   }
 
   @Override
-  public void deleteBooksOnShelves(List<Long> shelfIds) {}
+  public void deleteBooksOnShelves(List<Long> shelfIds) {
+    bookFacade.deleteByShelfId(shelfIds);
+  }
 
   @Override
   public Long getBookById(Long bookId) {
