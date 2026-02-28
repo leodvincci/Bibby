@@ -35,6 +35,20 @@ class ShelfTest {
   }
 
   @Test
+  void constructor_shouldThrowWhenLabelIsNull() {
+    assertThatThrownBy(() -> new Shelf(null, 1, 10, new ShelfId(1L), List.of(), 100L))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Shelf label cannot be null or blank");
+  }
+
+  @Test
+  void constructor_shouldThrowWhenLabelIsBlank() {
+    assertThatThrownBy(() -> new Shelf("   ", 1, 10, new ShelfId(1L), List.of(), 100L))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Shelf label cannot be null or blank");
+  }
+
+  @Test
   void setShelfLabel_shouldAcceptValidLabel() {
     Shelf shelf = createValidShelf();
 
