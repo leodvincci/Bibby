@@ -9,7 +9,7 @@ import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.*;
 import org.springframework.shell.command.annotation.Command;
@@ -24,7 +24,7 @@ public class BookCirculationCommands extends AbstractShellComponent {
   private final AuthorFacade authorFacade;
   private final BookFacade bookFacade;
   private final BookcaseFacade bookcaseFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final CliPromptService cliPrompt;
   private final ComponentFlow.Builder componentFlowBuilder;
   private final PromptOptions promptOptions;
@@ -32,7 +32,7 @@ public class BookCirculationCommands extends AbstractShellComponent {
   public BookCirculationCommands(
       ComponentFlow.Builder componentFlowBuilder,
       AuthorFacade authorFacade,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       CliPromptService cliPrompt,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,

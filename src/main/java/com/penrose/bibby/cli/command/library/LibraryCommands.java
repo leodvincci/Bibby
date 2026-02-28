@@ -7,7 +7,7 @@ import com.penrose.bibby.cli.ui.BookcardRenderer;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,7 +27,7 @@ public class LibraryCommands {
   private final PromptOptions promptOptions;
   private final BookFacade bookFacade;
   private final BookcaseFacade bookcaseFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final BookcardRenderer bookcardRenderer;
 
   public LibraryCommands(
@@ -36,7 +36,7 @@ public class LibraryCommands {
       PromptOptions promptOptions,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       BookcardRenderer bookcardRenderer) {
     this.bookCreateIsbnCommands = bookCreateIsbnCommands;
     this.cliPrompt = cliPrompt;

@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Inbound port for the Shelf bounded context.
+ * Inbound port for read-only shelf queries.
  *
- * <p>Defines the application-level contract that external adapters (CLI commands, REST controllers,
- * etc.) use to query, create, and delete shelves. All responses are expressed as inbound port
- * models ({@link ShelfResponse}, {@link ShelfSummaryResponse}) so that domain internals never leak
- * across the boundary.
+ * <p>Defines the application-level contract for querying shelves. External adapters (CLI commands,
+ * REST controllers, etc.) use this port to retrieve shelf data without mutating state.
  *
+ * @see ShelfCommandFacade for state-changing shelf operations
  * @see com.penrose.bibby.library.stacks.shelf.core.application.ShelfService
  */
-public interface ShelfFacade {
+public interface ShelfQueryFacade {
 
   /**
    * Returns every shelf that belongs to a bookcase, each mapped to a full {@link ShelfResponse}.
@@ -36,30 +35,12 @@ public interface ShelfFacade {
 
   /**
    * Produces a lightweight summary projection (ID, label, book count) for every shelf in a
-   * bookcase. Useful for overview or listing screens where full shelf details are not needed.
+   * bookcase.
    *
    * @param bookcaseId the ID of the parent bookcase
    * @return a list of {@link ShelfSummaryResponse} records; empty if the bookcase has no shelves
    */
   List<ShelfSummaryResponse> getShelfSummariesForBookcaseByBookcaseId(Long bookcaseId);
-
-  /**
-   * Deletes every shelf that belongs to the specified bookcase.
-   *
-   * @param bookcaseId the ID of the bookcase whose shelves should be removed
-   */
-  void deleteAllShelvesInBookcaseByBookcaseId(Long bookcaseId);
-
-  /**
-   * Creates a new shelf within a bookcase and persists it.
-   *
-   * @param bookcaseId the ID of the bookcase that will contain the new shelf
-   * @param shelfPosition the ordinal position of the shelf within the bookcase (must be &ge; 1)
-   * @param shelfLabel the display label for the shelf (must not be blank)
-   * @param bookCapacity the maximum number of books the shelf can hold (must be &ge; 1)
-   */
-  void createShelfInBookcaseByBookcaseId(
-      Long bookcaseId, int shelfPosition, String shelfLabel, int bookCapacity);
 
   /**
    * Retrieves every shelf in the system as full {@link ShelfResponse} port models.
@@ -85,13 +66,4 @@ public interface ShelfFacade {
    * @throws IllegalStateException if no shelf exists for the given ID
    */
   boolean isEmpty(Long shelfId);
-
-  /**
-   * Places a book on a shelf by creating a new placement record.
-   *
-   * @param bookId the ID of the book to place
-   * @param shelfId the ID of the shelf to place the book on
-   * @throws IllegalArgumentException if the book does not exist
-   */
-  void placeBookOnShelf(Long bookId, Long shelfId);
 }

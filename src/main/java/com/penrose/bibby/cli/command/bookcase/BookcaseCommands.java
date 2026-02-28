@@ -8,7 +8,7 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookSummary;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.*;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class BookcaseCommands extends AbstractShellComponent {
 
   private final ComponentFlow.Builder componentFlowBuilder;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final BookFacade bookFacade;
   private final BookcaseFacade bookcaseFacade;
   private final CliPromptService cliPromptService;
@@ -31,7 +31,7 @@ public class BookcaseCommands extends AbstractShellComponent {
 
   public BookcaseCommands(
       ComponentFlow.Builder componentFlowBuilder,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,
       CliPromptService cliPromptService,

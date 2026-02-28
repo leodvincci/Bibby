@@ -11,7 +11,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +30,14 @@ public class BookController {
   final BookFacade bookFacade;
   final IsbnLookupService isbnLookupService;
   private final AuthorFacade authorFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfCommandFacade shelfFacade;
 
   public BookController(
       BookService bookService,
       BookFacade bookFacade,
       IsbnLookupService isbnLookupService,
       AuthorFacade authorFacade,
-      ShelfFacade shelfFacade) {
+      ShelfCommandFacade shelfFacade) {
     this.bookService = bookService;
     this.bookFacade = bookFacade;
     this.isbnLookupService = isbnLookupService;

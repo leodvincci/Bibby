@@ -4,7 +4,8 @@ import com.penrose.bibby.library.stacks.shelf.core.application.usecases.CreateSh
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.DeleteShelvesUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.PlaceBookOnShelfUseCase;
 import com.penrose.bibby.library.stacks.shelf.core.application.usecases.QueryShelfUseCase;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.List;
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
 /**
  * Service implementation for managing shelf-related operations within the library stacks domain.
  *
- * <p>This service acts as the primary implementation of the {@link ShelfFacade} inbound port,
+ * <p>This service acts as the primary implementation of the {@link ShelfQueryFacade} and {@link
+ * ShelfCommandFacade} inbound ports,
  * orchestrating shelf operations by delegating to specialized use case classes. It follows
  * hexagonal architecture principles by keeping business logic encapsulated in use cases while
  * providing a clean interface to external adapters (CLI, REST, etc.).
@@ -22,13 +24,14 @@ import org.springframework.stereotype.Service;
  * <p>The service maintains transactional boundaries and ensures that all shelf operations are
  * executed through well-defined use cases, promoting separation of concerns and testability.
  *
- * @see ShelfFacade for the contract this service fulfills
+ * @see ShelfQueryFacade for the query contract this service fulfills
+ * @see ShelfCommandFacade for the command contract this service fulfills
  * @see QueryShelfUseCase for shelf query operations
  * @see CreateShelfUseCase for shelf creation logic
  * @see DeleteShelvesUseCase for shelf deletion operations
  */
 @Service
-public class ShelfService implements ShelfFacade {
+public class ShelfService implements ShelfQueryFacade, ShelfCommandFacade {
 
   private final QueryShelfUseCase queryShelfUseCase;
   private final CreateShelfUseCase createShelfUseCase;

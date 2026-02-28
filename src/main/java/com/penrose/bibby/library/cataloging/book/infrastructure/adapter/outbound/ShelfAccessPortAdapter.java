@@ -2,16 +2,16 @@ package com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outboun
 
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ShelfAccessPortAdapter implements ShelfAccessPort {
 
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
 
-  public ShelfAccessPortAdapter(ShelfFacade shelfFacade) {
+  public ShelfAccessPortAdapter(ShelfQueryFacade shelfFacade) {
     this.shelfFacade = shelfFacade;
   }
 

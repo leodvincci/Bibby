@@ -8,20 +8,20 @@ import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.util.*;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PromptOptions {
-  ShelfFacade shelfFacade;
+  ShelfQueryFacade shelfFacade;
   AuthorFacade authorFacade;
   BookFacade bookFacade;
   BookcaseFacade bookcaseFacade;
 
   public PromptOptions(
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       AuthorFacade authorFacade,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade) {
