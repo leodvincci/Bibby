@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
  * Service implementation for managing shelf-related operations within the library stacks domain.
  *
  * <p>This service acts as the primary implementation of the {@link ShelfQueryFacade} and {@link
- * ShelfCommandFacade} inbound ports,
- * orchestrating shelf operations by delegating to specialized use case classes. It follows
- * hexagonal architecture principles by keeping business logic encapsulated in use cases while
- * providing a clean interface to external adapters (CLI, REST, etc.).
+ * ShelfCommandFacade} inbound ports, orchestrating shelf operations by delegating to specialized
+ * use case classes. It follows hexagonal architecture principles by keeping business logic
+ * encapsulated in use cases while providing a clean interface to external adapters (CLI, REST,
+ * etc.).
  *
  * <p>The service maintains transactional boundaries and ensures that all shelf operations are
  * executed through well-defined use cases, promoting separation of concerns and testability.

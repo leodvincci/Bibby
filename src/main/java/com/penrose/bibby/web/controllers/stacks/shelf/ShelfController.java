@@ -15,7 +15,10 @@ public class ShelfController {
   private final ShelfCommandFacade shelfCommandFacade;
   private final ShelfResponseMapper shelfResponseMapper;
 
-  public ShelfController(ShelfQueryFacade shelfQueryFacade, ShelfCommandFacade shelfCommandFacade, ShelfResponseMapper shelfResponseMapper) {
+  public ShelfController(
+      ShelfQueryFacade shelfQueryFacade,
+      ShelfCommandFacade shelfCommandFacade,
+      ShelfResponseMapper shelfResponseMapper) {
     this.shelfQueryFacade = shelfQueryFacade;
     this.shelfCommandFacade = shelfCommandFacade;
     this.shelfResponseMapper = shelfResponseMapper;
