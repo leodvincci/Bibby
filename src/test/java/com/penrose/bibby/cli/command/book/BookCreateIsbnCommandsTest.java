@@ -10,7 +10,7 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class BookCreateIsbnCommandsTest {
     BookcardRenderer bookcardRenderer = mock(BookcardRenderer.class);
     BookFacade bookFacade = mock(BookFacade.class);
     BookcaseFacade bookcaseFacade = mock(BookcaseFacade.class);
-    ShelfFacade shelfFacade = mock(ShelfFacade.class);
+    ShelfQueryFacade shelfFacade = mock(ShelfQueryFacade.class);
     AuthorFacade authorFacade = mock(AuthorFacade.class);
     PromptOptions promptOptions = mock(PromptOptions.class);
     BookCreateCommands bookCreateCommands = mock(BookCreateCommands.class);
@@ -70,7 +70,7 @@ class BookCreateIsbnCommandsTest {
     BookcardRenderer bookcardRenderer = mock(BookcardRenderer.class);
     BookFacade bookFacade = mock(BookFacade.class);
     BookcaseFacade bookcaseFacade = mock(BookcaseFacade.class);
-    ShelfFacade shelfFacade = mock(ShelfFacade.class);
+    ShelfQueryFacade shelfFacade = mock(ShelfQueryFacade.class);
     AuthorFacade authorFacade = mock(AuthorFacade.class);
     PromptOptions promptOptions = mock(PromptOptions.class);
     BookCreateCommands bookCreateCommands = mock(BookCreateCommands.class);

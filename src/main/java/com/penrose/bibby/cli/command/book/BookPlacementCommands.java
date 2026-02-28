@@ -5,7 +5,7 @@ import com.penrose.bibby.cli.prompt.domain.PromptOptions;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.util.Optional;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.ShellComponent;
@@ -14,13 +14,13 @@ import org.springframework.shell.standard.ShellComponent;
 @Command(command = "book", group = "Book Placement Commands")
 public class BookPlacementCommands {
   private final BookFacade bookFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final CliPromptService cliPrompt;
   private final PromptOptions promptOptions;
 
   public BookPlacementCommands(
       BookFacade bookFacade,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       CliPromptService cliPrompt,
       PromptOptions promptOptions) {
     this.bookFacade = bookFacade;

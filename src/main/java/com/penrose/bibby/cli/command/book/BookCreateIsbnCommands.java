@@ -8,7 +8,7 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookMetaDataResponse;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class BookCreateIsbnCommands {
   private final BookcardRenderer bookcardRenderer;
   private final BookFacade bookFacade;
   private final BookcaseFacade bookcaseFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final AuthorFacade authorFacade;
   private final PromptOptions promptOptions;
 
@@ -46,7 +46,7 @@ public class BookCreateIsbnCommands {
       BookcardRenderer bookcardRenderer,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       AuthorFacade authorFacade,
       PromptOptions promptOptions,
       BookCreateCommands bookCreateCommands) {

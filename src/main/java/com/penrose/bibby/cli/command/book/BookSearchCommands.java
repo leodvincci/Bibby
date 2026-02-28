@@ -9,7 +9,7 @@ import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +24,7 @@ public class BookSearchCommands {
   private final BookcardRenderer bookcardRenderer;
   private final BookFacade bookFacade;
   private final BookcaseFacade bookcaseFacade;
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfFacade;
   private final AuthorFacade authorFacade;
   private final BookCreateCommands bookCreateCommands;
   Logger log = org.slf4j.LoggerFactory.getLogger(BookCreateCommands.class);
@@ -34,7 +34,7 @@ public class BookSearchCommands {
       BookcardRenderer bookcardRenderer,
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,
-      ShelfFacade shelfFacade,
+      ShelfQueryFacade shelfFacade,
       AuthorFacade authorFacade,
       BookCreateCommands bookCreateCommands) {
 

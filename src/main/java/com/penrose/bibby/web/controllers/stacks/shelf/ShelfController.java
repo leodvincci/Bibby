@@ -1,7 +1,8 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
@@ -10,17 +11,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ShelfController {
 
-  private final ShelfFacade shelfFacade;
+  private final ShelfQueryFacade shelfQueryFacade;
+  private final ShelfCommandFacade shelfCommandFacade;
   private final ShelfResponseMapper shelfResponseMapper;
 
-  public ShelfController(ShelfFacade shelfFacade, ShelfResponseMapper shelfResponseMapper) {
-    this.shelfFacade = shelfFacade;
+  public ShelfController(
+      ShelfQueryFacade shelfQueryFacade,
+      ShelfCommandFacade shelfCommandFacade,
+      ShelfResponseMapper shelfResponseMapper) {
+    this.shelfQueryFacade = shelfQueryFacade;
+    this.shelfCommandFacade = shelfCommandFacade;
     this.shelfResponseMapper = shelfResponseMapper;
   }
 
   @GetMapping("/options")
   public List<ShelfOptionResponse> getShelfOptions() {
-    return shelfFacade.findAll().stream().map(shelfResponseMapper::toShelfOption).toList();
+    return shelfQueryFacade.findAll().stream().map(shelfResponseMapper::toShelfOption).toList();
   }
 
   /**
@@ -32,7 +38,7 @@ public class ShelfController {
    */
   @GetMapping("/options/{bookcaseId}")
   public List<ShelfOptionResponse> getShelfOptionsByBookcase(@PathVariable Long bookcaseId) {
-    return shelfFacade.findShelvesByBookcaseId(bookcaseId).stream()
+    return shelfQueryFacade.findShelvesByBookcaseId(bookcaseId).stream()
         .map(shelfResponseMapper::toShelfOption)
         .toList();
   }
@@ -41,6 +47,6 @@ public class ShelfController {
 
   @PostMapping("/placements")
   public void addBookToShelf(@RequestBody AddBookToShelfRequest request) {
-    shelfFacade.placeBookOnShelf(request.bookId(), request.shelfId());
+    shelfCommandFacade.placeBookOnShelf(request.bookId(), request.shelfId());
   }
 }
