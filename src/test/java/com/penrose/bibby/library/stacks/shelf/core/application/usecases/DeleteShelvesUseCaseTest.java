@@ -69,5 +69,4 @@ class DeleteShelvesUseCaseTest {
     verify(bookAccessPort).deleteBooksOnShelves(List.of(10L, 20L, 30L));
     verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
   }
-
 }

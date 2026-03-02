@@ -2,8 +2,8 @@ package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outboun
 
 import static org.mockito.Mockito.*;
 
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.DeleteShelvesUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.deleteShelvesUseCasePort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ShelfAccessPortAdapterTest {
 
   @Mock private ShelfCommandFacade shelfCommandFacade;
-  @Mock private deleteShelvesUseCasePort deleteShelvesUseCasePort;
+  @Mock private DeleteShelvesUseCasePort deleteShelvesUseCasePort;
   @InjectMocks private ShelfAccessPortAdapter shelfAccessPortAdapter;
 
   @Test
@@ -40,5 +40,4 @@ class ShelfAccessPortAdapterTest {
         .createShelfInBookcaseByBookcaseId(bookcaseId, position, shelfLabel, bookCapacity);
     verifyNoInteractions(deleteShelvesUseCasePort);
   }
-
 }
