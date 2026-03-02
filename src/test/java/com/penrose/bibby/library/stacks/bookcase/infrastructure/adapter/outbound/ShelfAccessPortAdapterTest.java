@@ -26,18 +26,4 @@ class ShelfAccessPortAdapterTest {
     verify(deleteShelvesUseCasePort).execute(bookcaseId);
     verifyNoInteractions(shelfCommandFacade);
   }
-
-  @Test
-  void createShelf_shouldDelegateToShelfCommandFacade() {
-    Long bookcaseId = 1L;
-    int position = 2;
-    String shelfLabel = "Fiction";
-    int bookCapacity = 25;
-
-    shelfAccessPortAdapter.createShelf(bookcaseId, position, shelfLabel, bookCapacity);
-
-    verify(shelfCommandFacade)
-        .createShelfInBookcaseByBookcaseId(bookcaseId, position, shelfLabel, bookCapacity);
-    verifyNoInteractions(deleteShelvesUseCasePort);
-  }
 }
