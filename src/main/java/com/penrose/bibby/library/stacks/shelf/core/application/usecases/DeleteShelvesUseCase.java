@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.DeleteShelvesUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * the shelves themselves from the repository.
  */
 @Service
-public class DeleteShelvesUseCase {
+public class DeleteShelvesUseCase implements DeleteShelvesUseCasePort {
 
   private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
   private final BookAccessPort bookAccessPort;
