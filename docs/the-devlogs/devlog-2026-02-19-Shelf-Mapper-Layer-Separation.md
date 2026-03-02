@@ -173,11 +173,12 @@ Same pattern applied to: `findByBookcaseId`, `findShelfSummariesByBookcaseId`, `
 
 ```java
 // Before
-import com.penrose.bibby.library.stacks.shelf.infrastructure.mapping.ShelfMapper;
+
 ShelfMapper shelfMapper;
 
 // After
 import com.penrose.bibby.library.stacks.shelf.core.mappers.ShelfDTOMapper;
+
 ShelfDTOMapper shelfDTOMapper;
 ```
 

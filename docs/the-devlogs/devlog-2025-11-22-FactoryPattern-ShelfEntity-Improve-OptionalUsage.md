@@ -6,7 +6,9 @@
 
 **Context**
 
-Continuing the systematic application of factory patterns across entity creation and Optional idioms for null safety. This refactoring extends the factory pattern to `ShelfEntity` creation and improves validation logic in `BookService` to use more idiomatic Optional methods.
+Continuing the systematic application of factory patterns across entity creation and Optional idioms for null safety.
+This refactoring extends the factory pattern to `ShelfEntity` creation and improves validation logic in `BookService` to
+use more idiomatic Optional methods.
 
 **Motivation**
 
@@ -45,7 +47,8 @@ WHERE b.book_id = :bookId
 GROUP BY b.book_id, b.title, bc.bookcase_label, s.shelf_label, b.availability_status
 ```
 
-**Impact:** Updated column references from `book_status` to `availability_status` to match the entity field rename from an earlier refactoring. This prevents SQL errors when executing the native query.
+**Impact:** Updated column references from `book_status` to `availability_status` to match the entity field rename from
+an earlier refactoring. This prevents SQL errors when executing the native query.
 
 #### 2. Improved Optional Usage in Validation
 
@@ -112,7 +115,7 @@ public class BookcaseService {
 ```java
 
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfFactory;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.repository.ShelfJpaRepository;
 
 public class BookcaseService {
     private final ShelfFactory shelfFactory;
@@ -215,7 +218,7 @@ package com.penrose.bibby.library.bookcase;
 
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseEntity;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.BookcaseRepository;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.repository.ShelfJpaRepository;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.repository.ShelfJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

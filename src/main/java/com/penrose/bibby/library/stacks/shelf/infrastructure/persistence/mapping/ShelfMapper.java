@@ -1,10 +1,10 @@
-package com.penrose.bibby.library.stacks.shelf.infrastructure.mapping;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.mapping;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
 import com.penrose.bibby.library.stacks.shelf.core.domain.valueobject.ShelfId;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.entity.ShelfEntity;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.entity.ShelfEntity;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
