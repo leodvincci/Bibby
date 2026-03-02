@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter.outbound;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Placement;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.PlacementRepositoryPort;

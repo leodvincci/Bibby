@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Placement;
-import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter.outbound.PlacementRepositoryAdapter;
+import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter.PlacementRepositoryAdapter;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.entity.PlacementEntity;
 import com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.repository.PlacementJpaRepository;
 import org.junit.jupiter.api.Test;

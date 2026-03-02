@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outbound;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter;
 
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.CreateShelfUseCasePort;

@@ -2,6 +2,7 @@ package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outboun
 
 import static org.mockito.Mockito.*;
 
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.ShelfAccessPortAdapter;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.DeleteShelvesUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
 import org.junit.jupiter.api.Test;
