@@ -91,13 +91,37 @@ class BookDomainRepositoryImplTest {
     List<BookEntity> entities = List.of(entity1, entity2);
 
     BookDTO dto1 =
-        new BookDTO(1L, 1, "Test Book", List.of("Author One"), "9781492034025", "Fiction",
-            "Test Publisher", 2020, 5L, "Test Description", AvailabilityStatus.AVAILABLE,
-            LocalDate.now(), LocalDate.now(), null);
+        new BookDTO(
+            1L,
+            1,
+            "Test Book",
+            List.of("Author One"),
+            "9781492034025",
+            "Fiction",
+            "Test Publisher",
+            2020,
+            5L,
+            "Test Description",
+            AvailabilityStatus.AVAILABLE,
+            LocalDate.now(),
+            LocalDate.now(),
+            null);
     BookDTO dto2 =
-        new BookDTO(2L, 1, "Second Book", List.of("Author One"), "9781492034025", "Fiction",
-            "Test Publisher", 2020, 5L, "Test Description", AvailabilityStatus.AVAILABLE,
-            LocalDate.now(), LocalDate.now(), null);
+        new BookDTO(
+            2L,
+            1,
+            "Second Book",
+            List.of("Author One"),
+            "9781492034025",
+            "Fiction",
+            "Test Publisher",
+            2020,
+            5L,
+            "Test Description",
+            AvailabilityStatus.AVAILABLE,
+            LocalDate.now(),
+            LocalDate.now(),
+            null);
 
     when(bookJpaRepository.findByShelfId(shelfId)).thenReturn(entities);
     when(bookMapper.toDTOfromEntity(entity1)).thenReturn(dto1);
@@ -299,7 +323,11 @@ class BookDomainRepositoryImplTest {
     // given
     BookMetaDataResponse metaData =
         new BookMetaDataResponse(
-            null, "Meta Book", "9781234567890", List.of("John Doe"), "Meta Publisher",
+            null,
+            "Meta Book",
+            "9781234567890",
+            List.of("John Doe"),
+            "Meta Publisher",
             Optional.of("A great book"));
     List<Long> authorIds = List.of(1L, 2L);
     String isbn = "9781234567890";
