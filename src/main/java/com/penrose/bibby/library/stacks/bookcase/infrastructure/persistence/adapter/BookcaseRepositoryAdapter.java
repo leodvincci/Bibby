@@ -3,7 +3,7 @@ package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outboun
 import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.repository.BookcaseJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

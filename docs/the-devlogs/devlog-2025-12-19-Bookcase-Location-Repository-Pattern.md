@@ -9,7 +9,8 @@
 
 ## 1. High-Level Summary
 
-- **Added physical location to bookcases** — Bookcases now have a `location` (e.g., "Office"), `zone` (e.g., "NorthWall"), and `zoneIndex` (e.g., "A")
+- **Added physical location to bookcases** — Bookcases now have a `location` (e.g., "Office"), `zone` (e.g., "
+  NorthWall"), and `zoneIndex` (e.g., "A")
 - **Derived bookcase labels** — Labels now auto-generate as `zone:index` (e.g., "NorthWall:A")
 - **Extracted BookcaseRepository interface** — Separated domain interface from Spring Data JPA
 - **Added location-based bookcase selection** — Users now select location first, then see filtered bookcases
@@ -22,6 +23,7 @@
 ### Problem 1: No Physical Location Tracking
 
 The original `Bookcase` model had:
+
 ```java
 public class Bookcase {
     private Long bookcaseId;
@@ -31,6 +33,7 @@ public class Bookcase {
 ```
 
 **Issues:**
+
 - No way to group bookcases by physical location (office vs living room)
 - Labels were free-form text, inconsistent naming
 - As library grows, finding the right bookcase becomes harder
@@ -46,6 +49,7 @@ public interface BookcaseRepository extends JpaRepository<BookcaseEntity, Long> 
 ```
 
 **Issues:**
+
 - Domain layer directly coupled to Spring Data
 - Can't easily swap implementations for testing
 - Violates hexagonal architecture principles
@@ -70,12 +74,12 @@ public class Bookcase {
 
 ### Labeling Convention
 
-| Location | Zone | Index | Generated Label |
-|----------|------|-------|-----------------|
-| Office | NorthWall | A | NorthWall:A |
-| Office | NorthWall | B | NorthWall:B |
-| Office | Desk | A | Desk:A |
-| Living Room | Main | A | Main:A |
+| Location    | Zone      | Index | Generated Label |
+|-------------|-----------|-------|-----------------|
+| Office      | NorthWall | A     | NorthWall:A     |
+| Office      | NorthWall | B     | NorthWall:B     |
+| Office      | Desk      | A     | Desk:A          |
+| Living Room | Main      | A     | Main:A          |
 
 ### Repository Pattern
 
@@ -152,6 +156,7 @@ System: Select a shelf:
 ```
 
 **Benefits:**
+
 - Fewer options at each step
 - Logical grouping by physical space
 - Scales better as library grows
@@ -198,21 +203,22 @@ System: Select a shelf:
 ### BookcaseEntity — New Fields & Constructor
 
 ```java
+
 @Entity
 public class BookcaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long bookcaseId;
-    
+
     private String bookcaseLocation;     // NEW
     private String bookcaseZone;         // NEW
     private String bookcaseIndex;    // NEW
     private String bookcaseLabel;        // Now derived
     private int shelfCapacity;
     private int bookCapacity;
-    
+
     // NEW: Constructor that derives label
-    public BookcaseEntity(String location, String zone, String index, 
+    public BookcaseEntity(String location, String zone, String index,
                           int shelfCapacity, int bookCapacity) {
         this.bookcaseLocation = location;
         this.bookcaseZone = zone;
@@ -241,10 +247,15 @@ public record BookcaseDTO(
 ```java
 public interface BookcaseRepository {
     BookcaseEntity findBookcaseEntityByBookcaseLabel(String s);
+
     List<BookcaseEntity> findAll();
+
     List<String> getAllBookCaseLocations();  // NEW
+
     void save(BookcaseEntity bookcaseEntity);
+
     Optional<BookcaseEntity> findById(Long id);
+
     List<BookcaseEntity> findByLocation(String location);  // NEW
 }
 ```
@@ -304,7 +315,7 @@ public void scanBook(...) {
 // Before
 public class ShelfService implements ShelfFacade {
     private final BookcaseRepository bookcaseRepository;
-    
+
     private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
         BookcaseEntity bookcase = bookcaseRepository.findById(shelf.getBookcaseId()).orElse(null);
         // ...
@@ -314,7 +325,7 @@ public class ShelfService implements ShelfFacade {
 // After
 public class ShelfService implements ShelfFacade {
     private final BookcaseFacade bookcaseFacade;  // Through facade, not repository
-    
+
     private ShelfOptionResponse toShelfOption(ShelfEntity shelf) {
         BookcaseEntity bookcase = bookcaseFacade.findById(shelf.getBookcaseId()).orElse(null);
         // ...
@@ -340,6 +351,7 @@ Infrastructure Layer
 ```
 
 **Benefits:**
+
 - Domain doesn't know about Spring Data
 - Can create `InMemoryBookcaseRepository` for tests
 - Follows hexagonal architecture
@@ -354,6 +366,7 @@ private final BookcaseFacade bookcaseFacade;  // Depends on Bookcase module
 **Concern:** Shelf now depends on Bookcase through the facade.
 
 **Options:**
+
 1. **Accept it** — Shelf legitimately needs bookcase info for display
 2. **Create outbound port** — `BookcaseAccessPort` in Shelf module (like you did for Book→Shelf)
 3. **Pass data from CLI** — CLI fetches bookcase, passes label to ShelfService
@@ -364,15 +377,20 @@ For now, facade dependency is acceptable. Consider port pattern if coupling grow
 
 ## 8. Talking Points (Interview / Portfolio)
 
-- **Extended domain model with physical location hierarchy** — Added location, zone, and index fields to enable structured bookcase organization and scalable library management
+- **Extended domain model with physical location hierarchy** — Added location, zone, and index fields to enable
+  structured bookcase organization and scalable library management
 
-- **Applied repository pattern properly** — Extracted domain interface from JPA implementation, improving testability and adherence to hexagonal architecture
+- **Applied repository pattern properly** — Extracted domain interface from JPA implementation, improving testability
+  and adherence to hexagonal architecture
 
-- **Implemented hierarchical UI flow** — Changed flat bookcase selection to location→bookcase→shelf drill-down, reducing cognitive load as library scales
+- **Implemented hierarchical UI flow** — Changed flat bookcase selection to location→bookcase→shelf drill-down, reducing
+  cognitive load as library scales
 
-- **Derived data from components** — Bookcase labels now auto-generate from zone:index, ensuring consistency and reducing user input errors
+- **Derived data from components** — Bookcase labels now auto-generate from zone:index, ensuring consistency and
+  reducing user input errors
 
-- **Reduced cross-layer coupling** — ShelfService now uses BookcaseFacade instead of directly accessing BookcaseRepository, respecting module boundaries
+- **Reduced cross-layer coupling** — ShelfService now uses BookcaseFacade instead of directly accessing
+  BookcaseRepository, respecting module boundaries
 
 ---
 
@@ -423,6 +441,7 @@ ALTER TABLE bookcase_entity ADD COLUMN bookcase_zone_index VARCHAR(255);
 ### Existing Data
 
 Existing bookcases will have `NULL` for new fields. Consider:
+
 1. Default values in migration
 2. Data backfill script
 3. Allow null in UI (show "Unassigned" for location)
@@ -431,22 +450,22 @@ Existing bookcases will have `NULL` for new fields. Consider:
 
 ## 11. Files Changed
 
-| File | Type | Description |
-|------|------|-------------|
-| `Bookcase.java` | Modified | Add location field |
-| `BookcaseEntity.java` | Modified | Add location, zone, index + new constructor |
-| `BookcaseDTO.java` | Modified | Add location field |
-| `BookcaseRepository.java` | Modified | Convert to domain interface |
-| `BookcaseJpaRepository.java` | **New** | Spring Data JPA interface |
-| `BookcaseRepositoryImpl.java` | **New** | Repository implementation |
-| `BookcaseFacade.java` | Modified | Add findById, findByLocation |
-| `BookcaseService.java` | Modified | Update DTO mapping |
-| `ShelfService.java` | Modified | Use facade instead of repository |
-| `PromptOptions.java` | Modified | Add location-based options |
-| `CliPromptService.java` | Modified | Add location prompt |
-| `BookCommands.java` | Modified | Update flow and book card |
-| `BookcaseCommands.java` | Modified | Update create flow |
-| `db/` | **New** | Database migrations |
+| File                          | Type     | Description                                 |
+|-------------------------------|----------|---------------------------------------------|
+| `Bookcase.java`               | Modified | Add location field                          |
+| `BookcaseEntity.java`         | Modified | Add location, zone, index + new constructor |
+| `BookcaseDTO.java`            | Modified | Add location field                          |
+| `BookcaseRepository.java`     | Modified | Convert to domain interface                 |
+| `BookcaseJpaRepository.java`  | **New**  | Spring Data JPA interface                   |
+| `BookcaseRepositoryImpl.java` | **New**  | Repository implementation                   |
+| `BookcaseFacade.java`         | Modified | Add findById, findByLocation                |
+| `BookcaseService.java`        | Modified | Update DTO mapping                          |
+| `ShelfService.java`           | Modified | Use facade instead of repository            |
+| `PromptOptions.java`          | Modified | Add location-based options                  |
+| `CliPromptService.java`       | Modified | Add location prompt                         |
+| `BookCommands.java`           | Modified | Update flow and book card                   |
+| `BookcaseCommands.java`       | Modified | Update create flow                          |
+| `db/`                         | **New**  | Database migrations                         |
 
 ---
 
@@ -462,7 +481,7 @@ git commit -m "feat(bookcase): add location, zone, and zoneIndex fields"
 # Commit 2: Repository pattern
 git add src/main/java/com/penrose/bibby/library/stacks/bookcase/infrastructure/BookcaseRepository.java
 git add src/main/java/com/penrose/bibby/library/stacks/bookcase/infrastructure/BookcaseJpaRepository.java
-git add src/main/java/com/penrose/bibby/library/stacks/bookcase/infrastructure/BookcaseRepositoryImpl.java
+git add src/main/java/com/penrose/bibby/library/stacks/bookcase/infrastructure/BookcaseRepositoryAdapter.java
 git commit -m "refactor(bookcase): extract repository interface from JPA"
 
 # Commit 3: Facade and service updates

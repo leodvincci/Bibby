@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PlacementRepositoryPortImpl implements PlacementRepositoryPort {
+public class PlacementRepositoryAdapter implements PlacementRepositoryPort {
 
   private final PlacementJpaRepository placementJpaRepository;
-  private final Logger logger = LoggerFactory.getLogger(PlacementRepositoryPortImpl.class);
+  private final Logger logger = LoggerFactory.getLogger(PlacementRepositoryAdapter.class);
 
-  public PlacementRepositoryPortImpl(PlacementJpaRepository placementJpaRepository) {
+  public PlacementRepositoryAdapter(PlacementJpaRepository placementJpaRepository) {
     this.placementJpaRepository = placementJpaRepository;
   }
 

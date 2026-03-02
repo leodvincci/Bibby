@@ -12,15 +12,14 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShelfDomainRepositoryPortImpl implements ShelfDomainRepositoryPort {
+public class ShelfRepositoryAdapter implements ShelfDomainRepositoryPort {
 
   private final ShelfJpaRepository jpaRepository;
   private final ShelfMapper shelfMapper;
   private final BookAccessPort bookAccessPort;
-  private final Logger logger =
-      org.slf4j.LoggerFactory.getLogger(ShelfDomainRepositoryPortImpl.class);
+  private final Logger logger = org.slf4j.LoggerFactory.getLogger(ShelfRepositoryAdapter.class);
 
-  public ShelfDomainRepositoryPortImpl(
+  public ShelfRepositoryAdapter(
       ShelfJpaRepository jpaRepository, ShelfMapper shelfMapper, BookAccessPort bookAccessPort) {
     this.jpaRepository = jpaRepository;
     this.shelfMapper = shelfMapper;

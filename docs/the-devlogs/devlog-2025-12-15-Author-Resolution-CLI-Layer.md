@@ -10,8 +10,10 @@
 
 ## 1. High-Level Summary
 
-- **Moved author resolution logic from infrastructure to CLI layer** — enabling interactive duplicate handling during book import
-- **Changed `createBookFromMetaData()` signature** — now accepts `List<Long> authorIds` instead of resolving authors internally
+- **Moved author resolution logic from infrastructure to CLI layer** — enabling interactive duplicate handling during
+  book import
+- **Changed `createBookFromMetaData()` signature** — now accepts `List<Long> authorIds` instead of resolving authors
+  internally
 - **Added `getAuthorById()` method** across AuthorFacade, AuthorRepository, and implementations
 - **Introduced `createAuthorsFromMetaData()`** in BookCommands for explicit author handling with user prompts
 - **Temporarily disabled multi-book scan** pending refactor for new author resolution flow
@@ -20,7 +22,8 @@
 
 ## 2. The Underlying Problem or Friction
 
-When importing a book via ISBN scan, the Google Books API returns author names as strings (e.g., "Sam Newman"). The system needs to either:
+When importing a book via ISBN scan, the Google Books API returns author names as strings (e.g., "Sam Newman"). The
+system needs to either:
 
 1. Find an existing author with that name, OR
 2. Create a new author record
@@ -41,6 +44,7 @@ public BookEntity toEntityFromBookMetaDataResponse(BookMetaDataResponse response
 ```
 
 This violated separation of concerns:
+
 - **Mapper** = data transformation (no side effects, no user interaction)
 - **CLI** = user interaction (prompts, confirmations, selections)
 
@@ -93,12 +97,12 @@ This refactor aligns with **hexagonal architecture** principles:
 
 ### Responsibility Shift
 
-| Layer | Before | After |
-|-------|--------|-------|
-| CLI (BookCommands) | Just called facade | Resolves authors, handles user prompts |
-| Facade (BookFacade) | Delegated to repository | Receives pre-resolved author IDs |
-| Mapper (BookMapper) | Called AuthorFacade, created authors | Pure transformation, no side effects |
-| Repository | Persisted with inline author creation | Persists with provided author IDs |
+| Layer               | Before                                | After                                  |
+|---------------------|---------------------------------------|----------------------------------------|
+| CLI (BookCommands)  | Just called facade                    | Resolves authors, handles user prompts |
+| Facade (BookFacade) | Delegated to repository               | Receives pre-resolved author IDs       |
+| Mapper (BookMapper) | Called AuthorFacade, created authors  | Pure transformation, no side effects   |
+| Repository          | Persisted with inline author creation | Persists with provided author IDs      |
 
 ### Dependency Direction
 
@@ -229,49 +233,63 @@ void createBookFromMetaData(BookMetaDataResponse response, List<Long> authorIds,
 ## 7. Known Issues (To Fix Before Merge)
 
 ### Issue 1: Commented-Out Code
+
 ```java
 // if (multi) multiBookScan();  // ❌ Should delete or throw exception
 ```
+
 **Fix:** Delete commented code, use `UnsupportedOperationException` if feature disabled.
 
 ### Issue 2: Magic Number
+
 ```java
 if (authorId == 0) {  // ❌ Magic number for "create new"
 ```
+
 **Fix:** Use `Optional<Long>` from prompt, or named constant.
 
 ### Issue 3: Unsafe `.get()`
+
 ```java
 return authorJpaRepository.findById(authId).get();  // ❌ Throws if not found
 ```
+
 **Fix:** Return `Optional` or throw domain exception.
 
 ### Issue 4: Empty Stub
+
 ```java
 public Optional<AuthorDTO> getByFirstNameAndLastNameDTO(...) {
     return Optional.empty();  // ❌ Always returns empty
 }
 ```
+
 **Fix:** Implement or remove.
 
 ### Issue 5: Console Output in Repository
+
 ```java
-// In BookDomainRepositoryImpl
+// In BookDomainRepositoryAdaptor
 System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 ```
+
 **Fix:** Move to `BookCommands`.
 
 ---
 
 ## 8. Talking Points (Interview / Portfolio)
 
-- **Improved separation of concerns** by moving user-interactive logic from infrastructure layer to presentation layer, enabling proper duplicate handling during book import
+- **Improved separation of concerns** by moving user-interactive logic from infrastructure layer to presentation layer,
+  enabling proper duplicate handling during book import
 
-- **Refactored method signatures to make dependencies explicit** — callers now provide resolved author IDs rather than relying on hidden side effects in mappers
+- **Refactored method signatures to make dependencies explicit** — callers now provide resolved author IDs rather than
+  relying on hidden side effects in mappers
 
-- **Applied hexagonal architecture principles** by ensuring mappers perform pure data transformation without calling external services or triggering user prompts
+- **Applied hexagonal architecture principles** by ensuring mappers perform pure data transformation without calling
+  external services or triggering user prompts
 
-- **Designed for multiple UI contexts** — the same book creation logic can now work for CLI (with prompts) or web API (with different duplicate strategies) without modification
+- **Designed for multiple UI contexts** — the same book creation logic can now work for CLI (with prompts) or web API (
+  with different duplicate strategies) without modification
 
 - **Identified and documented technical debt** with actionable micro-slice specs for each cleanup item
 
@@ -315,9 +333,11 @@ System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 
 ### Command Pattern / CLI Design
 
-**Why relevant:** The CLI is accumulating logic for user flows. Understanding command patterns and CLI UX would help structure this better.
+**Why relevant:** The CLI is accumulating logic for user flows. Understanding command patterns and CLI UX would help
+structure this better.
 
 **Resources:**
+
 - *The Pragmatic Programmer* — Section on Domain Languages
 - Picocli documentation (alternative to Spring Shell)
 
@@ -326,6 +346,7 @@ System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 **Why relevant:** The unsafe `.get()` call and magic number issues both relate to proper Optional usage.
 
 **Resources:**
+
 - *Effective Java* (3rd Ed) — Item 55: Return optionals judiciously
 - [Oracle's Optional Guide](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html)
 
@@ -334,6 +355,7 @@ System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 **Why relevant:** The simple first/last split fails for many real-world names.
 
 **Resources:**
+
 - [Falsehoods Programmers Believe About Names](https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/)
 - Name parsing libraries (e.g., `nameparser`)
 
@@ -342,6 +364,7 @@ System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 **Why relevant:** This refactor was fundamentally about putting logic in the right layer.
 
 **Resources:**
+
 - *Clean Architecture* — Robert C. Martin
 - *Implementing Domain-Driven Design* — Vaughn Vernon (Chapter on Application Services)
 
@@ -349,16 +372,16 @@ System.out.println("Book Successfully Imported");  // ❌ Should be in CLI
 
 ## 11. Cleanup Micro-Slices (Prioritized)
 
-| # | Slice | Priority | Status |
-|---|-------|----------|--------|
-| 1 | Remove commented-out code | P1 | ⬜ TODO |
-| 2 | Fix magic number (use Optional) | P2 | ⬜ TODO |
-| 3 | Fix unsafe `.get()` | P2 | ⬜ TODO |
-| 4 | Remove empty method stub | P3 | ⬜ TODO |
-| 5 | Document name parsing limits | P4 | ⬜ TODO |
-| 6 | Extract `resolveOrCreateAuthor()` | P3 | ⬜ TODO |
-| 7 | Move console output to CLI | P2 | ⬜ TODO |
-| 8 | Standardize logging | P4 | ⬜ TODO |
+| # | Slice                             | Priority | Status |
+|---|-----------------------------------|----------|--------|
+| 1 | Remove commented-out code         | P1       | ⬜ TODO |
+| 2 | Fix magic number (use Optional)   | P2       | ⬜ TODO |
+| 3 | Fix unsafe `.get()`               | P2       | ⬜ TODO |
+| 4 | Remove empty method stub          | P3       | ⬜ TODO |
+| 5 | Document name parsing limits      | P4       | ⬜ TODO |
+| 6 | Extract `resolveOrCreateAuthor()` | P3       | ⬜ TODO |
+| 7 | Move console output to CLI        | P2       | ⬜ TODO |
+| 8 | Standardize logging               | P4       | ⬜ TODO |
 
 Complete 1-4 before merging PR #116.
 

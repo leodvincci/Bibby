@@ -1,8 +1,7 @@
-package com.penrose.bibby.library.stacks.bookcase.core.domain;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.mapping;
 
-import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity.BookcaseEntity;
 import org.slf4j.Logger;
 
 public class BookcaseMapper {
@@ -30,15 +29,5 @@ public class BookcaseMapper {
     bookcaseEntity.setBookcaseIndex(bookcase.getBookcaseIndex());
     logger.info("Mapping Bookcase to Entity: {}", bookcaseEntity);
     return bookcaseEntity;
-  }
-
-  public static BookcaseDTO toDTO(Bookcase bookcase) {
-    return new BookcaseDTO(
-        bookcase.getBookcaseId(),
-        bookcase.getShelfCapacity(),
-        bookcase.getBookCapacity(),
-        bookcase.getBookcaseLocation(),
-        bookcase.getBookcaseZone(),
-        bookcase.getBookcaseIndex());
   }
 }
