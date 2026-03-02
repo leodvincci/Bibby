@@ -33,16 +33,4 @@ class PlacementRepositoryPortImplTest {
     assertThat(captured.getBookId()).isEqualTo(1L);
     assertThat(captured.getShelfId()).isEqualTo(2L);
   }
-
-  @Test
-  void placeBookOnShelf_shouldMapDomainToEntityCorrectly() {
-    Placement placement = new Placement(42L, 99L);
-
-    placementRepositoryPortImpl.placeBookOnShelf(placement);
-
-    verify(placementJpaRepository).save(entityCaptor.capture());
-    PlacementEntity captured = entityCaptor.getValue();
-    assertThat(captured.getBookId()).isEqualTo(42L);
-    assertThat(captured.getShelfId()).isEqualTo(99L);
-  }
 }

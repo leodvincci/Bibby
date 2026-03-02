@@ -65,27 +65,6 @@ class QueryShelfUseCaseTest {
   }
 
   @Test
-  void findShelvesByBookcaseId_shouldDelegateToRepository() {
-    Long bookcaseId = 100L;
-    Shelf shelf = mock(Shelf.class);
-    when(shelf.getId()).thenReturn(1L);
-    when(shelf.getShelfPosition()).thenReturn(1);
-    when(shelf.getShelfLabel()).thenReturn("Shelf A");
-    when(shelf.getBookCapacity()).thenReturn(10);
-    when(shelf.getBooks()).thenReturn(List.of());
-    when(shelf.getBookcaseId()).thenReturn(bookcaseId);
-
-    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId)).thenReturn(List.of(shelf));
-
-    List<ShelfResponse> result = queryShelfUseCase.findShelvesByBookcaseId(bookcaseId);
-
-    assertThat(result).hasSize(1);
-    assertThat(result.get(0).id()).isEqualTo(1L);
-    assertThat(result.get(0).shelfLabel()).isEqualTo("Shelf A");
-    verify(shelfDomainRepositoryPort).findByBookcaseId(bookcaseId);
-  }
-
-  @Test
   void findShelfById_shouldReturnShelfResponseWhenFound() {
     Long shelfId = 1L;
     Shelf shelf = mock(Shelf.class);

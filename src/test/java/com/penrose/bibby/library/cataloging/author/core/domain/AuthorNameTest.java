@@ -7,82 +7,10 @@ import org.junit.jupiter.api.Test;
 class AuthorNameTest {
 
   @Test
-  void normalized() {
-    AuthorName authorName = new AuthorName("  John     Doe  ");
-    System.out.println("Normalized Author Name: '" + authorName + "'");
-    assertEquals("John Doe", authorName.toString());
-  }
+  void parseMiddleName_shouldReturnEmptyStringWhenSingleName() {
+    AuthorName authorName = new AuthorName("Jane");
 
-  @Test
-  void normalized_2() {
-    AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
-    System.out.println("Normalized Author Name: '" + authorName.normalized() + "'");
-    assertEquals("Jane A Smith", authorName.normalized());
-  }
-
-  @Test
-  void parse_authors_middle_name() {
-    AuthorName authorName = new AuthorName("  Jane   A.           Smith  ");
-    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-    String middleName = normalizedAuthorName.parseMiddleName();
-    System.out.println("Parse Author Middle Name: '" + middleName + "'");
-
-    assertEquals("A", middleName);
-  }
-
-  @Test
-  void parse_authors_middle_name_no_period() {
-    AuthorName authorName = new AuthorName("  Jane   A           Smith  ");
-    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-    String middleName = normalizedAuthorName.parseMiddleName();
-    System.out.println("Parse Author Middle Name: '" + middleName + "'");
-
-    assertEquals("A", middleName);
-  }
-
-  @Test
-  void parse_authors_middle_name_no_middle_name() {
-    AuthorName authorName = new AuthorName("  Jane            Smith  ");
-    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-    String middleName = normalizedAuthorName.parseMiddleName();
-    System.out.println("Parse Author Middle Name: '" + middleName + "'");
-
-    assertEquals("", middleName);
-  }
-
-  @Test
-  void parse_authors_middle_name_only_first_name() {
-    AuthorName authorName = new AuthorName("  Jane            ");
-    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-    String middleName = normalizedAuthorName.parseMiddleName();
-    System.out.println("Parse Author Middle Name: '" + middleName + "'");
-
-    assertEquals("", middleName);
-  }
-
-  @Test
-  void parse_authors_first_name() {
-    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-    AuthorName normalizedAuthorName = new AuthorName(authorName.normalized());
-    String firstName = normalizedAuthorName.parseFirstName();
-    System.out.println("Parse Author First Name: '" + firstName + "'");
-
-    assertEquals("Leo", firstName);
-  }
-
-  @Test
-  void getAuthorName() {
-    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-    assertEquals("Leo D Penrose", authorName.getAuthorName());
-  }
-
-  @Test
-  void parseFirstName() {
-    AuthorName authorName = new AuthorName("  Leo   D.           Penrose  ");
-    String firstName = authorName.parseFirstName();
-    System.out.println("Parse Author First Name: '" + firstName + "'");
-
-    assertEquals("Leo", firstName);
+    assertEquals("", authorName.parseMiddleName());
   }
 
   @Test

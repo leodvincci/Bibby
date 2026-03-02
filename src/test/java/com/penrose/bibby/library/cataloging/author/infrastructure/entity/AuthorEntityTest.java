@@ -85,18 +85,4 @@ class AuthorEntityTest {
     assertEquals(1, author.getBooks().size());
     assertTrue(author.getBooks().contains(book));
   }
-
-  /**
-   * Tests that getBooks() returns the correct type without casting issues. Verifies that the
-   * returned value is not null and is an instance of Set, confirming the fix for the redundant cast
-   * warning.
-   */
-  @Test
-  void testGetBooksReturnsCorrectType() {
-    AuthorEntity author = new AuthorEntity();
-    Set<BookEntity> books = author.getBooks();
-
-    assertNotNull(books);
-    assertTrue(books instanceof Set);
-  }
 }
