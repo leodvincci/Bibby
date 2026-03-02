@@ -11,7 +11,7 @@ import com.penrose.bibby.library.cataloging.book.core.application.BookService;
 import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupService;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.PlaceBookOnShelfUseCasePort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,19 +30,19 @@ public class BookController {
   final BookFacade bookFacade;
   final IsbnLookupService isbnLookupService;
   private final AuthorFacade authorFacade;
-  private final ShelfCommandFacade shelfFacade;
+  private final PlaceBookOnShelfUseCasePort placeBookOnShelf;
 
   public BookController(
       BookService bookService,
       BookFacade bookFacade,
       IsbnLookupService isbnLookupService,
       AuthorFacade authorFacade,
-      ShelfCommandFacade shelfFacade) {
+      PlaceBookOnShelfUseCasePort placeBookOnShelf) {
     this.bookService = bookService;
     this.bookFacade = bookFacade;
     this.isbnLookupService = isbnLookupService;
     this.authorFacade = authorFacade;
-    this.shelfFacade = shelfFacade;
+    this.placeBookOnShelf = placeBookOnShelf;
   }
 
   //  // todo: remove commented code after testing
@@ -118,7 +118,7 @@ public class BookController {
         new BookRequestDTO(
             bookDTO.title(), bookDTO.isbn(), authorDTOS, bookDTO.shelfId(), bookDTO.publisher());
     bookFacade.createNewBook(bookRequestDTO);
-    shelfFacade.placeBookOnShelf(
+    placeBookOnShelf.execute(
         bookFacade.findBookByIsbn(bookRequestDTO.isbn()).id(), bookDTO.shelfId());
 
     System.out.println("Book added");
