@@ -5,10 +5,10 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
+import com.penrose.bibby.web.controllers.stacks.bookcase.BookcaseMapper;
 import java.util.*;
 import org.springframework.shell.component.flow.SelectItem;
 import org.springframework.stereotype.Component;

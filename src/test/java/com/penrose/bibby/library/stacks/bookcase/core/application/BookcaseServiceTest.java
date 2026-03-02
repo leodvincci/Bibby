@@ -3,11 +3,11 @@ package com.penrose.bibby.library.stacks.bookcase.core.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.CreateBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.DeleteBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.QueryBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

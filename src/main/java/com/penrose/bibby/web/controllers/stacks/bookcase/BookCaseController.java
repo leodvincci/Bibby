@@ -1,11 +1,11 @@
 package com.penrose.bibby.web.controllers.stacks.bookcase;
 
 import com.penrose.bibby.identity.infrastructure.AppUserImpl;
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.CreateBookcaseRequest;
-import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.CreateBookcaseUseCasePort;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
 import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.*;
 public class BookCaseController {
 
   private final BookcaseFacade bookcaseFacade;
+  private final CreateBookcaseUseCasePort createBookcaseUseCasePort;
   Logger logger = LoggerFactory.getLogger(BookCaseController.class);
 
-  public BookCaseController(BookcaseFacade bookcaseFacade) {
+  public BookCaseController(
+      BookcaseFacade bookcaseFacade, CreateBookcaseUseCasePort createBookcaseUseCasePort) {
     this.bookcaseFacade = bookcaseFacade;
+    this.createBookcaseUseCasePort = createBookcaseUseCasePort;
   }
 
   @PostMapping("/create")
@@ -33,7 +36,7 @@ public class BookCaseController {
     logger.info(
         "Received request to create bookcase at location: {}", createBookcaseRequest.location());
     CreateBookcaseResult createBookcaseResult =
-        bookcaseFacade.createNewBookCase(
+        createBookcaseUseCasePort.createNewBookCase(
             principal.getAppUserId(),
             createBookcaseRequest.zone() + "-" + createBookcaseRequest.indexId(),
             createBookcaseRequest.zone(),

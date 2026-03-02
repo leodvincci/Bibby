@@ -1,11 +1,11 @@
 package com.penrose.bibby.library.stacks.bookcase.core.application;
 
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.CreateBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.DeleteBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.application.usecases.QueryBookcaseUseCase;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
