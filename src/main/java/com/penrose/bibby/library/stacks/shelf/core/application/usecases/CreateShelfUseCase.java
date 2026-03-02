@@ -1,6 +1,7 @@
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Shelf;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.CreateShelfUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.ShelfDomainRepositoryPort;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
  * ShelfDomainRepository to persist shelf data.
  */
 @Service
-public class CreateShelfUseCase {
+public class CreateShelfUseCase implements CreateShelfUseCasePort {
 
   private final ShelfDomainRepositoryPort shelfDomainRepositoryPort;
 

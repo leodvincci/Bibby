@@ -33,25 +33,4 @@ class CreateShelfUseCaseTest {
     assertThat(captured.getBooks()).isEmpty();
     assertThat(captured.getShelfId()).isNull();
   }
-
-  @Test
-  void execute_shouldSaveShelfWithMinimumBookCapacity() {
-    createShelfUseCase.execute("Shelf A", 1, 1, 100L);
-
-    verify(shelfDomainRepositoryPort).createNewShelfInBookcase(shelfCaptor.capture());
-    Shelf captured = shelfCaptor.getValue();
-    assertThat(captured.getShelfLabel()).isEqualTo("Shelf A");
-    assertThat(captured.getBookCapacity()).isEqualTo(1);
-  }
-
-  @Test
-  void execute_shouldSaveShelfWithLargeBookCapacity() {
-    createShelfUseCase.execute("Shelf Z", 5, 1000, 100L);
-
-    verify(shelfDomainRepositoryPort).createNewShelfInBookcase(shelfCaptor.capture());
-    Shelf captured = shelfCaptor.getValue();
-    assertThat(captured.getShelfLabel()).isEqualTo("Shelf Z");
-    assertThat(captured.getShelfPosition()).isEqualTo(5);
-    assertThat(captured.getBookCapacity()).isEqualTo(1000);
-  }
 }

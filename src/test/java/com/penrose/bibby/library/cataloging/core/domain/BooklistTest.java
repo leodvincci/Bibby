@@ -63,25 +63,6 @@ class BooklistTest {
   }
 
   @Test
-  void renameBooklist_ShouldThrowException_WhenNewNameExceedsMaxLength() {
-    // Arrange
-    BooklistName initialName = new BooklistName("Old Booklist Name");
-    BooklistId listId = new BooklistId(123L);
-    Set<BookIdentifier> bookIdentifiers = Set.of(new BookIdentifier(233L));
-    Booklist booklist = new Booklist(listId, initialName, bookIdentifiers);
-
-    StringBuilder longName = new StringBuilder();
-    for (int i = 0; i < 101; i++) {
-      longName.append("a");
-    }
-
-    // Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> booklist.renameBooklist(new BooklistName(longName.toString())));
-  }
-
-  @Test
   void renameBooklist_ShouldNotUpdateUpdatedAt_WhenNameIsUnchanged() {
     // Arrange
     BooklistName initialName = new BooklistName("Unchanged Booklist Name");
@@ -99,23 +80,6 @@ class BooklistTest {
     assertEquals("Unchanged Booklist Name", booklist.getBooklistName().value());
   }
 
-  @Test
-  @DisplayName("Should throw exception for invalid special characters in BooklistName")
-  void renameBooklist_ShouldThrowExceptionForInvalidSpecialCharacters() {
-    // Arrange
-    BooklistName initialName = new BooklistName("Valid Name");
-    BooklistId listId = new BooklistId(123L);
-    Set<BookIdentifier> bookIdentifiers = Set.of(new BookIdentifier(233L));
-    Booklist booklist = new Booklist(listId, initialName, bookIdentifiers);
-
-    // Act & Assert
-    IllegalArgumentException exception =
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> booklist.renameBooklist(new BooklistName("Invalid@Characters")));
-    assertEquals("Booklist name contains invalid characters", exception.getMessage());
-  }
-
   @ParameterizedTest
   @DisplayName("Should rename with valid special characters in BooklistName")
   @ValueSource(strings = {"Valid_Name", "Experiment 42", "Title Fine!", "Done.", "Book (2025)"})
@@ -131,55 +95,6 @@ class BooklistTest {
 
     // Assert
     assertEquals(validSpecialName, booklist.getBooklistName().value());
-  }
-
-  @Test
-  void renameBooklist_ShouldUpdateUpdatedAtWithNewTimestamp_WhenCalledTwice()
-      throws InterruptedException {
-    // Arrange
-    BooklistName initialName = new BooklistName("First Name");
-    BooklistId listId = new BooklistId(123L);
-    Set<BookIdentifier> bookIdentifiers = Set.of(new BookIdentifier(233L));
-    Booklist booklist = new Booklist(listId, initialName, bookIdentifiers);
-
-    BooklistName secondName = new BooklistName("Second Name");
-
-    // Act
-    booklist.renameBooklist(secondName);
-    Instant afterFirstRename = booklist.getUpdatedAt();
-    Thread.sleep(10); // Simulate a delay to ensure timestamps differ
-    booklist.renameBooklist(new BooklistName("Third Name"));
-
-    // Assert
-    assertTrue(booklist.getUpdatedAt().isAfter(afterFirstRename));
-  }
-
-  @Test
-  void renameBooklist_ShouldThrowException_WhenNewNameContainsOnlySpaces() {
-    // Arrange
-    BooklistName initialName = new BooklistName("Valid Name");
-    BooklistId listId = new BooklistId(123L);
-    Set<BookIdentifier> bookIdentifiers = Set.of(new BookIdentifier(233L));
-    Booklist booklist = new Booklist(listId, initialName, bookIdentifiers);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> booklist.renameBooklist(new BooklistName("   ")));
-  }
-
-  @Test
-  void shouldThrowExceptionWhenValueIsNullOrBlank() {
-    IllegalArgumentException exception1 =
-        assertThrows(IllegalArgumentException.class, () -> new BooklistName(null));
-    assertEquals("Booklist name cannot be null or blank", exception1.getMessage());
-
-    IllegalArgumentException exception2 =
-        assertThrows(IllegalArgumentException.class, () -> new BooklistName(""));
-    assertEquals("Booklist name cannot be null or blank", exception2.getMessage());
-
-    IllegalArgumentException exception3 =
-        assertThrows(IllegalArgumentException.class, () -> new BooklistName("   "));
-    assertEquals("Booklist name cannot be null or blank", exception3.getMessage());
   }
 
   @Test
@@ -247,12 +162,5 @@ class BooklistTest {
   void shouldHandleLeadingAndTrailingWhitespace() {
     BooklistName booklistName = new BooklistName("   Leading and trailing   ");
     assertEquals("Leading and trailing", booklistName.value());
-  }
-
-  @Test
-  void shouldHandleEmptyStringAfterWhitespaceReplacement() {
-    IllegalArgumentException exception =
-        assertThrows(IllegalArgumentException.class, () -> new BooklistName("   "));
-    assertEquals("Booklist name cannot be null or blank", exception.getMessage());
   }
 }

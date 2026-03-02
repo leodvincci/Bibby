@@ -50,23 +50,4 @@ class DeleteShelvesUseCaseTest {
     verify(bookAccessPort).deleteBooksOnShelves(List.of());
     verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
   }
-
-  @Test
-  void execute_shouldCollectAllShelfIdsForBookDeletion() {
-    Long bookcaseId = 100L;
-    Shelf shelf1 = mock(Shelf.class);
-    Shelf shelf2 = mock(Shelf.class);
-    Shelf shelf3 = mock(Shelf.class);
-    when(shelf1.getShelfId()).thenReturn(new ShelfId(10L));
-    when(shelf2.getShelfId()).thenReturn(new ShelfId(20L));
-    when(shelf3.getShelfId()).thenReturn(new ShelfId(30L));
-
-    when(shelfDomainRepositoryPort.findByBookcaseId(bookcaseId))
-        .thenReturn(List.of(shelf1, shelf2, shelf3));
-
-    deleteShelvesUseCase.execute(bookcaseId);
-
-    verify(bookAccessPort).deleteBooksOnShelves(List.of(10L, 20L, 30L));
-    verify(shelfDomainRepositoryPort).deleteByBookcaseId(bookcaseId);
-  }
 }

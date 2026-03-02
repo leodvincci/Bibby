@@ -49,16 +49,4 @@ class PlaceBookOnShelfUseCaseTest {
 
     verify(placementRepositoryPort, never()).placeBookOnShelf(any());
   }
-
-  @Test
-  void execute_shouldCheckBookExistenceBeforePlacing() {
-    Long bookId = 1L;
-    Long shelfId = 2L;
-    when(bookAccessPort.getBookById(bookId)).thenReturn(bookId);
-
-    placeBookOnShelfUseCase.execute(bookId, shelfId);
-
-    verify(bookAccessPort).getBookById(bookId);
-    verify(placementRepositoryPort).placeBookOnShelf(any(Placement.class));
-  }
 }

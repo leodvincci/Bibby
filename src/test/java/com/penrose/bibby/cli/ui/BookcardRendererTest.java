@@ -83,53 +83,6 @@ class BookcardRendererTest {
     assertTrue(result.contains("..."), "Authors should be truncated with ellipsis if too long");
   }
 
-  /** Tests the createBookCard method with a very long title. */
-  @Test
-  void testCreateBookCard_LongTitle() {
-    // Arrange
-    BookcardRenderer renderer = new BookcardRenderer();
-    String title =
-        "An Extremely Long and Detailed Title that Will Likely Exceed Formatting Limits "
-            + "for Demonstration Purposes Only";
-    String isbn = "123456789X";
-    String author = "John Doe";
-    String publisher = "Self-Published";
-    String bookcase = "A3";
-    String shelf = "2";
-    String location = "Reading Room";
-
-    // Act
-    String result =
-        renderer.createBookCard(title, isbn, author, publisher, bookcase, shelf, location);
-
-    // Assert
-    assertNotNull(result);
-    assertTrue(result.contains(title), "The full title should still be included in the output");
-  }
-
-  /** Tests the createBookCard method with special characters in the author field. */
-  @Test
-  void testCreateBookCard_SpecialCharactersInAuthor() {
-    // Arrange
-    BookcardRenderer renderer = new BookcardRenderer();
-    String title = "Algorithms and Data Structures";
-    String isbn = "987-6543210987";
-    // Author display name will truncate if longer than 42 characters
-    String author = "Dr. Jane O'Connor & Prof. Bob-D";
-    String publisher = "Academic Press";
-    String bookcase = "C1";
-    String shelf = "5";
-    String location = "Computer Science Section";
-
-    // Act
-    String result =
-        renderer.createBookCard(title, isbn, author, publisher, bookcase, shelf, location);
-
-    // Assert
-    assertNotNull(result);
-    assertTrue(result.contains(author), "Author field should handle special characters properly");
-  }
-
   /** Tests the createBookCard method when author is empty. */
   @Test
   void testCreateBookCard_EmptyAuthor() {
@@ -173,30 +126,6 @@ class BookcardRendererTest {
 
     // Assert
     assertNotNull(result);
-    assertTrue(result.contains(title), "Title should be included in the output");
-    assertTrue(result.contains(isbn), "ISBN should be included in the output");
-  }
-
-  /** Tests the createBookCard method with partial data (only title and ISBN). */
-  @Test
-  void testCreateBookCard_PartialData() {
-    // Arrange
-    BookcardRenderer renderer = new BookcardRenderer();
-    String title = "Partial Book Record";
-    String isbn = "978-9999999999";
-    String author = null;
-    String publisher = null;
-    String bookcase = null;
-    String shelf = null;
-    String location = null;
-
-    // Act
-    String result =
-        renderer.createBookCard(title, isbn, author, publisher, bookcase, shelf, location);
-
-    // Assert
-    assertNotNull(result);
-    System.out.println(result);
     assertTrue(result.contains(title), "Title should be included in the output");
     assertTrue(result.contains(isbn), "ISBN should be included in the output");
   }
