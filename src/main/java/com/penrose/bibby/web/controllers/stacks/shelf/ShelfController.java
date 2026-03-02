@@ -1,7 +1,7 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
-import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfCommandFacade;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.PlaceBookOnShelfUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
 import java.util.List;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 public class ShelfController {
 
   private final ShelfQueryFacade shelfQueryFacade;
-  private final ShelfCommandFacade shelfCommandFacade;
   private final ShelfResponseMapper shelfResponseMapper;
+  private final PlaceBookOnShelfUseCasePort placeBookOnShelfUseCasePort;
 
   public ShelfController(
       ShelfQueryFacade shelfQueryFacade,
-      ShelfCommandFacade shelfCommandFacade,
-      ShelfResponseMapper shelfResponseMapper) {
+      ShelfResponseMapper shelfResponseMapper,
+      PlaceBookOnShelfUseCasePort placeBookOnShelfUseCasePort) {
     this.shelfQueryFacade = shelfQueryFacade;
-    this.shelfCommandFacade = shelfCommandFacade;
     this.shelfResponseMapper = shelfResponseMapper;
+    this.placeBookOnShelfUseCasePort = placeBookOnShelfUseCasePort;
   }
 
   @GetMapping("/options")
@@ -47,6 +47,6 @@ public class ShelfController {
 
   @PostMapping("/placements")
   public void addBookToShelf(@RequestBody AddBookToShelfRequest request) {
-    shelfCommandFacade.placeBookOnShelf(request.bookId(), request.shelfId());
+    placeBookOnShelfUseCasePort.execute(request.bookId(), request.shelfId());
   }
 }

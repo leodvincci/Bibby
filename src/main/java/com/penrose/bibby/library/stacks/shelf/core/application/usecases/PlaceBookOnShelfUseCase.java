@@ -1,12 +1,13 @@
 package com.penrose.bibby.library.stacks.shelf.core.application.usecases;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Placement;
+import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.PlaceBookOnShelfUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.BookAccessPort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.PlacementRepositoryPort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PlaceBookOnShelfUseCase {
+public class PlaceBookOnShelfUseCase implements PlaceBookOnShelfUseCasePort {
 
   private final PlacementRepositoryPort placementRepositoryPort;
   private final BookAccessPort bookAccessPort;
