@@ -13,8 +13,8 @@ import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping.
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
 import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.repository.BookcaseJpaRepository;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.repository.BookcaseJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import java.util.*;
 import org.slf4j.Logger;

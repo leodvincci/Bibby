@@ -1,8 +1,8 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure.adapter.outbound;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.adapter;
 
-import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.mapping.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.repository.BookcaseJpaRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +10,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BookcaseRepositoryImpl implements BookcaseRepository {
+public class BookcaseRepositoryAdapter implements BookcaseRepository {
   BookcaseJpaRepository bookcaseJpaRepository;
   private static final org.slf4j.Logger logger =
-      org.slf4j.LoggerFactory.getLogger(BookcaseRepositoryImpl.class);
+      org.slf4j.LoggerFactory.getLogger(BookcaseRepositoryAdapter.class);
 
-  public BookcaseRepositoryImpl(BookcaseJpaRepository bookcaseJpaRepository) {
+  public BookcaseRepositoryAdapter(BookcaseJpaRepository bookcaseJpaRepository) {
     this.bookcaseJpaRepository = bookcaseJpaRepository;
   }
 

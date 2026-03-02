@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure.mapping;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.mapping;
 
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity.BookcaseEntity;

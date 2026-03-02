@@ -1,6 +1,6 @@
 package com.penrose.bibby.library.stacks.bookcase.api.dtos;
 
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity.BookcaseEntity;
 import java.util.Optional;
 
 public record BookcaseDTO(
