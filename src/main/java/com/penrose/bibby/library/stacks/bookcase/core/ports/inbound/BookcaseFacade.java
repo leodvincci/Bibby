@@ -1,9 +1,9 @@
 package com.penrose.bibby.library.stacks.bookcase.core.ports.inbound;
 
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
-import com.penrose.bibby.library.stacks.bookcase.infrastructure.entity.BookcaseEntity;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
+import com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity.BookcaseEntity;
 import java.util.List;
 import java.util.Optional;
 

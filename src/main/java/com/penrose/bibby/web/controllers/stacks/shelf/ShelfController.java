@@ -1,6 +1,6 @@
 package com.penrose.bibby.web.controllers.stacks.shelf;
 
-import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponse;
+import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfOptionResponseDTO;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.PlaceBookOnShelfUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.web.controllers.stacks.shelf.mappers.ShelfResponseMapper;
@@ -25,7 +25,7 @@ public class ShelfController {
   }
 
   @GetMapping("/options")
-  public List<ShelfOptionResponse> getShelfOptions() {
+  public List<ShelfOptionResponseDTO> getShelfOptions() {
     return shelfQueryFacade.findAll().stream().map(shelfResponseMapper::toShelfOption).toList();
   }
 
@@ -33,11 +33,11 @@ public class ShelfController {
    * Retrieves a list of shelf options associated with a specific bookcase.
    *
    * @param bookcaseId the ID of the bookcase for which shelf options are being retrieved
-   * @return a list of {@link ShelfOptionResponse} objects representing the available shelf options
-   *     for the given bookcase
+   * @return a list of {@link ShelfOptionResponseDTO} objects representing the available shelf
+   *     options for the given bookcase
    */
   @GetMapping("/options/{bookcaseId}")
-  public List<ShelfOptionResponse> getShelfOptionsByBookcase(@PathVariable Long bookcaseId) {
+  public List<ShelfOptionResponseDTO> getShelfOptionsByBookcase(@PathVariable Long bookcaseId) {
     return shelfQueryFacade.findShelvesByBookcaseId(bookcaseId).stream()
         .map(shelfResponseMapper::toShelfOption)
         .toList();

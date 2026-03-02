@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter.outbound;
+package com.penrose.bibby.library.stacks.shelf.infrastructure.persistence.adapter;
 
 import com.penrose.bibby.library.stacks.shelf.core.domain.model.Placement;
 import com.penrose.bibby.library.stacks.shelf.core.ports.outbound.PlacementRepositoryPort;
@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PlacementRepositoryPortImpl implements PlacementRepositoryPort {
+public class PlacementRepositoryAdapter implements PlacementRepositoryPort {
 
   private final PlacementJpaRepository placementJpaRepository;
-  private final Logger logger = LoggerFactory.getLogger(PlacementRepositoryPortImpl.class);
+  private final Logger logger = LoggerFactory.getLogger(PlacementRepositoryAdapter.class);
 
-  public PlacementRepositoryPortImpl(PlacementJpaRepository placementJpaRepository) {
+  public PlacementRepositoryAdapter(PlacementJpaRepository placementJpaRepository) {
     this.placementJpaRepository = placementJpaRepository;
   }
 

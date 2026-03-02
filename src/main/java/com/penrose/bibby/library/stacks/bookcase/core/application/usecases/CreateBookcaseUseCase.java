@@ -1,16 +1,17 @@
 package com.penrose.bibby.library.stacks.bookcase.core.application.usecases;
 
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.CreateBookcaseUseCasePort;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class CreateBookcaseUseCase {
+public class CreateBookcaseUseCase implements CreateBookcaseUseCasePort {
 
   private static final Logger logger =
       org.slf4j.LoggerFactory.getLogger(CreateBookcaseUseCase.class);

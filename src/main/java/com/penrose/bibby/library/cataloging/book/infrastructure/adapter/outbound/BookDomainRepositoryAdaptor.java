@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.cataloging.book.infrastructure.repository;
+package com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound;
 
 import com.penrose.bibby.library.cataloging.author.api.dtos.AuthorDTO;
 import com.penrose.bibby.library.cataloging.author.infrastructure.entity.AuthorEntity;
@@ -9,6 +9,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.model.Book;
 import com.penrose.bibby.library.cataloging.book.core.port.outbound.BookDomainRepository;
 import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping.BookMapper;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
+import com.penrose.bibby.library.cataloging.book.infrastructure.repository.BookJpaRepository;
 import com.penrose.bibby.library.stacks.shelf.api.dtos.ShelfDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookDomainRepositoryImpl implements BookDomainRepository {
+public class BookDomainRepositoryAdaptor implements BookDomainRepository {
   private final BookMapper bookMapper;
   private final BookJpaRepository bookJpaRepository;
-  Logger log = org.slf4j.LoggerFactory.getLogger(BookDomainRepositoryImpl.class);
+  Logger log = org.slf4j.LoggerFactory.getLogger(BookDomainRepositoryAdaptor.class);
 
-  public BookDomainRepositoryImpl(BookMapper bookMapper, BookJpaRepository bookJpaRepository) {
+  public BookDomainRepositoryAdaptor(BookMapper bookMapper, BookJpaRepository bookJpaRepository) {
 
     this.bookMapper = bookMapper;
     this.bookJpaRepository = bookJpaRepository;

@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import com.penrose.bibby.library.stacks.bookcase.api.CreateBookcaseResult;
 import com.penrose.bibby.library.stacks.bookcase.core.domain.model.Bookcase;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.BookcaseRepository;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.outbound.ShelfAccessPort;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.portModel.CreateBookcaseResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

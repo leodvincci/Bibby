@@ -8,6 +8,7 @@ import com.penrose.bibby.library.cataloging.book.api.dtos.BookDetailView;
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookSummary;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
+import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.CreateBookcaseUseCasePort;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfSummaryResponse;
 import java.util.*;
@@ -27,6 +28,7 @@ public class BookcaseCommands extends AbstractShellComponent {
   private final BookcaseFacade bookcaseFacade;
   private final CliPromptService cliPromptService;
   private final PromptOptions promptOptions;
+  private final CreateBookcaseUseCasePort createBookcaseUseCasePort;
   Logger log = org.slf4j.LoggerFactory.getLogger(BookcaseCommands.class);
 
   public BookcaseCommands(
@@ -35,13 +37,15 @@ public class BookcaseCommands extends AbstractShellComponent {
       BookFacade bookFacade,
       BookcaseFacade bookcaseFacade,
       CliPromptService cliPromptService,
-      PromptOptions promptOptions) {
+      PromptOptions promptOptions,
+      CreateBookcaseUseCasePort createBookcaseUseCasePort) {
     this.componentFlowBuilder = componentFlowBuilder;
     this.shelfFacade = shelfFacade;
     this.bookFacade = bookFacade;
     this.bookcaseFacade = bookcaseFacade;
     this.cliPromptService = cliPromptService;
     this.promptOptions = promptOptions;
+    this.createBookcaseUseCasePort = createBookcaseUseCasePort;
   }
 
   @Command(command = "create", description = "Create a new bookcase in the library.")
@@ -114,7 +118,7 @@ public class BookcaseCommands extends AbstractShellComponent {
     ComponentFlow.ComponentFlowResult res = flow.run();
     if (res.getContext().get("confirmation").equals("Y")
         | res.getContext().get("confirmation").equals("y")) {
-      bookcaseFacade.createNewBookCase(
+      createBookcaseUseCasePort.createNewBookCase(
           null, bookcaseZone, bookcaseZone, zoneIndex, shelfCount, bookCapacity, bookcaseLocation);
       System.out.println("Created");
     } else {

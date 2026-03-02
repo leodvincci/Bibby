@@ -7,10 +7,10 @@ import com.penrose.bibby.library.cataloging.author.core.ports.inbound.AuthorFaca
 import com.penrose.bibby.library.cataloging.book.api.dtos.BookDTO;
 import com.penrose.bibby.library.cataloging.book.core.port.inbound.BookFacade;
 import com.penrose.bibby.library.stacks.bookcase.api.dtos.BookcaseDTO;
-import com.penrose.bibby.library.stacks.bookcase.core.domain.BookcaseMapper;
 import com.penrose.bibby.library.stacks.bookcase.core.ports.inbound.BookcaseFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.ShelfQueryFacade;
 import com.penrose.bibby.library.stacks.shelf.core.ports.inbound.inboundPortModels.ShelfResponse;
+import com.penrose.bibby.web.controllers.stacks.bookcase.BookcaseMapper;
 import java.util.*;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.component.flow.ComponentFlow;

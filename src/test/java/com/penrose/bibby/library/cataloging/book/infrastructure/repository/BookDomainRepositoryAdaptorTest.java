@@ -16,6 +16,7 @@ import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.BookId;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Isbn;
 import com.penrose.bibby.library.cataloging.book.core.domain.valueObject.Title;
 import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.mapping.BookMapper;
+import com.penrose.bibby.library.cataloging.book.infrastructure.adapter.outbound.BookDomainRepositoryAdaptor;
 import com.penrose.bibby.library.cataloging.book.infrastructure.entity.BookEntity;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,12 +31,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BookDomainRepositoryImplTest {
+class BookDomainRepositoryAdaptorTest {
 
   @Mock private BookJpaRepository bookJpaRepository;
   @Mock private BookMapper bookMapper;
 
-  @InjectMocks private BookDomainRepositoryImpl bookDomainRepositoryImpl;
+  @InjectMocks private BookDomainRepositoryAdaptor bookDomainRepositoryAdaptor;
 
   @Captor private ArgumentCaptor<BookEntity> entityCaptor;
 
@@ -128,7 +129,7 @@ class BookDomainRepositoryImplTest {
     when(bookMapper.toDTOfromEntity(entity2)).thenReturn(dto2);
 
     // when
-    List<BookDTO> result = bookDomainRepositoryImpl.getBooksByShelfId(shelfId);
+    List<BookDTO> result = bookDomainRepositoryAdaptor.getBooksByShelfId(shelfId);
 
     // then
     assertThat(result).hasSize(2);
@@ -145,7 +146,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfId(shelfId)).thenReturn(List.of());
 
     // when
-    List<BookDTO> result = bookDomainRepositoryImpl.getBooksByShelfId(shelfId);
+    List<BookDTO> result = bookDomainRepositoryAdaptor.getBooksByShelfId(shelfId);
 
     // then
     assertThat(result).isEmpty();
@@ -164,7 +165,7 @@ class BookDomainRepositoryImplTest {
     when(bookMapper.toEntitySetFromAuthorRefs(book.getAuthors())).thenReturn(authorEntities);
 
     // when
-    bookDomainRepositoryImpl.registerBook(book);
+    bookDomainRepositoryAdaptor.registerBook(book);
 
     // then
     verify(bookJpaRepository).save(entityCaptor.capture());
@@ -195,7 +196,7 @@ class BookDomainRepositoryImplTest {
     when(bookMapper.toEntitySetFromAuthorRefs(book.getAuthors())).thenReturn(authorEntities);
 
     // when
-    bookDomainRepositoryImpl.updateBook(book);
+    bookDomainRepositoryAdaptor.updateBook(book);
 
     // then
     verify(bookJpaRepository).findById(1L);
@@ -217,7 +218,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(1L)).thenReturn(Optional.of(entity));
 
     // when
-    BookEntity result = bookDomainRepositoryImpl.getBookById(1L);
+    BookEntity result = bookDomainRepositoryAdaptor.getBookById(1L);
 
     // then
     assertThat(result).isEqualTo(entity);
@@ -231,7 +232,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(99L)).thenReturn(Optional.empty());
 
     // when / then
-    assertThatThrownBy(() -> bookDomainRepositoryImpl.getBookById(99L))
+    assertThatThrownBy(() -> bookDomainRepositoryAdaptor.getBookById(99L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Book not found with id: 99");
   }
@@ -245,7 +246,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByTitle("Test Book")).thenReturn(entity);
 
     // when
-    BookEntity result = bookDomainRepositoryImpl.findBookEntityByTitle("Test Book");
+    BookEntity result = bookDomainRepositoryAdaptor.findBookEntityByTitle("Test Book");
 
     // then
     assertThat(result).isEqualTo(entity);
@@ -263,7 +264,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
 
     // when
-    bookDomainRepositoryImpl.updateTheBooksShelf(book, 1L, newShelfId);
+    bookDomainRepositoryAdaptor.updateTheBooksShelf(book, 1L, newShelfId);
 
     // then
     assertThat(bookEntity.getShelfId()).isEqualTo(newShelfId);
@@ -277,7 +278,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(99L)).thenReturn(Optional.empty());
 
     // when / then
-    assertThatThrownBy(() -> bookDomainRepositoryImpl.updateTheBooksShelf(book, 99L, 10L))
+    assertThatThrownBy(() -> bookDomainRepositoryAdaptor.updateTheBooksShelf(book, 99L, 10L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Book not found with id: 99");
   }
@@ -291,7 +292,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByIsbn("9781492034025")).thenReturn(entity);
 
     // when
-    BookEntity result = bookDomainRepositoryImpl.findBookByIsbn("9781492034025");
+    BookEntity result = bookDomainRepositoryAdaptor.findBookByIsbn("9781492034025");
 
     // then
     assertThat(result).isEqualTo(entity);
@@ -308,7 +309,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.getBookDetailView(1L)).thenReturn(detailView);
 
     // when
-    BookDetailView result = bookDomainRepositoryImpl.getBookDetailView(1L);
+    BookDetailView result = bookDomainRepositoryAdaptor.getBookDetailView(1L);
 
     // then
     assertThat(result).isEqualTo(detailView);
@@ -338,7 +339,7 @@ class BookDomainRepositoryImplTest {
         .thenReturn(mappedEntity);
 
     // when
-    bookDomainRepositoryImpl.createBookFromMetaData(metaData, authorIds, isbn, shelfId);
+    bookDomainRepositoryAdaptor.createBookFromMetaData(metaData, authorIds, isbn, shelfId);
 
     // then
     verify(bookMapper).toEntityFromBookMetaDataResponse(metaData, authorIds, isbn, shelfId);
@@ -357,7 +358,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByAuthorsAuthorId(1L)).thenReturn(entities);
 
     // when
-    List<BookEntity> result = bookDomainRepositoryImpl.getThreeBooksByAuthorId(1L);
+    List<BookEntity> result = bookDomainRepositoryAdaptor.getThreeBooksByAuthorId(1L);
 
     // then
     assertThat(result).hasSize(2);
@@ -373,7 +374,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByIsbn("9781492034025")).thenReturn(entity);
 
     // when
-    bookDomainRepositoryImpl.updatePublisher("9781492034025", "New Publisher");
+    bookDomainRepositoryAdaptor.updatePublisher("9781492034025", "New Publisher");
 
     // then
     assertThat(entity.getPublisher()).isEqualTo("New Publisher");
@@ -387,7 +388,8 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByIsbn("0000000000000")).thenReturn(null);
 
     // when / then
-    assertThatThrownBy(() -> bookDomainRepositoryImpl.updatePublisher("0000000000000", "Publisher"))
+    assertThatThrownBy(
+            () -> bookDomainRepositoryAdaptor.updatePublisher("0000000000000", "Publisher"))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Book not found with ISBN: 0000000000000");
   }
@@ -407,7 +409,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfIdIn(shelfIds)).thenReturn(booksToDelete);
 
     // when
-    bookDomainRepositoryImpl.deleteByShelfId(shelfIds);
+    bookDomainRepositoryAdaptor.deleteByShelfId(shelfIds);
 
     // then
     verify(bookJpaRepository).findByShelfIdIn(shelfIds);
@@ -421,7 +423,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfIdIn(shelfIds)).thenReturn(List.of());
 
     // when
-    bookDomainRepositoryImpl.deleteByShelfId(shelfIds);
+    bookDomainRepositoryAdaptor.deleteByShelfId(shelfIds);
 
     // then
     verify(bookJpaRepository).findByShelfIdIn(shelfIds);
@@ -439,7 +441,7 @@ class BookDomainRepositoryImplTest {
     when(bookMapper.toDomainFromEntity(entity)).thenReturn(expectedBook);
 
     // when
-    Book result = bookDomainRepositoryImpl.getBookDomainById(1L);
+    Book result = bookDomainRepositoryAdaptor.getBookDomainById(1L);
 
     // then
     assertThat(result).isEqualTo(expectedBook);
@@ -453,7 +455,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(99L)).thenReturn(Optional.empty());
 
     // when / then
-    assertThatThrownBy(() -> bookDomainRepositoryImpl.getBookDomainById(99L))
+    assertThatThrownBy(() -> bookDomainRepositoryAdaptor.getBookDomainById(99L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Book not found with id: 99");
   }
@@ -469,7 +471,7 @@ class BookDomainRepositoryImplTest {
     when(bookMapper.toDomainFromEntity(entity)).thenReturn(expectedBook);
 
     // when
-    Book result = bookDomainRepositoryImpl.placeBookOnShelf(1L, 10L);
+    Book result = bookDomainRepositoryAdaptor.placeBookOnShelf(1L, 10L);
 
     // then
     assertThat(entity.getShelfId()).isEqualTo(10L);
@@ -484,7 +486,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findById(99L)).thenReturn(Optional.empty());
 
     // when / then
-    assertThatThrownBy(() -> bookDomainRepositoryImpl.placeBookOnShelf(99L, 10L))
+    assertThatThrownBy(() -> bookDomainRepositoryAdaptor.placeBookOnShelf(99L, 10L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Book not found with id: 99");
   }
@@ -503,7 +505,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfId(5L)).thenReturn(List.of(entity1, entity2, entity3));
 
     // when
-    List<Long> result = bookDomainRepositoryImpl.getBookIdsByShelfId(5L);
+    List<Long> result = bookDomainRepositoryAdaptor.getBookIdsByShelfId(5L);
 
     // then
     assertThat(result).containsExactly(1L, 2L, 3L);
@@ -516,7 +518,7 @@ class BookDomainRepositoryImplTest {
     when(bookJpaRepository.findByShelfId(99L)).thenReturn(List.of());
 
     // when
-    List<Long> result = bookDomainRepositoryImpl.getBookIdsByShelfId(99L);
+    List<Long> result = bookDomainRepositoryAdaptor.getBookIdsByShelfId(99L);
 
     // then
     assertThat(result).isEmpty();

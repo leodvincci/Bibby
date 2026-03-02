@@ -1,4 +1,4 @@
-package com.penrose.bibby.library.stacks.bookcase.infrastructure.entity;
+package com.penrose.bibby.library.stacks.bookcase.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
