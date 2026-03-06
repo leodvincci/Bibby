@@ -159,6 +159,7 @@ Used by `src/main/resources/application.properties` (no in-file defaults for DB)
 | `DB_URL`       | PostgreSQL JDBC URL        | `jdbc:postgresql://localhost:5332/amigos`            |
 | `DB_USERNAME`  | Database user              | `amigoscode`                                         |
 | `DB_PASSWORD`  | Database password          | `password`                                           |
+| `GOOGLE_BOOKS_API_KEY` | Google Books API key (ISBN lookup) | *(your key from Google Cloud Console)* |
 
 Optional overrides (Spring Boot convention): `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD` can override if you prefer.
 
