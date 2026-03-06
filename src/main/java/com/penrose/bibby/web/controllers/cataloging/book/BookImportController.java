@@ -4,6 +4,8 @@ import com.penrose.bibby.library.cataloging.book.core.application.IsbnLookupServ
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.BookImportRequest;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBookResponseBrief;
 import com.penrose.bibby.library.cataloging.book.infrastructure.external.GoogleBooksResponse;
+import com.penrose.bibby.ratelimit.RateLimitService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +19,25 @@ public class BookImportController {
   Logger log = org.slf4j.LoggerFactory.getLogger(BookImportController.class);
 
   private final IsbnLookupService isbnLookupService;
+  private final RateLimitService rateLimitService;
 
-  public BookImportController(IsbnLookupService isbnLookupService) {
+  public BookImportController(
+      IsbnLookupService isbnLookupService, RateLimitService rateLimitService) {
     this.isbnLookupService = isbnLookupService;
+    this.rateLimitService = rateLimitService;
   }
 
   @PostMapping("/api/v1/books/fetchbookmetadata")
   public ResponseEntity<GoogleBookResponseBrief> importBook(
-      @RequestBody BookImportRequest request) {
+      @RequestBody BookImportRequest request, HttpServletRequest servletRequest) {
     if (request == null || request.isbn() == null || request.isbn().isBlank()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ISBN is required");
     }
-
+    String ip = servletRequest.getRemoteAddr();
+    log.info("USER IP Address: {} ", ip);
+    if (!rateLimitService.isAllowed(ip)) {
+      throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS);
+    }
     log.info("Import request for ISBN {}", request.isbn());
 
     GoogleBooksResponse lookupResponse = isbnLookupService.lookupBook(request.isbn()).block();
