@@ -33,7 +33,7 @@ public class BookImportController {
     if (request == null || request.isbn() == null || request.isbn().isBlank()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ISBN is required");
     }
-    String ip = servletRequest.getLocalAddr();
+    String ip = servletRequest.getRemoteAddr();
     log.info("USER IP Address: {} ", ip);
     if (!rateLimitService.isAllowed(ip)) {
       throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS);
